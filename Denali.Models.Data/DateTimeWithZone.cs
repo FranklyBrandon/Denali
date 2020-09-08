@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Denali.Services.Utility
+namespace Denali.Models
 {
     public struct DateTimeWithZone
     {
@@ -19,6 +19,8 @@ namespace Denali.Services.Utility
         public DateTime UniversalTime { get { return utcDateTime; } }
 
         public TimeZoneInfo TimeZone { get { return timeZone; } }
+
+        public long UnixTime { get { return ((DateTimeOffset)UniversalTime).ToUnixTimeSeconds(); } }
 
         public DateTime LocalTime
         {

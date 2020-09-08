@@ -8,17 +8,17 @@ namespace Denali.Models.Data.FinnHub
     public class CandleResponse
     {
         [JsonPropertyName("o")]
-        public IEnumerable<double> OpenPrice { get; set; }
+        public IList<double> OpenPrice { get; set; }
         [JsonPropertyName("c")]
-        public IEnumerable<double> ClosePrice { get; set; }
+        public IList<double> ClosePrice { get; set; }
         [JsonPropertyName("l")]
-        public IEnumerable<double> LowPrice { get; set; }
+        public IList<double> LowPrice { get; set; }
         [JsonPropertyName("h")]
-        public IEnumerable<double> HighPrice { get; set; }
+        public IList<double> HighPrice { get; set; }
         [JsonPropertyName("v")]
-        public IEnumerable<int> Volume { get; set; }
+        public IList<int> Volume { get; set; }
         [JsonPropertyName("t")]
-        public IEnumerable<int> Timestamp { get; set; }
+        public IList<int> Timestamp { get; set; }
         [JsonPropertyName("s")]
         public string Status { get; set; }
 

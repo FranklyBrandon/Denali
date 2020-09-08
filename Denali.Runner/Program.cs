@@ -1,5 +1,4 @@
-﻿using Denali.Runner.Processors;
-using Denali.Services.Utility;
+﻿using Denali.Processors;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -13,7 +12,7 @@ namespace Denali.Runner
 
             using (var scope = provider.CreateScope())
             {
-                var processor = scope.ServiceProvider.GetRequiredService<AnalyzeProcessor>();
+                var processor = scope.ServiceProvider.GetRequiredService<HistoricAnalyze>();
                 processor.Process().GetAwaiter().GetResult();
             }
         }

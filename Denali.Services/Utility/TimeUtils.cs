@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Denali.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,18 +19,16 @@ namespace Denali.Services.Utility
             return TimeZoneInfo.ConvertTimeFromUtc(timeUtc, easternZone);
         }
 
-        public long GetNYSEOpen(DateTime date)
+        public DateTimeWithZone GetNYSEOpen(DateTime date)
         {
             var open = new DateTime(date.Year, date.Month, date.Day, 9, 30, 0);
-            var openTime = new DateTimeWithZone(open, EasternStandardTime);
-            return ((DateTimeOffset)openTime.UniversalTime).ToUnixTimeSeconds();
+            return new DateTimeWithZone(open, EasternStandardTime);
         }
 
-        public long GetNYSEClose(DateTime date)
+        public DateTimeWithZone GetNYSEClose(DateTime date)
         {
             var open = new DateTime(date.Year, date.Month, date.Day, 16, 0, 0);
-            var openTime = new DateTimeWithZone(open, EasternStandardTime);
-            return ((DateTimeOffset)openTime.UniversalTime).ToUnixTimeSeconds();
+            return new DateTimeWithZone(open, EasternStandardTime);
         }
     }
 }

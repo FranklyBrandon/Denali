@@ -1,4 +1,4 @@
-﻿using Denali.Runner.Processors;
+﻿using Denali.Processors;
 using Denali.Services.FinnHub;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +31,7 @@ namespace Denali.Runner
             #endregion
 
             services.AddScoped<FinnHubService>();
-            services.AddScoped<AnalyzeProcessor>();
+            services.AddScoped<HistoricAnalyze>();
             return services.BuildServiceProvider(true);
         }
     }
