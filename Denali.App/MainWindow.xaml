@@ -16,11 +16,10 @@
          FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
-            <ColumnDefinition />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <materialDesign:Card Padding="32" Margin="16">
-            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">Jingjing is so pretty!</TextBlock>
-        </materialDesign:Card>
+        <ContentControl x:Name="StockExplorer" Grid.Column="0"/>
+        <ContentControl x:Name="StockWidget" Grid.Column="1"/>
     </Grid>
 </Window>

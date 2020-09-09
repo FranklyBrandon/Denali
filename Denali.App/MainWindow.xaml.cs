@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Denali.App.StockExplorer;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,7 @@ namespace Denali.App
         public MainWindow()
         {
             InitializeComponent();
+            this.StockExplorer.Content = new StockExplorer.StockExplorer();
         }
     }
 }
