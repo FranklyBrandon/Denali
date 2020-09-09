@@ -1,9 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 
 namespace Denali.App.StockExplorer
@@ -28,8 +25,7 @@ namespace Denali.App.StockExplorer
         private void AddStockSelection()
         {
             this.StockSelections.Add(new StockSelection { Symbol = this.InputStock });
-            this.InputStock = "";
-            RaisePropertyChanged();
+            this.InputStock = string.Empty;
         }
     }
 }
