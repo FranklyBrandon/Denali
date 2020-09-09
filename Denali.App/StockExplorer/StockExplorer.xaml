@@ -17,11 +17,19 @@
     <Grid>
         <materialDesign:Card Padding="32" Margin="16" Grid.Column="0">
             <StackPanel>
-                <TextBox KeyUp="TextBox_KeyEnterUpdate">
-                    <materialDesign:HintAssist.Hint>
-                        <TextBlock>Stock Symbol</TextBlock>
-                    </materialDesign:HintAssist.Hint>
+                <TextBox Text="{Binding InputStock, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding AddStockCommand}" Key="Return" />
+                    </TextBox.InputBindings>
                 </TextBox>
+                        <!--<TextBlock>Stock Symbol</TextBlock>-->
+                <ItemsControl ItemsSource="{Binding StockSelections, Mode=TwoWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding Path=Symbol}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </materialDesign:Card>
     </Grid>

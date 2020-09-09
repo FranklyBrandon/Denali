@@ -21,19 +21,8 @@ namespace Denali.App.StockExplorer
         public StockExplorer()
         {
             InitializeComponent();
-        }
-
-        private void TextBox_KeyEnterUpdate(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                TextBox tBox = (TextBox)sender;
-                tBox.Text = "";
-                //DependencyProperty prop = TextBox.TextProperty;
-
-                //BindingExpression binding = BindingOperations.GetBindingExpression(tBox, prop);
-                //if (binding != null) { binding.UpdateSource(); }
-            }
+            var viewModel = new StockExplorerViewModel();
+            DataContext = viewModel;
         }
     }
 }
