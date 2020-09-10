@@ -17,7 +17,7 @@
     <Grid>
         <materialDesign:Card Padding="32" Margin="16" Grid.Column="0">
             <StackPanel>
-                <TextBox Text="{Binding InputStock, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Enter Stock Symbol">
+                <TextBox Text="{Binding InputStock, UpdateSourceTrigger=PropertyChanged}" CharacterCasing="Upper" materialDesign:HintAssist.Hint="Enter Stock Symbol">
                     <TextBox.InputBindings>
                         <KeyBinding Command="{Binding AddStockCommand}" Key="Return" />
                     </TextBox.InputBindings>
