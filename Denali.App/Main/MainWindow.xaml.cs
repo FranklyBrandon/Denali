@@ -1,4 +1,5 @@
-﻿using Denali.App.StockExplorer;
+﻿using Denali.App.Main;
+using Denali.App.StockExplorer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,7 +26,13 @@ namespace Denali.App
         public MainWindow()
         {
             InitializeComponent();
+            var mainViewModel = new MainViewModel();
+            this.DataContext = mainViewModel;
+
+            var stockExplorerViewModel = new StockExplorerViewModel();
+            stockExplorerViewModel.StockAddedEvent += mainViewModel.OnStockAdded;
             this.StockExplorer.Content = new StockExplorer.StockExplorer();
+            this.StockExplorer.DataContext = stockExplorerViewModel;
         }
     }
 }

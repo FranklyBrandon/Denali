@@ -11,14 +11,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Denali.App.StockExplorer
+namespace Denali.App.Widgets.HistoricAnalysis
 {
     /// <summary>
-    /// Interaction logic for StockExplorer.xaml
+    /// Interaction logic for HistoricAnalysisWidget.xaml
     /// </summary>
-    public partial class StockExplorer : UserControl
+    public partial class HistoricAnalysisWidget : UserControl
     {
-        public StockExplorer()
+        public HistoricAnalysisWidget()
         {
             InitializeComponent();
         }

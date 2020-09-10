@@ -20,6 +20,6 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <ContentControl x:Name="StockExplorer" Grid.Column="0"/>
-        <ContentControl x:Name="StockWidget" Grid.Column="1"/>
+        <ContentControl Content="{Binding Path=CurrentStockWidget}" x:Name="StockWidget" Grid.Column="1"/>
     </Grid>
 </Window>
