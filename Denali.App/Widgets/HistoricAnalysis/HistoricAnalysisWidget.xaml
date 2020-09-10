@@ -4,9 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Denali.App.Widgets.HistoricAnalysis"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label Content="{Binding Path = Symbol }" HorizontalContentAlignment="Center" Padding="32" Margin="16" FontSize="24"></Label>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="3*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="2" Content="{Binding Path = Symbol }" HorizontalContentAlignment="Center" Padding="8" Margin="16" FontSize="24"></Label>
+        <StackPanel Grid.Row="1"  Grid.Column="1">
+            <Label>From:</Label>
+            <DatePicker SelectedDate="{x:Static sys:DateTime.Now}" DisplayDateEnd="{x:Static sys:DateTime.Today}"></DatePicker>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="3">
+            <Label>To:</Label>
+            <DatePicker SelectedDate="{x:Static sys:DateTime.Now}" DisplayDateEnd="{x:Static sys:DateTime.Today}"></DatePicker>
+        </StackPanel>
     </Grid>
 </UserControl>
