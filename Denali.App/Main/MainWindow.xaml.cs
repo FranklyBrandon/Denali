@@ -1,5 +1,6 @@
 ﻿using Denali.App.Main;
 using Denali.App.StockExplorer;
+using Denali.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,8 +24,12 @@ namespace Denali.App
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private DenaliAppServices _appServices;
+
+        public MainWindow(DenaliAppServices appServices)
         {
+            _appServices = appServices;
+
             InitializeComponent();
             var mainViewModel = new MainViewModel();
             this.DataContext = mainViewModel;

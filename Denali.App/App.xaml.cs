@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Denali.Runner;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +15,11 @@ namespace Denali.App
     /// </summary>
     public partial class App : Application
     {
+        private void OnStartup(object sender, StartupEventArgs e)
+        {
+            var provider = DenaliConfiguration.Startup();
+            var mainWindow = provider.GetService<MainWindow>();
+            mainWindow.Show();
+        }
     }
 }

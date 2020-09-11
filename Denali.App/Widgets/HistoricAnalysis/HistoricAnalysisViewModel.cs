@@ -26,7 +26,7 @@ namespace Denali.App.Widgets.HistoricAnalysis
 
         private async void OnStartAnalysisClick()
         {
-
+            //Convert Date and Time strings to DateTimes (change this later when there is a better Time Picker element
         }
     }
 }

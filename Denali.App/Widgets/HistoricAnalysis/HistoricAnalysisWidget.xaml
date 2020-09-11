@@ -28,7 +28,7 @@
             <TextBox Text="{Binding FromTime}"></TextBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="3">
-            <Label>To:</Label>
+            <Label>To Date:</Label>
             <DatePicker SelectedDate="{x:Static sys:DateTime.Now}" DisplayDateEnd="{x:Static sys:DateTime.Today}"></DatePicker>
             <Label>To Time:</Label>
             <TextBox Text="{Binding ToTime}"></TextBox>
