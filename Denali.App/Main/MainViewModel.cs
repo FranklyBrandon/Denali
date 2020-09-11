@@ -23,7 +23,7 @@ namespace Denali.App.Main
             if (!StockWidgets.ContainsKey(symbol))
             {
                 var widget = new HistoricAnalysisWidget();
-                var widgetViewModel = new WidgetViewModelBase();
+                var widgetViewModel = new HistoricAnalysisViewModel();
                 widget.DataContext = widgetViewModel;
                 widgetViewModel.Symbol = symbol;
 
