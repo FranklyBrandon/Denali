@@ -24,14 +24,14 @@ namespace Denali.App
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DenaliAppServices _appServices;
+        private readonly DenaliAppServices _appServices;
 
         public MainWindow(DenaliAppServices appServices)
         {
             _appServices = appServices;
 
             InitializeComponent();
-            var mainViewModel = new MainViewModel();
+            var mainViewModel = new MainViewModel(_appServices);
             this.DataContext = mainViewModel;
 
             var stockExplorerViewModel = new StockExplorerViewModel();

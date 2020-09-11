@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using Denali.Services.Analysis;
+using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,7 @@ namespace Denali.App.Widgets.HistoricAnalysis
 {
     public class HistoricAnalysisViewModel : WidgetViewModelBase
     {
+
         public ICommand StartAnalysisCommand { get; set; }
 
 
@@ -18,6 +20,7 @@ namespace Denali.App.Widgets.HistoricAnalysis
 
         public HistoricAnalysisViewModel()
         {
+
             FromTime = "09:30";
             ToTime = "16:30";
 

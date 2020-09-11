@@ -8,11 +8,12 @@ namespace Denali.Services
 {
     public class DenaliAppServices
     {
-        public HistoricAnalysisService HistoricAnalysisService { get; }
+        public IServiceProvider ServiceProvider { get; }
 
-        public DenaliAppServices(HistoricAnalysisService historicAnalysisService)
+        public DenaliAppServices(IServiceProvider serviceProvider)
         {
-            HistoricAnalysisService = historicAnalysisService;
+            ServiceProvider = serviceProvider;
+            //TODO: Load base modules/services
         }
     }
 }

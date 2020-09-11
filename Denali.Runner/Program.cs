@@ -12,8 +12,8 @@ namespace Denali.Runner
 
             using (var scope = provider.CreateScope())
             {
-                var processor = scope.ServiceProvider.GetRequiredService<HistoricAnalyze>();
-                processor.Process().GetAwaiter().GetResult();
+                var processor = scope.ServiceProvider.GetRequiredService<HistoricAnalysisPrcessor>();
+                //processor.Process().GetAwaiter().GetResult();
             }
         }
     }

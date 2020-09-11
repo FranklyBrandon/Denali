@@ -1,4 +1,6 @@
-﻿using Denali.Services.FinnHub;
+﻿using Denali.Models;
+using Denali.Models.Data.FinnHub;
+using Denali.Services.FinnHub;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
@@ -13,7 +15,7 @@ namespace Denali.Services.Analysis
 
         }
 
-        public void RunHistoricAnalysis()
+        public void RunHistoricAnalysis(string symbol, DateTimeWithZone from, DateTimeWithZone to, CandleResolution resolution)
         {
 
         }

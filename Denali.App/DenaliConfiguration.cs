@@ -10,6 +10,7 @@ namespace Denali.Runner
 {
     internal static class DenaliConfiguration
     {
+        internal static IServiceProvider ServiceProvider;
         internal static IServiceProvider Startup() => BuildServiceProvider(BuildConfiguration());
 
         private static IConfiguration BuildConfiguration()
@@ -37,7 +38,7 @@ namespace Denali.Runner
             services.AddSingleton<HistoricAnalysisService>();
 
             services.AddSingleton<MainWindow>();
-            return services.BuildServiceProvider(true);
+            return ServiceProvider = services.BuildServiceProvider(true);
         }
     }
 }

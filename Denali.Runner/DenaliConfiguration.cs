@@ -31,7 +31,7 @@ namespace Denali.Runner
             #endregion
 
             services.AddScoped<FinnHubService>();
-            services.AddScoped<HistoricAnalyze>();
+            services.AddScoped<HistoricAnalysisPrcessor>();
             return services.BuildServiceProvider(true);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Denali.Runner;
+using Denali.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace Denali.App
         private void OnStartup(object sender, StartupEventArgs e)
         {
             var provider = DenaliConfiguration.Startup();
-            var mainWindow = provider.GetService<MainWindow>();
+            var appServices = new DenaliAppServices(provider);
+            var mainWindow = new MainWindow(appServices);
             mainWindow.Show();
         }
     }
