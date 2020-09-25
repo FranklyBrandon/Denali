@@ -27,7 +27,7 @@ namespace Denali.App.Main
             if (!StockWidgets.ContainsKey(symbol))
             {
                 var widget = _widgetFactory.CreateHistoricAnalysisWidget();
-                var widgetViewModel = new HistoricAnalysisViewModel();
+                var widgetViewModel = _widgetFactory.CreateHistoricAnalysisViewModel();
                 widget.DataContext = widgetViewModel;
                 widgetViewModel.Symbol = symbol;
 

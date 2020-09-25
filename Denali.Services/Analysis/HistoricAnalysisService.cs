@@ -10,14 +10,16 @@ namespace Denali.Services.Analysis
 {
     public class HistoricAnalysisService
     {
-        public HistoricAnalysisService()
-        {
+        private FinnHubService _finnHubService;
 
+        public HistoricAnalysisService(FinnHubService finnHubService)
+        {
+            this._finnHubService = finnHubService;
         }
 
-        public void RunHistoricAnalysis(string symbol, DateTimeWithZone from, DateTimeWithZone to, CandleResolution resolution)
+        public async void RunHistoricAnalysis(string symbol, DateTimeWithZone from, DateTimeWithZone to, CandleResolution resolution)
         {
-
+            var la = await _finnHubService.GetCandleStickChart(symbol, resolution, from, to);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Denali.App
             var mainViewModel = new MainViewModel(widgetFactory);
             this.DataContext = mainViewModel;
 
-            var stockExplorerViewModel = new StockExplorerViewModel();
+            var stockExplorerViewModel = widgetFactory.CreateStockExplorerViewModel();
             stockExplorerViewModel.StockAddedEvent += mainViewModel.OnStockAdded;
             this.StockExplorer.Content = widgetFactory.CreateStockExplorer();
             this.StockExplorer.DataContext = stockExplorerViewModel;

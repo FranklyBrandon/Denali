@@ -1,5 +1,7 @@
 ﻿using Denali.App.StockExplorer;
 using Denali.App.Widgets.HistoricAnalysis;
+using Denali.Services.Analysis;
+using Denali.Services.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,14 +10,21 @@ namespace Denali.App.Widgets
 {
     public class WidgetFactory
     {
-        public HistoricAnalysisWidget CreateHistoricAnalysisWidget()
+        private readonly HistoricAnalysisService _historicAnalysisService;
+        private readonly TimeUtils _timeUtils;
+
+        public WidgetFactory(HistoricAnalysisService historicAnalysisService, TimeUtils timeUtils)
         {
-            return new HistoricAnalysisWidget();
+            this._historicAnalysisService = historicAnalysisService;
+            this._timeUtils = timeUtils;
         }
 
-        public StockExplorer.StockExplorer CreateStockExplorer()
-        {
-            return new StockExplorer.StockExplorer();
-        }
+        public HistoricAnalysisWidget CreateHistoricAnalysisWidget() => new HistoricAnalysisWidget();
+
+        public HistoricAnalysisViewModel CreateHistoricAnalysisViewModel() => new HistoricAnalysisViewModel(_historicAnalysisService, _timeUtils);
+
+        public StockExplorer.StockExplorer CreateStockExplorer() => new StockExplorer.StockExplorer();
+
+        public StockExplorer.StockExplorerViewModel CreateStockExplorerViewModel() => new StockExplorerViewModel();
     }
 }
