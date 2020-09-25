@@ -11,23 +11,22 @@ namespace Denali.App.Main
 {
     public class MainViewModel : ViewModelBase
     {
-        private readonly DenaliAppServices _appServices;
-
         private ContentControl _currentStockWidget;
+        private WidgetFactory _widgetFactory;
+
         public ContentControl CurrentStockWidget { get => _currentStockWidget; set => Set(ref _currentStockWidget, value); }
         public IDictionary<string, ContentControl> StockWidgets { get; set; }
 
-        public MainViewModel(DenaliAppServices appServices)
+        public MainViewModel(WidgetFactory widgetFactory)
         {
-            this._appServices = appServices;
-
+            this._widgetFactory = widgetFactory;
             this.StockWidgets = new Dictionary<string, ContentControl>();
         }
         public void OnStockAdded(object sender, string symbol)
         {
             if (!StockWidgets.ContainsKey(symbol))
             {
-                var widget = new HistoricAnalysisWidget();
+                var widget = _widgetFactory.CreateHistoricAnalysisWidget();
                 var widgetViewModel = new HistoricAnalysisViewModel();
                 widget.DataContext = widgetViewModel;
                 widgetViewModel.Symbol = symbol;

@@ -19,8 +19,7 @@ namespace Denali.App
         private void OnStartup(object sender, StartupEventArgs e)
         {
             var provider = DenaliConfiguration.Startup();
-            var appServices = new DenaliAppServices(provider);
-            var mainWindow = new MainWindow(appServices);
+            var mainWindow = provider.GetService<MainWindow>();
             mainWindow.Show();
         }
     }

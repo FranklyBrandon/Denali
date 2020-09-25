@@ -1,5 +1,6 @@
 ﻿using Denali.App.Main;
 using Denali.App.StockExplorer;
+using Denali.App.Widgets;
 using Denali.Services;
 using System;
 using System.Collections.Generic;
@@ -24,19 +25,15 @@ namespace Denali.App
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly DenaliAppServices _appServices;
-
-        public MainWindow(DenaliAppServices appServices)
+        public MainWindow(WidgetFactory widgetFactory)
         {
-            _appServices = appServices;
-
             InitializeComponent();
-            var mainViewModel = new MainViewModel(_appServices);
+            var mainViewModel = new MainViewModel(widgetFactory);
             this.DataContext = mainViewModel;
 
             var stockExplorerViewModel = new StockExplorerViewModel();
             stockExplorerViewModel.StockAddedEvent += mainViewModel.OnStockAdded;
-            this.StockExplorer.Content = new StockExplorer.StockExplorer();
+            this.StockExplorer.Content = widgetFactory.CreateStockExplorer();
             this.StockExplorer.DataContext = stockExplorerViewModel;
         }
     }

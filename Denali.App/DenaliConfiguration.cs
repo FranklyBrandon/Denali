@@ -1,4 +1,6 @@
 ﻿using Denali.App;
+using Denali.App.Widgets;
+using Denali.App.Widgets.HistoricAnalysis;
 using Denali.Services;
 using Denali.Services.Analysis;
 using Denali.Services.FinnHub;
@@ -34,10 +36,14 @@ namespace Denali.Runner
             #endregion
 
             services.AddSingleton<FinnHubService>();
-            services.AddSingleton<DenaliAppServices>();
             services.AddSingleton<HistoricAnalysisService>();
 
-            services.AddSingleton<MainWindow>();
+            services.AddScoped<HistoricAnalysisWidget>();
+
+            services.AddTransient<WidgetFactory>();
+
+            services.AddTransient<MainWindow>();
+
             return ServiceProvider = services.BuildServiceProvider(true);
         }
     }
