@@ -2,7 +2,7 @@
   "profiles": {
     "Denali.Runner": {
       "commandName": "Project",
-      "commandLineArgs": "signal analysis resolution=1Min symbols=AAPL start=hg end=gh"
+      "commandLineArgs": "signal analysis resolution=1Min symbols=AAPL start=2020-09-25T09:30:00-04:00 end=2020-09-25T16:00:00-04:00"
     }
   }
 }

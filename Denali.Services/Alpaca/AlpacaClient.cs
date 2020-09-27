@@ -1,4 +1,5 @@
 ﻿using Denali.Models;
+using Denali.Models.Data.Alpaca;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -22,7 +23,7 @@ namespace Denali.Services.Alpaca
             httpClient.DefaultRequestHeaders.Add("APCA-API-SECRET-KEY", _settings.APISecretKey);
         }
 
-        public async Task<string> GetBars(string resolution, int limit, string start, string end, params string[] symbols)
+        public async Task<Dictionary<string, List<Bar>>> GetBars(string resolution, int limit, string start, string end, params string[] symbols)
         {
             var path = BuildBarsUri(resolution, limit, start, end, symbols);
 
@@ -37,7 +38,10 @@ namespace Denali.Services.Alpaca
             }
 
             if (response.IsSuccessStatusCode)
-                return await response.Content.ReadAsStringAsync();
+            {
+                return JsonSerializer.Deserialize<Dictionary<string, List<Bar>>>(await response.Content.ReadAsStringAsync());
+            }
+
 
             throw new Exception();
         }
@@ -55,10 +59,10 @@ namespace Denali.Services.Alpaca
             if (limit != 0)
                 path.Append(BuildParameter("limit", limit.ToString()));
 
-            if (String.IsNullOrWhiteSpace(start))
+            if (!String.IsNullOrWhiteSpace(start))
                 path.Append(BuildParameter("start", start));
 
-            if (String.IsNullOrWhiteSpace(end))
+            if (!String.IsNullOrWhiteSpace(end))
                 path.Append(BuildParameter("end", end));
 
             return path.ToString();

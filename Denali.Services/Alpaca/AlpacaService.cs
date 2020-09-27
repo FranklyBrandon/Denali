@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Denali.Models.Data.Alpaca;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Denali.Services.Alpaca
             _alpacaClient = alpacaClient;
         }
 
-        public async Task<string> GetBarData(string resolution, int limit = 0, string start = "", string end = "", params string[] symbols)
+        public async Task<Dictionary<string, List<Bar>>> GetBarData(string resolution, int limit = 0, string start = "", string end = "", params string[] symbols)
         {
             return await _alpacaClient.GetBars(resolution, limit, start, end, symbols);
         }
