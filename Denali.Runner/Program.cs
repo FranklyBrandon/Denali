@@ -1,4 +1,5 @@
-﻿using Denali.Processors;
+﻿
+using Denali.Runner.ConsoleTools;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -9,12 +10,8 @@ namespace Denali.Runner
         static void Main(string[] args)
         {
             var provider = DenaliConfiguration.Startup();
-
-            using (var scope = provider.CreateScope())
-            {
-                var processor = scope.ServiceProvider.GetRequiredService<HistoricAnalysisPrcessor>();
-                //processor.Process().GetAwaiter().GetResult();
-            }
+            var consoleTool = new DenaliConsoleTool();
+            consoleTool.RunCommand(provider, args);
         }
     }
 }

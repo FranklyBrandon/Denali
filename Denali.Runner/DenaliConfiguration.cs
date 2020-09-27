@@ -1,5 +1,4 @@
-﻿using Denali.Processors;
-using Denali.Services.FinnHub;
+﻿using Denali.Services.Alpaca;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -23,15 +22,14 @@ namespace Denali.Runner
             IServiceCollection services = new ServiceCollection();
 
             #region Http Clients
-            services.AddScoped<FinnHubClientSettings>((ctx) =>
+            services.AddScoped<AlpacaClientSettings>((ctx) =>
             {
-                return configuration.GetSection(FinnHubClientSettings.Key).Get<FinnHubClientSettings>();
+                return configuration.GetSection(AlpacaClientSettings.Key).Get<AlpacaClientSettings>();
             });
-            services.AddHttpClient<FinnHubClient>();
+            services.AddHttpClient<AlpacaClient>();
             #endregion
 
-            services.AddScoped<FinnHubService>();
-            services.AddScoped<HistoricAnalysisPrcessor>();
+            services.AddScoped<AlpacaService>();
             return services.BuildServiceProvider(true);
         }
     }

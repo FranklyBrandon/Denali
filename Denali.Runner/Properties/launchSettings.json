@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Denali.Runner": {
+      "commandName": "Project",
+      "commandLineArgs": "signal analysis symbols=AAPL start=hg end=gh"
+    }
+  }
+}
