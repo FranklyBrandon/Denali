@@ -9,6 +9,7 @@ namespace Denali.Services.Alpaca
         public const string Key = "Alpaca";
         public string APIKey { get; set; }
         public string APISecretKey { get; set; }
+        public string DataUrl { get; set; }
         public string BarsPath { get; set; }
     }
 }

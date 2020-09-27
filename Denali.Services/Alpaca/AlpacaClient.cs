@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Denali.Services.Alpaca
 {
@@ -15,20 +17,35 @@ namespace Denali.Services.Alpaca
         {
             _httpClient = httpClient;
             _settings = settings;
+            _httpClient.BaseAddress = new Uri(settings.DataUrl);
             httpClient.DefaultRequestHeaders.Add("APCA-API-KEY-ID", _settings.APIKey);
             httpClient.DefaultRequestHeaders.Add("APCA-API-SECRET-KEY", _settings.APISecretKey);
         }
 
-        public void GetBars(string resolution, int limit, string start, string end, params string[] symbols)
+        public async Task<string> GetBars(string resolution, int limit, string start, string end, params string[] symbols)
         {
             var path = BuildBarsUri(resolution, limit, start, end, symbols);
-            _httpClient.GetAsync(path);
+
+            HttpResponseMessage response;
+            try
+            {
+                response = await _httpClient.GetAsync(path);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadAsStringAsync();
+
+            throw new Exception();
         }
 
         private string BuildBarsUri(string resolution, int limit, string start, string end, params string[] symbols)
         {
             var path = new StringBuilder(_settings.BarsPath)
-               .Append(resolution);
+               .Append($"{resolution}?");
 
             if (symbols == null || symbols.Length == 0)
                 throw new ArgumentException("At least one symbol must be provided");
@@ -49,7 +66,7 @@ namespace Denali.Services.Alpaca
         private string BuildParameter(string parameter, string value, bool first = false) => $"{(first ? "" : "&")}{parameter}={value}";
         private string BuildCommaParameters(string parameter, params string[] values)
         {
-            return $"{parameter}={String.Concat(values, ',')}";
+            return $"{parameter}={String.Join(',', values)}";
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Denali.Processors;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
@@ -13,13 +14,17 @@ namespace Denali.Runner.ConsoleTools
 
             using (var scope = provider.CreateScope())
             {
+                IProcessor processor = default;
                 switch (command)
                 {
                     case Command.SignalAnalysis:
+                        processor = scope.ServiceProvider.GetService<SignalAnalysisProcessor>();
                         break;
                     default:
                         break;
                 }
+
+                processor.Process(arguments).GetAwaiter().GetResult();
                 //var processor = scope.ServiceProvider.GetRequiredService<HistoricAnalysisPrcessor>();
                 //processor.Process().GetAwaiter().GetResult();
             }
@@ -27,7 +32,11 @@ namespace Denali.Runner.ConsoleTools
 
         private Command GetCommand(Dictionary<string,string> arguments)
         {
-            if (arguments.ContainsKey("signal"))
+            if (arguments.ContainsKey("bars"))
+            {
+
+            }
+            else if (arguments.ContainsKey("signal"))
             {
                 if (arguments.ContainsKey("analysis"))
                 {
