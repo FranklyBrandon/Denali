@@ -23,7 +23,7 @@ namespace Denali.Services.Alpaca
             httpClient.DefaultRequestHeaders.Add("APCA-API-SECRET-KEY", _settings.APISecretKey);
         }
 
-        public async Task<Dictionary<string, List<Bar>>> GetBars(string resolution, int limit, string start, string end, params string[] symbols)
+        public async Task<Dictionary<string, List<Candle>>> GetBars(string resolution, int limit, string start, string end, params string[] symbols)
         {
             var path = BuildBarsUri(resolution, limit, start, end, symbols);
 
@@ -39,7 +39,7 @@ namespace Denali.Services.Alpaca
 
             if (response.IsSuccessStatusCode)
             {
-                return JsonSerializer.Deserialize<Dictionary<string, List<Bar>>>(await response.Content.ReadAsStringAsync());
+                return JsonSerializer.Deserialize<Dictionary<string, List<Candle>>>(await response.Content.ReadAsStringAsync());
             }
 
 

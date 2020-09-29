@@ -1,5 +1,8 @@
 ﻿using Denali.Processors;
+using Denali.Processors.SignalAnalysis;
+using Denali.Processors.SignalAnalysis.Signals;
 using Denali.Services.Alpaca;
+using Denali.Services.Utility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -32,6 +35,8 @@ namespace Denali.Runner
 
             services.AddScoped<AlpacaService>();
             services.AddScoped<SignalAnalysisProcessor>();
+            services.AddScoped<ISignalAlgo, EngulfingAlgo>();
+            services.AddScoped<TimeUtils>();
             return services.BuildServiceProvider(true);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Denali.Processors;
+using Denali.Processors.SignalAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;

@@ -30,5 +30,10 @@ namespace Denali.Services.Utility
             var open = new DateTime(date.Year, date.Month, date.Day, 16, 0, 0);
             return new DateTimeWithZone(open, EasternStandardTime);
         }
+
+        public DateTimeWithZone GetNewYorkTimeFromEpoch(long seconds)
+        {
+            return new DateTimeWithZone(DateTimeOffset.FromUnixTimeSeconds(seconds), EasternStandardTime);
+        }
     }
 }

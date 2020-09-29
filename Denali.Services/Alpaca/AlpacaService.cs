@@ -15,7 +15,7 @@ namespace Denali.Services.Alpaca
             _alpacaClient = alpacaClient;
         }
 
-        public async Task<Dictionary<string, List<Bar>>> GetBarData(string resolution, int limit = 0, string start = "", string end = "", params string[] symbols)
+        public async Task<Dictionary<string, List<Candle>>> GetBarData(string resolution, int limit = 0, string start = "", string end = "", params string[] symbols)
         {
             return await _alpacaClient.GetBars(resolution, limit, start, end, symbols);
         }

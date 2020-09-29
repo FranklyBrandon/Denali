@@ -16,6 +16,12 @@ namespace Denali.Models
             this.timeZone = timeZone;
         }
 
+        public DateTimeWithZone(DateTimeOffset dateTimeOffset, TimeZoneInfo timeZone)
+        {
+            utcDateTime = dateTimeOffset.UtcDateTime;
+            this.timeZone = timeZone;
+        }
+
         public DateTime UniversalTime { get { return utcDateTime; } }
 
         public TimeZoneInfo TimeZone { get { return timeZone; } }

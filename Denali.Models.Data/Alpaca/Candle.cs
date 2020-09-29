@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Denali.Models.Data.Alpaca
 {
-    public class Bar
+    public class Candle
     {
         [JsonPropertyName("o")]
         public double OpenPrice { get; set; }
@@ -19,5 +19,27 @@ namespace Denali.Models.Data.Alpaca
         public int Volume { get; set; }
         [JsonPropertyName("t")]
         public int Timestamp { get; set; }
+
+        public bool IsOpen
+        {
+            get
+            {
+                if (OpenPrice < ClosePrice)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        public bool IsClosed
+        {
+            get
+            {
+                if (ClosePrice < OpenPrice)
+                    return true;
+                else
+                    return false;
+            }
+        }
     }
 }
