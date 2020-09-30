@@ -34,7 +34,7 @@ namespace Denali.Runner
             #endregion
 
             services.AddScoped<AlpacaService>();
-            services.AddScoped<SignalAnalysisProcessor>();
+            services.AddScoped<HistoricSignalAnalysis>();
             services.AddScoped<ISignalAlgo, EngulfingAlgo>();
             services.AddScoped<TimeUtils>();
             return services.BuildServiceProvider(true);

@@ -1,4 +1,5 @@
 ﻿using Denali.Models.Data.Alpaca;
+using Denali.Models.Data.Trading;
 using Denali.Services.Utility;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,11 @@ namespace Denali.Processors.SignalAnalysis.Signals
             _timeUtils = timeUtils;
         }
 
-        public void Process(List<Candle> candles, int index, bool first, bool last)
+        public Signal Process(List<Candle> candles, int index, bool first, bool last)
         {
             //Ignore first tick data of day
             if (first)
-                return;
+                return null;
 
             var previous = candles[index -1];
             var current = candles[index];
@@ -31,7 +32,8 @@ namespace Denali.Processors.SignalAnalysis.Signals
                 {
                     var startTime = _timeUtils.GetNewYorkTimeFromEpoch(previous.Timestamp).LocalTime.ToString("g");
                     var endTime = _timeUtils.GetNewYorkTimeFromEpoch(current.Timestamp).LocalTime.ToString("g");
-                    Console.WriteLine($"Bullish Engulfing start at {startTime} and ending at {endTime}");
+                    //Console.WriteLine($"Bullish Engulfing start at {startTime} and ending at {endTime}");
+                    return new Signal(SignalType.BullishEngulfing, Models.Data.Trading.Action.Long, previous.Timestamp, current.Timestamp, previous.LowPrice, current.ClosePrice * 1.002);
                 }
             }
             //Bearish
@@ -41,9 +43,12 @@ namespace Denali.Processors.SignalAnalysis.Signals
                 {
                     var startTime = _timeUtils.GetNewYorkTimeFromEpoch(previous.Timestamp).LocalTime.ToString("g");
                     var endTime = _timeUtils.GetNewYorkTimeFromEpoch(current.Timestamp).LocalTime.ToString("g");
-                    Console.WriteLine($"Bearish Engulfing start at {startTime} and ending at {endTime}");
+                    //Console.WriteLine($"Bearish Engulfing start at {startTime} and ending at {endTime}");
+                    return null;
                 }
             }
+
+            return null;
         }
 
         private bool IsEngulfing(Candle first, Candle last, bool bullish)
