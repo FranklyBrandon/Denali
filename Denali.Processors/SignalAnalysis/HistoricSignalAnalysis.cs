@@ -2,6 +2,7 @@
 using Denali.Models.Data.Trading;
 using Denali.Processors.SignalAnalysis.Signals;
 using Denali.Services.Alpaca;
+using Denali.Services.Google;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,13 @@ namespace Denali.Processors.SignalAnalysis
         private readonly AlpacaService _alpacaService;
         private readonly ISignalAlgo _signalAlgo;
         private readonly List<Position> _positions;
+        private readonly GoogleSheetsService _sheetsService;
         public HistoricSignalAnalysis(AlpacaService alpacaService, ISignalAlgo signalAlgo)
         {
             _alpacaService = alpacaService;
             _signalAlgo = signalAlgo;
             _positions = new List<Position>();
+            _sheetsService = new GoogleSheetsService();
         }
 
         public async Task Process(Dictionary<string, string> arguments)
@@ -77,6 +80,11 @@ namespace Denali.Processors.SignalAnalysis
                     Console.WriteLine($"Stop loss for a loss of {position.Profit}");
                 }
             }
+        }
+
+        private void WriteResults()
+        {
+
         }
     }
 }
