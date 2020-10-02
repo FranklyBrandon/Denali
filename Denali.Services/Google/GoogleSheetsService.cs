@@ -38,6 +38,15 @@ namespace Denali.Services.Google
 
             return _sheetsService.Spreadsheets.Create(spreadsheet).Execute();
         }
+
+        public void UpdateSheet(string spreadsheetId, List<ValueRange> ranges, string valueInputOption)
+        {
+            var request = new BatchUpdateValuesRequest();
+            request.Data = ranges;
+            request.ValueInputOption = valueInputOption;
+
+            _sheetsService.Spreadsheets.Values.BatchUpdate(request, spreadsheetId).Execute();
+        }
         private UserCredential LoadCredentials()
         {
             UserCredential credential;
