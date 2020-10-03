@@ -48,7 +48,7 @@ namespace Denali.Services.Google
             _sheetsService.Spreadsheets.Values.BatchUpdate(request, spreadsheetId).Execute();
         }
 
-        public void UpdateSheetWithPositiveNegativeFormat(string sheetId, int startColumIndex = 6, int startRowIndex = 0, int endColumnIndex = 7, int endRowIndex = 20)
+        public void UpdateSheetWithPositiveNegativeFormat(string sheetId, int startColumIndex = 6, int startRowIndex = 0, int endColumnIndex = 7, int endRowIndex = 50)
         {
             Request formatRequestNegative = new Request
             {
