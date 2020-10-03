@@ -20,14 +20,14 @@ namespace Denali.Processors.SignalAnalysis
         private readonly AlpacaService _alpacaService;
         private readonly ISignalAlgo _signalAlgo;
         private readonly List<Position> _positions;
-        private readonly GoogleSheetsService _sheetsService;
+        private readonly DenaliSheetsService _sheetsService;
         private readonly TimeUtils _timeUtils;
         public HistoricSignalAnalysis(AlpacaService alpacaService, ISignalAlgo signalAlgo)
         {
             _alpacaService = alpacaService;
             _signalAlgo = signalAlgo;
             _positions = new List<Position>();
-            _sheetsService = new GoogleSheetsService();
+            _sheetsService = new DenaliSheetsService(new GoogleSheetsService());
             _timeUtils = new TimeUtils();
         }
 
@@ -48,7 +48,12 @@ namespace Denali.Processors.SignalAnalysis
                 }
             }
 
-            WriteResults(arguments);
+            _sheetsService.WriteDenaliSheet($"Denali Historic {DateTime.Now.ToString("g")}"
+                                            , arguments["symbols"]
+                                            , arguments["start"]
+                                            , arguments["end"]
+                                            , arguments["resolution"]
+                                            , _positions);
         }
 
         private async Task<Dictionary<string, List<Candle>>> GetBarData(Dictionary<string, string> arguments)
@@ -87,46 +92,6 @@ namespace Denali.Processors.SignalAnalysis
                     Console.WriteLine($"Stop loss for a loss of {position.Profit}");
                 }
             }
-        }
-
-        private void WriteResults(Dictionary<string, string> arguments)
-        {
-            //Create Spreadsheet
-            var sheet = _sheetsService.CreateSheet(DateTime.Now.ToString("g"));
-
-            //Metadata Body
-            var metaDataHeaders = new List<object> { "Symbol", "Start Time", "End Time", "Resolution" };
-            var metaDataValues = new List<object> { arguments["symbols"], arguments["start"], arguments["end"], arguments["resolution"] };
-            var data = new List<IList<object>> { metaDataHeaders, metaDataValues };
-
-            //MetaData Range
-            var metadataRange = new ValueRange();
-            metadataRange.MajorDimension = "ROWS";
-            metadataRange.Values = data;
-            metadataRange.Range = "Sheet1!1:2";
-
-            //Positions Body
-            var positionHeaders = new List<object> { "Signal", "Open Time", "Close Time", "Open Price", "Close Price", "Profit" };
-            var positionValues = _positions.Select(x => new List<object> 
-                { x.Signal.Type.ToString(), _timeUtils.GetNewYorkTimeFromEpoch(x.OpenTimestamp).LocalTime.ToString("g"), _timeUtils.GetNewYorkTimeFromEpoch(x.CloseTimestamp).LocalTime.ToString("g"), x.OpenPrice, x.ClosePrice, x.Profit });
-            var positionsData = new List<IList<object>>();
-            positionsData.Add(positionHeaders);
-            positionsData.AddRange(positionValues);
-
-            //Positions Range
-            var positionsRange = new ValueRange();
-            positionsRange.MajorDimension = "ROWS";
-            positionsRange.Values = positionsData;
-            positionsRange.Range = $"Sheet1!4:{4 + positionValues.Count()}";
-
-            //Batch Request
-            var request = new BatchUpdateValuesRequest();
-            request.Data = new List<ValueRange> { metadataRange, positionsRange };
-            request.ValueInputOption = "RAW";
-
-            _sheetsService.UpdateSheet(sheet.SpreadsheetId, request);
-
-            
         }
     }
 }

@@ -3,6 +3,7 @@ using Denali.Services.Utility;
 using Google.Apis.Sheets.v4.Data;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Text;
@@ -18,18 +19,25 @@ namespace Denali.Services.Google
         public DenaliSheetsService(GoogleSheetsService sheetsService)
         {
             this._sheetsService = sheetsService;
+            this._timeUtils = new TimeUtils();
         }
 
         public Spreadsheet WriteDenaliSheet(string title, string symbols, string startDateTime, string endDateTime, string resolution, List<Position> positions)
         {
             var sheet = _sheetsService.CreateSheet(title);
-            var metadataRange = CreateMetadata(symbols, startDateTime, endDateTime, resolution);
-            var positionHeadersRange = CreatePositionsHeader();
-            var positionsRange = CreatePositions(positions);
 
             _sheetsService.UpdateSheet(sheet.SpreadsheetId
-                , new List<ValueRange> { metadataRange, positionHeadersRange, positionsRange }
+                , new List<ValueRange> { 
+                     CreateMetadata(symbols, startDateTime, endDateTime, resolution)
+                    , CreatePositionsHeader()
+                    , CreatePositions(positions) }
                 , "RAW");
+
+            _sheetsService.UpdateSheet(sheet.SpreadsheetId
+                , new List<ValueRange> { AddTotalSummation() }
+                , "USER_ENTERED");
+
+            _sheetsService.UpdateSheetWithPositiveNegativeFormat(sheet.SpreadsheetId);
 
             return sheet;
         }
@@ -40,6 +48,22 @@ namespace Denali.Services.Google
             _rowIndex++;
             var positionsRange = CreatePositions(positions);
             _sheetsService.UpdateSheet(spreadsheetId, new List<ValueRange> { positionsRange }, "RAW");
+        }
+
+        private ValueRange AddTotalSummation()
+        {
+            //Write to next row and add buffer
+            var totalIndex = _rowIndex + 2;
+
+            var values = new List<object> { "Per Share Total:", $"=SUM(G5:G{_rowIndex})" };
+            var data = new List<IList<object>> { values };
+
+            var totalRange = new ValueRange();
+            totalRange.MajorDimension = "ROWS";
+            totalRange.Values = data;
+            totalRange.Range = $"Sheet1!F{totalIndex}:G{totalIndex}";
+
+            return totalRange;
         }
 
         private ValueRange CreateMetadata(string symbols, string startDateTime, string endDateTime, string resolution)
@@ -57,8 +81,6 @@ namespace Denali.Services.Google
             metadataRange.MajorDimension = "ROWS";
             metadataRange.Values = data;
             metadataRange.Range = $"Sheet1!{_rowIndex}:{++_rowIndex}";
-
-
 
             //Add buffer after metadata to create seperation
             _rowIndex++;
@@ -88,7 +110,7 @@ namespace Denali.Services.Google
             var positionsRange = new ValueRange();
             positionsRange.MajorDimension = "ROWS";
             positionsRange.Values = positionsData;
-            positionsRange.Range = $"Sheet1!{_rowIndex}:{_rowIndex + positionValues.Count()}";
+            positionsRange.Range = $"Sheet1!{_rowIndex}:{_rowIndex += positions.Count()-1}";
 
             return positionsRange;
         }

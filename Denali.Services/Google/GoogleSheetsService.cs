@@ -47,6 +47,104 @@ namespace Denali.Services.Google
 
             _sheetsService.Spreadsheets.Values.BatchUpdate(request, spreadsheetId).Execute();
         }
+
+        public void UpdateSheetWithPositiveNegativeFormat(string sheetId, int startColumIndex = 6, int startRowIndex = 0, int endColumnIndex = 7, int endRowIndex = 20)
+        {
+            Request formatRequestNegative = new Request
+            {
+                AddConditionalFormatRule = new AddConditionalFormatRuleRequest
+                {
+                    Rule = new ConditionalFormatRule
+                    {
+                        Ranges = new List<GridRange>
+                        {
+                            new GridRange
+                            {
+                                SheetId = 0,
+                                StartColumnIndex = startColumIndex,
+                                EndColumnIndex = endColumnIndex,
+                                StartRowIndex = startRowIndex,
+                                EndRowIndex = endRowIndex
+                            }
+                        },
+                        BooleanRule = new BooleanRule
+                        {
+                            Condition = new BooleanCondition
+                            {
+                                Type = "NUMBER_LESS_THAN_EQ",
+                                Values = new List<ConditionValue>() {
+                                  new ConditionValue()
+                                  {
+                                      UserEnteredValue = "0"
+                                  }
+                              }
+                            },
+                            Format = new CellFormat
+                            {
+                                BackgroundColor = new Color()
+                                {
+                                    Red = 1f,
+                                    Green = 0.64f,
+                                    Blue = 0.64f,
+                                    Alpha = 1f
+                                }
+                            }
+                        },
+                    },
+                }
+            };
+
+            Request formatRequestPositive = new Request
+            {
+                AddConditionalFormatRule = new AddConditionalFormatRuleRequest
+                {
+                    Rule = new ConditionalFormatRule
+                    {
+                        Ranges = new List<GridRange>
+                        {
+                            new GridRange
+                            {
+                                SheetId = 0,
+                                StartColumnIndex = startColumIndex,
+                                EndColumnIndex = endColumnIndex,
+                                StartRowIndex = startRowIndex,
+                                EndRowIndex = endRowIndex
+                            }
+                        },
+                        BooleanRule = new BooleanRule
+                        {
+                            Condition = new BooleanCondition
+                            {
+                                Type = "NUMBER_GREATER_THAN_EQ",
+                                Values = new List<ConditionValue>() {
+                                  new ConditionValue()
+                                  {
+                                      UserEnteredValue = "0"
+                                  }
+                              }
+                            },
+                            Format = new CellFormat
+                            {
+                                BackgroundColor = new Color()
+                                {
+                                    Red = 0.64f,
+                                    Green = 1f,
+                                    Blue = 0.64f,
+                                    Alpha = 1f
+                                }
+                            }
+                        },
+                    },
+                }
+            };
+
+            BatchUpdateSpreadsheetRequest updateRequest = new BatchUpdateSpreadsheetRequest
+            {
+                Requests = new List<Request> { formatRequestNegative, formatRequestPositive }
+            };
+
+            _sheetsService.Spreadsheets.BatchUpdate(updateRequest, sheetId).Execute();
+        }
         private UserCredential LoadCredentials()
         {
             UserCredential credential;
