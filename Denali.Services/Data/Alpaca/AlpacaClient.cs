@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Denali.Services.Alpaca
+namespace Denali.Services.Data.Alpaca
 {
     public class AlpacaClient
     {

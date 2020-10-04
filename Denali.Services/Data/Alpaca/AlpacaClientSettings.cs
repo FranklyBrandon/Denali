@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Denali.Services.Alpaca
+namespace Denali.Services.Data.Alpaca
 {
     public class AlpacaClientSettings
     {

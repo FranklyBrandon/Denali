@@ -1,7 +1,7 @@
 ﻿using Denali.Models.Data.Alpaca;
 using Denali.Models.Data.Trading;
 using Denali.Processors.SignalAnalysis.Signals;
-using Denali.Services.Alpaca;
+using Denali.Services.Data.Alpaca;
 using Denali.Services.Google;
 using Denali.Services.Utility;
 using Google.Apis.Sheets.v4;

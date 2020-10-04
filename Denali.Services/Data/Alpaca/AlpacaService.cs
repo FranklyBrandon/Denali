@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Denali.Services.Alpaca
+namespace Denali.Services.Data.Alpaca
 {
-    public class AlpacaService
+    public class AlpacaService : IMarketDataProvider
     {
         private readonly AlpacaClient _alpacaClient;
 

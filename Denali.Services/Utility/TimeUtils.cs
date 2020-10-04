@@ -15,20 +15,21 @@ namespace Denali.Services.Utility
         public DateTime GetNYSEDateTime()
         {
             var timeUtc = DateTime.UtcNow;
-            TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-            return TimeZoneInfo.ConvertTimeFromUtc(timeUtc, easternZone);
+            return TimeZoneInfo.ConvertTimeFromUtc(timeUtc, EasternStandardTime);
         }
 
-        public DateTimeWithZone GetNYSEOpen(DateTime date)
+        public TimeSpan GetNYSEOpen()
         {
-            var open = new DateTime(date.Year, date.Month, date.Day, 9, 30, 0);
-            return new DateTimeWithZone(open, EasternStandardTime);
+            //var open = new DateTime(date.Year, date.Month, date.Day, 9, 30, 0);
+            //return new DateTimeWithZone(open, EasternStandardTime);
+            return new TimeSpan(9, 30, 0);
         }
 
-        public DateTimeWithZone GetNYSEClose(DateTime date)
+        public TimeSpan GetNYSEClose()
         {
-            var open = new DateTime(date.Year, date.Month, date.Day, 16, 0, 0);
-            return new DateTimeWithZone(open, EasternStandardTime);
+            //var open = new DateTime(date.Year, date.Month, date.Day, 16, 0, 0);
+            //return new DateTimeWithZone(open, EasternStandardTime);
+            return new TimeSpan(16, 0, 0);
         }
 
         public DateTimeWithZone GetNewYorkTimeFromEpoch(long seconds)
