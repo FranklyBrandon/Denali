@@ -1,25 +1,25 @@
-﻿using Denali.Models.Data.Trading;
+﻿using Denali.Models.Data.Google;
+using Denali.Models.Data.Trading;
 using Denali.Services.Utility;
+using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.SymbolStore;
 using System.Linq;
-using System.Text;
 
 namespace Denali.Services.Google
 {
     public class DenaliSheetsService
     {
         private readonly GoogleSheetsService _sheetsService;
+        private readonly DenaliSettings _denaliSettings;
         private readonly TimeUtils _timeUtils;
         private int _rowIndex;
 
-        public DenaliSheetsService(GoogleSheetsService sheetsService)
+        public DenaliSheetsService(GoogleSheetsService sheetsService, DenaliSettings denaliSettings, TimeUtils timeUtils)
         {
             this._sheetsService = sheetsService;
-            this._timeUtils = new TimeUtils();
+            this._denaliSettings = denaliSettings;
+            this._timeUtils = timeUtils;
         }
 
         public Spreadsheet WriteDenaliSheet(string title, string symbols, string startDateTime, string endDateTime, string resolution, List<Position> positions)
@@ -27,7 +27,7 @@ namespace Denali.Services.Google
             var sheet = _sheetsService.CreateSheet(title);
 
             _sheetsService.UpdateSheet(sheet.SpreadsheetId
-                , new List<ValueRange> { 
+                , new List<ValueRange> {
                      CreateMetadata(symbols, startDateTime, endDateTime, resolution)
                     , CreatePositionsHeader()
                     , CreatePositions(positions) }
@@ -41,7 +41,6 @@ namespace Denali.Services.Google
 
             return sheet;
         }
-
         public void AppendPositions(string spreadsheetId, List<Position> positions)
         {
             //Write to next row;
@@ -49,7 +48,12 @@ namespace Denali.Services.Google
             var positionsRange = CreatePositions(positions);
             _sheetsService.UpdateSheet(spreadsheetId, new List<ValueRange> { positionsRange }, "RAW");
         }
-
+        public TradingSettings GetTradingSettings()
+        {
+            var fetchRange = "Sheet1!A:A,B2";
+            var values = _sheetsService.GetFromSheet(_denaliSettings.WorkerSheetId, fetchRange);
+            return null;
+        }
         private ValueRange AddTotalSummation()
         {
             //Write to next row and add buffer
@@ -65,7 +69,6 @@ namespace Denali.Services.Google
 
             return totalRange;
         }
-
         private ValueRange CreateMetadata(string symbols, string startDateTime, string endDateTime, string resolution)
         {
             //Metadata starts at the top of sheet
@@ -87,7 +90,24 @@ namespace Denali.Services.Google
 
             return metadataRange;
         }
+        private ValueRange CreatePositionsHeader()
+        {
+            //Write to next row;
+            _rowIndex++;
 
+            //Positions Header
+            var positionHeaders = new List<object> { "Symbol", "Signal", "Open Time", "Close Time", "Open Price", "Close Price", "Profit" };
+            var positionsHeadersData = new List<IList<object>>();
+            positionsHeadersData.Add(positionHeaders);
+
+            //Positions Range
+            var positionsRange = new ValueRange();
+            positionsRange.MajorDimension = "ROWS";
+            positionsRange.Values = positionsHeadersData;
+            positionsRange.Range = $"Sheet1!{_rowIndex}:{_rowIndex}";
+
+            return positionsRange;
+        }
         private ValueRange CreatePositions(List<Position> positions)
         {
             //Write to next row;
@@ -110,28 +130,9 @@ namespace Denali.Services.Google
             var positionsRange = new ValueRange();
             positionsRange.MajorDimension = "ROWS";
             positionsRange.Values = positionsData;
-            positionsRange.Range = $"Sheet1!{_rowIndex}:{_rowIndex += positions.Count()-1}";
+            positionsRange.Range = $"Sheet1!{_rowIndex}:{_rowIndex += positions.Count() - 1}";
 
             return positionsRange;
         }
-
-        private ValueRange CreatePositionsHeader()
-        {
-            //Write to next row;
-            _rowIndex++;
-
-            //Positions Header
-            var positionHeaders = new List<object> { "Symbol", "Signal", "Open Time", "Close Time", "Open Price", "Close Price", "Profit" };
-            var positionsHeadersData = new List<IList<object>>();
-            positionsHeadersData.Add(positionHeaders);
-
-            //Positions Range
-            var positionsRange = new ValueRange();
-            positionsRange.MajorDimension = "ROWS";
-            positionsRange.Values = positionsHeadersData;
-            positionsRange.Range = $"Sheet1!{_rowIndex}:{_rowIndex}";
-
-            return positionsRange;
-        }
-    }
+    } 
 }

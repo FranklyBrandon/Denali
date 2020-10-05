@@ -32,22 +32,27 @@ namespace Denali.Worker
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var today = _timeUtils.GetNYSEDateTime();
-            if (_tradingDays.Contains(today.Date.DayOfWeek)
-                && today.TimeOfDay >= _timeUtils.GetNYSEOpen()
-                && today.TimeOfDay <= _timeUtils.GetNYSEClose())
+            using (var scope = _provider.CreateScope())
             {
-                //Fetch Tickers and should trade from Google drive
-                //Enter process loop
-                _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
+                //Replace this with MarketOpen API call and CRON scheudling
+                var today = _timeUtils.GetNYSEDateTime();
+                if (_tradingDays.Contains(today.Date.DayOfWeek)
+                    && today.TimeOfDay >= _timeUtils.GetNYSEOpen()
+                    && today.TimeOfDay <= _timeUtils.GetNYSEClose())
+                {
+                    //Fetch Tickers and should trade from Google drive
+                    //Enter process loop
+                    _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
+                }
+                else
+                {
+                    _logger.LogInformation("No trading window available. Exiting Denali Worker");
+                }
+                //while (!stoppingToken.IsCancellationRequested)
+                //{
+                //}
             }
-            else
-            {
-                _logger.LogInformation("No trading window available. Exiting Denali Worker");
-            }
-            //while (!stoppingToken.IsCancellationRequested)
-            //{
-            //}
+
         }
     }
 }

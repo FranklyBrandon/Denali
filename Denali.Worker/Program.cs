@@ -15,7 +15,7 @@ namespace Denali.Worker
                 .UseSystemd()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    DenaliConfiguration.ConfigureServices(services);
+                    DenaliConfiguration.ConfigureServices(hostContext.Configuration, services);
                 });
     }
 }
