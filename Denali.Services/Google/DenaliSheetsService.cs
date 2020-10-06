@@ -32,9 +32,12 @@ namespace Denali.Services.Google
                     , CreatePositions(positions) }
                 , "RAW");
 
-            _sheetsService.UpdateSheet(sheet.SpreadsheetId
-                , new List<ValueRange> { AddTotalSummation() }
-                , "USER_ENTERED");
+            if (positions != null && positions.Any())
+            {
+                _sheetsService.UpdateSheet(sheet.SpreadsheetId
+                    , new List<ValueRange> { AddTotalSummation(4 + positions.Count()) }
+                    , "USER_ENTERED");
+            }
 
             _sheetsService.UpdateSheetWithPositiveNegativeFormat(sheet.SpreadsheetId);
 
@@ -42,10 +45,13 @@ namespace Denali.Services.Google
         }
         public void AppendPositions(string spreadsheetId, List<Position> positions)
         {
-            //Write to next row;
-            _rowIndex++;
             var positionsRange = CreatePositions(positions);
             _sheetsService.UpdateSheet(spreadsheetId, new List<ValueRange> { positionsRange }, "RAW");
+
+            _sheetsService.UpdateSheet(spreadsheetId
+                , new List<ValueRange> { AddTotalSummation(4 + positions.Count()) }
+                , "USER_ENTERED");
+
         }
         public IEnumerable<StockSymbol> GetTradingSettings()
         {
@@ -54,12 +60,12 @@ namespace Denali.Services.Google
             values.RemoveAt(0);
             return values.Select(x => new StockSymbol(x[0], x[1]));
         }
-        private ValueRange AddTotalSummation()
+        private ValueRange AddTotalSummation(int index)
         {
             //Write to next row and add buffer
-            var totalIndex = _rowIndex + 2;
+            var totalIndex = index + 1;
 
-            var values = new List<object> { "Per Share Total:", $"=SUM(G5:G{_rowIndex})" };
+            var values = new List<object> { "Per Share Total:", $"=SUM(G5:G{index})" };
             var data = new List<IList<object>> { values };
 
             var totalRange = new ValueRange();
@@ -85,15 +91,11 @@ namespace Denali.Services.Google
             metadataRange.Values = data;
             metadataRange.Range = $"Sheet1!{_rowIndex}:{++_rowIndex}";
 
-            //Add buffer after metadata to create seperation
-            _rowIndex++;
-
             return metadataRange;
         }
         private ValueRange CreatePositionsHeader()
         {
-            //Write to next row;
-            _rowIndex++;
+            _rowIndex = 4;
 
             //Positions Header
             var positionHeaders = new List<object> { "Symbol", "Signal", "Open Time", "Close Time", "Open Price", "Close Price", "Profit" };
@@ -114,7 +116,7 @@ namespace Denali.Services.Google
                 return default;
 
             //Write to next row;
-            _rowIndex++;
+            var index = 5;
 
             //Positions Body
             var positionValues = positions.Select(x => new List<object>
@@ -133,7 +135,7 @@ namespace Denali.Services.Google
             var positionsRange = new ValueRange();
             positionsRange.MajorDimension = "ROWS";
             positionsRange.Values = positionsData;
-            positionsRange.Range = $"Sheet1!{_rowIndex}:{_rowIndex += positions.Count() - 1}";
+            positionsRange.Range = $"Sheet1!{index}:{index + positions.Count() - 1}";
 
             return positionsRange;
         }
