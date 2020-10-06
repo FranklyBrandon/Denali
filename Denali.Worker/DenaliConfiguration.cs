@@ -1,51 +1,87 @@
 ﻿using Denali.Models.Data.Trading;
+using Denali.Processors;
 using Denali.Services;
 using Denali.Services.Data.Alpaca;
 using Denali.Services.Google;
 using Denali.Services.Utility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Denali.Worker
 {
-    public static class DenaliConfiguration
+    public class DenaliConfiguration
     {
-        public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
-        {
-            services.AddHostedService<DenaliWorker>();
-            services.AddSingleton<TimeUtils>();
+        private readonly IConfiguration _configuration;
+        private readonly IServiceCollection _services;
 
-            var provider = services.BuildServiceProvider();
-            services.AddSingleton<ServiceProvider>((ctx) =>
+        public DenaliConfiguration(IConfiguration configuration, IServiceCollection services)
+        {
+            this._configuration = configuration;
+            this._services = services;
+        }
+        public void ConfigureServices()
+        {
+            _services.AddHostedService<DenaliWorker>();
+
+            AddLogging();
+            AddProcessors();
+            AddAppSettingsConfigs();
+            AddHttpClients();
+            AddUserServices();
+
+            var provider = _services.BuildServiceProvider();
+            _services.AddSingleton<ServiceProvider>((ctx) =>
             {
                 return provider;
             });
-
-            AddAppSettingsConfigs(configuration, services);
-            AddHttpClients(configuration, services);
-            AddUserServices(configuration, services);
         }
 
-        private static void AddAppSettingsConfigs(IConfiguration configuration, IServiceCollection services)
+        private void AddProcessors()
         {
-            services.AddScoped<DenaliSettings>((ctx) =>
+            switch (_configuration["status"])
             {
-                return configuration.GetSection(DenaliSettings.Key).Get<DenaliSettings>();
+                case "live":
+                    _services.AddScoped<IProcessor, LiveTradingProcessor>();
+                    break;
+                case "historic":
+                    _services.AddScoped<IProcessor, HistoricTradingProcessor>();
+                    break;
+                default:
+                    throw new ArgumentException("No processor status provided");
+
+            }
+        }
+
+        private void AddLogging()
+        {
+            _services.AddLogging(loggingBuilder => loggingBuilder
+                .AddConsole()
+                .AddDebug()
+                .SetMinimumLevel(LogLevel.Debug));
+        }
+
+        private void AddAppSettingsConfigs()
+        {
+            _services.AddScoped<DenaliSettings>((ctx) =>
+            {
+                return _configuration.GetSection(DenaliSettings.Key).Get<DenaliSettings>();
             });
         }
 
-        private static void AddHttpClients(IConfiguration configuration, IServiceCollection services)
+        private void AddHttpClients()
         {
-            services.AddHttpClient<AlpacaClient>();
+            _services.AddHttpClient<AlpacaClient>();
         }
 
-        private static void AddUserServices(IConfiguration configuration, IServiceCollection services)
+        private void AddUserServices()
         {
-            services.AddScoped<DenaliSheetsService>();
-            services.AddScoped<GoogleSheetsService>();
+            _services.AddScoped<DenaliSheetsService>();
+            _services.AddScoped<GoogleSheetsService>();
+            _services.AddSingleton<TimeUtils>();
         }
     }
 }

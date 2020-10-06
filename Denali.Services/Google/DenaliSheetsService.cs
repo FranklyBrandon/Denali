@@ -1,5 +1,4 @@
-﻿using Denali.Models.Data.Google;
-using Denali.Models.Data.Trading;
+﻿using Denali.Models.Data.Trading;
 using Denali.Services.Utility;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
@@ -48,11 +47,12 @@ namespace Denali.Services.Google
             var positionsRange = CreatePositions(positions);
             _sheetsService.UpdateSheet(spreadsheetId, new List<ValueRange> { positionsRange }, "RAW");
         }
-        public TradingSettings GetTradingSettings()
+        public IEnumerable<StockSymbol> GetTradingSettings()
         {
-            var fetchRange = "Sheet1!A:A,B2";
+            var fetchRange = "Sheet1!A:B";
             var values = _sheetsService.GetFromSheet(_denaliSettings.WorkerSheetId, fetchRange);
-            return null;
+            values.RemoveAt(0);
+            return values.Select(x => new StockSymbol(x[0], x[1]));
         }
         private ValueRange AddTotalSummation()
         {
@@ -110,6 +110,9 @@ namespace Denali.Services.Google
         }
         private ValueRange CreatePositions(List<Position> positions)
         {
+            if (positions == null || !positions.Any())
+                return default;
+
             //Write to next row;
             _rowIndex++;
 

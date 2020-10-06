@@ -19,13 +19,13 @@ namespace Denali.Runner.ConsoleTools
                 switch (command)
                 {
                     case Command.SignalAnalysis:
-                        processor = scope.ServiceProvider.GetService<HistoricSignalAnalysis>();
+                        //processor = scope.ServiceProvider.GetService<HistoricSignalAnalysis>();
                         break;
                     default:
                         break;
                 }
 
-                processor.Process(arguments).GetAwaiter().GetResult();
+                //processor.Process(arguments).GetAwaiter().GetResult();
                 //var processor = scope.ServiceProvider.GetRequiredService<HistoricAnalysisPrcessor>();
                 //processor.Process().GetAwaiter().GetResult();
             }

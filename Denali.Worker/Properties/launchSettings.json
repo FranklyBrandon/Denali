@@ -1,7 +1,8 @@
-﻿{
+{
   "profiles": {
     "Denali.Worker": {
       "commandName": "Project",
+      "commandLineArgs": "--env Development --status live",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }

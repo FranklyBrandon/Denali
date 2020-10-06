@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Denali.Processors;
 using Denali.Services.Utility;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,25 +36,32 @@ namespace Denali.Worker
         {
             using (var scope = _provider.CreateScope())
             {
-                //Replace this with MarketOpen API call and CRON scheudling
-                var today = _timeUtils.GetNYSEDateTime();
-                if (_tradingDays.Contains(today.Date.DayOfWeek)
-                    && today.TimeOfDay >= _timeUtils.GetNYSEOpen()
-                    && today.TimeOfDay <= _timeUtils.GetNYSEClose())
+                if (TradingToday())
                 {
-                    //Fetch Tickers and should trade from Google drive
-                    //Enter process loop
                     _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
+                    IProcessor processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
+                    await processor.Process(stoppingToken);
                 }
                 else
                 {
                     _logger.LogInformation("No trading window available. Exiting Denali Worker");
+                    return;
                 }
                 //while (!stoppingToken.IsCancellationRequested)
                 //{
                 //}
             }
 
+        }
+
+        //Replace this with MarketOpen API call and CRON scheudling once we have Polygon access
+        private bool TradingToday()
+        {
+            return true;
+            var today = _timeUtils.GetNYSEDateTime();
+            return _tradingDays.Contains(today.Date.DayOfWeek)
+                    && today.TimeOfDay >= _timeUtils.GetNYSEOpen()
+                    && today.TimeOfDay <= _timeUtils.GetNYSEClose();
         }
     }
 }

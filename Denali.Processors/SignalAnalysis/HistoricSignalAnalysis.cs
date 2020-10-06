@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Denali.Processors.SignalAnalysis
 {
-    public class HistoricSignalAnalysis : IProcessor
+    public class HistoricSignalAnalysis
     {
         private readonly AlpacaService _alpacaService;
         private readonly ISignalAlgo _signalAlgo;
@@ -27,7 +27,7 @@ namespace Denali.Processors.SignalAnalysis
             _alpacaService = alpacaService;
             _signalAlgo = signalAlgo;
             _positions = new List<Position>();
-            _sheetsService = new DenaliSheetsService(new GoogleSheetsService());
+            //_sheetsService = new DenaliSheetsService(new GoogleSheetsService());
             _timeUtils = new TimeUtils();
         }
 
