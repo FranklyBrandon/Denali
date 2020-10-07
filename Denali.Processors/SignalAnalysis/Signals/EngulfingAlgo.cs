@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Denali.Processors.SignalAnalysis.Signals
 {
-    public class EngulfingAlgo : ISignalAlgo
+    public class EngulfingAlgo
     {
         private readonly TimeUtils _timeUtils;
 
@@ -33,7 +33,7 @@ namespace Denali.Processors.SignalAnalysis.Signals
                     var startTime = _timeUtils.GetNewYorkTimeFromEpoch(previous.Timestamp).LocalTime.ToString("g");
                     var endTime = _timeUtils.GetNewYorkTimeFromEpoch(current.Timestamp).LocalTime.ToString("g");
                     Console.WriteLine($"Bullish Engulfing start at {startTime} and ending at {endTime}");
-                    return new Signal(SignalType.BullishEngulfing, Models.Data.Trading.Action.Long, previous.Timestamp, current.Timestamp, previous.LowPrice, current.ClosePrice + .20);
+                    //return new Signal(SignalType.BullishEngulfing, Models.Data.Trading.MarketAction.Long, previous.Timestamp, current.Timestamp, previous.LowPrice, current.ClosePrice + .20);
                 }
             }
             //Bearish

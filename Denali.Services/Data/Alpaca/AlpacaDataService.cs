@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Denali.Services.Data.Alpaca
 {
-    public class AlpacaService : IMarketDataProvider
+    public class AlpacaDataService : IMarketDataProvider
     {
         private readonly AlpacaClient _alpacaClient;
 
-        public AlpacaService(AlpacaClient alpacaClient)
+        public AlpacaDataService(AlpacaClient alpacaClient)
         {
             _alpacaClient = alpacaClient;
         }

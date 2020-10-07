@@ -54,6 +54,11 @@ namespace Denali.Worker
 
         }
 
+        public override async Task StopAsync(CancellationToken cancellationToken)
+        {
+
+        }
+
         //Replace this with MarketOpen API call and CRON scheudling once we have Polygon access
         private bool TradingToday()
         {

@@ -17,15 +17,15 @@ namespace Denali.Processors.SignalAnalysis
 {
     public class HistoricSignalAnalysis
     {
-        private readonly AlpacaService _alpacaService;
-        private readonly ISignalAlgo _signalAlgo;
+        private readonly AlpacaDataService _alpacaService;
+        //private readonly ISignalAlgo _signalAlgo;
         private readonly List<Position> _positions;
         private readonly DenaliSheetsService _sheetsService;
         private readonly TimeUtils _timeUtils;
-        public HistoricSignalAnalysis(AlpacaService alpacaService, ISignalAlgo signalAlgo)
+        public HistoricSignalAnalysis(AlpacaDataService alpacaService) //ISignalAlgo signalAlgo)
         {
             _alpacaService = alpacaService;
-            _signalAlgo = signalAlgo;
+            //_signalAlgo = signalAlgo;
             _positions = new List<Position>();
             //_sheetsService = new DenaliSheetsService(new GoogleSheetsService());
             _timeUtils = new TimeUtils();
@@ -42,9 +42,9 @@ namespace Denali.Processors.SignalAnalysis
                 {
                     var currentCandle = symbol.Value[i];
                     ManagePositions(currentCandle);
-                    var signal = _signalAlgo.Process(symbol.Value, i, (i == 0), (i == max));
-                    if (signal != null)
-                        ExecuteSignal(symbol.Key, signal, currentCandle);
+                    //var signal = _signalAlgo.Process(symbol.Value, i, (i == 0), (i == max));
+                    //if (signal != null)
+                    //    ExecuteSignal(symbol.Key, signal, currentCandle);
                 }
             }
 
@@ -67,11 +67,11 @@ namespace Denali.Processors.SignalAnalysis
 
         private void ExecuteSignal(string symbol, Signal signal, Candle candle)
         {
-            if (signal.Action == Models.Data.Trading.Action.Long)
-            {
-                Console.WriteLine($"{signal.Type.ToString()} Pattern: Buy at {candle.ClosePrice}");
-                _positions.Add(new Position(symbol, candle.ClosePrice, signal));
-            }
+            //if (signal.Action == Models.Data.Trading.MarketAction.Long)
+            //{
+            //    Console.WriteLine($"{signal.Type.ToString()} Pattern: Buy at {candle.ClosePrice}");
+            //    _positions.Add(new Position(symbol, candle.ClosePrice, signal));
+            //}
         }
 
         private void ManagePositions(Candle currentCandle)
@@ -81,16 +81,16 @@ namespace Denali.Processors.SignalAnalysis
                 if (!position.Open)
                     continue;
 
-                if (currentCandle.ClosePrice >= position.Signal.Exit)
-                {
-                    position.Close(currentCandle.Timestamp, currentCandle.ClosePrice);
-                    Console.WriteLine($"Cash out for a profit of {position.Profit}");
-                }
-                else if (currentCandle.ClosePrice <= position.Signal.StopLoss)
-                {
-                    position.Close(currentCandle.Timestamp, currentCandle.ClosePrice);
-                    Console.WriteLine($"Stop loss for a loss of {position.Profit}");
-                }
+                //if (currentCandle.ClosePrice >= position.Signal.Exit)
+                //{
+                //    position.Close(currentCandle.Timestamp, currentCandle.ClosePrice);
+                //    Console.WriteLine($"Cash out for a profit of {position.Profit}");
+                //}
+                //else if (currentCandle.ClosePrice <= position.Signal.StopLoss)
+                //{
+                //    position.Close(currentCandle.Timestamp, currentCandle.ClosePrice);
+                //    Console.WriteLine($"Stop loss for a loss of {position.Profit}");
+                //}
             }
         }
     }

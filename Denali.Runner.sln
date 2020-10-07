@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Processors", "Denali
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.App", "Denali.App\Denali.App.csproj", "{37CD7834-8D7F-427B-AE0D-F7B254FA395C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.Worker", "Denali.Worker\Denali.Worker.csproj", "{454C0793-FA38-48B6-BB79-222CEB36D5B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Worker", "Denali.Worker\Denali.Worker.csproj", "{454C0793-FA38-48B6-BB79-222CEB36D5B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.Algorithms", "Denali.Algorithms\Denali.Algorithms.csproj", "{8F477A62-9E1B-40C0-9C11-D748B09F5FF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{454C0793-FA38-48B6-BB79-222CEB36D5B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{454C0793-FA38-48B6-BB79-222CEB36D5B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{454C0793-FA38-48B6-BB79-222CEB36D5B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F477A62-9E1B-40C0-9C11-D748B09F5FF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F477A62-9E1B-40C0-9C11-D748B09F5FF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F477A62-9E1B-40C0-9C11-D748B09F5FF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F477A62-9E1B-40C0-9C11-D748B09F5FF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

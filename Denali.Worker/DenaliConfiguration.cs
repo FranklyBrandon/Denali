@@ -1,6 +1,8 @@
-﻿using Denali.Models.Data.Trading;
+﻿using Denali.Algorithms.Bar;
+using Denali.Models.Data.Trading;
 using Denali.Processors;
 using Denali.Services;
+using Denali.Services.Data;
 using Denali.Services.Data.Alpaca;
 using Denali.Services.Google;
 using Denali.Services.Utility;
@@ -70,6 +72,10 @@ namespace Denali.Worker
             {
                 return _configuration.GetSection(DenaliSettings.Key).Get<DenaliSettings>();
             });
+            _services.AddScoped<AlpacaClientSettings>((ctx) =>
+            {
+                return _configuration.GetSection(AlpacaClientSettings.Key).Get<AlpacaClientSettings>();
+            });
         }
 
         private void AddHttpClients()
@@ -81,7 +87,9 @@ namespace Denali.Worker
         {
             _services.AddScoped<DenaliSheetsService>();
             _services.AddScoped<GoogleSheetsService>();
+            _services.AddScoped<IMarketDataProvider, AlpacaDataService>();
             _services.AddSingleton<TimeUtils>();
+            _services.AddScoped<BarAlgorithmAnalysis>();
         }
     }
 }

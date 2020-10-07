@@ -8,20 +8,21 @@ namespace Denali.Models.Data.Trading
 {
     public class Signal
     {
-        public SignalType Type { get; }
-        public long StartTime { get; }
-        public long EndTime { get; }
-        public double StopLoss { get; }
-        public double Exit { get; }
-        public Action Action { get; }
+        public SignalType Type { get; set; }
+        public long StartTime { get; set; }
+        public long EndTime { get; set; }
+        public PositionType PositionType { get; set; }
 
-        public Signal(SignalType type, Action action, long startTime, long endTime, double stopLoss, double exit)
+        public Signal()
+        {
+
+        }
+        public Signal(SignalType type, PositionType positionType, long startTime, long endTime)
         {
             this.Type = type;
             this.StartTime = startTime;
             this.EndTime = endTime;
-            this.StopLoss = stopLoss;
-            this.Exit = exit;
+            this.PositionType = PositionType;
         }
 
     }
@@ -31,7 +32,13 @@ namespace Denali.Models.Data.Trading
         BullishEngulfing
     }
 
-    public enum Action
+    public enum MarketAction
+    {
+        Buy,
+        Sell
+    }
+
+    public enum PositionType
     {
         Long,
         Short

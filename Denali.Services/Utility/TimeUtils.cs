@@ -18,6 +18,23 @@ namespace Denali.Services.Utility
             return TimeZoneInfo.ConvertTimeFromUtc(timeUtc, EasternStandardTime);
         }
 
+        public string GetNYSEOpenISO()
+        {
+            var nyTime = GetNYSEDateTime().Date;
+            var dateTime = nyTime.Add(GetNYSEOpen());
+            //New York is 4 hours behind GMT
+            return dateTime.ToString("yyyy-MM-ddTHH\\:mm\\:ss") + "-04:00";
+
+        }
+
+        public string GetNYSECloseISO()
+        {
+            var nyTime = GetNYSEDateTime().Date;
+            var dateTime = nyTime.Add(GetNYSEClose());
+            //New York is 4 hours behind GMT
+            return dateTime.ToString("yyyy-MM-ddTHH\\:mm\\:ss") + "-04:00";
+        }
+
         public TimeSpan GetNYSEOpen()
         {
             //var open = new DateTime(date.Year, date.Month, date.Day, 9, 30, 0);

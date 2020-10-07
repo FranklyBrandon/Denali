@@ -33,9 +33,9 @@ namespace Denali.Runner
             services.AddHttpClient<AlpacaClient>();
             #endregion
 
-            services.AddScoped<AlpacaService>();
+            services.AddScoped<AlpacaDataService>();
             services.AddScoped<HistoricSignalAnalysis>();
-            services.AddScoped<ISignalAlgo, EngulfingAlgo>();
+   
             services.AddScoped<TimeUtils>();
             return services.BuildServiceProvider(true);
         }
