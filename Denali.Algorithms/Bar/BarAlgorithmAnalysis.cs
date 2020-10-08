@@ -15,9 +15,21 @@ namespace Denali.Algorithms.Bar
             this._algorithms = algorithms;
         }
 
-        public StockAction Analyze(KeyValuePair<string, List<Candle>> barData)
+        public List<StockAction> Analyze(Dictionary<string, List<Candle>> barData)
         {
-            return default;
+            var actions = new List<StockAction>();
+            foreach (var symbolData in barData)
+            {
+                foreach (var algorithm in _algorithms)
+                {
+                    var action = algorithm.Analyze(symbolData);
+                    if (action != null)
+                        actions.Add(action);
+                }
+            }
+
+
+            return actions;
         }
     }
 }

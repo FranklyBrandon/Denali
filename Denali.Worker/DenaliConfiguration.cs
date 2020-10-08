@@ -80,7 +80,7 @@ namespace Denali.Worker
 
         private void AddHttpClients()
         {
-            _services.AddHttpClient<AlpacaClient>();
+            _services.AddHttpClient<AlpacaDataClient>();
         }
 
         private void AddUserServices()

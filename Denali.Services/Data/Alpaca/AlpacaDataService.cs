@@ -8,9 +8,9 @@ namespace Denali.Services.Data.Alpaca
 {
     public class AlpacaDataService : IMarketDataProvider
     {
-        private readonly AlpacaClient _alpacaClient;
+        private readonly AlpacaDataClient _alpacaClient;
 
-        public AlpacaDataService(AlpacaClient alpacaClient)
+        public AlpacaDataService(AlpacaDataClient alpacaClient)
         {
             _alpacaClient = alpacaClient;
         }

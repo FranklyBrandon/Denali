@@ -10,6 +10,7 @@ using Denali.Models.Data.Trading;
 using Denali.Services.Data;
 using Microsoft.Extensions.Logging;
 using Denali.Algorithms.Bar;
+using Denali.Services.Market;
 
 namespace Denali.Processors
 {
@@ -21,6 +22,7 @@ namespace Denali.Processors
         private readonly IMarketDataProvider _dataProvider;
         private readonly ILogger<LiveTradingProcessor> _logger;
         private readonly BarAlgorithmAnalysis _barAlgorithmAnalysis;
+        private readonly IMarketService _marketService;
         private string _spreadSheetId;
         public LiveTradingProcessor(DenaliSheetsService sheetsService
             , IConfiguration configuration
@@ -83,9 +85,8 @@ namespace Denali.Processors
             var end = _timeUtils.GetNYSECloseISO();
             var bars = await _dataProvider.GetBarData(resolution: "1Min", start: start, end: end, symbols: symbols.ToArray());
 
-            foreach (var symbol in bars)
-            {
-                var actions = _barAlgorithmAnalysis.Analyze(symbol);
+            var entryActions = _barAlgorithmAnalysis.Analyze(bars);
+            var exitActions = _marketService.ManagePositions(bars);
                 //Tick for management of positions
                 //Call market dispatch
             }

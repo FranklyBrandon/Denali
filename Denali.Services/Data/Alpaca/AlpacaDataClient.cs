@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Denali.Services.Data.Alpaca
 {
-    public class AlpacaClient
+    public class AlpacaDataClient
     {
         private readonly HttpClient _httpClient;
         private readonly AlpacaClientSettings _settings;
 
-        public AlpacaClient(HttpClient httpClient, AlpacaClientSettings settings)
+        public AlpacaDataClient(HttpClient httpClient, AlpacaClientSettings settings)
         {
             _httpClient = httpClient;
             _settings = settings;

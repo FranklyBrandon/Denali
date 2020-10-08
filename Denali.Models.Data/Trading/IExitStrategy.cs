@@ -6,6 +6,12 @@ namespace Denali.Models.Data.Trading
 {
     public interface IExitStrategy
     {
+        public ExitStrategyType ExitStrategyType { get; set; }
+    }
 
+    public enum ExitStrategyType
+    {
+        Static,
+        Dynamic
     }
 }

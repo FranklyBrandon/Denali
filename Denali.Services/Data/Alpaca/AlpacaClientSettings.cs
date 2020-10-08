@@ -10,6 +10,7 @@ namespace Denali.Services.Data.Alpaca
         public string APIKey { get; set; }
         public string APISecretKey { get; set; }
         public string DataUrl { get; set; }
+        public string MarketUrl { get; set; }
         public string BarsPath { get; set; }
     }
 }
