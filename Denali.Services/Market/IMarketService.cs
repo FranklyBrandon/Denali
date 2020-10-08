@@ -10,6 +10,6 @@ namespace Denali.Services.Market
     public interface IMarketService
     {
         public List<Position> Positions { get; set; }
-        public List<StockAction> ManagePositions(Dictionary<string, List<Candle>> barData);
+        public List<StockAction> ManagePositions(Dictionary<string, List<Candle>> barData, List<StockAction> entryPositions);
     }
 }

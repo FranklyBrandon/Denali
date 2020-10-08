@@ -86,10 +86,8 @@ namespace Denali.Processors
             var bars = await _dataProvider.GetBarData(resolution: "1Min", start: start, end: end, symbols: symbols.ToArray());
 
             var entryActions = _barAlgorithmAnalysis.Analyze(bars);
-            var exitActions = _marketService.ManagePositions(bars);
-                //Tick for management of positions
-                //Call market dispatch
-            }
+            var resultActions = _marketService.ManagePositions(bars, entryActions);
+            //Update sheets with result actions       
         }
     }
 }
