@@ -19,8 +19,8 @@ namespace Denali.Services.Data.Alpaca
             _httpClient = httpClient;
             _settings = settings;
             _httpClient.BaseAddress = new Uri(settings.DataUrl);
-            httpClient.DefaultRequestHeaders.Add("APCA-API-KEY-ID", _settings.APIKey);
-            httpClient.DefaultRequestHeaders.Add("APCA-API-SECRET-KEY", _settings.APISecretKey);
+            _httpClient.DefaultRequestHeaders.Add(_settings.APIKey, _settings.APIKey);
+            _httpClient.DefaultRequestHeaders.Add(_settings.APISecretKey, _settings.APISecretKey);
         }
 
         public async Task<Dictionary<string, List<Candle>>> GetBars(string resolution, int limit, string start, string end, params string[] symbols)

@@ -32,7 +32,7 @@ namespace Denali.Models.Data.Trading
         BullishEngulfing
     }
 
-    public enum MarketAction
+    public enum MarketSide
     {
         Buy,
         Sell

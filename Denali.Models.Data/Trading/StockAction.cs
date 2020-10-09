@@ -8,7 +8,7 @@ namespace Denali.Models.Data.Trading
     {
         public string StockSymbol { get; set; }
         public Signal Signal { get; set; }
-        public MarketAction Action { get; set; }
+        public MarketSide Side { get; set; }
         public IExitStrategy ExitStrategy { get; set; }
     }
 }

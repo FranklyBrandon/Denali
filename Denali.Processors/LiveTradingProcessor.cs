@@ -55,7 +55,7 @@ namespace Denali.Processors
                 , "--"
                 , null).SpreadsheetId;
 
-            ProcessTick(symbols);
+            await ProcessTick(symbols);
 
             var timer = new System.Timers.Timer();
             timer.Interval = 15000;
@@ -78,10 +78,11 @@ namespace Denali.Processors
 
         }
 
-        private async void ProcessTick(IEnumerable<string> symbols)
+        private async Task ProcessTick(IEnumerable<string> symbols)
         {
             _logger.LogInformation("Processor is ticking...");
             var start = _timeUtils.GetNYSEOpenISO();
+
             var end = _timeUtils.GetNYSECloseISO();
             var bars = await _dataProvider.GetBarData(resolution: "1Min", start: start, end: end, symbols: symbols.ToArray());
 

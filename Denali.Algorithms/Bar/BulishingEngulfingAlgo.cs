@@ -26,7 +26,7 @@ namespace Denali.Algorithms.Bar
                     return new StockAction
                     {
                         StockSymbol = barData.Key,
-                        Action = MarketAction.Buy,
+                        Side = MarketSide.Buy,
                         Signal = new Signal
                         {
                             Type = SignalType.BullishEngulfing,
