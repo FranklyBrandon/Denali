@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
-namespace Denali.Models.Data.Alpaca
+namespace Denali.Models.Alpaca
 {
     public class OrderRequest
     {

@@ -14,5 +14,6 @@ namespace Denali.Services.Data.Alpaca
         public string DataUrl { get; set; }
         public string MarketUrl { get; set; }
         public string BarsPath { get; set; }
+        public string OrdersPath { get; set; }
     }
 }

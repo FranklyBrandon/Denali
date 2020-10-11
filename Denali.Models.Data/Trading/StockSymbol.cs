@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Denali.Models.Data.Trading
+namespace Denali.Models.Trading
 {
     public class StockSymbol
     {

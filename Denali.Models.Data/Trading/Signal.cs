@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Denali.Models.Data.Trading
+namespace Denali.Models.Trading
 {
     public class Signal
     {

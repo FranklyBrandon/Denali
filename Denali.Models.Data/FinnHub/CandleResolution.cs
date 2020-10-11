@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Denali.Models.Data.FinnHub
+namespace Denali.Models.FinnHub
 {
     public enum CandleResolution
     {

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Runner", "Denali.Runner\Denali.Runner.csproj", "{142DFCCD-F3A4-422C-92F0-4913F09B671F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Models.Data", "Denali.Models.Data\Denali.Models.Data.csproj", "{0BC29CAB-CEE7-4A12-94EA-81411F28B13C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Models", "Denali.Models.Data\Denali.Models.csproj", "{0BC29CAB-CEE7-4A12-94EA-81411F28B13C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Services", "Denali.Services\Denali.Services.csproj", "{1DE59245-0708-471D-9D18-3A8DE1CA9962}"
 EndProject
@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.App", "Denali.App\De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Worker", "Denali.Worker\Denali.Worker.csproj", "{454C0793-FA38-48B6-BB79-222CEB36D5B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.Algorithms", "Denali.Algorithms\Denali.Algorithms.csproj", "{8F477A62-9E1B-40C0-9C11-D748B09F5FF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Algorithms", "Denali.Algorithms\Denali.Algorithms.csproj", "{8F477A62-9E1B-40C0-9C11-D748B09F5FF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

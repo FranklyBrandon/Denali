@@ -1,8 +1,10 @@
-﻿using Denali.Services.Data.Alpaca;
+﻿using Denali.Models.Data.Alpaca;
+using Denali.Services.Data.Alpaca;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 
 namespace Denali.Services.Market.Alpaca
 {
@@ -20,9 +22,10 @@ namespace Denali.Services.Market.Alpaca
             _httpClient.DefaultRequestHeaders.Add(_settings.APISecretKey, _settings.APISecretKey);
         }
 
-        public void PostOrder()
+        public void PostOrder(OrderRequest orderRequest)
         {
-
+            var content = new StringContent(JsonSerializer.Serialize(orderRequest));
+            _httpClient.PostAsync(_settings.MarketUrl, content);
         }
 
     }
