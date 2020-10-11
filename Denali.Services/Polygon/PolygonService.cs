@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.WebSockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Denali.Services.Polygon
 {
@@ -26,14 +28,26 @@ namespace Denali.Services.Polygon
             await _webSocket.ConnectAsync(new Uri(_settings.WebsocketUrl), token);
         }
 
-        public async void AuthenticateSocket()
+        public async void AuthenticateSocket(CancellationToken token)
         {
-            var request = new WebsocketRequest { Action = Models.Polygon.Action.Authenticate, Params = "API key" };
+            var request = new WebsocketRequest 
+            { 
+                Action = Models.Polygon.Action.Authenticate, 
+                Params = "API key" 
+            };
+
+            await Send(token, JsonSerializer.Serialize(request));
         }
 
-        public async void SubscribeToChannel(Channel channel)
+        public async void SubscribeToChannel(Channel channel, CancellationToken token)
         {
-            
+            var request = new WebsocketRequest
+            {
+                Action = Models.Polygon.Action.Subscribe,
+                Params = channel.ToString()
+            };
+
+            await Send(token, JsonSerializer.Serialize(request));
         }
 
         /// <summary>
@@ -65,7 +79,7 @@ namespace Denali.Services.Polygon
             } while (!token.IsCancellationRequested);
         }
 
-        private async void Send(CancellationToken token, string data)
+        private async Task Send(CancellationToken token, string data)
         {
             await _webSocket.SendAsync(Encoding.UTF8.GetBytes(data), WebSocketMessageType.Text, true, token);
         }
