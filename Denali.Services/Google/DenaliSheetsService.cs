@@ -1,4 +1,4 @@
-﻿using Denali.Models.Data.Trading;
+﻿using Denali.Models.Trading;
 using Denali.Services.Utility;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;

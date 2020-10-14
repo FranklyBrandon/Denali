@@ -25,7 +25,7 @@ namespace Denali.Models.Polygon
     public enum Action
     {
         [EnumMember(Value = "auth")]
-        Authenticate,
+        Authorize,
         [EnumMember(Value = "subscribe")]
         Subscribe,
         [EnumMember(Value = "unsubscribe")]
@@ -35,6 +35,7 @@ namespace Denali.Models.Polygon
     public class WebsocketRequest
     {
         [JsonPropertyName("action")]
+        [JsonConverter(typeof(JsonExtendedEnumStringConverter))]
         public Action Action { get; set; }
         [JsonPropertyName("params")]
         public string Params { get; set; }

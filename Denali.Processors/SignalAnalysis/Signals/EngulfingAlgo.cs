@@ -1,5 +1,5 @@
-﻿using Denali.Models.Data.Alpaca;
-using Denali.Models.Data.Trading;
+﻿using Denali.Models.Alpaca;
+using Denali.Models.Trading;
 using Denali.Services.Utility;
 using System;
 using System.Collections.Generic;

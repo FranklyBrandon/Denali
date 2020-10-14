@@ -1,10 +1,11 @@
 ﻿using Denali.Algorithms.Bar;
-using Denali.Models.Data.Trading;
 using Denali.Processors;
 using Denali.Services;
 using Denali.Services.Data;
 using Denali.Services.Data.Alpaca;
 using Denali.Services.Google;
+using Denali.Services.Polygon;
+using Denali.Services.Settings;
 using Denali.Services.Utility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,20 +77,28 @@ namespace Denali.Worker
             {
                 return _configuration.GetSection(AlpacaClientSettings.Key).Get<AlpacaClientSettings>();
             });
+            _services.AddScoped<AuthenticationSettings>((ctx) =>
+            {
+                return _configuration.GetSection(AuthenticationSettings.Key).Get<AuthenticationSettings>();
+            });
+            _services.AddScoped<PolygonSettings>((ctx) =>
+            {
+                return _configuration.GetSection(PolygonSettings.Key).Get<PolygonSettings>();
+            });
         }
 
         private void AddHttpClients()
         {
-            _services.AddHttpClient<AlpacaDataClient>();
+
         }
 
         private void AddUserServices()
         {
             _services.AddScoped<DenaliSheetsService>();
             _services.AddScoped<GoogleSheetsService>();
-            _services.AddScoped<IMarketDataProvider, AlpacaDataService>();
             _services.AddSingleton<TimeUtils>();
             _services.AddScoped<BarAlgorithmAnalysis>();
+            _services.AddScoped<PolygonService>();
         }
     }
 }

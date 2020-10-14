@@ -6,6 +6,7 @@ namespace Denali.Services.Polygon
 {
     public class PolygonSettings
     {
+        public const string Key = "Polygon";
         public string WebsocketUrl { get; set; }
     }
 }

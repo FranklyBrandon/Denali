@@ -1,4 +1,4 @@
-﻿using Denali.Models.Data.Alpaca;
+﻿using Denali.Models.Alpaca;
 using Denali.Services.Data.Alpaca;
 using System;
 using System.Collections.Generic;

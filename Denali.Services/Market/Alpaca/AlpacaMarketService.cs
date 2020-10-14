@@ -7,10 +7,6 @@ namespace Denali.Services.Market.Alpaca
 {
     public class AlpacaMarketService
     {
-        private readonly AlpacaDataClient _client;
-        public AlpacaMarketService(AlpacaDataClient client)
-        {
-            this._client = client;
-        }
+
     }
 }

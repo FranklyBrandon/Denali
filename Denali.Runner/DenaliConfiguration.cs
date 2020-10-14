@@ -30,11 +30,7 @@ namespace Denali.Runner
             {
                 return configuration.GetSection(AlpacaClientSettings.Key).Get<AlpacaClientSettings>();
             });
-            services.AddHttpClient<AlpacaDataClient>();
             #endregion
-
-            services.AddScoped<AlpacaDataService>();
-            services.AddScoped<HistoricSignalAnalysis>();
    
             services.AddScoped<TimeUtils>();
             return services.BuildServiceProvider(true);
