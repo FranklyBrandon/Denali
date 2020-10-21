@@ -99,6 +99,7 @@ namespace Denali.Worker
             _services.AddSingleton<TimeUtils>();
             _services.AddScoped<BarAlgorithmAnalysis>();
             _services.AddScoped<PolygonService>();
+            _services.AddScoped<PolygonStreamingClient>();
         }
     }
 }

@@ -3,11 +3,15 @@ using Denali.Services.Settings;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Denali.Services.Polygon
 {
@@ -17,16 +21,21 @@ namespace Denali.Services.Polygon
         private readonly AuthenticationSettings _authSettings;
         private readonly Action<string> _handleMessageAction;
         private ClientWebSocket _webSocket;
+        private readonly ILogger<PolygonStreamingClient> _logger;
 
-        public PolygonStreamingClient(PolygonSettings polygonSettings, AuthenticationSettings authSettings)
-        {
+        public PolygonStreamingClient(PolygonSettings polygonSettings, AuthenticationSettings authSettings, ILogger<PolygonStreamingClient> logger)
+        {  
             this._polygonSettings = polygonSettings;
             this._authSettings = authSettings;
+            this._handleMessageAction = HandleAuthFlow;
+            this._webSocket = new ClientWebSocket();
+            this._logger = logger;
         }
 
         public async Task ConnectToPolygonStreams(CancellationToken token)
         {
             await ConnectToPolygon(token);
+            ReceiveAsync(token);
             await AuthenticateSocket(token);
         }
 
@@ -38,13 +47,22 @@ namespace Denali.Services.Polygon
 
         public async Task AuthenticateSocket(CancellationToken token)
         {
-            var request = new WebsocketRequest
+            var request = new PolygonWebsocketRequest
             {
                 Action = Models.Polygon.Action.Authorize,
                 Params = _authSettings.APIKey
             };
 
-            var la = JsonSerializer.Serialize(request);
+            await Send(token, JsonSerializer.Serialize(request));
+        }
+
+        public async Task SubscribeToChannel(Channel channel, CancellationToken token)
+        {
+            var request = new PolygonWebsocketRequest
+            {
+                Action = Models.Polygon.Action.Subscribe,
+                Params = channel.ToString()
+            };
 
             await Send(token, JsonSerializer.Serialize(request));
         }
@@ -60,8 +78,10 @@ namespace Denali.Services.Polygon
         /// <param name="token"></param>
         public async void ReceiveAsync(CancellationToken token)
         {
+            //Fragments must be less than 1024 bytes
             var buffer = new ArraySegment<byte>(new byte[1024]);
             do
+
             {
                 WebSocketReceiveResult result;
                 using (var ms = new MemoryStream())
@@ -81,6 +101,27 @@ namespace Denali.Services.Polygon
                         _handleMessageAction(await reader.ReadToEndAsync());
                 }
             } while (!token.IsCancellationRequested);
+        }
+
+        private void HandleAuthFlow(string data)
+        {
+            try
+            {
+                var responses = JsonSerializer.Deserialize<List<PolygonWebSocketResponse>>(data);
+                if (responses.Any(x => x.Status == PolygonWebsocketStatus.Connected))
+                {
+                    _logger.LogInformation("Connected to Polygon Websocket successfully");
+                }
+                else if (responses.Any(x => x.Status == PolygonWebsocketStatus.AuthSuccess))
+                {
+                    _logger.LogInformation("Socket Authentication Successful");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

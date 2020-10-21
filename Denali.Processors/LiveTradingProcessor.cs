@@ -19,21 +19,18 @@ namespace Denali.Processors
         private readonly IConfiguration _configuration;
         private readonly TimeUtils _timeUtils;
         private readonly ILogger<LiveTradingProcessor> _logger;
-        private readonly BarAlgorithmAnalysis _barAlgorithmAnalysis;
-        private readonly PolygonService _polygonService;
+        private readonly PolygonStreamingClient _polygonStreamingClient;
         private string _spreadSheetId;
         public LiveTradingProcessor(DenaliSheetsService sheetsService
             , IConfiguration configuration
             , TimeUtils timeUtils
-            , PolygonService polygonService
-            , BarAlgorithmAnalysis barAlgorithmAnalysis
+            , PolygonStreamingClient polygonStreamingClient
             , ILogger<LiveTradingProcessor> logger)
         {
             this._sheetsService = sheetsService;
             this._configuration = configuration;
             this._timeUtils = timeUtils;
-            this._polygonService = polygonService;
-            this._barAlgorithmAnalysis = barAlgorithmAnalysis;
+            this._polygonStreamingClient = polygonStreamingClient;
             this._logger = logger;
         }
 
@@ -53,18 +50,14 @@ namespace Denali.Processors
             //    , "--"
             //    , null).SpreadsheetId;
 
-            await _polygonService.ConnectToPolygon(CancellationToken.None);
-            await _polygonService.AuthenticateSocket(CancellationToken.None);
-            await _polygonService.SubscribeToChannel(Models.Polygon.Channel.AggregateMinute, CancellationToken.None);
 
-            
             //var pos1 = new Position("AAPL", 5.01, new Signal(SignalType.BullishEngulfing, Models.Data.Trading.Action.Long, 1,1,0,0));
             //pos1.Profit = 1;
             //_sheetsService.AppendPositions(_spreadSheetId, new List<Position> { pos1 });
             //_sheetsService.AppendPositions(_spreadSheetId, new List<Position> { pos1, pos1 });
             //_sheetsService.AppendPositions(_spreadSheetId, new List<Position> { pos1, pos1, pos1 });
 
-
+            await _polygonStreamingClient.ConnectToPolygonStreams(CancellationToken.None);
         }
 
         //private async Task ProcessTick(IEnumerable<string> symbols)

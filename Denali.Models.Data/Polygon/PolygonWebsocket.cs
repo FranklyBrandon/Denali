@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
@@ -32,12 +33,40 @@ namespace Denali.Models.Polygon
         Unsubscribe
     }
 
-    public class WebsocketRequest
+    public class PolygonWebsocketRequest
     {
         [JsonPropertyName("action")]
         [JsonConverter(typeof(JsonExtendedEnumStringConverter))]
         public Action Action { get; set; }
         [JsonPropertyName("params")]
         public string Params { get; set; }
+    }
+
+    public class PolygonWebSocketResponse
+    {
+        [JsonPropertyName("ev")]
+        [JsonConverter(typeof(JsonExtendedEnumStringConverter))]
+        public PolygonWebsocketEvent Event { get; set; }
+        [JsonPropertyName("status")]
+        [JsonConverter(typeof(JsonExtendedEnumStringConverter))]
+        public PolygonWebsocketStatus Status { get; set; }
+        [JsonPropertyName("message")]
+        public string Message { get; set; }
+    }
+
+    public enum PolygonWebsocketEvent
+    {
+        [EnumMember(Value = "status")]
+        Status
+    }
+
+    public enum PolygonWebsocketStatus
+    {
+        [EnumMember(Value = "connected")]
+        Connected,
+        [EnumMember(Value = "auth_success")]
+        AuthSuccess,
+        [EnumMember(Value = "auth_timeout")]
+        AuthTimeout
     }
 }
