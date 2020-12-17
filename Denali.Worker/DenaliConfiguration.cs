@@ -45,18 +45,7 @@ namespace Denali.Worker
 
         private void AddProcessors()
         {
-            switch (_configuration["status"])
-            {
-                case "live":
-                    _services.AddScoped<IProcessor, LiveTradingProcessor>();
-                    break;
-                case "historic":
-                    _services.AddScoped<IProcessor, HistoricTradingProcessor>();
-                    break;
-                default:
-                    throw new ArgumentException("No processor status provided");
-
-            }
+            _services.AddScoped<IProcessor, HistoricAggregateAnalysis>();
         }
 
         private void AddLogging()
@@ -89,7 +78,7 @@ namespace Denali.Worker
 
         private void AddHttpClients()
         {
-
+            _services.AddHttpClient<PolygonClient>();
         }
 
         private void AddUserServices()

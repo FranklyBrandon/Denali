@@ -36,20 +36,9 @@ namespace Denali.Worker
         {
             using (var scope = _provider.CreateScope())
             {
-                if (TradingToday())
-                {
-                    _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
-                    IProcessor processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
-                    await processor.Process(stoppingToken);
-                }
-                else
-                {
-                    _logger.LogInformation("No trading window available. Exiting Denali Worker");
-                    return;
-                }
-                //while (!stoppingToken.IsCancellationRequested)
-                //{
-                //}
+                _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
+                IProcessor processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
+                processor.Process(stoppingToken);
             }
 
         }
@@ -57,16 +46,6 @@ namespace Denali.Worker
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
 
-        }
-
-        //Replace this with MarketOpen API call and CRON scheudling once we have Polygon access
-        private bool TradingToday()
-        {
-            return true;
-            var today = _timeUtils.GetNYSEDateTime();
-            return _tradingDays.Contains(today.Date.DayOfWeek)
-                    && today.TimeOfDay >= _timeUtils.GetNYSEOpen()
-                    && today.TimeOfDay <= _timeUtils.GetNYSEClose();
         }
     }
 }

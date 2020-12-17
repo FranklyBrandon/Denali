@@ -13,7 +13,7 @@ using Denali.Services.Polygon;
 
 namespace Denali.Processors
 {
-    public class LiveTradingProcessor : IProcessor
+    public class LiveTradingProcessor
     {
         private readonly DenaliSheetsService _sheetsService;
         private readonly IConfiguration _configuration;

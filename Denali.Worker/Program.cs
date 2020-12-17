@@ -14,7 +14,7 @@ namespace Denali.Worker
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var environment = GetEnvironment(args);
+            var environment = ConsoleUtilities.GetArgument(args, "--env");
 
             return new HostBuilder()
                 .ConfigureHostConfiguration(configHost =>
@@ -28,18 +28,7 @@ namespace Denali.Worker
                     new DenaliConfiguration(hostContext.Configuration, services).ConfigureServices();
                 })
                 //For hosting on Linux
-                .UseSystemd();    
-            
-        }
-
-        private static string GetEnvironment(string[] args)
-        {
-            var index = Array.IndexOf(args, "--env");
-
-            if (index < 0)
-                throw new ArgumentException("No Enviornment provided");
-
-            return args[index + 1];
+                .UseSystemd();            
         }
     }
 }
