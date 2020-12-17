@@ -1,5 +1,6 @@
 ﻿using Denali.Models.Polygon;
 using Denali.Services.Settings;
+using System;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
@@ -22,9 +23,9 @@ namespace Denali.Services.Polygon
             this._polygonClient = polygonClient;
         }
 
-        public void GetAggregateData()
+        public void GetAggregateData(string ticker, int multiplier, Models.Polygon.TimeSpan timeSpan, DateTime from, DateTime to)
         {
-
+            var la = from.ToString("yyyy-MM-dd");
         }
     }
 }

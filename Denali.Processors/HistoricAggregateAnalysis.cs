@@ -19,6 +19,7 @@ namespace Denali.Processors
 
         public void Process(CancellationToken stoppingToken)
         {
+            var ticker = _configuration["ticker"];
             var dates = GetProcessDates();
 
             if (dates.Item1 > dates.Item2)
@@ -29,9 +30,9 @@ namespace Denali.Processors
 
             for (int i = 0; i < range; i++)
             {
-                var currentDate = dates.Item1.AddDays(i).ToString("yyyy-MM-dd");
+                var stepDate = dates.Item1.AddDays(i);
 
-                _polygonService.GetAggregateData();
+                _polygonService.GetAggregateData(ticker, 1, Models.Polygon.TimeSpan.Minute, stepDate, stepDate);
             }
         }
 
