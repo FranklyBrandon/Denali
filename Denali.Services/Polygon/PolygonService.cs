@@ -25,7 +25,8 @@ namespace Denali.Services.Polygon
 
         public void GetAggregateData(string ticker, int multiplier, Models.Polygon.TimeSpan timeSpan, DateTime from, DateTime to)
         {
-            var la = from.ToString("yyyy-MM-dd");
+            var fromDate = from.ToString("yyyy-MM-dd");
+            var toDate = to.ToString("yyyy-MM-dd");
         }
     }
 }
