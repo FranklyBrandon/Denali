@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Denali.Models.Data\Denali.Models.csproj" />
+    <ProjectReference Include="..\Denali.Shared\Denali.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

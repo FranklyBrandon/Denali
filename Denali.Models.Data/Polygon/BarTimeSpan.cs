@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Denali.Models.Polygon
 {
-    public enum TimeSpan
+    public enum BarTimeSpan
     {
-        [EnumMember(Value = "Minute")]
+        [EnumMember(Value = "minute")]
         Minute
     }
 }

@@ -1,4 +1,5 @@
-﻿using Denali.Services.Polygon;
+﻿using Denali.Models.Polygon;
+using Denali.Services.Polygon;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading;
@@ -32,7 +33,7 @@ namespace Denali.Processors
             {
                 var stepDate = dates.Item1.AddDays(i);
 
-                _polygonService.GetAggregateData(ticker, 1, Models.Polygon.TimeSpan.Minute, stepDate, stepDate);
+                _polygonService.GetAggregateData(ticker, 1, BarTimeSpan.Minute, stepDate, stepDate);
             }
         }
 

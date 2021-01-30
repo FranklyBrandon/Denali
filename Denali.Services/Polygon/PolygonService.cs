@@ -23,10 +23,12 @@ namespace Denali.Services.Polygon
             this._polygonClient = polygonClient;
         }
 
-        public void GetAggregateData(string ticker, int multiplier, Models.Polygon.TimeSpan timeSpan, DateTime from, DateTime to)
+        public void GetAggregateData(string ticker, int multiplier, BarTimeSpan timeSpan, DateTime from, DateTime to)
         {
             var fromDate = from.ToString("yyyy-MM-dd");
             var toDate = to.ToString("yyyy-MM-dd");
+
+            _polygonClient.GetAggregateData(ticker, fromDate, toDate, timeFrame: timeSpan);
         }
     }
 }
