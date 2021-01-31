@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Denali.Shared;
+using System.Text.Json;
 
 namespace Denali.Services.Polygon
 {
@@ -23,7 +24,7 @@ namespace Denali.Services.Polygon
             var url = string.Format(_polygonSettings.AggregatePath, ticker, multiplier, timeFrame.ToEnumMemberAttrValue(), fromDate, toDate, sort, unadjusted, limit, _polygonSettings.APIKey);
             var response = await _httpClient.GetAsync(url);
 
-            //JsonSerializer.
+            var la = JsonSerializer.Deserialize<AggregateResponse>(await response.Content.ReadAsStringAsync());
         }
     }
 }
