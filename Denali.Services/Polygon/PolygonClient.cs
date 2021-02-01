@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Denali.Shared;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Denali.Services.Polygon
 {
@@ -19,12 +20,12 @@ namespace Denali.Services.Polygon
             _httpClient.BaseAddress = new Uri(_polygonSettings.APIUrl);
         }
 
-        public async void GetAggregateData(string ticker, string fromDate, string toDate, int multiplier = 1, BarTimeSpan timeFrame = BarTimeSpan.Minute, string sort = "asc", bool unadjusted = false, int limit = 120)
+        public async Task<AggregateResponse> GetAggregateData(string ticker, long fromDate, long toDate, int multiplier = 1, BarTimeSpan timeFrame = BarTimeSpan.Minute, string sort = "asc", bool unadjusted = false, int limit = 120)
         {
             var url = string.Format(_polygonSettings.AggregatePath, ticker, multiplier, timeFrame.ToEnumMemberAttrValue(), fromDate, toDate, sort, unadjusted, limit, _polygonSettings.APIKey);
             var response = await _httpClient.GetAsync(url);
 
-            var la = JsonSerializer.Deserialize<AggregateResponse>(await response.Content.ReadAsStringAsync());
+            return JsonSerializer.Deserialize<AggregateResponse>(await response.Content.ReadAsStringAsync());
         }
     }
 }

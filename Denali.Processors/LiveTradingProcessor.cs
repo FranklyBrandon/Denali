@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Denali.Services.Utility;
 using Microsoft.Extensions.Logging;
-using Denali.Algorithms.Bar;
 using Denali.Services.Market;
 using Denali.Services.Polygon;
 

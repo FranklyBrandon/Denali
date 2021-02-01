@@ -23,12 +23,9 @@ namespace Denali.Services.Polygon
             this._polygonClient = polygonClient;
         }
 
-        public void GetAggregateData(string ticker, int multiplier, BarTimeSpan timeSpan, DateTime from, DateTime to)
+        public async Task<AggregateResponse> GetAggregateData(string ticker, int multiplier, BarTimeSpan timeSpan, long from, long to, int limit)
         {
-            var fromDate = from.ToString("yyyy-MM-dd");
-            var toDate = to.ToString("yyyy-MM-dd");
-
-            _polygonClient.GetAggregateData(ticker, fromDate, toDate, timeFrame: timeSpan);
+            return await _polygonClient.GetAggregateData(ticker, from, to, timeFrame: timeSpan, limit: limit);
         }
     }
 }

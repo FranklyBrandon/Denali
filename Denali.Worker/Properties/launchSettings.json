@@ -2,7 +2,7 @@
   "profiles": {
     "Denali.Worker": {
       "commandName": "Project",
-      "commandLineArgs": "--env Development --from 2020-12-15 --to 2020-12-16 --ticker AAPL",
+      "commandLineArgs": "--env Development --from 2021-1-29 --to 2021-1-29 --ticker AAPL",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }

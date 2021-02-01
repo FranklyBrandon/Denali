@@ -23,5 +23,25 @@ namespace Denali.Models.Polygon
         public long Time { get; set; }
         [JsonPropertyName("n")]
         public int Number { get; set; }
+
+        public bool IsOpen
+        {
+            get
+            {
+                if (OpenPrice < ClosePrice)
+                    return true;
+                return false;
+            }
+        }
+
+        public bool IsClosed
+        {
+            get
+            {
+                if (ClosePrice < OpenPrice)
+                    return true;
+                return false;
+            }
+        }
     }
 }
