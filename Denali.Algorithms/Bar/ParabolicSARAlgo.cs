@@ -76,22 +76,94 @@ namespace Denali.Algorithms.BarAnalysis
             }
             else
             {
-                var segment = SARSegments.Last();
-                var priorSAR = segment.SARs.Last().Value;
-                var acceleratedExtreme = segment.AccelerationFactor * (segment.ExtremePoint - priorSAR);
+                var currentSegment = SARSegments.Last();
+                var priorSAR = currentSegment.SARs.Last().Value;
+                var currentBar = barData.Last();
 
-                if (segment.Trend == Trend.UpTrend)
+                var newSar = CalculateSARValue(priorSAR, currentSegment.ExtremePoint, currentSegment.AccelerationFactor, currentSegment.Trend);
+
+                SARSegment relevantSegment;
+
+                //If the trend has been reversed, start a new segment 
+                if (ReverseTrend(newSar, currentBar))
                 {
-                    var currentSAR = priorSAR + acceleratedExtreme;
+                    relevantSegment = SignalReversal(currentSegment, currentBar);
+                    SARSegments.Add(relevantSegment);
                 }
                 else
                 {
-                    var currentSAR = priorSAR - acceleratedExtreme;
+                    relevantSegment = currentSegment;
+                    newSar = ValidateSARMove(newSar, barData);
+                    relevantSegment.SARs.Add(new SAR(newSar, currentBar.Time));
+                }
+
+                UpdateExtremePointAndExceleration(currentBar, relevantSegment);
+            }
+        }
+
+        private double CalculateSARValue(double priorSAR, double extremePoint, double accelerationFactor, Trend trend)
+        {
+            var acceleratedExtreme = accelerationFactor * (extremePoint - priorSAR);
+
+            return trend == Trend.UpTrend ? 
+                priorSAR + acceleratedExtreme :
+                priorSAR - acceleratedExtreme;
+        }
+    
+        private bool ReverseTrend(double sarValue, Bar currentBar)
+        {
+            if (sarValue > currentBar.LowPrice && sarValue < currentBar.HighPrice)
+                return true;
+
+            return false;
+        }
+
+        private SARSegment SignalReversal(SARSegment currentSegment, Bar currentBar)
+        {
+            var newTrend = currentSegment.Trend == Trend.UpTrend ? Trend.DownTrend : Trend.UpTrend;
+            var firstSAR = new SAR(currentSegment.ExtremePoint, currentBar.Time);
+            var firstExtremePoint = newTrend == Trend.UpTrend ? currentBar.HighPrice : currentBar.LowPrice;
+
+            var segment = new SARSegment(firstExtremePoint, currentBar.Time, newTrend);
+            segment.SARs.Add(firstSAR);
+
+            return segment;
+        }
+
+        private double ValidateSARMove(double calculatedSar, IList<Bar> barData)
+        {
+            //TODO
+            return calculatedSar;
+        }
+
+        private void UpdateExtremePointAndExceleration(Bar currentBar, SARSegment segment)
+        {
+            //TODO: move this to segment object?
+            if (segment.Trend == Trend.UpTrend)
+            {
+                if (currentBar.HighPrice > segment.ExtremePoint)
+                {
+                    segment.ExtremePoint = currentBar.HighPrice;
+                    segment.AccelerationFactor = IncrementAccelerationFactor(segment.AccelerationFactor);
                 }
             }
+            else
+            {
+                if (currentBar.LowPrice < segment.ExtremePoint)
+                {
+                    segment.ExtremePoint = currentBar.LowPrice;
+                    segment.AccelerationFactor = IncrementAccelerationFactor(segment.AccelerationFactor);
+                }
+            }
+        }
 
+        private double IncrementAccelerationFactor(double currentFactor)
+        {
+            //TODO: Move this to segment object?
+            if (currentFactor != SARSegment.MaxMomuntum)
+                currentFactor += SARSegment.Acceleration;
 
-
+            return currentFactor;
         }
     }
 }
