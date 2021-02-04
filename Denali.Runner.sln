@@ -17,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Worker", "Denali.Wor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Algorithms", "Denali.Algorithms\Denali.Algorithms.csproj", "{8F477A62-9E1B-40C0-9C11-D748B09F5FF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.Shared", "Denali.Shared\Denali.Shared.csproj", "{9D48EBE4-2B9A-4F40-8007-A3A347A808DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Shared", "Denali.Shared\Denali.Shared.csproj", "{9D48EBE4-2B9A-4F40-8007-A3A347A808DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Algorithms", "Algorithms", "{EE745226-9802-4F54-969F-6E1F5C177825}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.Algorithms.Test", "Denali.Algorithms.Test\Denali.Algorithms.Test.csproj", "{134BD69C-4155-45E3-AC34-1BFD145A26C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,9 +61,17 @@ Global
 		{9D48EBE4-2B9A-4F40-8007-A3A347A808DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D48EBE4-2B9A-4F40-8007-A3A347A808DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D48EBE4-2B9A-4F40-8007-A3A347A808DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{134BD69C-4155-45E3-AC34-1BFD145A26C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{134BD69C-4155-45E3-AC34-1BFD145A26C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{134BD69C-4155-45E3-AC34-1BFD145A26C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{134BD69C-4155-45E3-AC34-1BFD145A26C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8F477A62-9E1B-40C0-9C11-D748B09F5FF3} = {EE745226-9802-4F54-969F-6E1F5C177825}
+		{134BD69C-4155-45E3-AC34-1BFD145A26C0} = {EE745226-9802-4F54-969F-6E1F5C177825}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4B871F76-E611-4A75-9C98-3DE0546C4E88}

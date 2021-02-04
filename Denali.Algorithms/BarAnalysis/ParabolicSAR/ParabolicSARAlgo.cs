@@ -13,7 +13,12 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
         /// <summary>
         /// The list of segments for this analyzation of the aggregate stock data. Segments represent the long and short trends across time.
         /// </summary>
-        IList<SARSegment> SARSegments;
+        public IList<SARSegment> SARSegments;
+
+        public ParabolicSARAlgo()
+        {
+            SARSegments = new List<SARSegment>();
+        }
 
         /// <summary>
         /// Calculate the parabolic SAR values for a given group of aggregate stock data. To calculate the parabolic SAR values over a time frame, continually call this method with the entirety of the aggregate stock data whenever a new period is added.
@@ -32,7 +37,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             else if (barData.Count == 2)
             {
                 //Determine initial segment trend by the close prices of the first two bars
-                var trend = (barData[0].ClosePrice < barData[0].ClosePrice) ? Trend.UpTrend : Trend.DownTrend;
+                var trend = (barData[0].ClosePrice < barData[1].ClosePrice) ? Trend.UpTrend : Trend.DownTrend;
                 var extremePoint = trend == Trend.UpTrend ? barData[1].HighPrice : barData[1].LowPrice;
                 var segment = new SARSegment(extremePoint, barData[0].Time, trend);
 
@@ -61,7 +66,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
                 else
                 {
                     relevantSegment = currentSegment;
-                    newSar = ValidateSARMove(newSar, barData);
+                    newSar = ValidateSARMove(newSar, barData, relevantSegment.Trend);
                     relevantSegment.SARs.Add(new SAR(newSar, currentBar.Time));
                 }
 
@@ -98,11 +103,27 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             return segment;
         }
 
-        private double ValidateSARMove(double calculatedSar, IList<Bar> barData)
-        {            
-            //TODO
-            //if in an uptrend, dont move the sar above the t-1 or t-2 periods low. Use the lowest low of the t-1 or t-2 as the sar instead
-            //if in a downtrend, dont move the sar below the t-1 or t-2 periods high. Use the hghest high of the t-1 or t-2 as the sar instead
+        private double ValidateSARMove(double calculatedSar, IList<Bar> barData, Trend trend)
+        {
+            var length = barData.Count - 1;
+
+            var tMinusOne = barData.ElementAtOrDefault(length - 1);
+            var tMinusTwo = barData.ElementAtOrDefault(length - 2);
+
+            if (tMinusOne == null || tMinusTwo == null)
+                return calculatedSar;
+
+            if (trend == Trend.UpTrend)
+            {
+                if (calculatedSar > tMinusOne.LowPrice || calculatedSar > tMinusTwo.LowPrice)
+                    return Math.Min(tMinusOne.LowPrice, tMinusTwo.LowPrice);
+            }
+            else
+            {
+                if (calculatedSar < tMinusOne.HighPrice || calculatedSar < tMinusTwo.HighPrice)
+                    return Math.Max(tMinusOne.HighPrice, tMinusTwo.HighPrice);
+            }
+
             return calculatedSar;
         }
     }
