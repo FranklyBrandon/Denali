@@ -70,7 +70,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
                     relevantSegment.SARs.Add(new SAR(newSar, currentBar.Time));
                 }
 
-                relevantSegment.IncrementAccelerationFactor();
+                relevantSegment.UpdateExtremePoint(currentBar);
             }
         }
 

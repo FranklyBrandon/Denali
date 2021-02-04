@@ -47,7 +47,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             }
         }
 
-        public void IncrementAccelerationFactor()
+        private void IncrementAccelerationFactor()
         {
             if (AccelerationFactor != SARSegment.MaxMomuntum)
                 AccelerationFactor += SARSegment.Acceleration;
