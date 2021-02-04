@@ -2,59 +2,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Denali.Algorithms.BarAnalysis
+namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
 {
-    public struct SARSegment
-    {
-        public const double Acceleration = 0.02;
-        public const double MaxMomuntum = 0.2;
-
-        public double AccelerationFactor { get; set; }
-        public double ExtremePoint { get; set; }
-        public IList<SAR> SARs { get; set; }
-        public long Begin { get; set; }
-        public long End { get; set; }
-        public Trend Trend { get; set; }
-
-        public SARSegment(double extremePoint, long begin, Trend trend)
-        {
-            ExtremePoint = extremePoint;
-            Begin = begin;
-            End = 0;
-            SARs = new List<SAR>();
-            Trend = trend;
-            AccelerationFactor = Acceleration;
-        }
-    }
-
-    public enum Trend
-    {
-        UpTrend,
-        DownTrend
-    }
-
-    public struct SAR
-    {
-        public double Value { get; set; }
-        public long Time { get; set; }
-
-        public SAR(double value, long time)
-        {
-            Value = value;
-            Time = time;
-        }
-    }
-
+    /// <summary>
+    /// Encapsalates the logic and tracking of the Parabolic SAR (stop and reversals) values of a ticker in real time.
+    /// </summary>
     public class ParabolicSARAlgo
     {
-        Dictionary<long, double> SARMap;
+        /// <summary>
+        /// The list of segments for this analyzation of the aggregate stock data. Segments represent the long and short trends across time.
+        /// </summary>
         IList<SARSegment> SARSegments;
 
+        /// <summary>
+        /// Calculate the parabolic SAR values for a given group of aggregate stock data. To calculate the parabolic SAR values over a time frame, continually call this method with the entirety of the aggregate stock data whenever a new period is added.
+        /// </summary>
+        /// <param name="barData"></param>
         public void Analyze(IList<Bar> barData)
         {
-            //Need at least two bars to calculate SAR from scratch
+            //There needs to be at least two bars to calculate SAR from scratch.
             if (barData.Count < 2)
             {
                 return;
@@ -84,12 +51,13 @@ namespace Denali.Algorithms.BarAnalysis
 
                 SARSegment relevantSegment;
 
-                //If the trend has been reversed, start a new segment 
-                if (ReverseTrend(newSar, currentBar))
+                //If the trend has been reversed, start a new segment with the 1a rules
+                if (IsTrendReversing(newSar, currentBar))
                 {
                     relevantSegment = SignalReversal(currentSegment, currentBar);
                     SARSegments.Add(relevantSegment);
                 }
+                //Add the new SAR to the existing segment
                 else
                 {
                     relevantSegment = currentSegment;
@@ -97,7 +65,7 @@ namespace Denali.Algorithms.BarAnalysis
                     relevantSegment.SARs.Add(new SAR(newSar, currentBar.Time));
                 }
 
-                UpdateExtremePointAndExceleration(currentBar, relevantSegment);
+                relevantSegment.IncrementAccelerationFactor();
             }
         }
 
@@ -110,7 +78,7 @@ namespace Denali.Algorithms.BarAnalysis
                 priorSAR - acceleratedExtreme;
         }
     
-        private bool ReverseTrend(double sarValue, Bar currentBar)
+        private bool IsTrendReversing(double sarValue, Bar currentBar)
         {
             if (sarValue > currentBar.LowPrice && sarValue < currentBar.HighPrice)
                 return true;
@@ -131,39 +99,11 @@ namespace Denali.Algorithms.BarAnalysis
         }
 
         private double ValidateSARMove(double calculatedSar, IList<Bar> barData)
-        {
+        {            
             //TODO
+            //if in an uptrend, dont move the sar above the t-1 or t-2 periods low. Use the lowest low of the t-1 or t-2 as the sar instead
+            //if in a downtrend, dont move the sar below the t-1 or t-2 periods high. Use the hghest high of the t-1 or t-2 as the sar instead
             return calculatedSar;
-        }
-
-        private void UpdateExtremePointAndExceleration(Bar currentBar, SARSegment segment)
-        {
-            //TODO: move this to segment object?
-            if (segment.Trend == Trend.UpTrend)
-            {
-                if (currentBar.HighPrice > segment.ExtremePoint)
-                {
-                    segment.ExtremePoint = currentBar.HighPrice;
-                    segment.AccelerationFactor = IncrementAccelerationFactor(segment.AccelerationFactor);
-                }
-            }
-            else
-            {
-                if (currentBar.LowPrice < segment.ExtremePoint)
-                {
-                    segment.ExtremePoint = currentBar.LowPrice;
-                    segment.AccelerationFactor = IncrementAccelerationFactor(segment.AccelerationFactor);
-                }
-            }
-        }
-
-        private double IncrementAccelerationFactor(double currentFactor)
-        {
-            //TODO: Move this to segment object?
-            if (currentFactor != SARSegment.MaxMomuntum)
-                currentFactor += SARSegment.Acceleration;
-
-            return currentFactor;
         }
     }
 }
