@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Denali.Algorithms.Test.BarAnalysisTests
@@ -33,10 +34,10 @@ namespace Denali.Algorithms.Test.BarAnalysisTests
         }
 
         [Test]
-        public void ShouldAddToCurrentSegment()
+        public void JWellesWilderComparisonTest()
         {
-            var barData = AggregateStockData1.Bars.GetRange(0, 25);
-            StepThroughAnalyze(barData);
+            StepThroughAnalyze(WilderSARDataExample);
+            var la = JsonSerializer.Serialize(Algo.SARSegments);
         }
     }
 }

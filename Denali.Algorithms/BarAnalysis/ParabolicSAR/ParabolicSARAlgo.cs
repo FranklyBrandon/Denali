@@ -27,25 +27,28 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
         public void Analyze(IList<Bar> barData)
         {
             //There needs to be at least two bars to calculate SAR from scratch.
-            if (barData.Count < 2)
+            if (barData.Count == 1)
             {
-                return;
+                var segment = new SARSegment(52.35, 9999, Trend.UpTrend);
+                var sar = new SAR(50.00, 999);
+                segment.SARs.Add(sar);
+                SARSegments.Add(segment);
             }
             //Calculate initial SAR
             //If the trend is long, use the low of the first bar as the initial value
             //If the trend is short, use the high of the first bar as the initial value
-            else if (barData.Count == 2)
-            {
-                //Determine initial segment trend by the close prices of the first two bars
-                var trend = (barData[0].ClosePrice < barData[1].ClosePrice) ? Trend.UpTrend : Trend.DownTrend;
-                var extremePoint = trend == Trend.UpTrend ? barData[1].HighPrice : barData[1].LowPrice;
-                var segment = new SARSegment(extremePoint, barData[0].Time, trend);
+            //else if (barData.Count == 2)
+            //{
+            //    //Determine initial segment trend by the close prices of the first two bars
+            //    var trend = (barData[0].ClosePrice < barData[1].ClosePrice) ? Trend.UpTrend : Trend.DownTrend;
+            //    var extremePoint = trend == Trend.UpTrend ? barData[1].HighPrice : barData[1].LowPrice;
+            //    var segment = new SARSegment(extremePoint, barData[0].Time, trend);
 
-                //The first SAR is the same as the extreme point between the first two bars
-                var firstSAR = new SAR(extremePoint, barData[1].Time);
-                segment.SARs.Add(firstSAR);
-                SARSegments.Add(segment);
-            }
+            //    //The first SAR is the same as the extreme point between the first two bars
+            //    var firstSAR = new SAR(extremePoint, barData[1].Time);
+            //    segment.SARs.Add(firstSAR);
+            //    SARSegments.Add(segment);
+            //}
             else
             {
                 var currentSegment = SARSegments.Last();
@@ -57,7 +60,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
                 SARSegment relevantSegment;
 
                 //If the trend has been reversed, start a new segment with the 1a rules
-                if (IsTrendReversing(newSar, currentBar))
+                if (IsTrendReversing(newSar, currentBar, currentSegment.Trend))
                 {
                     relevantSegment = SignalReversal(currentSegment, currentBar);
                     SARSegments.Add(relevantSegment);
@@ -78,15 +81,21 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
         {
             var acceleratedExtreme = accelerationFactor * (extremePoint - priorSAR);
 
-            return trend == Trend.UpTrend ? 
+            return Math.Round(trend == Trend.UpTrend ? 
                 priorSAR + acceleratedExtreme :
-                priorSAR - acceleratedExtreme;
+                priorSAR - acceleratedExtreme, 2, MidpointRounding.AwayFromZero);
         }
     
-        private bool IsTrendReversing(double sarValue, Bar currentBar)
+        private bool IsTrendReversing(double sarValue, Bar currentBar, Trend trend)
         {
-            if (sarValue > currentBar.LowPrice && sarValue < currentBar.HighPrice)
-                return true;
+            //if (trend == Trend.UpTrend && currentBar.ClosePrice < sarValue)
+            //{
+            //    return true;
+            //}
+            //else if (trend == Trend.DownTrend && currentBar.ClosePrice > sarValue)
+            //{
+            //    return true;
+            //}
 
             return false;
         }
@@ -100,6 +109,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             var segment = new SARSegment(firstExtremePoint, currentBar.Time, newTrend);
             segment.SARs.Add(firstSAR);
 
+            Console.WriteLine($"Reversal occured: {newTrend} starting at {currentBar.Time}");
             return segment;
         }
 

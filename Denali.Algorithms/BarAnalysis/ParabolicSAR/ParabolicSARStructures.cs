@@ -50,7 +50,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
         private void IncrementAccelerationFactor()
         {
             if (AccelerationFactor != SARSegment.MaxMomuntum)
-                AccelerationFactor += SARSegment.Acceleration;
+                AccelerationFactor = Math.Round(AccelerationFactor + SARSegment.Acceleration, 2, MidpointRounding.AwayFromZero);
         }
     }
 
