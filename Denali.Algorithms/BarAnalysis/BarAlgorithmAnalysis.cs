@@ -33,17 +33,9 @@ namespace Denali.Algorithms.BarAnalysis
 
             var time = _timeUtils.GetETDatetimefromUnixMS(currentTime);
 
-            //if (_bullishEngulfingAlgo.IsEngulfing(barData, MarketSide.Bullish)) 
-            //{
-            //    Console.WriteLine($"Bullish Engulfing recognized at {time.ToString()}");
-            //}
-            if (_sarAlgo.IsTrendBeginning(Trend.UpTrend))
+            if (_sarAlgo.IsTrendBeginning(Trend.UpTrend) && _bullishEngulfingAlgo.IsEngulfing(barData, MarketSide.Bullish))
             {
-                Console.WriteLine($"{Trend.UpTrend} Beginning starting at {time.ToString()}");
-            }
-            else if (_sarAlgo.IsTrendBeginning(Trend.DownTrend))
-            {
-                Console.WriteLine($"{Trend.DownTrend} Beginning starting at {time.ToString()}");
+                Console.WriteLine($"Bullish engulfing uptrend starting at {time.ToString()}");
             }
         }
     }

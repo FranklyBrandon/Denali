@@ -3,15 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Runner", "Denali.Runner\Denali.Runner.csproj", "{142DFCCD-F3A4-422C-92F0-4913F09B671F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Models", "Denali.Models.Data\Denali.Models.csproj", "{0BC29CAB-CEE7-4A12-94EA-81411F28B13C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Services", "Denali.Services\Denali.Services.csproj", "{1DE59245-0708-471D-9D18-3A8DE1CA9962}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Processors", "Denali.Processors\Denali.Processors.csproj", "{FBB9C0A9-9DB1-4328-AAC7-4135ED5C8086}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.App", "Denali.App\Denali.App.csproj", "{37CD7834-8D7F-427B-AE0D-F7B254FA395C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Worker", "Denali.Worker\Denali.Worker.csproj", "{454C0793-FA38-48B6-BB79-222CEB36D5B6}"
 EndProject
@@ -21,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Shared", "Denali.Sha
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Algorithms", "Algorithms", "{EE745226-9802-4F54-969F-6E1F5C177825}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.Algorithms.Test", "Denali.Algorithms.Test\Denali.Algorithms.Test.csproj", "{134BD69C-4155-45E3-AC34-1BFD145A26C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Algorithms.Test", "Denali.Algorithms.Test\Denali.Algorithms.Test.csproj", "{134BD69C-4155-45E3-AC34-1BFD145A26C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{142DFCCD-F3A4-422C-92F0-4913F09B671F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{142DFCCD-F3A4-422C-92F0-4913F09B671F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{142DFCCD-F3A4-422C-92F0-4913F09B671F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{142DFCCD-F3A4-422C-92F0-4913F09B671F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0BC29CAB-CEE7-4A12-94EA-81411F28B13C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0BC29CAB-CEE7-4A12-94EA-81411F28B13C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BC29CAB-CEE7-4A12-94EA-81411F28B13C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,10 +37,6 @@ Global
 		{FBB9C0A9-9DB1-4328-AAC7-4135ED5C8086}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBB9C0A9-9DB1-4328-AAC7-4135ED5C8086}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBB9C0A9-9DB1-4328-AAC7-4135ED5C8086}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37CD7834-8D7F-427B-AE0D-F7B254FA395C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37CD7834-8D7F-427B-AE0D-F7B254FA395C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37CD7834-8D7F-427B-AE0D-F7B254FA395C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37CD7834-8D7F-427B-AE0D-F7B254FA395C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{454C0793-FA38-48B6-BB79-222CEB36D5B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{454C0793-FA38-48B6-BB79-222CEB36D5B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{454C0793-FA38-48B6-BB79-222CEB36D5B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
