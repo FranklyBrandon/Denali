@@ -12,14 +12,12 @@ namespace Denali.Algorithms.BarAnalysis
 {
     public class BarAlgorithmAnalysis
     {
-        private readonly IEnumerable<IBarSignalAlgorithm> _algorithms;
         private readonly BulishingEngulfingAlgo _bullishEngulfingAlgo;
         private readonly ParabolicSARAlgo _sarAlgo;
         private readonly TimeUtils _timeUtils;
 
-        public BarAlgorithmAnalysis(IEnumerable<IBarSignalAlgorithm> algorithms)
+        public BarAlgorithmAnalysis()
         {
-            this._algorithms = algorithms;
             this._bullishEngulfingAlgo = new BulishingEngulfingAlgo();
             this._sarAlgo = new ParabolicSARAlgo();
             this._timeUtils = new TimeUtils();
