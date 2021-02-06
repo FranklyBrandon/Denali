@@ -89,7 +89,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             if (segment == null)
                 return false;
 
-            if (segment.SARs.Count <= 4 && segment.Trend == trend)
+            if (segment.SARs.Count <= 1 && segment.Trend == trend)
                 return true;  
 
             return false;
