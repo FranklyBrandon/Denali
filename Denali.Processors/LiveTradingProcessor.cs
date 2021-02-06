@@ -36,9 +36,9 @@ namespace Denali.Processors
         public async Task Process(CancellationToken stoppingToken)
         {
             //Fetch trading stocks
-            var symbols = _sheetsService.GetTradingSettings().Where(x => x.Trading).Select(x => x.Symbol);
-            if (!symbols.Any())
-                return;
+            //var symbols = _sheetsService.GetTradingSettings().Where(x => x.Trading).Select(x => x.Symbol);
+            //if (!symbols.Any())
+            //    return;
 
             //Write inital Report
             //_spreadSheetId = _sheetsService.WriteDenaliSheet(

@@ -28,7 +28,6 @@ namespace Denali.Services.Polygon
             this._polygonSettings = polygonSettings;
             this._authSettings = authSettings;
             this._handleMessageAction = HandleAuthFlow;
-            this._webSocket = new ClientWebSocket();
             this._logger = logger;
         }
 

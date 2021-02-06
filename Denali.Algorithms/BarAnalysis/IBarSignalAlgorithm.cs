@@ -1,6 +1,5 @@
 ﻿using Denali.Models.Alpaca;
 using Denali.Models.Polygon;
-using Denali.Models.Trading;
 using System;
 using System.Collections.Generic;
 using System.Text;

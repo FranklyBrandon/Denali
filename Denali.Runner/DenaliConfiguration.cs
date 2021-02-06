@@ -1,6 +1,4 @@
 ﻿using Denali.Processors;
-using Denali.Processors.SignalAnalysis;
-using Denali.Processors.SignalAnalysis.Signals;
 using Denali.Services.Data.Alpaca;
 using Denali.Services.Utility;
 using Microsoft.Extensions.Configuration;

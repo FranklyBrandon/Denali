@@ -1,4 +1,5 @@
 ﻿using Denali.Models.Polygon;
+using Denali.Shared.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,22 +27,30 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
         /// <param name="barData"></param>
         public void Analyze(IList<Bar> barData)
         {
-            //Calculate initial SAR
-            //If the trend is long, use the low of the first bar as the initial value
-            //If the trend is short, use the high of the first bar as the initial value
-            if (barData.Count < 2)
+            //If no intial SAR value is given, and there are less than two bars, SAR caclulation cannot begin.
+            if (barData.Count < 2 && SARSegments.Count == 0)
             {
                 return;
             }
+            //If no initial SAR value is given, approximate an initial SAR value to use as the previous SAR value in further calculations.
             else if (barData.Count == 2 && SARSegments.Count == 0)
             {
                 //Determine initial segment trend by the close prices of the first two bars
                 var trend = (barData[0].ClosePrice < barData[1].ClosePrice) ? Trend.UpTrend : Trend.DownTrend;
-                var extremePoint = trend == Trend.UpTrend ? barData[1].LowPrice : barData[1].HighPrice;
-                var segment = new SARSegment(extremePoint, barData[0].Time, trend);
 
-                //The first SAR is the same as the extreme point between the first two bars
-                var firstSAR = new SAR(extremePoint, barData[1].Time);
+                var maxPrice = Math.Max(barData[0].HighPrice, barData[1].HighPrice);
+                var minPrice = Math.Min(barData[0].LowPrice, barData[1].LowPrice);
+
+                //If trending up, the first SAR would be the lowest price of the last short segment, if trending down, the first SAR would be the highest price of the previous long segment.
+                var firstSar = trend == Trend.UpTrend ? minPrice : maxPrice;
+
+                //The initial extreme point is the highest high of an uptrend, or the lowest low of a downtrend.
+                var extremePoint = trend == Trend.UpTrend ? maxPrice : minPrice;
+
+                //Create the first segment and initial SAR value.
+                var segment = new SARSegment(extremePoint, barData[0].Time, trend);
+                var firstSAR = new SAR(firstSar, barData[1].Time);
+
                 segment.SARs.Add(firstSAR);
                 SARSegments.Add(segment);
             }
@@ -55,13 +64,13 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
 
                 SARSegment relevantSegment;
 
-                //If the trend has been reversed, start a new segment with the 1a rules
+                //If the trend has been reversed, start a new segment.
                 if (IsTrendReversing(newSar, currentBar))
                 {
                     relevantSegment = SignalReversal(currentSegment, currentBar);
                     SARSegments.Add(relevantSegment);
                 }
-                //Add the new SAR to the existing segment
+                //Otherwise add the new SAR value to the existing segment.
                 else
                 {
                     relevantSegment = currentSegment;
@@ -69,10 +78,23 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
                     relevantSegment.SARs.Add(new SAR(newSar, currentBar.Time));
                 }
 
+                //Update the extreme point and acceleration values if necessary.
                 relevantSegment.UpdateExtremePoint(currentBar);
             }
         }
 
+        public bool IsTrendBeginning(Trend trend)
+        {
+            var segment = SARSegments.LastOrDefault();
+            if (segment == null)
+                return false;
+
+            if (segment.SARs.Count == 1 && segment.Trend == trend)
+                return true;  
+
+            return false;
+        }
+         
         public void SetInitialSegment(SARSegment segment)
         {
             if (SARSegments.Any())
@@ -112,7 +134,6 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             var segment = new SARSegment(firstExtremePoint, currentBar.Time, newTrend);
             segment.SARs.Add(firstSAR);
 
-            Console.WriteLine($"Reversal occured: {newTrend} starting at {currentBar.Time}");
             return segment;
         }
 

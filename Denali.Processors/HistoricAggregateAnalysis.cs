@@ -64,7 +64,7 @@ namespace Denali.Processors
             var stepData = new List<Bar>();
 
             //Start at one
-            for (int i = 1; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
                 stepData = aggregateData.Bars.GetRange(0, i + 1);
                 _barAlogirthmnAnalysis.Analyze(stepData);
