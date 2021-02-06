@@ -26,18 +26,10 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
         /// <param name="barData"></param>
         public void Analyze(IList<Bar> barData)
         {
-            //There needs to be at least two bars to calculate SAR from scratch.
-            if (barData.Count == 1)
-            {
-                var segment = new SARSegment(52.35, 9999, Trend.UpTrend);
-                var sar = new SAR(50.00, 999);
-                segment.SARs.Add(sar);
-                SARSegments.Add(segment);
-            }
             //Calculate initial SAR
             //If the trend is long, use the low of the first bar as the initial value
             //If the trend is short, use the high of the first bar as the initial value
-            else if (barData.Count == 2 && SARSegments.Count == 0)
+            if (barData.Count == 2 && SARSegments.Count == 0)
             {
                 //Determine initial segment trend by the close prices of the first two bars
                 var trend = (barData[0].ClosePrice < barData[1].ClosePrice) ? Trend.UpTrend : Trend.DownTrend;
@@ -77,6 +69,13 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             }
         }
 
+        public void SetInitialSegment(SARSegment segment)
+        {
+            if (SARSegments.Any())
+                throw new InvalidOperationException("There are previously calculated segments");
+
+            SARSegments.Add(segment);
+        }
         private double CalculateSARValue(double priorSAR, double extremePoint, double accelerationFactor, Trend trend)
         {
             double newSARValue;
