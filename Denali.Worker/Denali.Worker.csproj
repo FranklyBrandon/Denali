@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>dotnet-Denali.Worker-B076C07C-D284-4EBC-8C2A-9DFBCAA7F076</UserSecretsId>
   </PropertyGroup>
 
