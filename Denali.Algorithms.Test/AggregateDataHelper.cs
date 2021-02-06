@@ -282,14 +282,7 @@ namespace Denali.Algorithms.Test
                     HighPrice = 51.70,
                     LowPrice = 50.20,
                     Time = 39
-                },        
-                //Date 40
-                new Bar
-                {
-                    HighPrice = 53.00,
-                    LowPrice = 51.50,
-                    Time = 40
-                },
+                }
             };
         }
 
@@ -380,7 +373,7 @@ namespace Denali.Algorithms.Test
                 },
                 new ParabolicSARResult
                 {
-                    SAR = 51.67,
+                    SAR = 51.65,
                     ExtremePoint = 54.20,
                     AccelerationFactor = 0.12,
                     Time = 15
@@ -453,7 +446,7 @@ namespace Denali.Algorithms.Test
                 },
                 new ParabolicSARResult
                 {
-                    SAR = 56.62,
+                    SAR = 56.28,
                     ExtremePoint = 58.00,
                     AccelerationFactor = 0.20,
                     Time = 25
@@ -552,7 +545,7 @@ namespace Denali.Algorithms.Test
                 },
                 new ParabolicSARResult
                 {
-                    SAR = 52.34,
+                    SAR = 52.93,
                     ExtremePoint = 50.00,
                     AccelerationFactor = 0.20,
                     Time = 39

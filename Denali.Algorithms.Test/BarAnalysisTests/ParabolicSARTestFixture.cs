@@ -14,10 +14,6 @@ namespace Denali.Algorithms.Test.BarAnalysisTests
             AggregateDataHelper.GetStockDataFile(AggregateDataHelper.AAPL_STOCK_DATA);
         private AggregateResponse _aggregateStockData1;
 
-        protected List<Bar> WilderSARDataExample => _wilderSARDataExample ??=
-            BuildJWellesWilderSARExampleSheet();
-        private List<Bar> _wilderSARDataExample;
-
         protected ParabolicSARAlgo Algo = new ParabolicSARAlgo();
 
         public void StepThroughAnalyze(IList<Bar> barData)

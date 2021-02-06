@@ -1,4 +1,5 @@
 ﻿using Denali.Algorithms.BarAnalysis.ParabolicSAR;
+using Denali.Algorithms.Test.Models;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,27 @@ namespace Denali.Algorithms.Test.BarAnalysisTests
 
             Algo.SetInitialSegment(segment);
 
-            StepThroughAnalyze(WilderSARDataExample);
-            var la = JsonSerializer.Serialize(Algo.SARSegments);
+            var barData = AggregateDataHelper.JWellesWilderSARExampleSheet();
+            barData = barData.GetRange(1, barData.Count - 1);
+            StepThroughAnalyze(barData);
+
+            var wilderResults = AggregateDataHelper.JWellsWilderSARResults();
+            foreach (var segmentResult in Algo.SARSegments)
+            {
+                foreach (var sarResult in segmentResult.SARs)
+                {
+                    ParabolicSARResult validResult;
+                    wilderResults.TryGetValue(sarResult.Time, out validResult);
+                    if (validResult == null)
+                    {
+                        Assert.Fail($"Time of calculated result not in valid result set. Time: {sarResult.Time}");
+                    }
+                    else
+                    {
+                        Assert.AreEqual(validResult.SAR, sarResult.Value, $"Time: {sarResult.Time}");
+                    }
+                }
+            }
         }
     }
 }
