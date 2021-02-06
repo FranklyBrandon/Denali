@@ -37,18 +37,18 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             //Calculate initial SAR
             //If the trend is long, use the low of the first bar as the initial value
             //If the trend is short, use the high of the first bar as the initial value
-            //else if (barData.Count == 2)
-            //{
-            //    //Determine initial segment trend by the close prices of the first two bars
-            //    var trend = (barData[0].ClosePrice < barData[1].ClosePrice) ? Trend.UpTrend : Trend.DownTrend;
-            //    var extremePoint = trend == Trend.UpTrend ? barData[1].HighPrice : barData[1].LowPrice;
-            //    var segment = new SARSegment(extremePoint, barData[0].Time, trend);
+            else if (barData.Count == 2 && SARSegments.Count == 0)
+            {
+                //Determine initial segment trend by the close prices of the first two bars
+                var trend = (barData[0].ClosePrice < barData[1].ClosePrice) ? Trend.UpTrend : Trend.DownTrend;
+                var extremePoint = trend == Trend.UpTrend ? barData[1].HighPrice : barData[1].LowPrice;
+                var segment = new SARSegment(extremePoint, barData[0].Time, trend);
 
-            //    //The first SAR is the same as the extreme point between the first two bars
-            //    var firstSAR = new SAR(extremePoint, barData[1].Time);
-            //    segment.SARs.Add(firstSAR);
-            //    SARSegments.Add(segment);
-            //}
+                //The first SAR is the same as the extreme point between the first two bars
+                var firstSAR = new SAR(extremePoint, barData[1].Time);
+                segment.SARs.Add(firstSAR);
+                SARSegments.Add(segment);
+            }
             else
             {
                 var currentSegment = SARSegments.Last();
@@ -60,7 +60,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
                 SARSegment relevantSegment;
 
                 //If the trend has been reversed, start a new segment with the 1a rules
-                if (IsTrendReversing(newSar, currentBar, currentSegment.Trend))
+                if (IsTrendReversing(newSar, currentBar))
                 {
                     relevantSegment = SignalReversal(currentSegment, currentBar);
                     SARSegments.Add(relevantSegment);
@@ -79,23 +79,23 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
 
         private double CalculateSARValue(double priorSAR, double extremePoint, double accelerationFactor, Trend trend)
         {
-            var acceleratedExtreme = accelerationFactor * (extremePoint - priorSAR);
+            double newSARValue;
+            if (trend == Trend.UpTrend)
+            {
+                newSARValue = priorSAR + accelerationFactor * (extremePoint - priorSAR);
+            }
+            else
+            {
+                newSARValue = priorSAR - accelerationFactor * (priorSAR - extremePoint);
+            }
 
-            return Math.Round(trend == Trend.UpTrend ? 
-                priorSAR + acceleratedExtreme :
-                priorSAR - acceleratedExtreme, 2, MidpointRounding.AwayFromZero);
+            return Math.Round(newSARValue, 2, MidpointRounding.AwayFromZero);
         }
     
-        private bool IsTrendReversing(double sarValue, Bar currentBar, Trend trend)
+        private bool IsTrendReversing(double sarValue, Bar currentBar)
         {
-            //if (trend == Trend.UpTrend && currentBar.ClosePrice < sarValue)
-            //{
-            //    return true;
-            //}
-            //else if (trend == Trend.DownTrend && currentBar.ClosePrice > sarValue)
-            //{
-            //    return true;
-            //}
+            if (sarValue >= currentBar.LowPrice && sarValue <= currentBar.HighPrice)
+                return true;
 
             return false;
         }
