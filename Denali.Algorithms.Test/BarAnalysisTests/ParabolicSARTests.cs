@@ -43,5 +43,12 @@ namespace Denali.Algorithms.Test.BarAnalysisTests
                 }
             }
         }
+
+        [Test]
+        public void CalculateInitialSARValueTest()
+        {
+            var barData = AggregateDataHelper.JWellesWilderSARExampleSheet();
+            StepThroughAnalyze(barData);
+        }
     }
 }

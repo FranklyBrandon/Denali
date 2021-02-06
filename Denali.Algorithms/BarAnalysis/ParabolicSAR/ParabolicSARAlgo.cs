@@ -29,11 +29,15 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             //Calculate initial SAR
             //If the trend is long, use the low of the first bar as the initial value
             //If the trend is short, use the high of the first bar as the initial value
-            if (barData.Count == 2 && SARSegments.Count == 0)
+            if (barData.Count < 2)
+            {
+                return;
+            }
+            else if (barData.Count == 2 && SARSegments.Count == 0)
             {
                 //Determine initial segment trend by the close prices of the first two bars
                 var trend = (barData[0].ClosePrice < barData[1].ClosePrice) ? Trend.UpTrend : Trend.DownTrend;
-                var extremePoint = trend == Trend.UpTrend ? barData[1].HighPrice : barData[1].LowPrice;
+                var extremePoint = trend == Trend.UpTrend ? barData[1].LowPrice : barData[1].HighPrice;
                 var segment = new SARSegment(extremePoint, barData[0].Time, trend);
 
                 //The first SAR is the same as the extreme point between the first two bars
