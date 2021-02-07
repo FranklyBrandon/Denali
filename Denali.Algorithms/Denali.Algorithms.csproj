@@ -9,8 +9,4 @@
     <ProjectReference Include="..\Denali.Shared\Denali.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="BarAnalysis\ADX\" />
-  </ItemGroup>
-
 </Project>

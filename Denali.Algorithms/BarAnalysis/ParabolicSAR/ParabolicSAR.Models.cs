@@ -8,17 +8,17 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
 {
     public class SARSegment
     {
-        public const double Acceleration = 0.02;
-        public const double MaxMomuntum = 0.2; 
+        public const decimal Acceleration = 0.02M;
+        public const decimal MaxMomuntum = 0.2M; 
 
-        public double AccelerationFactor { get; set; }
-        public double ExtremePoint { get; set; }
+        public decimal AccelerationFactor { get; set; }
+        public decimal ExtremePoint { get; set; }
         public IList<SAR> SARs { get; set; }
         public long Begin { get; set; }
         public long End { get; set; }
         public MarketSide Trend { get; set; }
 
-        public SARSegment(double extremePoint, long begin, MarketSide trend)
+        public SARSegment(decimal extremePoint, long begin, MarketSide trend)
         {
             ExtremePoint = extremePoint;
             Begin = begin;
@@ -57,10 +57,10 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
 
     public struct SAR
     {
-        public double Value { get; set; }
+        public decimal Value { get; set; }
         public long Time { get; set; }
 
-        public SAR(double value, long time)
+        public SAR(decimal value, long time)
         {
             Value = value;
             Time = time;

@@ -8,17 +8,17 @@ namespace Denali.Models.Polygon
     public class Bar
     {
         [JsonPropertyName("o")]
-        public double OpenPrice { get; set; }
+        public decimal OpenPrice { get; set; }
         [JsonPropertyName("c")]
-        public double ClosePrice { get; set; }
+        public decimal ClosePrice { get; set; }
         [JsonPropertyName("l")]
-        public double LowPrice { get; set; }
+        public decimal LowPrice { get; set; }
         [JsonPropertyName("h")]
-        public double HighPrice { get; set; }
+        public decimal HighPrice { get; set; }
         [JsonPropertyName("v")]
-        public double Volume { get; set; }
+        public decimal Volume { get; set; }
         [JsonPropertyName("vw")]
-        public double VolumeWeightedAverage { get; set; }
+        public decimal VolumeWeightedAverage { get; set; }
         [JsonPropertyName("t")]
         public long Time { get; set; }
         [JsonPropertyName("n")]

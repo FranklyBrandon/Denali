@@ -103,9 +103,9 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
 
             SARSegments.Add(segment);
         }
-        private double CalculateSARValue(double priorSAR, double extremePoint, double accelerationFactor, MarketSide trend)
+        private decimal CalculateSARValue(decimal priorSAR, decimal extremePoint, decimal accelerationFactor, MarketSide trend)
         {
-            double newSARValue;
+            decimal newSARValue;
             if (trend == MarketSide.Bullish)
             {
                 newSARValue = priorSAR + accelerationFactor * (extremePoint - priorSAR);
@@ -118,7 +118,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             return Math.Round(newSARValue, 2, MidpointRounding.AwayFromZero);
         }
     
-        private bool IsTrendReversing(double sarValue, Bar currentBar)
+        private bool IsTrendReversing(decimal sarValue, Bar currentBar)
         {
             if (sarValue >= currentBar.LowPrice && sarValue <= currentBar.HighPrice)
                 return true;
@@ -138,7 +138,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             return segment;
         }
 
-        private double ValidateSARMove(double calculatedSar, IList<Bar> barData, MarketSide trend)
+        private decimal ValidateSARMove(decimal calculatedSar, IList<Bar> barData, MarketSide trend)
         {
             var length = barData.Count - 1;
 

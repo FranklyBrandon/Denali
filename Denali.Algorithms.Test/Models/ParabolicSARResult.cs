@@ -6,9 +6,9 @@ namespace Denali.Algorithms.Test.Models
 {
     public class ParabolicSARResult
     {
-        public double SAR { get; set; }
-        public double ExtremePoint { get; set; }
-        public double AccelerationFactor { get; set; }
+        public decimal SAR { get; set; }
+        public decimal ExtremePoint { get; set; }
+        public decimal AccelerationFactor { get; set; }
         public long Time { get; set; }
     }
 }

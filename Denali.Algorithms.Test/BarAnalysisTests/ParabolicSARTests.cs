@@ -16,8 +16,8 @@ namespace Denali.Algorithms.Test.BarAnalysisTests
         [Test]
         public void JWellesWilderComparisonTest()
         {
-            var segment = new SARSegment(52.35, 4, MarketSide.Bullish);
-            var sar = new SAR(50.00, 4);
+            var segment = new SARSegment(52.35M, 4, MarketSide.Bullish);
+            var sar = new SAR(50.00M, 4);
             segment.SARs.Add(sar);
 
             Algo.SetInitialSegment(segment);
