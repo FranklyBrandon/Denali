@@ -8,6 +8,9 @@ namespace Denali.Algorithms.BarAnalysis.ADX
 {
     public class ADXResult
     {
-        public int MyProperty { get; set; }
+        public decimal DIPlus { get; set; }
+        public decimal DIMinus { get; set; }
+        public decimal ADX { get; set; }
+        public decimal TrueRange { get; set; }
     }
 }
