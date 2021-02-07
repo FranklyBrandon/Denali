@@ -12,14 +12,14 @@ namespace Denali.Algorithms.BarAnalysis
 {
     public class BarAlgorithmAnalysis
     {
-        private readonly BulishingEngulfingAlgo _bullishEngulfingAlgo;
-        private readonly ParabolicSARAlgo _sarAlgo;
+        private readonly Engulfing _bullishEngulfingAlgo;
+        private readonly ParabolicSAR.ParabolicSAR _sarAlgo;
         private readonly TimeUtils _timeUtils;
 
         public BarAlgorithmAnalysis()
         {
-            this._bullishEngulfingAlgo = new BulishingEngulfingAlgo();
-            this._sarAlgo = new ParabolicSARAlgo();
+            this._bullishEngulfingAlgo = new Engulfing();
+            this._sarAlgo = new ParabolicSAR.ParabolicSAR();
             this._timeUtils = new TimeUtils();
         }
 
@@ -31,7 +31,7 @@ namespace Denali.Algorithms.BarAnalysis
 
             var time = _timeUtils.GetETDatetimefromUnixMS(currentTime);
 
-            if (_sarAlgo.IsTrendBeginning(Trend.UpTrend) && _bullishEngulfingAlgo.IsEngulfing(barData, MarketSide.Bullish))
+            if (_sarAlgo.IsTrendBeginning(MarketSide.Bullish) && _bullishEngulfingAlgo.IsEngulfing(barData, MarketSide.Bullish))
             {
                 Console.WriteLine($"Bullish engulfing uptrend starting at {time.ToString()}");
             }

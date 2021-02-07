@@ -1,4 +1,5 @@
 ﻿using Denali.Models.Polygon;
+using Denali.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,9 +16,9 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
         public IList<SAR> SARs { get; set; }
         public long Begin { get; set; }
         public long End { get; set; }
-        public Trend Trend { get; set; }
+        public MarketSide Trend { get; set; }
 
-        public SARSegment(double extremePoint, long begin, Trend trend)
+        public SARSegment(double extremePoint, long begin, MarketSide trend)
         {
             ExtremePoint = extremePoint;
             Begin = begin;
@@ -29,7 +30,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
 
         public void UpdateExtremePoint(Bar currentBar)
         {
-            if (Trend == Trend.UpTrend)
+            if (Trend == MarketSide.Bullish)
             {
                 if (currentBar.HighPrice > ExtremePoint)
                 {
@@ -52,12 +53,6 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             if (AccelerationFactor != SARSegment.MaxMomuntum)
                 AccelerationFactor = Math.Round(AccelerationFactor + SARSegment.Acceleration, 2, MidpointRounding.AwayFromZero);
         }
-    }
-
-    public enum Trend
-    {
-        UpTrend,
-        DownTrend
     }
 
     public struct SAR

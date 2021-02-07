@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Denali.Algorithms.BarAnalysis.CandlestickPattern
 {
-    public class BulishingEngulfingAlgo
+    public class Engulfing
     {
         public bool IsEngulfing(IList<Bar> barData, MarketSide side)
         {

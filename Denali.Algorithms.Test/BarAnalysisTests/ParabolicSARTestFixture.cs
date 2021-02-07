@@ -14,7 +14,7 @@ namespace Denali.Algorithms.Test.BarAnalysisTests
             AggregateDataHelper.GetStockDataFile(AggregateDataHelper.AAPL_STOCK_DATA);
         private AggregateResponse _aggregateStockData1;
 
-        protected ParabolicSARAlgo Algo = new ParabolicSARAlgo();
+        protected ParabolicSAR Algo = new ParabolicSAR();
 
         public void StepThroughAnalyze(IList<Bar> barData)
         {

@@ -1,4 +1,5 @@
 ﻿using Denali.Models.Polygon;
+using Denali.Models.Shared;
 using Denali.Shared.Utility;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,14 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
     /// <summary>
     /// Encapsalates the logic and tracking of the Parabolic SAR (stop and reversals) values of a ticker in real time.
     /// </summary>
-    public class ParabolicSARAlgo
+    public class ParabolicSAR
     {
         /// <summary>
         /// The list of segments for this analyzation of the aggregate stock data. Segments represent the long and short trends across time.
         /// </summary>
         public IList<SARSegment> SARSegments;
 
-        public ParabolicSARAlgo()
+        public ParabolicSAR()
         {
             SARSegments = new List<SARSegment>();
         }
@@ -36,16 +37,16 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             else if (barData.Count == 2 && SARSegments.Count == 0)
             {
                 //Determine initial segment trend by the close prices of the first two bars
-                var trend = (barData[0].ClosePrice < barData[1].ClosePrice) ? Trend.UpTrend : Trend.DownTrend;
+                var trend = (barData[0].ClosePrice < barData[1].ClosePrice) ? MarketSide.Bullish : MarketSide.Bearish;
 
                 var maxPrice = Math.Max(barData[0].HighPrice, barData[1].HighPrice);
                 var minPrice = Math.Min(barData[0].LowPrice, barData[1].LowPrice);
 
                 //If trending up, the first SAR would be the lowest price of the last short segment, if trending down, the first SAR would be the highest price of the previous long segment.
-                var firstSar = trend == Trend.UpTrend ? minPrice : maxPrice;
+                var firstSar = trend == MarketSide.Bullish ? minPrice : maxPrice;
 
                 //The initial extreme point is the highest high of an uptrend, or the lowest low of a downtrend.
-                var extremePoint = trend == Trend.UpTrend ? maxPrice : minPrice;
+                var extremePoint = trend == MarketSide.Bullish ? maxPrice : minPrice;
 
                 //Create the first segment and initial SAR value.
                 var segment = new SARSegment(extremePoint, barData[0].Time, trend);
@@ -83,7 +84,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             }
         }
 
-        public bool IsTrendBeginning(Trend trend)
+        public bool IsTrendBeginning(MarketSide trend)
         {
             var segment = SARSegments.LastOrDefault();
             if (segment == null)
@@ -102,10 +103,10 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
 
             SARSegments.Add(segment);
         }
-        private double CalculateSARValue(double priorSAR, double extremePoint, double accelerationFactor, Trend trend)
+        private double CalculateSARValue(double priorSAR, double extremePoint, double accelerationFactor, MarketSide trend)
         {
             double newSARValue;
-            if (trend == Trend.UpTrend)
+            if (trend == MarketSide.Bullish)
             {
                 newSARValue = priorSAR + accelerationFactor * (extremePoint - priorSAR);
             }
@@ -127,9 +128,9 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
 
         private SARSegment SignalReversal(SARSegment currentSegment, Bar currentBar)
         {
-            var newTrend = currentSegment.Trend == Trend.UpTrend ? Trend.DownTrend : Trend.UpTrend;
+            var newTrend = currentSegment.Trend == MarketSide.Bullish ? MarketSide.Bearish : MarketSide.Bullish;
             var firstSAR = new SAR(currentSegment.ExtremePoint, currentBar.Time);
-            var firstExtremePoint = newTrend == Trend.UpTrend ? currentBar.HighPrice : currentBar.LowPrice;
+            var firstExtremePoint = newTrend == MarketSide.Bullish ? currentBar.HighPrice : currentBar.LowPrice;
 
             var segment = new SARSegment(firstExtremePoint, currentBar.Time, newTrend);
             segment.SARs.Add(firstSAR);
@@ -137,7 +138,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             return segment;
         }
 
-        private double ValidateSARMove(double calculatedSar, IList<Bar> barData, Trend trend)
+        private double ValidateSARMove(double calculatedSar, IList<Bar> barData, MarketSide trend)
         {
             var length = barData.Count - 1;
 
@@ -147,7 +148,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             if (tMinusOne == null || tMinusTwo == null)
                 return calculatedSar;
 
-            if (trend == Trend.UpTrend)
+            if (trend == MarketSide.Bullish)
             {
                 if (calculatedSar > tMinusOne.LowPrice || calculatedSar > tMinusTwo.LowPrice)
                     return Math.Min(tMinusOne.LowPrice, tMinusTwo.LowPrice);
