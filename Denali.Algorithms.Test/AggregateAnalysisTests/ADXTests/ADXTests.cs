@@ -18,7 +18,7 @@ namespace Denali.Algorithms.Test.AggregateAnalysisTests.ADXTests
 
             var wilderResults = AggregateDataHelper.JWellesWilderADXResults();
 
-            foreach (var result in ADXAlgo.ADXResults)
+            foreach (var result in ADXAlgo.InitialADXResults)
             {
                 ADXResult validResult;
                 wilderResults.TryGetValue(result.Time, out validResult);
@@ -36,15 +36,15 @@ namespace Denali.Algorithms.Test.AggregateAnalysisTests.ADXTests
             }
 
             var validTrueValueSum = wilderResults.Sum(x => x.Value.TrueRange);
-            var TrueValueSum = ADXAlgo.ADXResults.Sum(x => x.TrueRange);
+            var TrueValueSum = ADXAlgo.InitialADXResults.Sum(x => x.TrueRange);
             Assert.AreEqual(validTrueValueSum, TrueValueSum, "True Range sum are not equal");
 
             var validDMPlus = wilderResults.Sum(x => x.Value.DIPlus);
-            var DIPlus = ADXAlgo.ADXResults.Sum(x => x.DIPlus);
+            var DIPlus = ADXAlgo.InitialADXResults.Sum(x => x.DIPlus);
             Assert.AreEqual(validDMPlus, DIPlus, "DI Plus sum are not equal");
 
             var validDMMinus = wilderResults.Sum(x => x.Value.DIMinus);
-            var DIMinus = ADXAlgo.ADXResults.Sum(x => x.DIMinus);
+            var DIMinus = ADXAlgo.InitialADXResults.Sum(x => x.DIMinus);
             Assert.AreEqual(validDMMinus, DIMinus, "DI Minus sum are not equal");
         }
     }

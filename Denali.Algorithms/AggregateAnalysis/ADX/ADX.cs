@@ -13,7 +13,7 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
     {
         private readonly TrueRange _trueRange;
 
-        public IList<ADXResult> ADXResults { get; set; }
+        public IList<ADXResult> InitialADXResults { get; set; }
 
         public ADX()
         {
@@ -26,7 +26,7 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
         /// <param name="history"></param>
         public void Initiate(IEnumerable<IAggregateData> history)
         {
-            ADXResults = new List<ADXResult>();
+            InitialADXResults = new List<ADXResult>();
 
             var length = history.Count();
             //Start at index one because there is no previous value to use
@@ -38,7 +38,7 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
                 var tr = _trueRange.Analyze(previous, current);
                 var dms = CalculateDirectionalMovements(previous, current);
 
-                ADXResults.Add(new ADXResult
+                InitialADXResults.Add(new ADXResult
                 {
                     DIPlus = dms.Item1,
                     DIMinus = dms.Item2,
