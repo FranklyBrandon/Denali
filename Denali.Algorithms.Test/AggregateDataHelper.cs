@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Linq;
 using Denali.Models.Shared;
+using Denali.Algorithms.AggregateAnalysis.ADX;
 
 namespace Denali.Algorithms.Test
 {
@@ -550,6 +551,213 @@ namespace Denali.Algorithms.Test
                     ExtremePoint = 50.00M,
                     AccelerationFactor = 0.20M,
                     Time = 39
+                }
+            }.ToDictionary(x => x.Time, y => y);
+        }
+
+        public static List<IAggregateData> JWellesWilderADXExampleSheet()
+        {
+            return new List<IAggregateData>
+            {
+                new Bar
+                {
+                    HighPrice = 274M,
+                    LowPrice = 272M,
+                    ClosePrice = 272.75M,
+                    Time = 1
+                },
+                new Bar
+                {
+                    HighPrice = 273.25M,
+                    LowPrice = 270.25M,
+                    ClosePrice = 270.75M,
+                    Time = 2
+                },
+                new Bar
+                {
+                    HighPrice = 272M,
+                    LowPrice = 269.75M,
+                    ClosePrice = 270M,
+                    Time = 3
+                },
+                new Bar
+                {
+                    HighPrice = 270.75M,
+                    LowPrice = 268M,
+                    ClosePrice = 269.25M,
+                    Time = 4
+                },
+                new Bar
+                {
+                    HighPrice = 270M,
+                    LowPrice = 269M,
+                    ClosePrice = 269.75M,
+                    Time = 5
+                },
+                new Bar
+                {
+                    HighPrice = 270.50M,
+                    LowPrice = 268M,
+                    ClosePrice = 270M,
+                    Time = 6
+                },
+                new Bar
+                {
+                    HighPrice = 268.50M,
+                    LowPrice = 266.50M,
+                    ClosePrice = 266.50M,
+                    Time = 7
+                },
+                new Bar
+                {
+                    HighPrice = 265.50M,
+                    LowPrice = 263M,
+                    ClosePrice = 263.25M,
+                    Time = 8
+                },
+                new Bar
+                {
+                    HighPrice = 262.50M,
+                    LowPrice = 259M,
+                    ClosePrice = 260.25M,
+                    Time = 9
+                },
+                new Bar
+                {
+                    HighPrice = 263.50M,
+                    LowPrice = 260M,
+                    ClosePrice = 263M,
+                    Time = 10
+                },
+                new Bar
+                {
+                    HighPrice = 269.50M,
+                    LowPrice = 263M,
+                    ClosePrice = 266.50M,
+                    Time = 11
+                },
+                new Bar
+                {
+                    HighPrice = 267.25M,
+                    LowPrice = 265M,
+                    ClosePrice = 267M,
+                    Time = 12
+                },
+                new Bar
+                {
+                    HighPrice = 267.50M,
+                    LowPrice = 265.50M,
+                    ClosePrice = 265.75M,
+                    Time = 13
+                },
+                new Bar
+                {
+                    HighPrice = 269.75M,
+                    LowPrice = 266M,
+                    ClosePrice = 268.50M,
+                    Time = 14
+                }
+            };
+        }
+
+        /// <summary>
+        /// Page 40
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<long, ADXResult> JWellesWilderADXResults()
+        {
+            return new List<ADXResult>
+            {
+                new ADXResult
+                {
+                    TrueRange = 3.00M,
+                    DIPlus = 0M,
+                    DIMinus = 1.75M,
+                    Time = 2
+                },
+                new ADXResult
+                {
+                    TrueRange = 2.25M,
+                    DIPlus = 0M,
+                    DIMinus = 0.50M,
+                    Time = 3
+                },
+                new ADXResult
+                {
+                    TrueRange = 2.75M,
+                    DIPlus = 0M,
+                    DIMinus = 1.75M,
+                    Time = 4
+                },
+                new ADXResult
+                {
+                    TrueRange = 1.00M,
+                    DIPlus = 0M,
+                    DIMinus = 0M,
+                    Time = 5
+                },
+                new ADXResult
+                {
+                    TrueRange = 2.50M,
+                    DIPlus = 0M,
+                    DIMinus = 1.00M,
+                    Time = 6
+                },
+                new ADXResult
+                {
+                    TrueRange = 3.50M,
+                    DIPlus = 0M,
+                    DIMinus = 1.50M,
+                    Time = 7
+                },
+                new ADXResult
+                {
+                    TrueRange = 3.50M,
+                    DIPlus = 0M,
+                    DIMinus = 3.50M,
+                    Time = 8
+                },
+                new ADXResult
+                {
+                    TrueRange = 4.25M,
+                    DIPlus = 0M,
+                    DIMinus = 4.00M,
+                    Time = 9
+                },
+                new ADXResult
+                {
+                    TrueRange = 3.50M,
+                    DIPlus = 1.00M,
+                    DIMinus = 0M,
+                    Time = 10
+                },
+                new ADXResult
+                {
+                    TrueRange = 6.50M,
+                    DIPlus = 6M,
+                    DIMinus = 0M,
+                    Time = 11
+                },
+                new ADXResult
+                {
+                    TrueRange = 2.25M,
+                    DIPlus = 0M,
+                    DIMinus = 0M,
+                    Time = 12
+                },
+                new ADXResult
+                {
+                    TrueRange = 2.00M,
+                    DIPlus = 0.25M,
+                    DIMinus = 0M,
+                    Time = 13
+                },
+                new ADXResult
+                {
+                    TrueRange = 4.00M,
+                    DIPlus = 2.25M,
+                    DIMinus = 0M,
+                    Time = 14
                 }
             }.ToDictionary(x => x.Time, y => y);
         }

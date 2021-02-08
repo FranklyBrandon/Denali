@@ -12,5 +12,6 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
         public decimal DIMinus { get; set; }
         public decimal ADX { get; set; }
         public decimal TrueRange { get; set; }
+        public long Time { get; set; }
     }
 }

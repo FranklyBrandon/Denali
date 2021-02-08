@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Denali.Algorithms.Test.BarAnalysisTests
+namespace Denali.Algorithms.Test.AggregateAnalysisTests
 {
     [TestFixture]
     public class ParabolicSARTestFixture

@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Denali.Algorithms.Test.BarAnalysisTests
+namespace Denali.Algorithms.Test.AggregateAnalysisTests
 {
     public class ParabolicSARTests : ParabolicSARTestFixture
     {
