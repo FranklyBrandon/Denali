@@ -1,4 +1,4 @@
-﻿using Denali.Algorithms.BarAnalysis;
+﻿using Denali.Algorithms.AggregateAnalysis;
 using Denali.Models.Polygon;
 using Denali.Models.Shared;
 using Denali.Services.Polygon;

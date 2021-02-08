@@ -1,6 +1,4 @@
-﻿using Denali.Algorithms.BarAnalysis.CandlestickPattern;
-using Denali.Algorithms.BarAnalysis.ParabolicSAR;
-using Denali.Models.Polygon;
+﻿using Denali.Algorithms.AggregateAnalysis.CandlestickPattern;
 using Denali.Models.Shared;
 using Denali.Shared.Utility;
 using System;
@@ -8,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Denali.Algorithms.BarAnalysis
+namespace Denali.Algorithms.AggregateAnalysis
 {
     public class BarAlgorithmAnalysis
     {

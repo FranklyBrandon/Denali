@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Denali.Algorithms.BarAnalysis.ADX
+namespace Denali.Algorithms.AggregateAnalysis.ADX
 {
     public class ADXResult
     {

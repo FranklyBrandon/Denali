@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Denali.Algorithms.BarAnalysis.CandlestickPattern
+namespace Denali.Algorithms.AggregateAnalysis.CandlestickPattern
 {
     public class Engulfing
     {

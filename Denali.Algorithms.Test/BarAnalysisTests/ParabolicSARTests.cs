@@ -1,4 +1,4 @@
-﻿using Denali.Algorithms.BarAnalysis.ParabolicSAR;
+﻿using Denali.Algorithms.AggregateAnalysis.ParabolicSAR;
 using Denali.Algorithms.Test.Models;
 using Denali.Models.Shared;
 using NUnit.Framework;

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
+namespace Denali.Algorithms.AggregateAnalysis.ParabolicSAR
 {
     /// <summary>
     /// Encapsalates the logic and tracking of the Parabolic SAR (stop and reversals) values of a ticker in real time.

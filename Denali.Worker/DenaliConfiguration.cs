@@ -1,4 +1,4 @@
-﻿using Denali.Algorithms.BarAnalysis;
+﻿using Denali.Algorithms.AggregateAnalysis;
 using Denali.Processors;
 using Denali.Services;
 using Denali.Services.Data;

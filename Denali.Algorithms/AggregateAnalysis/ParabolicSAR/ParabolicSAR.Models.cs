@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
+namespace Denali.Algorithms.AggregateAnalysis.ParabolicSAR
 {
     public class SARSegment
     {
