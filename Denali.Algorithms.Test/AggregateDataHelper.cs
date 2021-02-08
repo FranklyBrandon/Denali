@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Linq;
+using Denali.Models.Shared;
 
 namespace Denali.Algorithms.Test
 {
@@ -26,9 +27,9 @@ namespace Denali.Algorithms.Test
         /// Wilder uses this example data to demonstrate the parabolic stop and reversal calculation
         /// </summary>
         /// <returns></returns>
-        public static List<Bar> JWellesWilderSARExampleSheet()
+        public static List<IAggregateData> JWellesWilderSARExampleSheet()
         {
-            return new List<Bar>
+            return new List<IAggregateData>
             {
                 //Date 4
                 new Bar

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Denali.Models.Shared;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -18,7 +19,7 @@ namespace Denali.Models.Polygon
         [JsonPropertyName("adjusted")]
         public bool Adjusted { get; set; }
         [JsonPropertyName("results")]
-        public List<Bar> Bars { get; set; }
+        public IEnumerable<Bar> Bars { get; set; }
         [JsonPropertyName("request_id")]
         public string RequestId { get; set; }
     }

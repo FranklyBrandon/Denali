@@ -28,7 +28,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             AccelerationFactor = Acceleration;
         }
 
-        public void UpdateExtremePoint(Bar currentBar)
+        public void UpdateExtremePoint(IAggregateData currentBar)
         {
             if (Trend == MarketSide.Bullish)
             {

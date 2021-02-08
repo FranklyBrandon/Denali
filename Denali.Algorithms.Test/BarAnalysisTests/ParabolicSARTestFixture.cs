@@ -1,5 +1,6 @@
 ﻿using Denali.Algorithms.BarAnalysis.ParabolicSAR;
 using Denali.Models.Polygon;
+using Denali.Models.Shared;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,9 @@ namespace Denali.Algorithms.Test.BarAnalysisTests
 
         protected ParabolicSAR Algo = new ParabolicSAR();
 
-        public void StepThroughAnalyze(IList<Bar> barData)
+        public void StepThroughAnalyze(IList<IAggregateData> barData)
         {
-            var currentBarData = new List<Bar>();
+            var currentBarData = new List<IAggregateData>();
 
             for (int i = 0; i <= barData.Count - 1; i++)
             {

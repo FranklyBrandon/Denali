@@ -23,7 +23,7 @@ namespace Denali.Algorithms.BarAnalysis
             this._timeUtils = new TimeUtils();
         }
 
-        public void Analyze(IList<Bar> barData)
+        public void Analyze(IEnumerable<IAggregateData> barData)
         {
             long currentTime = barData.Last().Time;
 

@@ -1,10 +1,12 @@
 ﻿using Denali.Algorithms.BarAnalysis;
 using Denali.Models.Polygon;
+using Denali.Models.Shared;
 using Denali.Services.Polygon;
 using Denali.Shared.Utility;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -57,17 +59,16 @@ namespace Denali.Processors
 
         public void StepThroughAggregateData(AggregateResponse aggregateData)
         {
-            var size = aggregateData.Bars.Count;
+            var size = aggregateData.Bars.Count();
             if (size <= 1)
                 return;
 
-            var stepData = new List<Bar>();
+            var stepData = aggregateData.Bars.ToList();
 
-            //Start at one
             for (int i = 0; i < size; i++)
             {
-                stepData = aggregateData.Bars.GetRange(0, i + 1);
-                _barAlogirthmnAnalysis.Analyze(stepData);
+                var batchRange = stepData.GetRange(0, i + 1);
+                _barAlogirthmnAnalysis.Analyze(batchRange);
             }
          }
     }

@@ -1,29 +1,19 @@
-﻿using Denali.Models.Shared;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
-namespace Denali.Models.Polygon
+namespace Denali.Models.Shared
 {
-    public class Bar : IAggregateData
+    public interface IAggregateData
     {
-        [JsonPropertyName("o")]
         public decimal OpenPrice { get; set; }
-        [JsonPropertyName("c")]
         public decimal ClosePrice { get; set; }
-        [JsonPropertyName("l")]
         public decimal LowPrice { get; set; }
-        [JsonPropertyName("h")]
         public decimal HighPrice { get; set; }
-        [JsonPropertyName("v")]
         public decimal Volume { get; set; }
-        [JsonPropertyName("vw")]
-        public decimal VolumeWeightedAverage { get; set; }
-        [JsonPropertyName("t")]
         public long Time { get; set; }
-        [JsonPropertyName("n")]
-        public int Number { get; set; }
 
         public bool IsOpen
         {

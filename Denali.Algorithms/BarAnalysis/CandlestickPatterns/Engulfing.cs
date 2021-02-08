@@ -11,9 +11,9 @@ namespace Denali.Algorithms.BarAnalysis.CandlestickPattern
 {
     public class Engulfing
     {
-        public bool IsEngulfing(IList<Bar> barData, MarketSide side)
+        public bool IsEngulfing(IEnumerable<IAggregateData> barData, MarketSide side)
         {
-            var size = barData.Count - 1;
+            var size = barData.Count() - 1;
             var previous = barData.ElementAtOrDefault(size - 1);
             var current = barData.ElementAtOrDefault(size);
 
@@ -23,7 +23,7 @@ namespace Denali.Algorithms.BarAnalysis.CandlestickPattern
             return IsEngulfing(previous, current, side);
         }
 
-        private bool IsEngulfing(Bar previous, Bar current, MarketSide side)
+        private bool IsEngulfing(IAggregateData previous, IAggregateData current, MarketSide side)
         {
             if (side == MarketSide.Bullish && previous.IsClosed && current.IsOpen)
             {

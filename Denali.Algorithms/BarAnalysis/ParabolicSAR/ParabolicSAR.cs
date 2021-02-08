@@ -26,21 +26,21 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
         /// Calculate the parabolic SAR values for a given group of aggregate stock data. To calculate the parabolic SAR values over a time frame, continually call this method with the entirety of the aggregate stock data whenever a new period is added.
         /// </summary>
         /// <param name="barData"></param>
-        public void Analyze(IList<Bar> barData)
+        public void Analyze(IEnumerable<IAggregateData> barData)
         {
             //If no intial SAR value is given, and there are less than two bars, SAR caclulation cannot begin.
-            if (barData.Count < 2 && SARSegments.Count == 0)
+            if (barData.Count() < 2 && SARSegments.Count == 0)
             {
                 return;
             }
             //If no initial SAR value is given, approximate an initial SAR value to use as the previous SAR value in further calculations.
-            else if (barData.Count == 2 && SARSegments.Count == 0)
+            else if (barData.Count() == 2 && SARSegments.Count == 0)
             {
                 //Determine initial segment trend by the close prices of the first two bars
-                var trend = (barData[0].ClosePrice < barData[1].ClosePrice) ? MarketSide.Bullish : MarketSide.Bearish;
+                var trend = (barData.ElementAt(0).ClosePrice < barData.ElementAt(1).ClosePrice) ? MarketSide.Bullish : MarketSide.Bearish;
 
-                var maxPrice = Math.Max(barData[0].HighPrice, barData[1].HighPrice);
-                var minPrice = Math.Min(barData[0].LowPrice, barData[1].LowPrice);
+                var maxPrice = Math.Max(barData.ElementAt(0).HighPrice, barData.ElementAt(1).HighPrice);
+                var minPrice = Math.Min(barData.ElementAt(0).LowPrice, barData.ElementAt(1).LowPrice);
 
                 //If trending up, the first SAR would be the lowest price of the last short segment, if trending down, the first SAR would be the highest price of the previous long segment.
                 var firstSar = trend == MarketSide.Bullish ? minPrice : maxPrice;
@@ -49,8 +49,8 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
                 var extremePoint = trend == MarketSide.Bullish ? maxPrice : minPrice;
 
                 //Create the first segment and initial SAR value.
-                var segment = new SARSegment(extremePoint, barData[0].Time, trend);
-                var firstSAR = new SAR(firstSar, barData[1].Time);
+                var segment = new SARSegment(extremePoint, barData.ElementAt(0).Time, trend);
+                var firstSAR = new SAR(firstSar, barData.ElementAt(1).Time);
 
                 segment.SARs.Add(firstSAR);
                 SARSegments.Add(segment);
@@ -118,7 +118,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             return Math.Round(newSARValue, 2, MidpointRounding.AwayFromZero);
         }
     
-        private bool IsTrendReversing(decimal sarValue, Bar currentBar)
+        private bool IsTrendReversing(decimal sarValue, IAggregateData currentBar)
         {
             if (sarValue >= currentBar.LowPrice && sarValue <= currentBar.HighPrice)
                 return true;
@@ -126,7 +126,7 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             return false;
         }
 
-        private SARSegment SignalReversal(SARSegment currentSegment, Bar currentBar)
+        private SARSegment SignalReversal(SARSegment currentSegment, IAggregateData currentBar)
         {
             var newTrend = currentSegment.Trend == MarketSide.Bullish ? MarketSide.Bearish : MarketSide.Bullish;
             var firstSAR = new SAR(currentSegment.ExtremePoint, currentBar.Time);
@@ -138,9 +138,9 @@ namespace Denali.Algorithms.BarAnalysis.ParabolicSAR
             return segment;
         }
 
-        private decimal ValidateSARMove(decimal calculatedSar, IList<Bar> barData, MarketSide trend)
+        private decimal ValidateSARMove(decimal calculatedSar, IEnumerable<IAggregateData> barData, MarketSide trend)
         {
-            var length = barData.Count - 1;
+            var length = barData.Count() - 1;
 
             var tMinusOne = barData.ElementAtOrDefault(length - 1);
             var tMinusTwo = barData.ElementAtOrDefault(length - 2);
