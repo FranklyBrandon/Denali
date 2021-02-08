@@ -39,13 +39,13 @@ namespace Denali.Algorithms.Test.AggregateAnalysisTests.ADXTests
             var TrueValueSum = ADXAlgo.ADXResults.Sum(x => x.TrueRange);
             Assert.AreEqual(validTrueValueSum, TrueValueSum, "True Range sum are not equal");
 
-            var validDIPlus = wilderResults.Sum(x => x.Value.DIPlus);
+            var validDMPlus = wilderResults.Sum(x => x.Value.DIPlus);
             var DIPlus = ADXAlgo.ADXResults.Sum(x => x.DIPlus);
-            Assert.AreEqual(validDIPlus, DIPlus, "DI Plus sum are not equal");
+            Assert.AreEqual(validDMPlus, DIPlus, "DI Plus sum are not equal");
 
-            var validDIMinus = wilderResults.Sum(x => x.Value.DIMinus);
+            var validDMMinus = wilderResults.Sum(x => x.Value.DIMinus);
             var DIMinus = ADXAlgo.ADXResults.Sum(x => x.DIMinus);
-            Assert.AreEqual(validDIMinus, DIMinus, "DI Minus sum are not equal");
+            Assert.AreEqual(validDMMinus, DIMinus, "DI Minus sum are not equal");
         }
     }
 }
