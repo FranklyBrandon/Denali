@@ -30,8 +30,8 @@ namespace Denali.Algorithms.Test.AggregateAnalysisTests.ADXTests
                 {
                     Assert.AreEqual(validResult.TrueRange, result.TrueRange, $"Time: {result.Time}");
                     Assert.AreEqual(validResult.ADX, result.ADX, $"Time: {result.Time}");
-                    Assert.AreEqual(validResult.DIPlus, result.DIPlus, $"Time: {result.Time}");
-                    Assert.AreEqual(validResult.DIMinus, result.DIMinus, $"Time: {result.Time}");
+                    Assert.AreEqual(validResult.DMPlus, result.DMPlus, $"Time: {result.Time}");
+                    Assert.AreEqual(validResult.DMMinus, result.DMMinus, $"Time: {result.Time}");
                 }
             }
 
@@ -39,12 +39,12 @@ namespace Denali.Algorithms.Test.AggregateAnalysisTests.ADXTests
             var TrueValueSum = ADXAlgo.InitialADXResults.Sum(x => x.TrueRange);
             Assert.AreEqual(validTrueValueSum, TrueValueSum, "True Range sum are not equal");
 
-            var validDMPlus = wilderResults.Sum(x => x.Value.DIPlus);
-            var DIPlus = ADXAlgo.InitialADXResults.Sum(x => x.DIPlus);
+            var validDMPlus = wilderResults.Sum(x => x.Value.DMPlus);
+            var DIPlus = ADXAlgo.InitialADXResults.Sum(x => x.DMPlus);
             Assert.AreEqual(validDMPlus, DIPlus, "DI Plus sum are not equal");
 
-            var validDMMinus = wilderResults.Sum(x => x.Value.DIMinus);
-            var DIMinus = ADXAlgo.InitialADXResults.Sum(x => x.DIMinus);
+            var validDMMinus = wilderResults.Sum(x => x.Value.DMMinus);
+            var DIMinus = ADXAlgo.InitialADXResults.Sum(x => x.DMMinus);
             Assert.AreEqual(validDMMinus, DIMinus, "DI Minus sum are not equal");
         }
     }

@@ -8,10 +8,16 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
 {
     public class ADXResult
     {
+        public decimal DMPlus { get; set; }
+        public decimal SmoothedDMPlus { get; set; }
+        public decimal DMMinus { get; set; }
+        public decimal SmoothedDMMinus { get; set; }
         public decimal DIPlus { get; set; }
         public decimal DIMinus { get; set; }
+        public decimal DX { get; set; }
         public decimal ADX { get; set; }
         public decimal TrueRange { get; set; }
+        public decimal SmoothedTrueRange { get; set; }
         public long Time { get; set; }
     }
 }

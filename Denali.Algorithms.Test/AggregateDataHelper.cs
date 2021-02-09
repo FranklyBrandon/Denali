@@ -671,92 +671,92 @@ namespace Denali.Algorithms.Test
                 new ADXResult
                 {
                     TrueRange = 3.00M,
-                    DIPlus = 0M,
-                    DIMinus = 1.75M,
+                    DMPlus = 0M,
+                    DMMinus = 1.75M,
                     Time = 2
                 },
                 new ADXResult
                 {
                     TrueRange = 2.25M,
-                    DIPlus = 0M,
-                    DIMinus = 0.50M,
+                    DMPlus = 0M,
+                    DMMinus = 0.50M,
                     Time = 3
                 },
                 new ADXResult
                 {
                     TrueRange = 2.75M,
-                    DIPlus = 0M,
-                    DIMinus = 1.75M,
+                    DMPlus = 0M,
+                    DMMinus = 1.75M,
                     Time = 4
                 },
                 new ADXResult
                 {
                     TrueRange = 1.00M,
-                    DIPlus = 0M,
-                    DIMinus = 0M,
+                    DMPlus = 0M,
+                    DMMinus = 0M,
                     Time = 5
                 },
                 new ADXResult
                 {
                     TrueRange = 2.50M,
-                    DIPlus = 0M,
-                    DIMinus = 1.00M,
+                    DMPlus = 0M,
+                    DMMinus = 1.00M,
                     Time = 6
                 },
                 new ADXResult
                 {
                     TrueRange = 3.50M,
-                    DIPlus = 0M,
-                    DIMinus = 1.50M,
+                    DMPlus = 0M,
+                    DMMinus = 1.50M,
                     Time = 7
                 },
                 new ADXResult
                 {
                     TrueRange = 3.50M,
-                    DIPlus = 0M,
-                    DIMinus = 3.50M,
+                    DMPlus = 0M,
+                    DMMinus = 3.50M,
                     Time = 8
                 },
                 new ADXResult
                 {
                     TrueRange = 4.25M,
-                    DIPlus = 0M,
-                    DIMinus = 4.00M,
+                    DMPlus = 0M,
+                    DMMinus = 4.00M,
                     Time = 9
                 },
                 new ADXResult
                 {
                     TrueRange = 3.50M,
-                    DIPlus = 1.00M,
-                    DIMinus = 0M,
+                    DMPlus = 1.00M,
+                    DMMinus = 0M,
                     Time = 10
                 },
                 new ADXResult
                 {
                     TrueRange = 6.50M,
-                    DIPlus = 6M,
-                    DIMinus = 0M,
+                    DMPlus = 6M,
+                    DMMinus = 0M,
                     Time = 11
                 },
                 new ADXResult
                 {
                     TrueRange = 2.25M,
-                    DIPlus = 0M,
-                    DIMinus = 0M,
+                    DMPlus = 0M,
+                    DMMinus = 0M,
                     Time = 12
                 },
                 new ADXResult
                 {
                     TrueRange = 2.00M,
-                    DIPlus = 0.25M,
-                    DIMinus = 0M,
+                    DMPlus = 0.25M,
+                    DMMinus = 0M,
                     Time = 13
                 },
                 new ADXResult
                 {
                     TrueRange = 4.00M,
-                    DIPlus = 2.25M,
-                    DIMinus = 0M,
+                    DMPlus = 2.25M,
+                    DMMinus = 0M,
                     Time = 14
                 }
             }.ToDictionary(x => x.Time, y => y);
