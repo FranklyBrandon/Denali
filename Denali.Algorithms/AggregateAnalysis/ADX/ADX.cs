@@ -1,11 +1,8 @@
 ﻿using Denali.Algorithms.AggregateAnalysis.TR;
-using Denali.Models.Polygon;
 using Denali.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denali.Algorithms.AggregateAnalysis.ADX
 {
@@ -53,9 +50,11 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
                 if (i <= backlog)
                     continue;
 
+                ADXResult previousResult = InitialADXResults.ElementAt(i - 1);
                 //Day 15
                 if (i == backlog + 1)
                 {
+                    //Use sums for the first day of smoothing
                     var trueRangeSum = InitialADXResults.Sum(x => x.TrueRange);
                     var dmpSum = InitialADXResults.Sum(x => x.DMPlus);
                     var dmmSum = InitialADXResults.Sum(x => x.DMMinus);
@@ -64,11 +63,30 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
                     result.SmoothedDMPlus = GetSmoothedValue(dmpSum, result.DMPlus, backlog);
                     result.SmoothedDMMinus = GetSmoothedValue(dmmSum, result.DMMinus, backlog);
                 }
+                else
+                {
+                    //Use previous for smoothing
+                    result.SmoothedTrueRange = GetSmoothedValue(previousResult.SmoothedTrueRange, result.TrueRange, backlog);
+                    result.SmoothedDMPlus = GetSmoothedValue(previousResult.SmoothedDMPlus, result.DMPlus, backlog);
+                    result.SmoothedDMMinus = GetSmoothedValue(previousResult.SmoothedDMMinus, result.DMMinus, backlog);
+                }
 
-                var previousResult = InitialADXResults.ElementAt(i - 1);
-                result.SmoothedTrueRange = GetSmoothedValue(previousResult.SmoothedTrueRange, result.TrueRange, backlog);
-                result.SmoothedDMPlus = GetSmoothedValue(previousResult.SmoothedDMPlus, result.DMPlus, backlog);
-                result.SmoothedDMMinus = GetSmoothedValue(previousResult.SmoothedDMMinus, result.DMMinus, backlog);
+                //Calculate increments
+                result.DIPlus = 100 * result.SmoothedDMPlus / result.SmoothedTrueRange;
+                result.DIMinus = 100 * result.SmoothedDMMinus / result.SmoothedTrueRange;
+                result.DX = 100 * Math.Abs(result.DIPlus - result.DIMinus) / (result.DIPlus + result.DIMinus);
+
+                if (i == (2 * backlog))
+                {
+                    //initial ADX
+                    //adx = sum of adx / backlog
+                    result.ADX = InitialADXResults.Sum(x => x.DX) / backlog;
+                }
+                else if (i > (2 * backlog))
+                {
+                    //average DX
+                    result.ADX = (previousResult.ADX * (backlog - 1) + result.DX)/ backlog;
+                }
             }
         }
 
