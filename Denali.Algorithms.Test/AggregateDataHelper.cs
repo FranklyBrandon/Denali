@@ -656,7 +656,105 @@ namespace Denali.Algorithms.Test
                     LowPrice = 266M,
                     ClosePrice = 268.50M,
                     Time = 14
-                }
+                },
+                new Bar
+                {
+                    HighPrice = 268.25M,
+                    LowPrice = 261.250M,
+                    ClosePrice = 264.25M,
+                    Time = 15
+                },
+                new Bar
+                {
+                    HighPrice = 264.75M,
+                    LowPrice = 266M,
+                    ClosePrice = 264M,
+                    Time = 16
+                },
+                new Bar
+                {
+                    HighPrice = 268M,
+                    LowPrice = 266.25M,
+                    ClosePrice = 266.50M,
+                    Time = 17
+                },
+                new Bar
+                {
+                    HighPrice = 266M,
+                    LowPrice = 264.25M,
+                    ClosePrice = 265.25M,
+                    Time = 18
+                },
+                new Bar
+                {
+                    HighPrice = 274M,
+                    LowPrice = 267M,
+                    ClosePrice = 2730M,
+                    Time = 19
+                },
+                new Bar
+                {
+                    HighPrice = 277.50M,
+                    LowPrice = 273.50M,
+                    ClosePrice = 276.75M,
+                    Time = 20
+                },
+                new Bar
+                {
+                    HighPrice = 277M,
+                    LowPrice = 272.50M,
+                    ClosePrice = 273M,
+                    Time = 21
+                },
+                new Bar
+                {
+                    HighPrice = 272M,
+                    LowPrice = 269.50M,
+                    ClosePrice = 270.25M,
+                    Time = 22
+                },
+                new Bar
+                {
+                    HighPrice = 267.75M,
+                    LowPrice = 264M,
+                    ClosePrice = 266.75M,
+                    Time = 23
+                },
+                new Bar
+                {
+                    HighPrice = 269.25M,
+                    LowPrice = 263M,
+                    ClosePrice = 263M,
+                    Time = 24
+                },
+                new Bar
+                {
+                    HighPrice = 266M,
+                    LowPrice = 263.50M,
+                    ClosePrice = 265.50M,
+                    Time = 25
+                },
+                new Bar
+                {
+                    HighPrice = 265M,
+                    LowPrice = 262M,
+                    ClosePrice = 262.25M,
+                    Time = 26
+                },
+                new Bar
+                {
+                    HighPrice = 264.75M,
+                    LowPrice = 261.50M,
+                    ClosePrice = 262.75M,
+                    Time = 27
+                },
+                new Bar
+                {
+                    HighPrice = 261M,
+                    LowPrice = 255.50M,
+                    ClosePrice = 255.50M,
+                    Time = 28
+                },
             };
         }
 
