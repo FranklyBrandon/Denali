@@ -47,12 +47,15 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
                     Time = current.Time
                 };
 
-                if (i <= backlog)
+                if (i <= backlog - 1)
+                {
+                    InitialADXResults.Add(result);
                     continue;
+                }
 
-                ADXResult previousResult = InitialADXResults.ElementAt(i - 1);
+                ADXResult previousResult = default;
                 //Day 15
-                if (i == backlog + 1)
+                if (i == backlog)
                 {
                     //Use sums for the first day of smoothing
                     var trueRangeSum = InitialADXResults.Sum(x => x.TrueRange);
@@ -66,6 +69,7 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
                 else
                 {
                     //Use previous for smoothing
+                    previousResult = InitialADXResults.ElementAt(i - 1);
                     result.SmoothedTrueRange = GetSmoothedValue(previousResult.SmoothedTrueRange, result.TrueRange, backlog);
                     result.SmoothedDMPlus = GetSmoothedValue(previousResult.SmoothedDMPlus, result.DMPlus, backlog);
                     result.SmoothedDMMinus = GetSmoothedValue(previousResult.SmoothedDMMinus, result.DMMinus, backlog);

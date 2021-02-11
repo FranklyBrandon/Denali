@@ -660,7 +660,7 @@ namespace Denali.Algorithms.Test
                 new Bar
                 {
                     HighPrice = 268.25M,
-                    LowPrice = 261.250M,
+                    LowPrice = 263.25M,
                     ClosePrice = 264.25M,
                     Time = 15
                 },
