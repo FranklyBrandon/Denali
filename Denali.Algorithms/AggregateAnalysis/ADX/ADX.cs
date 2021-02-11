@@ -84,13 +84,13 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
                 result.DIMinus = Math.Round(100 * result.SmoothedDMMinus / result.SmoothedTrueRange, 0, MidpointRounding.AwayFromZero);
                 result.DX = Math.Round(100 * Math.Abs(result.DIPlus - result.DIMinus) / (result.DIPlus + result.DIMinus), 0, MidpointRounding.AwayFromZero);
 
-                if (i == (2 * backlog))
+                if (i == (2 * backlog) - 1)
                 {
                     //initial ADX
                     //adx = sum of adx / backlog
                     result.ADX = InitialADXResults.Sum(x => x.DX) / backlog;
                 }
-                else if (i > (2 * backlog))
+                else if (i > (2 * backlog) - 1)
                 {
                     //average DX
                     result.ADX = (previousResult.ADX * (backlog - 1) + result.DX)/ backlog;
