@@ -1,4 +1,5 @@
-﻿using Denali.Models.Polygon;
+﻿using Denali.Algorithms.AggregateAnalysis.Utilities;
+using Denali.Models.Polygon;
 using Denali.Models.Shared;
 using Denali.Shared.Utility;
 using System;
@@ -115,7 +116,7 @@ namespace Denali.Algorithms.AggregateAnalysis.ParabolicSAR
                 newSARValue = priorSAR - accelerationFactor * (priorSAR - extremePoint);
             }
 
-            return Math.Round(newSARValue, 2, MidpointRounding.AwayFromZero);
+            return AlgorithmUtils.RoundMoney(newSARValue);
         }
     
         private bool IsTrendReversing(decimal sarValue, IAggregateData currentBar)

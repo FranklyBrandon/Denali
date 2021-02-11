@@ -1,4 +1,5 @@
 ﻿using Denali.Algorithms.AggregateAnalysis.TR;
+using Denali.Algorithms.AggregateAnalysis.Utilities;
 using Denali.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -29,11 +30,14 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
             var backlog = length / 2;
 
             //Start at index one because there is no previous value to use
-            for (int i = 1; i < length; i++)
+            for (int i = 0; i < length; i++)
             {
                 ADXResult result;
  
                 var previous = history.ElementAtOrDefault(i - 1);
+                if (previous == null)
+                    continue;
+
                 var current = history.ElementAtOrDefault(i);
 
                 var tr = _trueRange.Analyze(previous, current);
@@ -69,16 +73,16 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
                 else
                 {
                     //Use previous for smoothing
-                    previousResult = InitialADXResults.ElementAt(i - 1);
+                    previousResult = InitialADXResults.Last();
                     result.SmoothedTrueRange = GetSmoothedValue(previousResult.SmoothedTrueRange, result.TrueRange, backlog);
                     result.SmoothedDMPlus = GetSmoothedValue(previousResult.SmoothedDMPlus, result.DMPlus, backlog);
                     result.SmoothedDMMinus = GetSmoothedValue(previousResult.SmoothedDMMinus, result.DMMinus, backlog);
                 }
 
                 //Calculate increments
-                result.DIPlus = 100 * result.SmoothedDMPlus / result.SmoothedTrueRange;
-                result.DIMinus = 100 * result.SmoothedDMMinus / result.SmoothedTrueRange;
-                result.DX = 100 * Math.Abs(result.DIPlus - result.DIMinus) / (result.DIPlus + result.DIMinus);
+                result.DIPlus = Math.Round(100 * result.SmoothedDMPlus / result.SmoothedTrueRange, 0, MidpointRounding.AwayFromZero);
+                result.DIMinus = Math.Round(100 * result.SmoothedDMMinus / result.SmoothedTrueRange, 0, MidpointRounding.AwayFromZero);
+                result.DX = Math.Round(100 * Math.Abs(result.DIPlus - result.DIMinus) / (result.DIPlus + result.DIMinus), 0, MidpointRounding.AwayFromZero);
 
                 if (i == (2 * backlog))
                 {
@@ -91,6 +95,8 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
                     //average DX
                     result.ADX = (previousResult.ADX * (backlog - 1) + result.DX)/ backlog;
                 }
+
+                InitialADXResults.Add(result);
             }
         }
 
@@ -122,7 +128,7 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
 
         private decimal GetSmoothedValue(decimal previousValue, decimal currentValue, int backlog)
         {
-            return previousValue - (previousValue / backlog) + currentValue;
+            return AlgorithmUtils.RoundMoney(previousValue - (previousValue / backlog) + currentValue);
         }
     }
 }
