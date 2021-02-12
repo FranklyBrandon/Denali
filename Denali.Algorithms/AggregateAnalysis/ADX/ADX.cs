@@ -22,12 +22,11 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
         /// Initiate the ADX calculation by giving a lookback period of history
         /// </summary>
         /// <param name="history"></param>
-        public void Initiate(IEnumerable<IAggregateData> history)
+        public void Initiate(IEnumerable<IAggregateData> history, int backlog)
         {
             InitialADXResults = new List<ADXResult>();
 
             var length = history.Count();
-            var backlog = length / 2;
 
             //Start at index one because there is no previous value to use
             for (int i = 0; i < length; i++)
@@ -58,7 +57,7 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
                 }
 
                 ADXResult previousResult = default;
-                //Day 15
+                //First day after backlog
                 if (i == backlog)
                 {
                     //Use sums for the first day of smoothing
@@ -70,6 +69,7 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
                     result.SmoothedDMPlus = GetSmoothedValue(dmpSum, result.DMPlus, backlog);
                     result.SmoothedDMMinus = GetSmoothedValue(dmmSum, result.DMMinus, backlog);
                 }
+                //Smoothing period
                 else
                 {
                     //Use previous for smoothing
@@ -86,14 +86,14 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
 
                 if (i == (2 * backlog) - 1)
                 {
-                    //initial ADX
-                    //adx = sum of adx / backlog
-                    result.ADX = InitialADXResults.Sum(x => x.DX) / backlog;
+                    //Initial ADX
+                    InitialADXResults.Add(result);
+                    result.ADX = Math.Round(InitialADXResults.Sum(x => x.DX) / backlog, 0, MidpointRounding.AwayFromZero);
                 }
                 else if (i > (2 * backlog) - 1)
                 {
                     //average DX
-                    result.ADX = (previousResult.ADX * (backlog - 1) + result.DX)/ backlog;
+                    result.ADX = Math.Round((previousResult.ADX * (backlog - 1) + result.DX)/ backlog, 0, MidpointRounding.AwayFromZero);
                 }
 
                 InitialADXResults.Add(result);

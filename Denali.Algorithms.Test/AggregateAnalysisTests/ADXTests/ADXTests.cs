@@ -14,7 +14,7 @@ namespace Denali.Algorithms.Test.AggregateAnalysisTests.ADXTests
         public void JWellesWilderInitializeComparisonTest()
         {
             var bars = AggregateDataHelper.JWellesWilderADXExampleSheet();
-            ADXAlgo.Initiate(bars);
+            ADXAlgo.Initiate(bars, 14);
 
             var wilderResults = AggregateDataHelper.JWellesWilderADXResults();
 
