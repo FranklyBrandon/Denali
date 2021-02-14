@@ -2,6 +2,7 @@
 using Denali.Models.Polygon;
 using Denali.Models.Shared;
 using Denali.Services.Polygon;
+using Denali.Shared;
 using Denali.Shared.Utility;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -32,19 +33,29 @@ namespace Denali.Processors
             var ticker = _configuration["ticker"];
             var dates = GetProcessDates();
 
+            var timeSpan = EnumExtensions.ToEnum<BarTimeSpan>(_configuration["timespan"]);
+
             if (dates.Item1 > dates.Item2)
             {
                 //Throw error I guess
             }
-            var range = (dates.Item2 - dates.Item1).Days; 
+            var range = (dates.Item2 - dates.Item1).Days;
 
+            //Initial calculation
+            //get start time for backlog (timepsan * multiplier)* backlog
+            //get data for timespan of start of backlog tro start of first date
+            //initialize compomentnts that need it
+            //Ongoing Calculation
+
+            var incrementFunction = GetIncrementFunction(timeSpan, 1);
+            var stepDate = dates.Item1;
             for (int i = 0; i < range +1; i++)
             {
-                var stepDate = dates.Item1.AddDays(i);
+                stepDate = incrementFunction(stepDate);
                 var dayOpenTimestamp = _timeUtils.GetNYSEOpenUnixMS(stepDate);
                 var dayCloseTimestamp = _timeUtils.GetNYSECloseUnixMS(stepDate);
 
-                var aggregateData = await _polygonService.GetAggregateData(ticker, 1, BarTimeSpan.Minute, dayOpenTimestamp, dayCloseTimestamp, 1000);
+                var aggregateData = await _polygonService.GetAggregateData(ticker, 1, timeSpan, dayOpenTimestamp, dayCloseTimestamp, 1000);
                 StepThroughAggregateData(aggregateData);
             }
         }
@@ -71,5 +82,52 @@ namespace Denali.Processors
                 _barAlogirthmnAnalysis.Analyze(batchRange);
             }
          }
+
+        public Func<DateTime, DateTime> GetIncrementFunction(BarTimeSpan timespan, int multiplier)
+        {
+            return (date) => 
+            {
+                switch (timespan)
+                {
+                    case BarTimeSpan.Minute:
+                        return date.AddMinutes(multiplier);
+                    case BarTimeSpan.Hour:
+                        return date.AddHours(multiplier);
+                    case BarTimeSpan.Day:
+                        return date.AddDays(multiplier);
+                    case BarTimeSpan.Week:
+                        return date.AddDays(multiplier * 7);
+                    default:
+                        return DateTime.Now;
+                }
+            };
+        }
+
+        public DateTime GetBacklogData(BarTimeSpan timespan, int numberOfBars)
+        {
+            switch (timespan)
+            {
+                case BarTimeSpan.Minute:
+                    break;
+                case BarTimeSpan.Hour:
+                    break;
+                case BarTimeSpan.Day:
+                    break;
+                case BarTimeSpan.Week:
+                    break;
+                case BarTimeSpan.Month:
+                    break;
+                case BarTimeSpan.Quarter:
+                    break;
+                case BarTimeSpan.Year:
+                    break;
+                default:
+                    break;
+            }
+
+            return DateTime.Now;
+        }
+
+
     }
 }
