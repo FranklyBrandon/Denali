@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Algorithms", "Algorithms", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Algorithms.Test", "Denali.Algorithms.Test\Denali.Algorithms.Test.csproj", "{134BD69C-4155-45E3-AC34-1BFD145A26C0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Strategies", "Strategies", "{9F1BFD8B-C0AA-4BE6-B942-314E2A3A26CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.Strategies", "Denali.Strategies\Denali.Strategies.csproj", "{A270142F-6495-4FC2-BFCF-5F263853B311}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,10 @@ Global
 		{134BD69C-4155-45E3-AC34-1BFD145A26C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{134BD69C-4155-45E3-AC34-1BFD145A26C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{134BD69C-4155-45E3-AC34-1BFD145A26C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A270142F-6495-4FC2-BFCF-5F263853B311}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A270142F-6495-4FC2-BFCF-5F263853B311}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A270142F-6495-4FC2-BFCF-5F263853B311}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A270142F-6495-4FC2-BFCF-5F263853B311}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +68,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8F477A62-9E1B-40C0-9C11-D748B09F5FF3} = {EE745226-9802-4F54-969F-6E1F5C177825}
 		{134BD69C-4155-45E3-AC34-1BFD145A26C0} = {EE745226-9802-4F54-969F-6E1F5C177825}
+		{A270142F-6495-4FC2-BFCF-5F263853B311} = {9F1BFD8B-C0AA-4BE6-B942-314E2A3A26CC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4B871F76-E611-4A75-9C98-3DE0546C4E88}

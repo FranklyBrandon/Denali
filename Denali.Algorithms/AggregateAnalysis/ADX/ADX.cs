@@ -10,12 +10,15 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
     public class ADX
     {
         private readonly TrueRange _trueRange;
+        private int _backlog;
 
         public IList<ADXResult> InitialADXResults { get; set; }
+        public IList<ADXResult> ADXResults { get; set; }
 
         public ADX()
         {
             _trueRange = new TrueRange();
+            ADXResults = new List<ADXResult>();
         }
 
         /// <summary>
@@ -24,6 +27,7 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
         /// <param name="history"></param>
         public void Initiate(IEnumerable<IAggregateData> history, int backlog)
         {
+            _backlog = backlog;
             InitialADXResults = new List<ADXResult>();
 
             var length = history.Count();
@@ -102,10 +106,34 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
 
         public void Analyze(IEnumerable<IAggregateData> barData)
         {
+            var dataCount = barData.Count();
+            var previousData = barData.ElementAt(dataCount - 1);
+            var currentData = barData.Last();
+            var previousADX = dataCount == 1 ? InitialADXResults.Last() : ADXResults.Last();
 
 
-            
+            var tr = _trueRange.Analyze(previousData, currentData);
+            var dms = CalculateDirectionalMovements(previousData, currentData);
 
+            var result = new ADXResult
+            {
+                DMPlus = dms.Item1,
+                DMMinus = dms.Item2,
+                TrueRange = tr,
+                Time = currentData.Time
+            };
+
+            result.SmoothedTrueRange = GetSmoothedValue(previousADX.SmoothedTrueRange, result.TrueRange, _backlog);
+            result.SmoothedDMPlus = GetSmoothedValue(previousADX.SmoothedDMPlus, result.DMPlus, _backlog);
+            result.SmoothedDMMinus = GetSmoothedValue(previousADX.SmoothedDMMinus, result.DMMinus, _backlog);
+
+            result.DIPlus = Math.Round(100 * result.SmoothedDMPlus / result.SmoothedTrueRange, 0, MidpointRounding.AwayFromZero);
+            result.DIMinus = Math.Round(100 * result.SmoothedDMMinus / result.SmoothedTrueRange, 0, MidpointRounding.AwayFromZero);
+            result.DX = Math.Round(100 * Math.Abs(result.DIPlus - result.DIMinus) / (result.DIPlus + result.DIMinus), 0, MidpointRounding.AwayFromZero);
+
+            result.ADX = Math.Round((previousADX.ADX * (_backlog - 1) + result.DX) / _backlog, 0, MidpointRounding.AwayFromZero);
+
+            ADXResults.Add(result);
         }
 
         public void AnalyzeAll(IEnumerable<IAggregateData> barData, int lookbackPeriod)

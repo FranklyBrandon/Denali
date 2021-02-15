@@ -25,7 +25,7 @@ namespace Denali.Services.Polygon
 
         public async Task<AggregateResponse> GetAggregateData(string ticker, int multiplier, BarTimeSpan timeSpan, long from, long to, int limit)
         {
-            return await _polygonClient.GetAggregateData(ticker, from, to, timeFrame: timeSpan, limit: limit);
+            return await _polygonClient.GetAggregateData(ticker, from, to, multiplier: multiplier, timeFrame: timeSpan, limit: limit);
         }
     }
 }

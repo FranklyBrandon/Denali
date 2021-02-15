@@ -1,9 +1,9 @@
-﻿using Denali.Algorithms.AggregateAnalysis;
-using Denali.Models.Polygon;
+﻿using Denali.Models.Polygon;
 using Denali.Models.Shared;
 using Denali.Services.Polygon;
 using Denali.Shared;
 using Denali.Shared.Utility;
+using Denali.Strategies;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -16,42 +16,32 @@ namespace Denali.Processors
     public class HistoricAggregateAnalysis : IProcessor
     {
         private readonly PolygonService _polygonService;
-        private readonly BarAlgorithmAnalysis _barAlogirthmnAnalysis;
+        private readonly IAggregateStrategy _aggregateStrategy;
         private readonly TimeUtils _timeUtils;
         private readonly IConfiguration _configuration;
 
-        public HistoricAggregateAnalysis(PolygonService polygonService, BarAlgorithmAnalysis barAlogirthmnAnalysis, IConfiguration configuration)
+        public HistoricAggregateAnalysis(PolygonService polygonService, IAggregateStrategy aggregateStrategy, IConfiguration configuration)
         {
             this._polygonService = polygonService;
             this._configuration = configuration;
-            this._barAlogirthmnAnalysis = barAlogirthmnAnalysis;
+            this._aggregateStrategy = aggregateStrategy;
             this._timeUtils = new TimeUtils();
         }
 
         public async void Process(CancellationToken stoppingToken)
         {
             var ticker = _configuration["ticker"];
-            var dates = GetProcessDates();
-
             var timeSpan = EnumExtensions.ToEnum<BarTimeSpan>(_configuration["timespan"]);
 
-            if (dates.Item1 > dates.Item2)
-            {
-                //Throw error I guess
-            }
+            var dates = GetProcessDates();
             var range = (dates.Item2 - dates.Item1).Days;
 
-            //Initial calculation
-            //get start time for backlog (timepsan * multiplier)* backlog
-            //get data for timespan of start of backlog tro start of first date
-            //initialize compomentnts that need it
-            //Ongoing Calculation
+            var backlogData = await GetBackLogData(ticker, timeSpan, dates.Item1);
+            _aggregateStrategy.Initialize(backlogData);
 
-            var incrementFunction = GetIncrementFunction(timeSpan, 1);
             var stepDate = dates.Item1;
             for (int i = 0; i < range +1; i++)
             {
-                stepDate = incrementFunction(stepDate);
                 var dayOpenTimestamp = _timeUtils.GetNYSEOpenUnixMS(stepDate);
                 var dayCloseTimestamp = _timeUtils.GetNYSECloseUnixMS(stepDate);
 
@@ -79,55 +69,25 @@ namespace Denali.Processors
             for (int i = 0; i < size; i++)
             {
                 var batchRange = stepData.GetRange(0, i + 1);
-                _barAlogirthmnAnalysis.Analyze(batchRange);
+                _aggregateStrategy.ProcessTick(batchRange);
             }
          }
 
-        public Func<DateTime, DateTime> GetIncrementFunction(BarTimeSpan timespan, int multiplier)
+        public async Task<IEnumerable<IAggregateData>> GetBackLogData(string ticker, BarTimeSpan timespan, DateTime startTime)
         {
-            return (date) => 
-            {
-                switch (timespan)
-                {
-                    case BarTimeSpan.Minute:
-                        return date.AddMinutes(multiplier);
-                    case BarTimeSpan.Hour:
-                        return date.AddHours(multiplier);
-                    case BarTimeSpan.Day:
-                        return date.AddDays(multiplier);
-                    case BarTimeSpan.Week:
-                        return date.AddDays(multiplier * 7);
-                    default:
-                        return DateTime.Now;
-                }
-            };
+            var data = new List<IAggregateData>();
+
+            var day2Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-2));
+            var day2Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-2));
+            data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day2Open, day2Close, 1000)).Bars);
+            data.RemoveAt(data.Count - 1);
+
+            var day1Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-1));
+            var day1Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-1));
+            data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day1Open, day1Close, 1000)).Bars);
+            data.RemoveAt(data.Count - 1);
+
+            return data;
         }
-
-        public DateTime GetBacklogData(BarTimeSpan timespan, int numberOfBars)
-        {
-            switch (timespan)
-            {
-                case BarTimeSpan.Minute:
-                    break;
-                case BarTimeSpan.Hour:
-                    break;
-                case BarTimeSpan.Day:
-                    break;
-                case BarTimeSpan.Week:
-                    break;
-                case BarTimeSpan.Month:
-                    break;
-                case BarTimeSpan.Quarter:
-                    break;
-                case BarTimeSpan.Year:
-                    break;
-                default:
-                    break;
-            }
-
-            return DateTime.Now;
-        }
-
-
     }
 }

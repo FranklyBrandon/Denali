@@ -40,7 +40,6 @@ namespace Denali.Worker
                 IProcessor processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
                 processor.Process(stoppingToken);
             }
-
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)

@@ -1,4 +1,5 @@
 ﻿using Denali.Algorithms.AggregateAnalysis;
+using Denali.Algorithms.AggregateAnalysis.ADX;
 using Denali.Processors;
 using Denali.Services;
 using Denali.Services.Data;
@@ -7,6 +8,7 @@ using Denali.Services.Google;
 using Denali.Services.Polygon;
 using Denali.Services.Settings;
 using Denali.Services.Utility;
+using Denali.Strategies;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -89,6 +91,7 @@ namespace Denali.Worker
             _services.AddScoped<BarAlgorithmAnalysis>();
             _services.AddScoped<PolygonService>();
             _services.AddScoped<PolygonStreamingClient>();
+            _services.AddScoped<IAggregateStrategy, ScalpStrategy>();
         }
     }
 }

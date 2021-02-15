@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Denali.Algorithms\Denali.Algorithms.csproj" />
     <ProjectReference Include="..\Denali.Services\Denali.Services.csproj" />
+    <ProjectReference Include="..\Denali.Strategies\Denali.Strategies.csproj" />
   </ItemGroup>
 
 </Project>

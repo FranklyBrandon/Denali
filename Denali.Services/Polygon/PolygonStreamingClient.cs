@@ -19,7 +19,7 @@ namespace Denali.Services.Polygon
     {
         private readonly PolygonSettings _polygonSettings;
         private readonly AuthenticationSettings _authSettings;
-        private readonly Action<string> _handleMessageAction;
+        private Action<string> _handleMessageAction;
         private ClientWebSocket _webSocket;
         private readonly ILogger<PolygonStreamingClient> _logger;
 
@@ -55,12 +55,12 @@ namespace Denali.Services.Polygon
             await Send(token, JsonSerializer.Serialize(request));
         }
 
-        public async Task SubscribeToChannel(Channel channel, CancellationToken token)
+        public async Task SubscribeToChannel(Channel channel, CancellationToken token, string ticker)
         {
             var request = new PolygonWebsocketRequest
             {
                 Action = Models.Polygon.Action.Subscribe,
-                Params = channel.ToString()
+                Params = channel.ToString() + "." + ticker
             };
 
             await Send(token, JsonSerializer.Serialize(request));
@@ -80,7 +80,6 @@ namespace Denali.Services.Polygon
             //Fragments must be less than 1024 bytes
             var buffer = new ArraySegment<byte>(new byte[1024]);
             do
-
             {
                 WebSocketReceiveResult result;
                 using (var ms = new MemoryStream())
@@ -114,6 +113,7 @@ namespace Denali.Services.Polygon
                 else if (responses.Any(x => x.Status == PolygonWebsocketStatus.AuthSuccess))
                 {
                     _logger.LogInformation("Socket Authentication Successful");
+                    _handleMessageAction = DataResponse;
                 }
             }
             catch (Exception)
@@ -121,6 +121,11 @@ namespace Denali.Services.Polygon
 
                 throw;
             }
+        }
+
+        private void DataResponse(string data)
+        {
+            _logger.LogInformation(data);
         }
     }
 }
