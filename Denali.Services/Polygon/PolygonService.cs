@@ -14,10 +14,10 @@ namespace Denali.Services.Polygon
         public delegate void MessageHandler(string message);
         public event MessageHandler MessageReceived;
 
-        private readonly PolygonStreamingClient _streamingClient;
+        private readonly PolygonStreaming _streamingClient;
         private readonly PolygonClient _polygonClient;
 
-        public PolygonService(PolygonStreamingClient streamingClient, PolygonClient polygonClient)
+        public PolygonService(PolygonStreaming streamingClient, PolygonClient polygonClient)
         {
             this._streamingClient = streamingClient;
             this._polygonClient = polygonClient;

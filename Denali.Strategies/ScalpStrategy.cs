@@ -2,6 +2,7 @@
 using Denali.Algorithms.AggregateAnalysis.ParabolicSAR;
 using Denali.Models.Shared;
 using Denali.Shared.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,13 @@ namespace Denali.Strategies
     {
         private readonly SMA _sma;
         private readonly TimeUtils _timeUtils;
+        private readonly ILogger<ScalpStrategy> _logger;
 
-        public ScalpStrategy()
+        public ScalpStrategy(ILogger<ScalpStrategy> logger)
         {
             _sma = new SMA(9);
             _timeUtils = new TimeUtils();
+            _logger = logger;
         }
 
         public void Initialize(IEnumerable<IAggregateData> aggregateData)
@@ -44,7 +47,7 @@ namespace Denali.Strategies
             if (latestData.OpenPrice < latestSMA && latestData.ClosePrice > latestSMA)
             {
                 var time = _timeUtils.GetETDatetimefromUnixMS(latestData.Time);
-                Console.WriteLine($"CROSS OVER at ${time.ToString()}");
+                _logger.LogInformation($"CROSS OVER at ${time}");
             }
         }
     }

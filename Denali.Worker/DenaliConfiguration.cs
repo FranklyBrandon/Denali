@@ -1,5 +1,6 @@
 ﻿using Denali.Algorithms.AggregateAnalysis;
 using Denali.Algorithms.AggregateAnalysis.ADX;
+using Denali.Models.Mapping;
 using Denali.Processors;
 using Denali.Services;
 using Denali.Services.Data;
@@ -7,7 +8,7 @@ using Denali.Services.Data.Alpaca;
 using Denali.Services.Google;
 using Denali.Services.Polygon;
 using Denali.Services.Settings;
-using Denali.Services.Utility;
+using Denali.Shared.Utility;
 using Denali.Strategies;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,12 +32,13 @@ namespace Denali.Worker
         public void ConfigureServices()
         {
             _services.AddHostedService<DenaliWorker>();
-
-            AddLogging();
+ 
             AddProcessors();
             AddAppSettingsConfigs();
             AddHttpClients();
             AddUserServices();
+
+            _services.AddAutoMapper(typeof(LiveTradingProfile));
 
             var provider = _services.BuildServiceProvider();
             _services.AddSingleton<ServiceProvider>((ctx) =>
@@ -47,15 +49,7 @@ namespace Denali.Worker
 
         private void AddProcessors()
         {
-            _services.AddScoped<IProcessor, HistoricAggregateAnalysis>();
-        }
-
-        private void AddLogging()
-        {
-            _services.AddLogging(loggingBuilder => loggingBuilder
-                .AddConsole()
-                .AddDebug()
-                .SetMinimumLevel(LogLevel.Debug));
+            _services.AddScoped<IProcessor, LiveTradingProcessor>();
         }
 
         private void AddAppSettingsConfigs()
@@ -87,10 +81,10 @@ namespace Denali.Worker
         {
             _services.AddScoped<DenaliSheetsService>();
             _services.AddScoped<GoogleSheetsService>();
-            _services.AddSingleton<TimeUtils>();
             _services.AddScoped<BarAlgorithmAnalysis>();
             _services.AddScoped<PolygonService>();
-            _services.AddScoped<PolygonStreamingClient>();
+            _services.AddScoped<PolygonStreaming>();
+            _services.AddScoped<TimeUtils>();
             _services.AddScoped<IAggregateStrategy, ScalpStrategy>();
         }
     }

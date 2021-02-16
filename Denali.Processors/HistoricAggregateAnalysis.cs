@@ -28,7 +28,7 @@ namespace Denali.Processors
             this._timeUtils = new TimeUtils();
         }
 
-        public async void Process(CancellationToken stoppingToken)
+        public async Task Process(CancellationToken stoppingToken)
         {
             var ticker = _configuration["ticker"];
             var timeSpan = EnumExtensions.ToEnum<BarTimeSpan>(_configuration["timespan"]);

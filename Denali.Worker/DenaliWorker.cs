@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Denali.Processors;
-using Denali.Services.Utility;
+using Denali.Shared.Utility;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,20 +16,11 @@ namespace Denali.Worker
     {
         private readonly ILogger<DenaliWorker> _logger;
         private readonly ServiceProvider _provider;
-        private readonly TimeUtils _timeUtils;
-        private readonly HashSet<DayOfWeek> _tradingDays;
 
-        public DenaliWorker(ILogger<DenaliWorker> logger, ServiceProvider provider, TimeUtils timeUtils)
+        public DenaliWorker(ILogger<DenaliWorker> logger, ServiceProvider provider)
         {
             _logger = logger;
             _provider = provider;
-            _timeUtils = timeUtils;
-            _tradingDays = new HashSet<DayOfWeek> { DayOfWeek.Monday
-                , DayOfWeek.Tuesday
-                , DayOfWeek.Wednesday
-                , DayOfWeek.Thursday
-                , DayOfWeek.Friday };
-
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -38,7 +29,7 @@ namespace Denali.Worker
             {
                 _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
                 IProcessor processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
-                processor.Process(stoppingToken);
+                await processor.Process(stoppingToken);
             }
         }
 

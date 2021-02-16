@@ -1,4 +1,4 @@
-﻿using Denali.Services.Utility;
+﻿
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using System.Collections.Generic;
@@ -10,14 +10,12 @@ namespace Denali.Services.Google
     {
         private readonly GoogleSheetsService _sheetsService;
         private readonly DenaliSettings _denaliSettings;
-        private readonly TimeUtils _timeUtils;
         private int _rowIndex;
 
-        public DenaliSheetsService(GoogleSheetsService sheetsService, DenaliSettings denaliSettings, TimeUtils timeUtils)
+        public DenaliSheetsService(GoogleSheetsService sheetsService, DenaliSettings denaliSettings)
         {
             this._sheetsService = sheetsService;
             this._denaliSettings = denaliSettings;
-            this._timeUtils = timeUtils;
         }
 
         //public Spreadsheet WriteDenaliSheet(string title, string symbols, string startDateTime, string endDateTime, string resolution, List<Position> positions)

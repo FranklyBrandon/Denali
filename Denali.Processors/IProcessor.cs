@@ -5,6 +5,6 @@ namespace Denali.Processors
 {
     public interface IProcessor
     {
-        void Process(CancellationToken stoppingToken);
+        Task Process(CancellationToken stoppingToken);
     }
 }
