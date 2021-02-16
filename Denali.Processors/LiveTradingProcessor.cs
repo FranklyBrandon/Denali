@@ -19,8 +19,6 @@ namespace Denali.Processors
         private readonly IConfiguration _configuration;
         private readonly IAggregateStrategy _strategy;
         private readonly PolygonStreaming _polygonStreamingClient;
-        private readonly PolygonService _polygonService;
-        private readonly TimeUtils _timeUtils;
         private readonly IMapper _mapper;
         private readonly ILogger<LiveTradingProcessor> _logger;
 
@@ -28,17 +26,12 @@ namespace Denali.Processors
 
         public LiveTradingProcessor(IConfiguration configuration
             , PolygonStreaming polygonStreamingClient
-            , PolygonService polygonService
-            , TimeUtils timeUtils
             , IAggregateStrategy strategy
             , IMapper mapper
             , ILogger<LiveTradingProcessor> logger)
         {
             this._configuration = configuration;
             this._polygonStreamingClient = polygonStreamingClient;
-            this._polygonService = polygonService;
-            this._polygonService = polygonService;
-            this._timeUtils = timeUtils;
             this._strategy = strategy;
             this._mapper = mapper;
             this._logger = logger;
@@ -87,18 +80,6 @@ namespace Denali.Processors
             catch (Exception) { }
 
             //TODO: call strategy step when backlog is filled
-        }
-
-        public async Task<IEnumerable<IAggregateData>> GetBackLogData(string ticker, BarTimeSpan timespan, DateTime startTime)
-        {
-            var data = new List<IAggregateData>();
-
-            var day2Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-1));
-            var day2Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-1));
-            data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day2Open, day2Close, 1000)).Bars);
-            data.RemoveAt(data.Count - 1);
-
-            return data;
         }
     }
 }
