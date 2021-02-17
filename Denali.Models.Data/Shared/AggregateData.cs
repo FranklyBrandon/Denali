@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Denali.Models.Polygon
+namespace Denali.Models.Shared
 {
-    public class Bar : IAggregateData
+    public class AggregateData : IAggregateData
     {
         [JsonPropertyName("o")]
         public decimal OpenPrice { get; set; }

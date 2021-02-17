@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Denali.Algorithms.AggregateAnalysis
+namespace Denali.Algorithms.AggregateAnalysis.SMA
 {
     public class SMA
     {

@@ -1,5 +1,4 @@
-﻿using Denali.Models.Polygon;
-using Denali.Models.Shared;
+﻿using Denali.Models.Shared;
 using System;
 using System.Collections;
 using System.Collections.Generic;

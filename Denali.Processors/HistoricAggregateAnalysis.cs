@@ -1,4 +1,4 @@
-﻿using Denali.Models.Polygon;
+﻿
 using Denali.Models.Shared;
 using Denali.Services.Polygon;
 using Denali.Shared;
@@ -31,13 +31,13 @@ namespace Denali.Processors
         public async Task Process(CancellationToken stoppingToken)
         {
             var ticker = _configuration["ticker"];
-            var timeSpan = EnumExtensions.ToEnum<BarTimeSpan>(_configuration["timespan"]);
+            //var timeSpan = EnumExtensions.ToEnum<BarTimeSpan>(_configuration["timespan"]);
 
             var dates = GetProcessDates();
             var range = (dates.Item2 - dates.Item1).Days;
 
-            var backlogData = await GetBackLogData(ticker, timeSpan, dates.Item1);
-            _aggregateStrategy.Initialize(backlogData);
+            //var backlogData = await GetBackLogData(ticker, timeSpan, dates.Item1);
+            //_aggregateStrategy.Initialize(backlogData);
 
             var stepDate = dates.Item1;
             for (int i = 0; i < range +1; i++)
@@ -58,24 +58,24 @@ namespace Denali.Processors
             return (DateTime.Parse(fromDateString), DateTime.Parse(toDateString));
         }
 
-        public void StepThroughAggregateData(AggregateResponse aggregateData)
-        {
-            var size = aggregateData.Bars.Count();
-            if (size <= 1)
-                return;
+        //public void StepThroughAggregateData(AggregateResponse aggregateData)
+        //{
+        //    var size = aggregateData.Bars.Count();
+        //    if (size <= 1)
+        //        return;
 
-            var stepData = aggregateData.Bars.ToList();
+        //    var stepData = aggregateData.Bars.ToList();
 
-            for (int i = 0; i < size; i++)
-            {
-                var batchRange = stepData.GetRange(0, i + 1);
-                _aggregateStrategy.ProcessTick(batchRange);
-            }
-         }
+        //    for (int i = 0; i < size; i++)
+        //    {
+        //        var batchRange = stepData.GetRange(0, i + 1);
+        //        _aggregateStrategy.ProcessTick(batchRange);
+        //    }
+        // }
 
-        public async Task<IEnumerable<IAggregateData>> GetBackLogData(string ticker, BarTimeSpan timespan, DateTime startTime)
-        {
-            var data = new List<IAggregateData>();
+        //public async Task<IEnumerable<IAggregateData>> GetBackLogData(string ticker, BarTimeSpan timespan, DateTime startTime)
+        //{
+        //    var data = new List<IAggregateData>();
 
             //var day2Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-2));
             //var day2Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-2));
@@ -87,7 +87,7 @@ namespace Denali.Processors
             //data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day1Open, day1Close, 1000)).Bars);
             //data.RemoveAt(data.Count - 1);
 
-            return data;
-        }
+        //    return data;
+        //}
     }
 }

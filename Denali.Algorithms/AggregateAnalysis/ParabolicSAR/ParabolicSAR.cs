@@ -1,7 +1,5 @@
 ﻿using Denali.Algorithms.AggregateAnalysis.Utilities;
-using Denali.Models.Polygon;
 using Denali.Models.Shared;
-using Denali.Shared.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,4 @@
 ﻿using Denali.Algorithms.AggregateAnalysis.ParabolicSAR;
-using Denali.Models.Polygon;
 using Denali.Models.Shared;
 using NUnit.Framework;
 using System;
@@ -11,10 +10,6 @@ namespace Denali.Algorithms.Test.AggregateAnalysisTests
     [TestFixture]
     public class ParabolicSARTestFixture
     {
-        protected AggregateResponse AggregateStockData1 => _aggregateStockData1 ??=
-            AggregateDataHelper.GetStockDataFile(AggregateDataHelper.AAPL_STOCK_DATA);
-        private AggregateResponse _aggregateStockData1;
-
         protected ParabolicSAR Algo = new ParabolicSAR();
 
         public void StepThroughAnalyze(IList<IAggregateData> barData)

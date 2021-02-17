@@ -1,11 +1,5 @@
 ﻿using Alpaca.Markets;
-using Denali.Models.Polygon;
-using Denali.Services.Settings;
 using System;
-using System.Net.WebSockets;
-using System.Text;
-using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Denali.Services.Polygon

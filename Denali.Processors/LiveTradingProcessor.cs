@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.Extensions.Configuration;
 using System.Threading;
 using Microsoft.Extensions.Logging;
@@ -9,8 +8,8 @@ using System.Threading.Tasks;
 using Denali.Strategies;
 using System.Collections.Generic;
 using Denali.Models.Shared;
-using Denali.Models.Polygon;
 using AutoMapper;
+using System.Linq;
 
 namespace Denali.Processors
 {
@@ -23,6 +22,7 @@ namespace Denali.Processors
         private readonly ILogger<LiveTradingProcessor> _logger;
 
         private readonly AggregationPeriod _timeFrame = new AggregationPeriod(1, AggregationPeriodUnit.Minute);
+        private readonly DateTime _today = DateTime.Today;
 
         public List<IAggregateData> Data { get; set; }
 
@@ -48,32 +48,33 @@ namespace Denali.Processors
             _polygonService.InitializeStreamingClient();
             _polygonService.InitializeDataClient();
 
-            var today = DateTime.Today;
             var currentResponse = await _polygonService.DataClient.ListAggregatesAsync(
                 new AggregatesRequest(ticker, _timeFrame)
-                    .SetInclusiveTimeInterval(today, today.AddDays(1)));
+                    .SetInclusiveTimeInterval(_today, _today.AddDays(1)));
 
             var backlogResponse = await _polygonService.DataClient.ListAggregatesAsync(
                 new AggregatesRequest(ticker, _timeFrame)
-                    .SetInclusiveTimeInterval(today.AddDays(-1), today));
+                    .SetInclusiveTimeInterval(_today.AddDays(-1), _today));
 
-            var currentBars = _mapper.Map<List<Bar>>(currentResponse.Items);
-            var backlogBars = _mapper.Map<List<Bar>>(backlogResponse.Items);
+            // Only use last 20 bars for initialization
+            var lastBars = backlogResponse.Items.Skip(Math.Max(0, backlogResponse.Items.Count - 20));
+            var currentBars = _mapper.Map<List<AggregateData>>(currentResponse.Items);
+            var backlogBars = _mapper.Map<List<AggregateData>>(lastBars);
 
             _strategy.Initialize(backlogBars);
             currentBars.ForEach(x => Data.Add(x));
 
             //Wire up events from the streaming client
             WireEvents();
-            _logger.LogInformation("Connecting to polygon");
+            _logger.LogInformation("Connecting and Authorizing with polygon");
 
             //Connect and Authenticate
             var authStatus = await _polygonService.StreamingClient.ConnectAndAuthenticateAsync();
             _logger.LogInformation($"Connection status: {authStatus}");
 
             //Subscribe to data stream
-            _logger.LogInformation("Subscribing to minute data");
             _polygonService.StreamingClient.SubscribeMinuteAgg(ticker);
+            _logger.LogInformation("Subscribed to minute aggregate data");
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -95,7 +96,7 @@ namespace Denali.Processors
                 $"Volume: {obj.Volume}, Start: {obj.StartTimeUtc}, End: {obj.EndTimeUtc}");
             try
             {
-                var bar = _mapper.Map<Bar>(obj);
+                var bar = _mapper.Map<AggregateData>(obj);
                 Data.Add(bar);
             }
             catch (Exception) { }

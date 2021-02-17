@@ -17,10 +17,4 @@
     <ProjectReference Include="..\Denali.Models.Data\Denali.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="StockDataFile1.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

@@ -1,6 +1,5 @@
 ﻿using Alpaca.Markets;
 using AutoMapper;
-using Denali.Models.Polygon;
 using Denali.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ namespace Denali.Models.Mapping
     {
         public LiveTradingProfile()
         {
-            CreateMap<IStreamAgg, Bar>()
+            CreateMap<IStreamAgg, AggregateData>()
                 .ForMember(dest => dest.OpenPrice, opt => opt.MapFrom(src => src.Open))
                 .ForMember(dest => dest.ClosePrice, opt => opt.MapFrom(src => src.Close))
                 .ForMember(dest => dest.HighPrice, opt => opt.MapFrom(src => src.High))
@@ -22,7 +21,7 @@ namespace Denali.Models.Mapping
                 .ForMember(dest => dest.Volume, opt => opt.MapFrom(src => src.Volume))
                 .ForMember(dest => dest.Time, opt => opt.MapFrom(src => ((DateTimeOffset)src.EndTimeUtc).ToUnixTimeSeconds()));
 
-            CreateMap<IAgg, Bar>()
+            CreateMap<IAgg, AggregateData>()
                 .ForMember(dest => dest.OpenPrice, opt => opt.MapFrom(src => src.Open))
                 .ForMember(dest => dest.ClosePrice, opt => opt.MapFrom(src => src.Close))
                 .ForMember(dest => dest.HighPrice, opt => opt.MapFrom(src => src.High))

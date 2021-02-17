@@ -1,5 +1,6 @@
 ﻿using Denali.Algorithms.AggregateAnalysis;
 using Denali.Algorithms.AggregateAnalysis.ParabolicSAR;
+using Denali.Algorithms.AggregateAnalysis.SMA;
 using Denali.Models.Shared;
 using Denali.Shared.Utility;
 using Microsoft.Extensions.Logging;

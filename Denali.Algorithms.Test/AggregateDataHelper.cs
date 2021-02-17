@@ -1,6 +1,4 @@
-﻿using Denali.Algorithms.Test.Models;
-using Denali.Models.Polygon;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -9,19 +7,13 @@ using System.Text.Json;
 using System.Linq;
 using Denali.Models.Shared;
 using Denali.Algorithms.AggregateAnalysis.ADX;
+using Denali.Algorithms.Test.Models;
 
 namespace Denali.Algorithms.Test
 {
     public static class AggregateDataHelper
     {
         public const string AAPL_STOCK_DATA = "StockDataFile1.txt";
-
-        public static AggregateResponse GetStockDataFile(string dataFile)
-        {
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), dataFile);
-            string text = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<AggregateResponse>(text);
-        }
 
         /// <summary>
         /// The example bar data given on page 12 of "New Concepts in Technical Trading Systems" 
@@ -33,49 +25,49 @@ namespace Denali.Algorithms.Test
             return new List<IAggregateData>
             {
                 //Date 4
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 52.35M,
                     LowPrice = 51.50M,
                     Time = 4
                 },
                 //Date 5
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 52.10M,
                     LowPrice = 51.00M,
                     Time = 5
                 },
                 //Date 6
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 51.80M,
                     LowPrice = 50.50M,
                     Time = 6
                 },
                 //Date 7
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 52.10M,
                     LowPrice = 51.25M,
                     Time = 7
                 },
                 //Date 8
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 52.50M,
                     LowPrice = 51.70M,
                     Time = 8
                 },
                 //Date 9
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 52.80M,
                     LowPrice = 51.85M,
                     Time = 9
                 },
                 //Date 10
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 52.50M,
                     LowPrice = 51.50M,
@@ -83,203 +75,203 @@ namespace Denali.Algorithms.Test
                 },
                 
                 //Date 11
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 53.50M,
                     LowPrice = 52.30M,
                     Time = 11
                 },
                 //Date 12
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 53.50M,
                     LowPrice = 52.50M,
                     Time = 12
                 },         
                 //Date 13
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 53.80M,
                     LowPrice = 53.00M,
                     Time = 13
                 },
                 //Date 14
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 54.20M,
                     LowPrice = 53.50M,
                     Time = 14
                 },
                 //Date 15
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 53.40M,
                     LowPrice = 52.50M,
                     Time = 15
                 },
                 //Date 16
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 53.50M,
                     LowPrice = 52.10M,
                     Time = 16
                 },
                 //Date 17
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 54.40M,
                     LowPrice = 53.00M,
                     Time = 17
                 },
                 //Date 18
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 55.20M,
                     LowPrice = 54.00M,
                     Time = 18
                 },
                 //Date 19
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 55.70M,
                     LowPrice = 55.00M,
                     Time = 19
                 },
                 //Date 20
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 57.00M,
                     LowPrice = 56.00M,
                     Time = 20
                 },
                 //Date 21
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 57.50M,
                     LowPrice = 56.50M,
                     Time = 21
                 },
                 //Date 22
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 58.00M,
                     LowPrice = 57.00M,
                     Time = 22
                 },
                 //Date 23
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 57.70M,
                     LowPrice = 56.50M,
                     Time = 23
                 },
                 //Date 24
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 58.00M,
                     LowPrice = 57.30M,
                     Time = 24
                 },
                 //Date 25
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 57.50M,
                     LowPrice = 56.70M,
                     Time = 25
                 },
                 //Date 26
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 57.00M,
                     LowPrice = 56.30M,
                     Time = 26
                 },
                 //Date 27
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 56.70M,
                     LowPrice = 56.20M,
                     Time = 27
                 },
                 //Date 28
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 57.50M,
                     LowPrice = 56.00M,
                     Time = 28
                 },
                 //Date 29
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 56.70M,
                     LowPrice = 55.50M,
                     Time = 29
                 },
                 //Date 30
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 56.00M,
                     LowPrice = 55.00M,
                     Time = 30
                 },
                 //Date 31
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 56.20M,
                     LowPrice = 54.90M,
                     Time = 31
                 },
                 //Date 32
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 54.80M,
                     LowPrice = 54.00M,
                     Time = 32
                 },
                 //Date 33
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 55.50M,
                     LowPrice = 54.50M,
                     Time = 33
                 },
                 //Date 34
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 54.70M,
                     LowPrice = 53.80M,
                     Time = 34
                 },
                 //Date 35
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 54.00M,
                     LowPrice = 53.00M,
                     Time = 35
                 },       
                 //Date 36
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 52.50M,
                     LowPrice = 51.50M,
                     Time = 36
                 },
                 //Date 37
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 51.00M,
                     LowPrice = 50.00M,
                     Time = 37
                 },          
                 //Date 38
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 51.50M,
                     LowPrice = 50.50M,
                     Time = 38
                 },
                 //Date 39
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 51.70M,
                     LowPrice = 50.20M,
@@ -559,294 +551,294 @@ namespace Denali.Algorithms.Test
         {
             return new List<IAggregateData>
             {
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 274M,
                     LowPrice = 272M,
                     ClosePrice = 272.75M,
                     Time = 1
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 273.25M,
                     LowPrice = 270.25M,
                     ClosePrice = 270.75M,
                     Time = 2
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 272M,
                     LowPrice = 269.75M,
                     ClosePrice = 270M,
                     Time = 3
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 270.75M,
                     LowPrice = 268M,
                     ClosePrice = 269.25M,
                     Time = 4
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 270M,
                     LowPrice = 269M,
                     ClosePrice = 269.75M,
                     Time = 5
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 270.50M,
                     LowPrice = 268M,
                     ClosePrice = 270M,
                     Time = 6
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 268.50M,
                     LowPrice = 266.50M,
                     ClosePrice = 266.50M,
                     Time = 7
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 265.50M,
                     LowPrice = 263M,
                     ClosePrice = 263.25M,
                     Time = 8
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 262.50M,
                     LowPrice = 259M,
                     ClosePrice = 260.25M,
                     Time = 9
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 263.50M,
                     LowPrice = 260M,
                     ClosePrice = 263M,
                     Time = 10
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 269.50M,
                     LowPrice = 263M,
                     ClosePrice = 266.50M,
                     Time = 11
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 267.25M,
                     LowPrice = 265M,
                     ClosePrice = 267M,
                     Time = 12
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 267.50M,
                     LowPrice = 265.50M,
                     ClosePrice = 265.75M,
                     Time = 13
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 269.75M,
                     LowPrice = 266M,
                     ClosePrice = 268.50M,
                     Time = 14
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 268.25M,
                     LowPrice = 263.25M,
                     ClosePrice = 264.25M,
                     Time = 15
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 264M,
                     LowPrice = 261.50M,
                     ClosePrice = 264M,
                     Time = 16
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 268M,
                     LowPrice = 266.25M,
                     ClosePrice = 266.50M,
                     Time = 17
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 266M,
                     LowPrice = 264.25M,
                     ClosePrice = 265.25M,
                     Time = 18
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 274M,
                     LowPrice = 267M,
                     ClosePrice = 273M,
                     Time = 19
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 277.50M,
                     LowPrice = 273.50M,
                     ClosePrice = 276.75M,
                     Time = 20
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 277M,
                     LowPrice = 272.50M,
                     ClosePrice = 273M,
                     Time = 21
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 272M,
                     LowPrice = 269.50M,
                     ClosePrice = 270.25M,
                     Time = 22
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 267.75M,
                     LowPrice = 264M,
                     ClosePrice = 266.75M,
                     Time = 23
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 269.25M,
                     LowPrice = 263M,
                     ClosePrice = 263M,
                     Time = 24
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 266M,
                     LowPrice = 263.50M,
                     ClosePrice = 265.50M,
                     Time = 25
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 265M,
                     LowPrice = 262M,
                     ClosePrice = 262.25M,
                     Time = 26
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 264.75M,
                     LowPrice = 261.50M,
                     ClosePrice = 262.75M,
                     Time = 27
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 261M,
                     LowPrice = 255.50M,
                     ClosePrice = 255.50M,
                     Time = 28
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 257.50M,
                     LowPrice = 253M,
                     ClosePrice = 253M,
                     Time = 29
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 259M,
                     LowPrice = 254M,
                     ClosePrice = 257.50M,
                     Time = 30
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 259.75M,
                     LowPrice = 257.50M,
                     ClosePrice = 257.50M,
                     Time = 31
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 257.25M,
                     LowPrice = 250M,
                     ClosePrice = 250M,
                     Time = 32
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 250M,
                     LowPrice = 247M,
                     ClosePrice = 249.75M,
                     Time = 33
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 254.25M,
                     LowPrice = 252.75M,
                     ClosePrice = 253.75M,
                     Time = 34
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 254M,
                     LowPrice = 250.50M,
                     ClosePrice = 251.25M,
                     Time = 35
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 253.25M,
                     LowPrice = 250.25M,
                     ClosePrice = 250.50M,
                     Time = 36
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 253.25M,
                     LowPrice = 251M,
                     ClosePrice = 253M,
                     Time = 37
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 251.75M,
                     LowPrice = 250.50M,
                     ClosePrice = 251.50M,
                     Time = 38
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 253M,
                     LowPrice = 249.50M,
                     ClosePrice = 250M,
                     Time = 39
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 251.50M,
                     LowPrice = 245.25M,
                     ClosePrice = 245.75M,
                     Time = 40
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 246.25M,
                     LowPrice = 240M,
                     ClosePrice = 242.75M,
                     Time = 41
                 },
-                new Bar
+                new AggregateData
                 {
                     HighPrice = 244.25M,
                     LowPrice = 241.25M,
