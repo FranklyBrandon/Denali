@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using System.Threading;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,6 @@ using System.Threading.Tasks;
 using Denali.Strategies;
 using System.Collections.Generic;
 using Denali.Models.Shared;
-using Denali.Shared.Utility;
 using Denali.Models.Polygon;
 using AutoMapper;
 
@@ -18,20 +18,22 @@ namespace Denali.Processors
     {
         private readonly IConfiguration _configuration;
         private readonly IAggregateStrategy _strategy;
-        private readonly PolygonStreaming _polygonStreamingClient;
+        private readonly PolygonService _polygonService;
         private readonly IMapper _mapper;
         private readonly ILogger<LiveTradingProcessor> _logger;
+
+        private readonly AggregationPeriod _timeFrame = new AggregationPeriod(1, AggregationPeriodUnit.Minute);
 
         public List<IAggregateData> Data { get; set; }
 
         public LiveTradingProcessor(IConfiguration configuration
-            , PolygonStreaming polygonStreamingClient
+            , PolygonService polygonService
             , IAggregateStrategy strategy
             , IMapper mapper
             , ILogger<LiveTradingProcessor> logger)
         {
             this._configuration = configuration;
-            this._polygonStreamingClient = polygonStreamingClient;
+            this._polygonService = polygonService;
             this._strategy = strategy;
             this._mapper = mapper;
             this._logger = logger;
@@ -43,28 +45,47 @@ namespace Denali.Processors
         {
             var ticker = _configuration["ticker"];
 
-            //TODO: Get backlog data
-            //TODO: Get current data (if any)
+            _polygonService.InitializeStreamingClient();
+            _polygonService.InitializeDataClient();
 
-            //Initialize strategy
-            _strategy.Initialize(Data);
+            var today = DateTime.Today;
+            var currentResponse = await _polygonService.DataClient.ListAggregatesAsync(
+                new AggregatesRequest(ticker, _timeFrame)
+                    .SetInclusiveTimeInterval(today, today.AddDays(1)));
+
+            var backlogResponse = await _polygonService.DataClient.ListAggregatesAsync(
+                new AggregatesRequest(ticker, _timeFrame)
+                    .SetInclusiveTimeInterval(today.AddDays(-1), today));
+
+            var currentBars = _mapper.Map<List<Bar>>(currentResponse.Items);
+            var backlogBars = _mapper.Map<List<Bar>>(backlogResponse.Items);
+
+            _strategy.Initialize(backlogBars);
+            currentBars.ForEach(x => Data.Add(x));
 
             //Wire up events from the streaming client
             WireEvents();
             _logger.LogInformation("Connecting to polygon");
 
             //Connect and Authenticate
-            var authStatus = await _polygonStreamingClient.Client.ConnectAndAuthenticateAsync();
+            var authStatus = await _polygonService.StreamingClient.ConnectAndAuthenticateAsync();
             _logger.LogInformation($"Connection status: {authStatus}");
 
             //Subscribe to data stream
             _logger.LogInformation("Subscribing to minute data");
-            _polygonStreamingClient.Client.SubscribeMinuteAgg(ticker);
+            _polygonService.StreamingClient.SubscribeMinuteAgg(ticker);
+
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                await Task.Delay(1000);
+            }
+
+            await _polygonService.DisconnectStreamingClient();
         }
 
         public void WireEvents()
         {
-            _polygonStreamingClient.Client.MinuteAggReceived += MinuteAggregateReceived;
+            _polygonService.StreamingClient.MinuteAggReceived += MinuteAggregateReceived;
         }
 
         private void MinuteAggregateReceived(IStreamAgg obj)
@@ -79,7 +100,7 @@ namespace Denali.Processors
             }
             catch (Exception) { }
 
-            //TODO: call strategy step when backlog is filled
+            _strategy.ProcessTick(Data);
         }
     }
 }

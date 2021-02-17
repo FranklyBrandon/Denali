@@ -45,8 +45,8 @@ namespace Denali.Processors
                 var dayOpenTimestamp = _timeUtils.GetNYSEOpenUnixMS(stepDate);
                 var dayCloseTimestamp = _timeUtils.GetNYSECloseUnixMS(stepDate);
 
-                var aggregateData = await _polygonService.GetAggregateData(ticker, 1, timeSpan, dayOpenTimestamp, dayCloseTimestamp, 1000);
-                StepThroughAggregateData(aggregateData);
+                //var aggregateData = await _polygonService.GetAggregateData(ticker, 1, timeSpan, dayOpenTimestamp, dayCloseTimestamp, 1000);
+                //StepThroughAggregateData(aggregateData);
             }
         }
 
@@ -77,15 +77,15 @@ namespace Denali.Processors
         {
             var data = new List<IAggregateData>();
 
-            var day2Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-2));
-            var day2Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-2));
-            data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day2Open, day2Close, 1000)).Bars);
-            data.RemoveAt(data.Count - 1);
+            //var day2Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-2));
+            //var day2Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-2));
+            //data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day2Open, day2Close, 1000)).Bars);
+            //data.RemoveAt(data.Count - 1);
 
-            var day1Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-1));
-            var day1Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-1));
-            data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day1Open, day1Close, 1000)).Bars);
-            data.RemoveAt(data.Count - 1);
+            //var day1Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-1));
+            //var day1Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-1));
+            //data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day1Open, day1Close, 1000)).Bars);
+            //data.RemoveAt(data.Count - 1);
 
             return data;
         }

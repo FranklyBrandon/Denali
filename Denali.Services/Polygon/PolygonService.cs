@@ -1,4 +1,5 @@
-﻿using Denali.Models.Polygon;
+﻿using Alpaca.Markets;
+using Denali.Models.Polygon;
 using Denali.Services.Settings;
 using System;
 using System.Net.WebSockets;
@@ -11,21 +12,59 @@ namespace Denali.Services.Polygon
 {
     public class PolygonService
     {
-        public delegate void MessageHandler(string message);
-        public event MessageHandler MessageReceived;
+        private readonly PolygonSettings _settings;
+        public IPolygonStreamingClient StreamingClient;
+        public IPolygonDataClient DataClient;
 
-        private readonly PolygonStreaming _streamingClient;
-        private readonly PolygonClient _polygonClient;
-
-        public PolygonService(PolygonStreaming streamingClient, PolygonClient polygonClient)
+        public PolygonService(PolygonSettings settings)
         {
-            this._streamingClient = streamingClient;
-            this._polygonClient = polygonClient;
+            this._settings = settings;
         }
 
-        public async Task<AggregateResponse> GetAggregateData(string ticker, int multiplier, BarTimeSpan timeSpan, long from, long to, int limit)
+        public void InitializeStreamingClient()
         {
-            return await _polygonClient.GetAggregateData(ticker, from, to, multiplier: multiplier, timeFrame: timeSpan, limit: limit);
+            if (StreamingClient != null)
+            {
+                StreamingClient.Dispose();
+                StreamingClient = null;
+            }
+
+            var config = new PolygonStreamingClientConfiguration
+            {
+                ApiEndpoint = new Uri(_settings.WebsocketUrl),
+                KeyId = _settings.APIKey
+            };
+
+            StreamingClient = new PolygonStreamingClient(config);
         }
+
+        public void InitializeDataClient()
+        {
+            if (DataClient != null)
+            {
+                DataClient.Dispose();
+                DataClient = null;
+            }
+
+            var config = new PolygonDataClientConfiguration
+            {
+                ApiEndpoint = new Uri(_settings.APIUrl),
+                KeyId = _settings.APIKey
+            };
+
+            DataClient = new PolygonDataClient(config);
+        }
+
+        public async Task DisconnectStreamingClient()
+        {
+            await StreamingClient.DisconnectAsync();
+            StreamingClient.Dispose();
+            StreamingClient = null;
+        }
+
+        //public async Task<AggregateResponse> GetAggregateData(string ticker, int multiplier, BarTimeSpan timeSpan, long from, long to, int limit)
+        //{
+        //    return await _polygonClient.GetAggregateData(ticker, from, to, multiplier: multiplier, timeFrame: timeSpan, limit: limit);
+        //}
     }
 }

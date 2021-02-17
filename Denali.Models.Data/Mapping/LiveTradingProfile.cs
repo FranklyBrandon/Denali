@@ -21,6 +21,14 @@ namespace Denali.Models.Mapping
                 .ForMember(dest => dest.LowPrice, opt => opt.MapFrom(src => src.Low))
                 .ForMember(dest => dest.Volume, opt => opt.MapFrom(src => src.Volume))
                 .ForMember(dest => dest.Time, opt => opt.MapFrom(src => ((DateTimeOffset)src.EndTimeUtc).ToUnixTimeSeconds()));
+
+            CreateMap<IAgg, Bar>()
+                .ForMember(dest => dest.OpenPrice, opt => opt.MapFrom(src => src.Open))
+                .ForMember(dest => dest.ClosePrice, opt => opt.MapFrom(src => src.Close))
+                .ForMember(dest => dest.HighPrice, opt => opt.MapFrom(src => src.High))
+                .ForMember(dest => dest.LowPrice, opt => opt.MapFrom(src => src.Low))
+                .ForMember(dest => dest.Volume, opt => opt.MapFrom(src => src.Volume))
+                .ForMember(dest => dest.Time, opt => opt.MapFrom(src => ((DateTimeOffset)src.TimeUtc).ToUnixTimeSeconds()));
         }
     }
 }
