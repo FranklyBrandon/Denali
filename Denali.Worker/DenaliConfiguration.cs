@@ -1,6 +1,7 @@
 ﻿using Denali.Models.Mapping;
 using Denali.Processors;
 using Denali.Services;
+using Denali.Services.Alpaca;
 using Denali.Services.Google;
 using Denali.Services.Polygon;
 using Denali.Shared.Utility;
@@ -51,6 +52,10 @@ namespace Denali.Worker
             _services.AddScoped<PolygonSettings>((ctx) =>
             {
                 return _configuration.GetSection(PolygonSettings.Key).Get<PolygonSettings>();
+            });
+            _services.AddScoped<AlpacaSettings>((ctx) =>
+            {
+                return _configuration.GetSection(AlpacaSettings.Key).Get<AlpacaSettings>();
             });
         }
 

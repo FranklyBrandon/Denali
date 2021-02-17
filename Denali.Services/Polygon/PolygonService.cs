@@ -6,9 +6,10 @@ namespace Denali.Services.Polygon
 {
     public class PolygonService
     {
+        public IPolygonStreamingClient StreamingClient { get; private set; }
+        public IPolygonDataClient DataClient { get; private set; }
+
         private readonly PolygonSettings _settings;
-        public IPolygonStreamingClient StreamingClient;
-        public IPolygonDataClient DataClient;
 
         public PolygonService(PolygonSettings settings)
         {
@@ -55,10 +56,5 @@ namespace Denali.Services.Polygon
             StreamingClient.Dispose();
             StreamingClient = null;
         }
-
-        //public async Task<AggregateResponse> GetAggregateData(string ticker, int multiplier, BarTimeSpan timeSpan, long from, long to, int limit)
-        //{
-        //    return await _polygonClient.GetAggregateData(ticker, from, to, multiplier: multiplier, timeFrame: timeSpan, limit: limit);
-        //}
     }
 }
