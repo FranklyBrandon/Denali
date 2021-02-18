@@ -16,26 +16,32 @@ namespace Denali.Worker
     {
         private readonly ILogger<DenaliWorker> _logger;
         private readonly ServiceProvider _provider;
+        private IProcessor _processor;
+        private CancellationTokenSource _proccessTokenSource;
+        private CancellationToken _processToken;
 
         public DenaliWorker(ILogger<DenaliWorker> logger, ServiceProvider provider)
         {
             _logger = logger;
             _provider = provider;
+            _proccessTokenSource = new CancellationTokenSource();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             using (var scope = _provider.CreateScope())
             {
+                _processToken = _proccessTokenSource.Token;
                 _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
-                IProcessor processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
-                await processor.Process(stoppingToken);
+                _processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
+                await _processor.Process(_processToken);
             }
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
-
+            _proccessTokenSource.Cancel();
+            await _processor.ShutDown(cancellationToken);
         }
     }
 }

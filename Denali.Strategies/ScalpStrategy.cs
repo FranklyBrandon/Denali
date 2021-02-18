@@ -35,12 +35,12 @@ namespace Denali.Strategies
             }
         }
 
-        public void ProcessTick(IEnumerable<IAggregateData> aggregateData)
+        public bool ProcessTick(IEnumerable<IAggregateData> aggregateData)
         {
             _sma.Analyze(aggregateData);
 
             if (_sma.MovingAverages.Count() < 1)
-                return;
+                return false;
 
             var latestData = aggregateData.Last();
             var latestSMA = _sma.MovingAverages.Last();
@@ -48,7 +48,12 @@ namespace Denali.Strategies
             if (latestData.OpenPrice < latestSMA && latestData.ClosePrice > latestSMA)
             {
                 var time = _timeUtils.GetETDatetimefromUnixMS(latestData.Time);
-                _logger.LogInformation($"CROSS OVER at ${time}");
+                _logger.LogInformation($"===SMA cross over at===");
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

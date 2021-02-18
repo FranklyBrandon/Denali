@@ -66,6 +66,7 @@ namespace Denali.Worker
             _services.AddScoped<PolygonService>();
             _services.AddScoped<TimeUtils>();
             _services.AddScoped<IAggregateStrategy, ScalpStrategy>();
+            _services.AddScoped<AlpacaService>();
         }
     }
 }

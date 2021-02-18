@@ -58,6 +58,11 @@ namespace Denali.Processors
             return (DateTime.Parse(fromDateString), DateTime.Parse(toDateString));
         }
 
+        public Task ShutDown(CancellationToken stoppingToken)
+        {
+            throw new NotImplementedException();
+        }
+
         //public void StepThroughAggregateData(AggregateResponse aggregateData)
         //{
         //    var size = aggregateData.Bars.Count();
@@ -77,15 +82,15 @@ namespace Denali.Processors
         //{
         //    var data = new List<IAggregateData>();
 
-            //var day2Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-2));
-            //var day2Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-2));
-            //data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day2Open, day2Close, 1000)).Bars);
-            //data.RemoveAt(data.Count - 1);
+        //var day2Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-2));
+        //var day2Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-2));
+        //data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day2Open, day2Close, 1000)).Bars);
+        //data.RemoveAt(data.Count - 1);
 
-            //var day1Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-1));
-            //var day1Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-1));
-            //data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day1Open, day1Close, 1000)).Bars);
-            //data.RemoveAt(data.Count - 1);
+        //var day1Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-1));
+        //var day1Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-1));
+        //data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day1Open, day1Close, 1000)).Bars);
+        //data.RemoveAt(data.Count - 1);
 
         //    return data;
         //}

@@ -50,11 +50,20 @@ namespace Denali.Services.Polygon
             DataClient = new PolygonDataClient(config);
         }
 
-        public async Task DisconnectStreamingClient()
+        public async Task Disconnect()
         {
-            await StreamingClient.DisconnectAsync();
-            StreamingClient.Dispose();
-            StreamingClient = null;
+            if (StreamingClient != null)
+            {
+                await StreamingClient.DisconnectAsync();
+                StreamingClient.Dispose();
+                StreamingClient = null;
+            }
+
+            if (DataClient != null)
+            {
+                DataClient.Dispose();
+                DataClient = null;
+            }
         }
     }
 }

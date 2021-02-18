@@ -8,6 +8,6 @@ namespace Denali.Strategies
     public interface IAggregateStrategy
     {
         void Initialize(IEnumerable<IAggregateData> aggregateData);
-        void ProcessTick(IEnumerable<IAggregateData> aggregateData);
+        bool ProcessTick(IEnumerable<IAggregateData> aggregateData);
     }
 }

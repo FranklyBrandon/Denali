@@ -10,6 +10,7 @@ namespace Denali.Services.Alpaca
     public class AlpacaService
     {
         public AlpacaTradingClient TradingClient { get; private set; }
+        public AlpacaStreamingClient StreamingClient { get; private set; }
 
         private readonly AlpacaSettings _settings;
         public AlpacaService(AlpacaSettings settings)
@@ -32,6 +33,39 @@ namespace Denali.Services.Alpaca
             };
 
             TradingClient = new AlpacaTradingClient(config);
+        }
+
+        public void InitializeStreamingClient()
+        {
+            if (StreamingClient != null)
+            {
+                StreamingClient.Dispose();
+                StreamingClient = null;
+            }
+
+            var config = new AlpacaStreamingClientConfiguration
+            {
+                ApiEndpoint = new Uri(_settings.StreamingUrl),
+                SecurityId = new SecretKey(_settings.APIKey, _settings.APISecret)
+            };
+
+            StreamingClient = new AlpacaStreamingClient(config);
+        }
+
+        public async Task Disconnect()
+        {
+            if (StreamingClient != null)
+            {
+                await StreamingClient.DisconnectAsync();
+                StreamingClient.Dispose();
+                StreamingClient = null;
+            }
+
+            if (TradingClient != null)
+            {
+                TradingClient.Dispose();
+                TradingClient = null;
+            }
         }
     }
 }
