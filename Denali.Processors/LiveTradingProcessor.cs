@@ -26,8 +26,11 @@ namespace Denali.Processors
         private readonly AggregationPeriod _timeFrame = new AggregationPeriod(1, AggregationPeriodUnit.Minute);
         private readonly DateTime _today = DateTime.Today;
 
-        private Guid _lastTradeId;
-        private bool _lastTradeOpen;
+        private Guid _buyOrderId;
+        private bool _buyOrderOpen = false;
+        private Guid _sellOrderId;
+        private bool _sellOrderOpen = false;
+        private int _barsSinceBuySubmit = 0;
 
         public List<IAggregateData> Data { get; set; }
 
@@ -57,13 +60,24 @@ namespace Denali.Processors
             _alpacaService.InitializeTradingClient();
             _alpacaService.InitializeStreamingClient();
 
-            var currentResponse = await _polygonService.DataClient.ListAggregatesAsync(
-                new AggregatesRequest(ticker, _timeFrame)
-                    .SetInclusiveTimeInterval(_today, _today.AddDays(1)));
+            IHistoricalItems<IAgg> currentResponse;
+            IHistoricalItems<IAgg> backlogResponse;
 
-            var backlogResponse = await _polygonService.DataClient.ListAggregatesAsync(
-                new AggregatesRequest(ticker, _timeFrame)
-                    .SetInclusiveTimeInterval(_today.AddDays(-1), _today));
+            try
+            {
+                currentResponse = await _polygonService.DataClient.ListAggregatesAsync(
+                    new AggregatesRequest(ticker, _timeFrame)
+                        .SetInclusiveTimeInterval(_today, _today.AddDays(1)));
+
+                backlogResponse = await _polygonService.DataClient.ListAggregatesAsync(
+                    new AggregatesRequest(ticker, _timeFrame)
+                        .SetInclusiveTimeInterval(_today.AddDays(-1), _today));
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
 
             // Only use last 20 bars for initialization
             var lastBars = backlogResponse.Items.Skip(Math.Max(0, backlogResponse.Items.Count - 20));
@@ -128,37 +142,85 @@ namespace Denali.Processors
         private void OnTradeUpdate(ITradeUpdate obj)
         {
             _logger.LogInformation($"Trade Update of type {obj.Event} for Order {obj.Order.OrderId}");
-            if (obj.Order.OrderId == _lastTradeId && obj.Event == TradeEvent.Fill)
+            if (obj.Event == TradeEvent.Fill)
             {
-                _lastTradeOpen = false;
+                if (obj.Order.OrderId == _buyOrderId)
+                {
+                    _logger.LogInformation("Buy Order filled");
+                    _buyOrderOpen = false;
+
+                } else if (obj.Order.OrderId == _sellOrderId)
+                {
+                    _logger.LogInformation("Sell Order filled");
+                    _sellOrderOpen = false;
+                }
+            }
+            else if (obj.Event == TradeEvent.New)
+            {
+                if (obj.Order.OrderSide == OrderSide.Sell)
+                {
+                    if (obj.Order.OrderType == OrderType.Limit)
+                    {
+                        _logger.LogInformation("Sell Order Initiated");
+                        _sellOrderId = obj.Order.OrderId;
+                        _sellOrderOpen = true;
+                    }
+                    else if (obj.Order.OrderType == OrderType.Stop)
+                    {
+                        _logger.LogInformation("Stop Loss Initiated");
+                        _sellOrderId = obj.Order.OrderId;
+                        _sellOrderOpen = true;
+                    }
+                }
             }
         }
 
-        private void OnMinuteAggregate(IStreamAgg obj)
+        private async void OnMinuteAggregate(IStreamAgg obj)
         {
             _logger.LogInformation($"Aggregate received at {obj.EndTimeUtc}");
-            _logger.LogInformation($"Open: {obj.Open}, Close: {obj.Close}, High: {obj.High}, Low: {obj.Low}, " +
-                $"Volume: {obj.Volume}, Start: {obj.StartTimeUtc}, End: {obj.EndTimeUtc}");
+            _logger.LogInformation($"O: {obj.Open}, H: {obj.High}, L: {obj.Low}, C: {obj.Close}, " +
+                $"V: {obj.Volume}, ST: {obj.StartTimeUtc}, ET: {obj.EndTimeUtc}");
 
             var bar = _mapper.Map<AggregateData>(obj);
             Data.Add(bar);
 
-            if (_strategy.ProcessTick(Data))
-                SubmitLongOrder(obj.Close, obj.Symbol, 1);
+            // If a buy order is already open, expire it, or wait for it to fill before submitting another order
+            if (_buyOrderOpen)
+            {
+                _barsSinceBuySubmit++;
+
+                if (_barsSinceBuySubmit >= 1)
+                {
+                    _logger.LogInformation("Canceling existing buy Order");
+                    _barsSinceBuySubmit = 0;
+                    await _alpacaService.TradingClient.DeleteOrderAsync(_buyOrderId);
+                    _strategy.ProcessTick(Data);
+                    return;
+
+                }
+            }
+            else
+            {
+                if (_strategy.ProcessTick(Data))
+                {
+                    var stopLoss = Math.Max(obj.Close - ((obj.Open - obj.Close) / 2), obj.Close - 0.4M);
+                    if (!_sellOrderOpen)
+                    {
+                        SubmitLongOrder(obj.Close, stopLoss, obj.Symbol, 1);
+                    }
+                }
+            }     
         }
 
-        private async void SubmitLongOrder(decimal price, string ticker, int quantity = 1)
+        private async void SubmitLongOrder(decimal price, decimal stoploss, string ticker, int quantity = 1)
         {
-            if (_lastTradeOpen)
-                return;
-
             _logger.LogInformation("Submitting order");
-            var orderBase = OrderSide.Buy.Limit(ticker, 1, price);
-            var orderRequest = orderBase.Bracket(price, price - 0.10M, null);
+            var orderBase = OrderSide.Buy.Limit(ticker, quantity, price);
+            var orderRequest = orderBase.Bracket(price + 0.02M, stoploss, null);
             try
             {
                 var order = await _alpacaService.TradingClient.PostOrderAsync(orderRequest);
-                _lastTradeId = order.OrderId;         
+                _buyOrderId = order.OrderId;         
             }
             catch (Exception ex)
             {

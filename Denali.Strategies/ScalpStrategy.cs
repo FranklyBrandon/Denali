@@ -1,14 +1,10 @@
-﻿using Denali.Algorithms.AggregateAnalysis;
-using Denali.Algorithms.AggregateAnalysis.ParabolicSAR;
-using Denali.Algorithms.AggregateAnalysis.SMA;
+﻿using Denali.Algorithms.AggregateAnalysis.SMA;
 using Denali.Models.Shared;
 using Denali.Shared.Utility;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denali.Strategies
 {
@@ -47,8 +43,7 @@ namespace Denali.Strategies
 
             if (latestData.OpenPrice < latestSMA && latestData.ClosePrice > latestSMA)
             {
-                var time = _timeUtils.GetETDatetimefromUnixMS(latestData.Time);
-                _logger.LogInformation($"===SMA cross over at===");
+                _logger.LogInformation($"===SMA cross over===");
                 return true;
             }
             else
