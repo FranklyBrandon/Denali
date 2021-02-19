@@ -194,16 +194,16 @@ namespace Denali.Processors
                     _logger.LogInformation("Canceling existing buy Order");
                     _barsSinceBuySubmit = 0;
                     await _alpacaService.TradingClient.DeleteOrderAsync(_buyOrderId);
+                    _buyOrderOpen = false;
                     _strategy.ProcessTick(Data);
                     return;
-
                 }
             }
             else
             {
                 if (_strategy.ProcessTick(Data))
                 {
-                    var stopLoss = Math.Max(obj.Close - ((obj.Open - obj.Close) / 2), obj.Close - 0.4M);
+                    var stopLoss = Math.Max(obj.Close - ((obj.Open - obj.Close) / 2), obj.Close - 0.04M);
                     if (!_sellOrderOpen)
                     {
                         SubmitLongOrder(obj.Close, stopLoss, obj.Symbol, 1);
@@ -220,7 +220,8 @@ namespace Denali.Processors
             try
             {
                 var order = await _alpacaService.TradingClient.PostOrderAsync(orderRequest);
-                _buyOrderId = order.OrderId;         
+                _buyOrderId = order.OrderId;
+                _buyOrderOpen = true;
             }
             catch (Exception ex)
             {
