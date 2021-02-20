@@ -149,7 +149,7 @@ namespace Denali.Processors
                     _logger.LogInformation("Buy Order filled");
                     _buyOrderOpen = false;
 
-                } else if (obj.Order.OrderId == _sellOrderId)
+                } else
                 {
                     _logger.LogInformation("Sell Order filled");
                     _sellOrderOpen = false;
@@ -165,12 +165,14 @@ namespace Denali.Processors
                         _sellOrderId = obj.Order.OrderId;
                         _sellOrderOpen = true;
                     }
-                    else if (obj.Order.OrderType == OrderType.Stop)
-                    {
-                        _logger.LogInformation("Stop Loss Initiated");
-                        _sellOrderId = obj.Order.OrderId;
-                        _sellOrderOpen = true;
-                    }
+                }
+            }
+            else if (obj.Event == TradeEvent.Replaced)
+            {
+                if (obj.Order.OrderSide == OrderSide.Sell)
+                {
+                    _logger.LogInformation("Stop Loss Initiated");
+                    _sellOrderOpen = true;
                 }
             }
         }
@@ -203,7 +205,7 @@ namespace Denali.Processors
             {
                 if (_strategy.ProcessTick(Data))
                 {
-                    var stopLoss = Math.Max(obj.Close - ((obj.Open - obj.Close) / 2), obj.Close - 0.04M);
+                    var stopLoss = Math.Min(obj.Close - ((obj.Open - obj.Close) / 2), obj.Close - 0.04M);
                     if (!_sellOrderOpen)
                     {
                         SubmitLongOrder(obj.Close, stopLoss, obj.Symbol, 1);

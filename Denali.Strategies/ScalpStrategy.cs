@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Denali.Strategies
 {
-    public class ScalpStrategy : IAggregateStrategy
+    public class ScalpStrategy
     {
         private readonly SMA _sma;
         private readonly TimeUtils _timeUtils;
@@ -16,7 +16,7 @@ namespace Denali.Strategies
 
         public ScalpStrategy(ILogger<ScalpStrategy> logger)
         {
-            _sma = new SMA(9);
+            _sma = new SMA(19);
             _timeUtils = new TimeUtils();
             _logger = logger;
         }
