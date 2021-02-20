@@ -55,11 +55,12 @@ namespace Denali.Strategies
                 {
                     return MarketAction.Sell;
                 }
+                // If the SMA13 is lower than the previous SMA13 and it's outside the grace threshold, sell for profit
                 else if (currentSma13 < previousSma13 && currentSma13 > _beginSMA + _graceThreshold)
                 {
                     return MarketAction.Sell;
                 }
-
+                // Otherwise continue to ride the trend up.
                 return MarketAction.None;
             }
             else if (context.SellOpen)
@@ -70,7 +71,7 @@ namespace Denali.Strategies
             {
                 if (RibbonsOverlapThreshold(_sma5.MovingAverages.Last(), _sma8.MovingAverages.Last(), currentSma13))
                 {
-                    //Uptrend signaled
+                    // Uptrend signaled
                     if (previousSma13 <= currentSma13)
                     {
                         _beginSMA = currentSma13;
