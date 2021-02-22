@@ -4,13 +4,14 @@
 //@version=4
 strategy("Ribbon")
 
-sma5 = sma(close, 5)
-sma8 = sma(close, 8)
-sma13 = sma(close, 13)
+sma5 = round(sma(close, 5)*100)/100
+sma8 = round(sma(close, 8)*100)/100
+sma13 = round(sma(close, 13)*100)/100
 
 plot(sma5, color=color.blue)
 plot(sma8, color=color.green)
 plot(sma13, color=color.orange)
 
 if (sma5 == sma8 and sma8 == sma13 and sma13 == sma5)
-    strategy.order("buy", strategy.long)
+    strategy.order("buy", strategy.long, when = strategy.position_size <= 50)
+    strategy.order("sell", strategy.long)
