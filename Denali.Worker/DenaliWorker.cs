@@ -16,7 +16,7 @@ namespace Denali.Worker
     {
         private readonly ILogger<DenaliWorker> _logger;
         private readonly ServiceProvider _provider;
-        private IProcessor _processor;
+        private TradingProcessor _processor;
         private CancellationTokenSource _proccessTokenSource;
         private CancellationToken _processToken;
 
@@ -33,8 +33,8 @@ namespace Denali.Worker
             {
                 _processToken = _proccessTokenSource.Token;
                 _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
-                _processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
-                await _processor.Process(_processToken);
+                _processor = scope.ServiceProvider.GetRequiredService<TradingProcessor>();
+                await _processor.Process(DateTime.Today.AddDays(-3), new[] { "AAPL" }, stoppingToken);
             }
         }
 

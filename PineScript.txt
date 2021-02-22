@@ -1,0 +1,16 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © MelonLordRoberts
+
+//@version=4
+strategy("Ribbon")
+
+sma5 = sma(close, 5)
+sma8 = sma(close, 8)
+sma13 = sma(close, 13)
+
+plot(sma5, color=color.blue)
+plot(sma8, color=color.green)
+plot(sma13, color=color.orange)
+
+if (sma5 == sma8 and sma8 == sma13 and sma13 == sma5)
+    strategy.order("buy", strategy.long)

@@ -1,4 +1,5 @@
-﻿using Denali.Models.Shared;
+﻿using Denali.Algorithms.AggregateAnalysis.Utilities;
+using Denali.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace Denali.Algorithms.AggregateAnalysis.SMA
                 sum += data.ElementAt(i).ClosePrice;
             }
 
-            MovingAverages.Add(sum / _backlog);
+            MovingAverages.Add(AlgorithmUtils.RoundMoney(sum / _backlog));
         }
     }
 }

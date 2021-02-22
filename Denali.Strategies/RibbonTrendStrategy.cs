@@ -85,11 +85,16 @@ namespace Denali.Strategies
 
         private bool RibbonsOverlapThreshold(decimal sma5, decimal sma8, decimal sma13)
         {
-            var test1 = Math.Abs(sma5 - sma8) <= _ribbonThreshold;
-            var test2 = Math.Abs(sma8 - sma13) <= _ribbonThreshold;
-            var test3 = Math.Abs(sma13 - sma5) <= _ribbonThreshold;
+            var diff1 = Math.Abs(sma5 - sma8);
+            var diff2 = Math.Abs(sma8 - sma13);
+            var diff3 = Math.Abs(sma13 - sma5);
 
-            return test1 && test2 && test3;
+            var test1 = diff1 <= _ribbonThreshold;
+            var test2 = diff2 <= _ribbonThreshold;
+            var test3 = diff3 <= _ribbonThreshold;
+            var test4 = (new[] { diff1, diff2, diff3 }.Max() - new[] { diff1, diff2, diff3 }.Min()) <= _ribbonThreshold;
+
+            return test1 && test2 && test3 && test4;
         }
     }
 }

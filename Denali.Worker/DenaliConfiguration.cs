@@ -40,7 +40,12 @@ namespace Denali.Worker
 
         private void AddProcessors()
         {
-            _services.AddScoped<IProcessor, LiveTradingProcessor>();
+            _services.AddScoped<TradingProcessor>();
+        }
+
+        private void AddHttpClients()
+        {
+            _services.AddHttpClient<AlpacaLightWeightClient>();
         }
 
         private void AddAppSettingsConfigs()
@@ -65,7 +70,6 @@ namespace Denali.Worker
             _services.AddScoped<GoogleSheetsService>();
             _services.AddScoped<PolygonService>();
             _services.AddScoped<TimeUtils>();
-            _services.AddScoped<IAggregateStrategy, ScalpStrategy>();
             _services.AddScoped<AlpacaService>();
         }
     }

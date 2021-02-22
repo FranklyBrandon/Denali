@@ -28,6 +28,14 @@ namespace Denali.Shared.Utility
             return zonedDateTime.UniversalTime;
         }
 
+        public DateTime GetNYSECloseDateTime(DateTime date)
+        {
+            var localDateTime = date.Add(new TimeSpan(16, 0, 0));
+            var zonedDateTime = new DateTimeWithZone(localDateTime, EasternStandardTime);
+
+            return zonedDateTime.UniversalTime;
+        }
+
         public long GetNYSECloseUnixMS(DateTime date)
         {
             var localDateTime = date.Add(new TimeSpan(16, 0, 0));

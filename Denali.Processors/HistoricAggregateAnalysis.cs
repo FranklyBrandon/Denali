@@ -1,5 +1,6 @@
 ﻿
 using Denali.Models.Shared;
+using Denali.Services.Alpaca;
 using Denali.Services.Polygon;
 using Denali.Shared;
 using Denali.Shared.Utility;
@@ -13,16 +14,16 @@ using System.Threading.Tasks;
 
 namespace Denali.Processors
 {
-    public class HistoricAggregateAnalysis : IProcessor
+    public class HistoricAggregateAnalysis
     {
-        private readonly PolygonService _polygonService;
+        private readonly AlpacaService _alpacaService;
         private readonly IAggregateStrategy _aggregateStrategy;
         private readonly TimeUtils _timeUtils;
         private readonly IConfiguration _configuration;
 
-        public HistoricAggregateAnalysis(PolygonService polygonService, IAggregateStrategy aggregateStrategy, IConfiguration configuration)
+        public HistoricAggregateAnalysis(AlpacaService alpacaService, IAggregateStrategy aggregateStrategy, IConfiguration configuration)
         {
-            this._polygonService = polygonService;
+            this._alpacaService = alpacaService;
             this._configuration = configuration;
             this._aggregateStrategy = aggregateStrategy;
             this._timeUtils = new TimeUtils();
@@ -36,15 +37,14 @@ namespace Denali.Processors
             var dates = GetProcessDates();
             var range = (dates.Item2 - dates.Item1).Days;
 
-            //var backlogData = await GetBackLogData(ticker, timeSpan, dates.Item1);
-            //_aggregateStrategy.Initialize(backlogData);
-
             var stepDate = dates.Item1;
             for (int i = 0; i < range +1; i++)
             {
-                var dayOpenTimestamp = _timeUtils.GetNYSEOpenUnixMS(stepDate);
-                var dayCloseTimestamp = _timeUtils.GetNYSECloseUnixMS(stepDate);
+                var dayOpenTimestamp = _timeUtils.GetNYSEOpenDateTime(stepDate).AddDays(i);
+                var dayCloseTimestamp = _timeUtils.GetNYSECloseDateTime(stepDate).AddDays(i);
 
+                _aggregateStrategy.Initialize(null);
+                var subscription = _alpacaService.DataStreamingClient.GetTradeSubscription(ticker);
                 //var aggregateData = await _polygonService.GetAggregateData(ticker, 1, timeSpan, dayOpenTimestamp, dayCloseTimestamp, 1000);
                 //StepThroughAggregateData(aggregateData);
             }

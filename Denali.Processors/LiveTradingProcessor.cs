@@ -14,7 +14,7 @@ using Denali.Services.Alpaca;
 
 namespace Denali.Processors
 {
-    public class LiveTradingProcessor : IProcessor
+    public class LiveTradingProcessor
     {
         private readonly IConfiguration _configuration;
         private readonly IAggregateStrategy _strategy;
@@ -197,20 +197,20 @@ namespace Denali.Processors
                     _barsSinceBuySubmit = 0;
                     await _alpacaService.TradingClient.DeleteOrderAsync(_buyOrderId);
                     _buyOrderOpen = false;
-                    _strategy.ProcessTick(Data);
+                    //_strategy.ProcessTick(Data);
                     return;
                 }
             }
             else
             {
-                if (_strategy.ProcessTick(Data))
-                {
-                    var stopLoss = Math.Min(obj.Close - ((obj.Open - obj.Close) / 2), obj.Close - 0.04M);
-                    if (!_sellOrderOpen)
-                    {
-                        SubmitLongOrder(obj.Close, stopLoss, obj.Symbol, 1);
-                    }
-                }
+                //if (_strategy.ProcessTick(Data))
+                //{
+                //    var stopLoss = Math.Min(obj.Close - ((obj.Open - obj.Close) / 2), obj.Close - 0.04M);
+                //    if (!_sellOrderOpen)
+                //    {
+                //        SubmitLongOrder(obj.Close, stopLoss, obj.Symbol, 1);
+                //    }
+                //}
             }     
         }
 
