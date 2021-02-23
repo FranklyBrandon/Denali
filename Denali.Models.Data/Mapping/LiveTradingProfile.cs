@@ -19,6 +19,7 @@ namespace Denali.Models.Mapping
                 .ForMember(dest => dest.HighPrice, opt => opt.MapFrom(src => src.High))
                 .ForMember(dest => dest.LowPrice, opt => opt.MapFrom(src => src.Low))
                 .ForMember(dest => dest.Volume, opt => opt.MapFrom(src => src.Volume))
+                .ForMember(dest => dest.Symbol, opt => opt.MapFrom(src => src.Symbol))
                 .ForMember(dest => dest.Time, opt => opt.MapFrom(src => ((DateTimeOffset)src.EndTimeUtc).ToUnixTimeSeconds()));
 
             CreateMap<IAgg, AggregateData>()

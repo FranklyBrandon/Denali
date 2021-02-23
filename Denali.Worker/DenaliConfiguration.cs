@@ -45,7 +45,7 @@ namespace Denali.Worker
 
         private void AddHttpClients()
         {
-            _services.AddHttpClient<AlpacaLightWeightClient>();
+
         }
 
         private void AddAppSettingsConfigs()

@@ -1,4 +1,5 @@
 ﻿
+using Alpaca.Markets;
 using Denali.Models.Shared;
 using Denali.Services.Alpaca;
 using Denali.Services.Polygon;
@@ -14,12 +15,13 @@ using System.Threading.Tasks;
 
 namespace Denali.Processors
 {
-    public class HistoricAggregateAnalysis
+    public class HistoricAggregateAnalysis : IProcessor
     {
         private readonly AlpacaService _alpacaService;
         private readonly IAggregateStrategy _aggregateStrategy;
         private readonly TimeUtils _timeUtils;
         private readonly IConfiguration _configuration;
+        private Dictionary<string, List<IAggregateData>> _stockData;
 
         public HistoricAggregateAnalysis(AlpacaService alpacaService, IAggregateStrategy aggregateStrategy, IConfiguration configuration)
         {
@@ -29,33 +31,12 @@ namespace Denali.Processors
             this._timeUtils = new TimeUtils();
         }
 
-        public async Task Process(CancellationToken stoppingToken)
+        public async Task Process(DateTime startTime, CancellationToken stoppingToken)
         {
-            var ticker = _configuration["ticker"];
-            //var timeSpan = EnumExtensions.ToEnum<BarTimeSpan>(_configuration["timespan"]);
+            InitializeServices();
+            _stockData = await GetBacklogData(startTime.AddDays(-1), new []{ "AAPL" });
 
-            var dates = GetProcessDates();
-            var range = (dates.Item2 - dates.Item1).Days;
-
-            var stepDate = dates.Item1;
-            for (int i = 0; i < range +1; i++)
-            {
-                var dayOpenTimestamp = _timeUtils.GetNYSEOpenDateTime(stepDate).AddDays(i);
-                var dayCloseTimestamp = _timeUtils.GetNYSECloseDateTime(stepDate).AddDays(i);
-
-                _aggregateStrategy.Initialize(null);
-                var subscription = _alpacaService.DataStreamingClient.GetTradeSubscription(ticker);
-                //var aggregateData = await _polygonService.GetAggregateData(ticker, 1, timeSpan, dayOpenTimestamp, dayCloseTimestamp, 1000);
-                //StepThroughAggregateData(aggregateData);
-            }
-        }
-
-        public (DateTime, DateTime) GetProcessDates()
-        {
-            var fromDateString = _configuration["from"];
-            var toDateString = _configuration["to"];
-
-            return (DateTime.Parse(fromDateString), DateTime.Parse(toDateString));
+            var dayData = GetBacklogData(startTime, new[] { "AAPL" });
         }
 
         public Task ShutDown(CancellationToken stoppingToken)
@@ -63,36 +44,22 @@ namespace Denali.Processors
             throw new NotImplementedException();
         }
 
-        //public void StepThroughAggregateData(AggregateResponse aggregateData)
-        //{
-        //    var size = aggregateData.Bars.Count();
-        //    if (size <= 1)
-        //        return;
+        public void OnBarReceived(IAggregateData barData)
+        {
+            throw new NotImplementedException();
+        }
 
-        //    var stepData = aggregateData.Bars.ToList();
+        private void InitializeServices()
+        {
+            _alpacaService.InitializeDataClient();
+        }
 
-        //    for (int i = 0; i < size; i++)
-        //    {
-        //        var batchRange = stepData.GetRange(0, i + 1);
-        //        _aggregateStrategy.ProcessTick(batchRange);
-        //    }
-        // }
+        private async Task<Dictionary<string, List<IAggregateData>>> GetBacklogData(DateTime startDate, params string[] symbols)
+        {
+            var backlogStartTime = _timeUtils.GetNYSEOpenDateTime(startDate);
+            var backlogEndtime = _timeUtils.GetNYSECloseDateTime(startDate);
 
-        //public async Task<IEnumerable<IAggregateData>> GetBackLogData(string ticker, BarTimeSpan timespan, DateTime startTime)
-        //{
-        //    var data = new List<IAggregateData>();
-
-        //var day2Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-2));
-        //var day2Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-2));
-        //data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day2Open, day2Close, 1000)).Bars);
-        //data.RemoveAt(data.Count - 1);
-
-        //var day1Open = _timeUtils.GetNYSEOpenUnixMS(startTime.AddDays(-1));
-        //var day1Close = _timeUtils.GetNYSECloseUnixMS(startTime.AddDays(-1));
-        //data.AddRange((await _polygonService.GetAggregateData(ticker, 1, timespan, day1Open, day1Close, 1000)).Bars);
-        //data.RemoveAt(data.Count - 1);
-
-        //    return data;
-        //}
+            return await _alpacaService.GetHistoricBarData(backlogStartTime, backlogEndtime, TimeFrame.Minute, symbols: symbols);
+        }
     }
 }

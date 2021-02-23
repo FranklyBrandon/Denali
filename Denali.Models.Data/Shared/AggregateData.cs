@@ -8,6 +8,7 @@ namespace Denali.Models.Shared
 {
     public class AggregateData : IAggregateData
     {
+        public string Symbol { get; set; }
         [JsonPropertyName("o")]
         public decimal OpenPrice { get; set; }
         [JsonPropertyName("c")]

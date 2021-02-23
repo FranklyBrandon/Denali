@@ -13,7 +13,8 @@ namespace Denali.Services.Alpaca
         public string MarketUrl { get; set; }
         public string APIKey { get; set; }
         public string APISecret { get; set; }
-        public string StreamingUrl { get; set; }
+        public string DataStreamingUrl { get; set; }
+        public string TradingStreamingURL { get; set; }
         public string DataUrl { get; set; }
     }
 }

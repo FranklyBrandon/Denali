@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Denali.Processors
 {
-    public class TradingProcessor
+    public class TradingProcessor : IProcessor
     {
         private AlpacaService _alpacaService;
         private TimeUtils _timeUtils;
@@ -66,7 +66,13 @@ namespace Denali.Processors
         private void Subscription_Received(IStreamAgg obj)
         {
             var aggregate = _mapper.Map<AggregateData>(obj);
-            _logger.LogInformation($"O: {aggregate.OpenPrice}, H: {aggregate.ClosePrice}, L: {aggregate.LowPrice}, C: {aggregate.ClosePrice}");
+            OnBarReceived(aggregate);
+        }
+
+        public void OnBarReceived(IAggregateData aggregate)
+        {
+            _logger.LogInformation($"O: {aggregate.OpenPrice}, H: {aggregate.ClosePrice}, L: {aggregate.LowPrice}, C: {aggregate.ClosePrice}, T: {aggregate.Time}");
+            _stockData[aggregate.Symbol].Add(aggregate);
         }
 
         public async Task ShutDown(CancellationToken stoppingToken)
@@ -86,6 +92,11 @@ namespace Denali.Processors
             var backlogEndtime = _timeUtils.GetNYSECloseDateTime(startDate);
 
             return await _alpacaService.GetHistoricBarData(backlogStartTime, backlogEndtime, TimeFrame.Minute, symbols: symbols);
+        }
+
+        public Task Process(DateTime startTime, CancellationToken stoppingToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

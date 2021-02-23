@@ -8,6 +8,7 @@ namespace Denali.Models.Shared
 {
     public interface IAggregateData
     {
+        public string Symbol { get; set; }
         public decimal OpenPrice { get; set; }
         public decimal ClosePrice { get; set; }
         public decimal LowPrice { get; set; }

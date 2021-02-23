@@ -51,7 +51,7 @@ namespace Denali.Services.Alpaca
 
             var config = new AlpacaStreamingClientConfiguration
             {
-                ApiEndpoint = new Uri(_settings.StreamingUrl),
+                ApiEndpoint = new Uri(_settings.TradingStreamingURL),
                 SecurityId = new SecretKey(_settings.APIKey, _settings.APISecret)
             };
 
@@ -85,7 +85,7 @@ namespace Denali.Services.Alpaca
 
             var config = new AlpacaDataStreamingClientConfiguration
             {
-                ApiEndpoint = new Uri(_settings.StreamingUrl),
+                ApiEndpoint = new Uri(_settings.DataStreamingUrl),
                 SecurityId = new SecretKey(_settings.APIKey, _settings.APISecret)
             };
 
