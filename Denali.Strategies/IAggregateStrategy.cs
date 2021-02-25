@@ -8,14 +8,22 @@ namespace Denali.Strategies
     public interface IAggregateStrategy
     {
         void Initialize(IEnumerable<IAggregateData> aggregateData);
-        MarketAction ProcessTick(IEnumerable<IAggregateData> aggregateData, ITadingContext context);
+        MarketAction ProcessTick(IEnumerable<IAggregateData> aggregateData, ITradingContext context);
     }
 
-    public interface ITadingContext
+    public interface ITradingContext
     {
+        public bool LongOpen { get; set; }
         public bool BuyOpen { get; set; }
         public bool SellOpen { get; set; }
 
+    }
+
+    public class TradingContext : ITradingContext
+    {
+        public bool BuyOpen { get; set; }
+        public bool SellOpen { get; set; }
+        public bool LongOpen { get; set; }
     }
 
     public enum MarketAction

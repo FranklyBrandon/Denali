@@ -49,5 +49,11 @@ namespace Denali.Shared.Utility
             var dateTime = DateTimeOffset.FromUnixTimeMilliseconds(timestamp).DateTime;
             return TimeZoneInfo.ConvertTimeFromUtc(dateTime, EasternStandardTime);
         }
+
+        public DateTime GetETDatetimefromUnixS(long timestamp)
+        {
+            var dateTime = DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime;
+            return TimeZoneInfo.ConvertTimeFromUtc(dateTime, EasternStandardTime);
+        }
     }
 }

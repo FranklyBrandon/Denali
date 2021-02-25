@@ -1,5 +1,6 @@
 ﻿using Denali.Algorithms.AggregateAnalysis.SMA;
 using Denali.Models.Shared;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,45 +39,29 @@ namespace Denali.Strategies
             }
         }
 
-        public MarketAction ProcessTick(IEnumerable<IAggregateData> aggregateData, ITadingContext context)
+        public MarketAction ProcessTick(IEnumerable<IAggregateData> aggregateData, ITradingContext context)
         {
-            var previousSma13 = _sma13.MovingAverages.Last();
-
             _sma5.Analyze(aggregateData);
             _sma8.Analyze(aggregateData);
             _sma13.Analyze(aggregateData);
 
+            var currentSma5 = _sma5.MovingAverages.Last();
+            var currentSma8 = _sma8.MovingAverages.Last();
             var currentSma13 = _sma13.MovingAverages.Last();
 
-            if (context.BuyOpen)
+            if (currentSma5 > currentSma13 && currentSma8 > currentSma13)
             {
-                // If the SMA13 is below the stop loss, sell to mitigate risk.
-                if (currentSma13 < _stopLossSMA)
+                if (context.LongOpen == false)
+                {
+                    return MarketAction.Buy;
+                }      
+            }
+            
+            if (currentSma5 <= currentSma13 && currentSma8 <= currentSma13)
+            {
+                if (context.LongOpen)
                 {
                     return MarketAction.Sell;
-                }
-                // If the SMA13 is lower than the previous SMA13 and it's outside the grace threshold, sell for profit
-                else if (currentSma13 < previousSma13 && currentSma13 > _beginSMA + _graceThreshold)
-                {
-                    return MarketAction.Sell;
-                }
-                // Otherwise continue to ride the trend up.
-                return MarketAction.None;
-            }
-            else if (context.SellOpen)
-            {
-                return MarketAction.None;
-            }
-            else if (!context.BuyOpen && !context.SellOpen)
-            {
-                if (RibbonsOverlapThreshold(_sma5.MovingAverages.Last(), _sma8.MovingAverages.Last(), currentSma13))
-                {
-                    // Uptrend signaled
-                    if (previousSma13 <= currentSma13)
-                    {
-                        _beginSMA = currentSma13;
-                        return MarketAction.Buy;
-                    }
                 }
             }
 

@@ -40,7 +40,8 @@ namespace Denali.Worker
 
         private void AddProcessors()
         {
-            _services.AddScoped<TradingProcessor>();
+            _services.AddScoped<HistoricAggregateAnalysis>();
+            //_services.AddScoped<TradingProcessor>();
         }
 
         private void AddHttpClients()
@@ -71,6 +72,7 @@ namespace Denali.Worker
             _services.AddScoped<PolygonService>();
             _services.AddScoped<TimeUtils>();
             _services.AddScoped<AlpacaService>();
+            _services.AddScoped<IAggregateStrategy, RibbonTrendStrategy>();
         }
     }
 }
