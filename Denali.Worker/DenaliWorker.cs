@@ -34,7 +34,7 @@ namespace Denali.Worker
                 _processToken = _proccessTokenSource.Token;
                 _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
                 _processor = scope.ServiceProvider.GetRequiredService<HistoricAggregateAnalysis>();
-                await _processor.Process(DateTime.Today, stoppingToken);
+                await _processor.Process(DateTime.Today.AddDays(-2), stoppingToken);
             }
         }
 

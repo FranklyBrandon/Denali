@@ -16,6 +16,7 @@ namespace Denali.Strategies
         public bool LongOpen { get; set; }
         public bool BuyOpen { get; set; }
         public bool SellOpen { get; set; }
+        public Transaction Transaction { get; set; }
 
     }
 
@@ -24,6 +25,7 @@ namespace Denali.Strategies
         public bool BuyOpen { get; set; }
         public bool SellOpen { get; set; }
         public bool LongOpen { get; set; }
+        public Transaction Transaction { get; set; }
     }
 
     public enum MarketAction

@@ -25,6 +25,7 @@ namespace Denali.Processors
         private readonly ILogger _logger;
         private Dictionary<string, List<IAggregateData>> _stockData;
         private Dictionary<string, IAggregateStrategy> _strategies;
+        private List<Transaction> _transactions;
 
         public HistoricAggregateAnalysis(AlpacaService alpacaService, IConfiguration configuration, ILogger<HistoricAggregateAnalysis> logger)
         {
@@ -32,6 +33,7 @@ namespace Denali.Processors
             this._configuration = configuration;
             this._timeUtils = new();
             this._tradingContext = new TradingContext();
+            this._transactions = new();
             this._logger = logger;
         }
 
@@ -61,14 +63,21 @@ namespace Denali.Processors
                     {
                         _logger.LogInformation($"Buy Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
                         _tradingContext.LongOpen = true;
+                        _tradingContext.Transaction = new Transaction(aggregateData[i + 1].OpenPrice, aggregateData[i + 1].Time);
                     }
                     else if (action == MarketAction.Sell)
                     {
                         _logger.LogInformation($"Sell Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
                         _tradingContext.LongOpen = false;
+                        _tradingContext.Transaction.SellPrice = aggregateData[i + 1].OpenPrice;
+                        _tradingContext.Transaction.SellTime = aggregateData[i + 1].Time;
+                        _transactions.Add(_tradingContext.Transaction);
                     }
                 }
             }
+
+            FileHelper.WriteJSONToFile(_transactions, "AAPL_Run");
+            _logger.LogInformation($"Total Gain: {_transactions.Sum(x => x.NetGain)}");
         }
 
         public Task ShutDown(CancellationToken stoppingToken)
