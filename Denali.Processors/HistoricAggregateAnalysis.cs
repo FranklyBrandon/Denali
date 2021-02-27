@@ -39,39 +39,52 @@ namespace Denali.Processors
 
         public async Task Process(DateTime startTime, CancellationToken stoppingToken)
         {
+            var symbols = _configuration["symbols"].Split(',');
+            var fromDate = DateTime.Parse(_configuration["from"]);
+            var toDate = DateTime.Parse(_configuration["to"]);
+            var backlogStart = GetBacklogStart(fromDate);
+
             InitializeServices();
-            _stockData = await GetHistoricData(startTime.AddDays(-1), new []{ "AAPL" });
+
+            _stockData = await GetHistoricData(backlogStart, symbols);
 
             //Initialize strategies
-            InitializeStrategies(new[] { "AAPL" });
+            InitializeStrategies(symbols);
 
-            var dayData = await GetHistoricData(startTime, new[] { "AAPL" });
+            var dateRange = (toDate.Date - fromDate.Date).Days;
 
-            //Step through strategies
-            foreach (var stockData in dayData)
+            for (int i = 0; i < dateRange; i++)
             {
-                var symbol = stockData.Key;
-                var strategy = _strategies[symbol];
-                var aggregateData = stockData.Value;
+                var currentDay = fromDate.AddDays(i);
+                var dayData = await GetHistoricData(currentDay, symbols);
 
-                for (int i = 1; i < aggregateData.Count - 1; i++)
+                //Step through strategies
+                foreach (var stockData in dayData)
                 {
-                    var range = aggregateData.GetRange(0, i);
-                    var action = strategy.ProcessTick(range, _tradingContext);
+                    var symbol = stockData.Key;
+                    var strategy = _strategies[symbol];
+                    var aggregateData = stockData.Value;
 
-                    if (action == MarketAction.Buy)
+                    for (int y = 1; y < aggregateData.Count - 1; y++)
                     {
-                        _logger.LogInformation($"Buy Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
-                        _tradingContext.LongOpen = true;
-                        _tradingContext.Transaction = new Transaction(aggregateData[i + 1].OpenPrice, aggregateData[i + 1].Time);
-                    }
-                    else if (action == MarketAction.Sell)
-                    {
-                        _logger.LogInformation($"Sell Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
-                        _tradingContext.LongOpen = false;
-                        _tradingContext.Transaction.SellPrice = aggregateData[i + 1].OpenPrice;
-                        _tradingContext.Transaction.SellTime = aggregateData[i + 1].Time;
-                        _transactions.Add(_tradingContext.Transaction);
+                        var range = aggregateData.GetRange(0, y);
+                        var action = strategy.ProcessTick(range, _tradingContext);
+
+                        if (action == MarketAction.Buy)
+                        {
+                            _logger.LogInformation($"Buy Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
+                            _tradingContext.LongOpen = true;
+                            _tradingContext.Transaction = new Transaction(aggregateData[i + 1].OpenPrice, aggregateData[i + 1].Time);
+                        }
+                        else if (action == MarketAction.Sell)
+                        {
+                            _tradingContext.LongOpen = false;
+                            _tradingContext.Transaction.SellPrice = aggregateData[i + 1].OpenPrice;
+                            _tradingContext.Transaction.SellTime = aggregateData[i + 1].Time;
+
+                            _logger.LogInformation($"Sell Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}: {_tradingContext.Transaction.NetGain}");
+                            _transactions.Add(_tradingContext.Transaction);
+                        }
                     }
                 }
             }
@@ -112,6 +125,21 @@ namespace Denali.Processors
             var backlogEndtime = _timeUtils.GetNYSECloseDateTime(startDate);
 
             return await _alpacaService.GetHistoricBarData(backlogStartTime, backlogEndtime, TimeFrame.Minute, symbols: symbols);
+        }
+
+        private DateTime GetBacklogStart(DateTime start)
+        {
+            switch (start.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    return start.AddDays(-3);
+                case DayOfWeek.Sunday:
+                    return start.AddDays(-2);
+                case DayOfWeek.Saturday:
+                    return start.AddDays(-1);
+                default:
+                    return start.AddDays(1);
+            }
         }
     }
 }

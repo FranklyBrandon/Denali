@@ -45,11 +45,21 @@ namespace Denali.Strategies
             _sma8.Analyze(aggregateData);
             _sma13.Analyze(aggregateData);
 
-            var currentSma5 = _sma5.MovingAverages.Last();
-            var currentSma8 = _sma8.MovingAverages.Last();
-            var currentSma13 = _sma13.MovingAverages.Last();
+            var currentSma5 = _sma5.MovingAverages.LastOrDefault();
+            var currentSma8 = _sma8.MovingAverages.LastOrDefault();
+            var currentSma13 = _sma13.MovingAverages.LastOrDefault();
 
-            if (currentSma5 > currentSma13 && currentSma8 > currentSma13)
+            if (currentSma5 is 0m || currentSma8 is 0m || currentSma13 is 0m)
+                return MarketAction.None;
+
+            var previousSma5 = _sma5.MovingAverages.ElementAtOrDefault(_sma5.MovingAverages.Count - 2);
+            var previousSma8 = _sma8.MovingAverages.ElementAtOrDefault(_sma8.MovingAverages.Count - 2);
+
+            if (previousSma5 is 0m || previousSma8 is 0m)
+                return MarketAction.None;
+
+
+            if ((currentSma8 > currentSma13 && currentSma5 > currentSma8) && (currentSma5 > previousSma5 && currentSma8 > previousSma8))
             {
                 if (context.LongOpen == false)
                 {
@@ -57,7 +67,7 @@ namespace Denali.Strategies
                 }      
             }
             
-            if (currentSma5 <= currentSma13 && currentSma8 <= currentSma13)
+            if (currentSma5 <= previousSma5 && currentSma8 <= previousSma8)
             {
                 if (context.LongOpen)
                 {
