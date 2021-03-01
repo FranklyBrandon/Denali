@@ -14,6 +14,7 @@ namespace Denali.Strategies
     public interface ITradingContext
     {
         public bool LongOpen { get; set; }
+        public decimal EntryPrice { get; set; }
         public bool BuyOpen { get; set; }
         public bool SellOpen { get; set; }
         public Transaction Transaction { get; set; }
@@ -23,6 +24,7 @@ namespace Denali.Strategies
     public class TradingContext : ITradingContext
     {
         public bool BuyOpen { get; set; }
+        public decimal EntryPrice { get; set; }
         public bool SellOpen { get; set; }
         public bool LongOpen { get; set; }
         public Transaction Transaction { get; set; }

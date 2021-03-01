@@ -1,6 +1,6 @@
-﻿using Denali.Algorithms.AggregateAnalysis.SMA;
+﻿using Denali.Algorithms.AggregateAnalysis.EMA;
+using Denali.Algorithms.AggregateAnalysis.SMAStrategy;
 using Denali.Models.Shared;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,21 +11,20 @@ namespace Denali.Strategies
 {
     public class RibbonTrendStrategy : IAggregateStrategy
     {
-        private readonly SMA _sma5;
-        private readonly SMA _sma8;
-        private readonly SMA _sma13;
-
-        private decimal _stopLossSMA = 0.00M;
-        private decimal _beginSMA = 0.00M;
-        private decimal _graceThreshold = 0.10M;
+        private readonly EMA _ema9;
+        private readonly EMA _ema21;
+        private readonly EMA _ema55;
 
         private readonly decimal _ribbonThreshold;
 
+        /// <summary>
+        /// use EMAs, 9,21,55 If bar closes above 9ema and 9ema > 21 ema and > 55ema and 21ema - 9ema > 21ema-55 ema
+        /// </summary>
         public RibbonTrendStrategy()
         {
-            _sma5 = new SMA(5);
-            _sma8 = new SMA(8);
-            _sma13 = new SMA(13);
+            _ema9 = new EMA(9);
+            _ema21 = new EMA(21);
+            _ema55 = new EMA(55);
         }
         public void Initialize(IEnumerable<IAggregateData> aggregateData)
         {
@@ -33,45 +32,46 @@ namespace Denali.Strategies
             for (int i = 0; i <= aggregateData.Count() - 1; i++)
             {
                 currentBarData.Add(aggregateData.ElementAt(i));
-                _sma5.Analyze(currentBarData);
-                _sma8.Analyze(currentBarData);
-                _sma13.Analyze(currentBarData);
+                _ema9.Analyze(currentBarData);
+                _ema21.Analyze(currentBarData);
+                _ema55.Analyze(currentBarData);
             }
         }
 
         public MarketAction ProcessTick(IEnumerable<IAggregateData> aggregateData, ITradingContext context)
         {
-            _sma5.Analyze(aggregateData);
-            _sma8.Analyze(aggregateData);
-            _sma13.Analyze(aggregateData);
+            _ema9.Analyze(aggregateData); 
+            _ema21.Analyze(aggregateData);
+            _ema55.Analyze(aggregateData);
 
-            var currentSma5 = _sma5.MovingAverages.LastOrDefault();
-            var currentSma8 = _sma8.MovingAverages.LastOrDefault();
-            var currentSma13 = _sma13.MovingAverages.LastOrDefault();
+            var currentEMA9 = _ema9.MovingAverages.LastOrDefault();
+            var currentEMA21 = _ema21.MovingAverages.LastOrDefault();
+            var currentEMA55 = _ema55.MovingAverages.LastOrDefault();
 
-            if (currentSma5 is 0m || currentSma8 is 0m || currentSma13 is 0m)
+            if (currentEMA9 is 0m || currentEMA21 is 0m || currentEMA55 is 0m)
                 return MarketAction.None;
 
-            var previousSma5 = _sma5.MovingAverages.ElementAtOrDefault(_sma5.MovingAverages.Count - 2);
-            var previousSma8 = _sma8.MovingAverages.ElementAtOrDefault(_sma8.MovingAverages.Count - 2);
+            var previousSma9 = _ema9.MovingAverages.ElementAtOrDefault(_ema9.MovingAverages.Count - 2);
+            var previousSma21 = _ema21.MovingAverages.ElementAtOrDefault(_ema21.MovingAverages.Count - 2);
 
-            if (previousSma5 is 0m || previousSma8 is 0m)
+            if (previousSma9 is 0m || previousSma21 is 0m)
                 return MarketAction.None;
 
+            var currentBar = aggregateData.LastOrDefault();
+            var previousBar = aggregateData.ElementAtOrDefault(aggregateData.Count() - 2);
+            var previousEMA9 = _ema9.MovingAverages.ElementAtOrDefault(_ema9.MovingAverages.Count() - 2);
 
-            if ((currentSma8 > currentSma13 && currentSma5 > currentSma8) && (currentSma5 > previousSma5 && currentSma8 > previousSma8))
+            if (currentBar is null || previousBar is null || previousEMA9 is 0m)
+                return MarketAction.None;
+
+            if (currentEMA9 > currentEMA21 && currentEMA21 > currentEMA55)
             {
-                if (context.LongOpen == false)
+                if ((currentEMA9 - currentEMA21) < (currentEMA21 - currentEMA55))
                 {
-                    return MarketAction.Buy;
-                }      
-            }
-            
-            if (currentSma5 <= previousSma5 && currentSma8 <= previousSma8)
-            {
-                if (context.LongOpen)
-                {
-                    return MarketAction.Sell;
+                    if (currentBar.ClosePrice > currentEMA9)
+                    {
+                        return MarketAction.Buy;
+                    }
                 }
             }
 

@@ -53,18 +53,20 @@ namespace Denali.Processors
 
             var dateRange = (toDate.Date - fromDate.Date).Days;
 
+            //Step through every day of the analysis
             for (int i = 0; i < dateRange; i++)
             {
                 var currentDay = fromDate.AddDays(i);
                 var dayData = await GetHistoricData(currentDay, symbols);
 
-                //Step through strategies
+                //Step through each symbol of each day
                 foreach (var stockData in dayData)
                 {
                     var symbol = stockData.Key;
                     var strategy = _strategies[symbol];
                     var aggregateData = stockData.Value;
 
+                    //Step through each Aggregate of each symbol of each day
                     for (int y = 1; y < aggregateData.Count - 1; y++)
                     {
                         var range = aggregateData.GetRange(0, y);
@@ -74,23 +76,24 @@ namespace Denali.Processors
                         {
                             _logger.LogInformation($"Buy Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
                             _tradingContext.LongOpen = true;
-                            _tradingContext.Transaction = new Transaction(aggregateData[i + 1].OpenPrice, aggregateData[i + 1].Time);
+                            _tradingContext.Transaction = new Transaction(aggregateData[y + 1].OpenPrice, aggregateData[y + 1].Time);
                         }
                         else if (action == MarketAction.Sell)
                         {
                             _tradingContext.LongOpen = false;
-                            _tradingContext.Transaction.SellPrice = aggregateData[i + 1].OpenPrice;
-                            _tradingContext.Transaction.SellTime = aggregateData[i + 1].Time;
+                            _tradingContext.Transaction.SellPrice = aggregateData[y + 1].OpenPrice;
+                            _tradingContext.Transaction.SellTime = aggregateData[y + 1].Time;
 
                             _logger.LogInformation($"Sell Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}: {_tradingContext.Transaction.NetGain}");
                             _transactions.Add(_tradingContext.Transaction);
                         }
                     }
                 }
+
+                _logger.LogInformation($"Total Gain: {_transactions.Sum(x => x.NetGain)}");
             }
 
             FileHelper.WriteJSONToFile(_transactions, "AAPL_Run");
-            _logger.LogInformation($"Total Gain: {_transactions.Sum(x => x.NetGain)}");
         }
 
         public Task ShutDown(CancellationToken stoppingToken)
@@ -138,7 +141,7 @@ namespace Denali.Processors
                 case DayOfWeek.Saturday:
                     return start.AddDays(-1);
                 default:
-                    return start.AddDays(1);
+                    return start.AddDays(-1);
             }
         }
     }
