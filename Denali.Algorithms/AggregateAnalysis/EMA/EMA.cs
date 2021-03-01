@@ -1,4 +1,5 @@
 ﻿using Denali.Algorithms.AggregateAnalysis.SMAStrategy;
+using Denali.Algorithms.AggregateAnalysis.Utilities;
 using Denali.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Denali.Algorithms.AggregateAnalysis.EMA
             this._backlog = backlog;
             this._sma = new SMA(backlog);
             this.MovingAverages = new List<decimal>();
-            this._smoothingConstant = 2 / (_backlog + 1);
+            this._smoothingConstant = (2m / (_backlog + 1m));
         }
 
         public void Analyze(IEnumerable<IAggregateData> data)
@@ -31,13 +32,14 @@ namespace Denali.Algorithms.AggregateAnalysis.EMA
                 _sma.Analyze(data);
 
                 if (_sma.MovingAverages.Any())
-                    MovingAverages.Add(_sma.MovingAverages.First());
+                    MovingAverages.Add(_sma.MovingAverages.Last());
             }
             else
             {
                 //Calculate running EMA value 
+                var currentBar = data.Last();
                 var previousEma = MovingAverages.Last();
-                var newEma = (data.Last().ClosePrice - previousEma) * _smoothingConstant + previousEma;
+                var newEma = AlgorithmUtils.RoundMoney((currentBar.ClosePrice - previousEma) * _smoothingConstant + previousEma);
                 MovingAverages.Add(newEma);
             }
         }

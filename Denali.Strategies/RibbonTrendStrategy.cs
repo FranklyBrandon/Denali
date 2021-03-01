@@ -1,6 +1,7 @@
 ﻿using Denali.Algorithms.AggregateAnalysis.EMA;
 using Denali.Algorithms.AggregateAnalysis.SMAStrategy;
 using Denali.Models.Shared;
+using Denali.Shared.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Denali.Strategies
         private readonly EMA _ema55;
 
         private readonly decimal _ribbonThreshold;
+        private readonly TimeUtils _timeUtils;
 
         /// <summary>
         /// use EMAs, 9,21,55 If bar closes above 9ema and 9ema > 21 ema and > 55ema and 21ema - 9ema > 21ema-55 ema
@@ -25,6 +27,7 @@ namespace Denali.Strategies
             _ema9 = new EMA(9);
             _ema21 = new EMA(21);
             _ema55 = new EMA(55);
+            _timeUtils = new TimeUtils();
         }
         public void Initialize(IEnumerable<IAggregateData> aggregateData)
         {
@@ -47,6 +50,8 @@ namespace Denali.Strategies
             var currentEMA9 = _ema9.MovingAverages.LastOrDefault();
             var currentEMA21 = _ema21.MovingAverages.LastOrDefault();
             var currentEMA55 = _ema55.MovingAverages.LastOrDefault();
+
+            Console.WriteLine($"EMA9: {currentEMA9} at {_timeUtils.GetETDatetimefromUnixS(aggregateData.Last().Time)}");
 
             if (currentEMA9 is 0m || currentEMA21 is 0m || currentEMA55 is 0m)
                 return MarketAction.None;
