@@ -51,7 +51,10 @@ namespace Denali.Strategies
             var currentEMA21 = _ema21.MovingAverages.LastOrDefault();
             var currentEMA55 = _ema55.MovingAverages.LastOrDefault();
 
-            Console.WriteLine($"EMA9: {currentEMA9} at {_timeUtils.GetETDatetimefromUnixS(aggregateData.Last().Time)}");
+            Console.WriteLine($"Time: {_timeUtils.GetETDatetimefromUnixS(aggregateData.Last().Time)}");
+            Console.WriteLine($"EMA9: {currentEMA9}");
+            Console.WriteLine($"EMA21: {currentEMA21}");
+            Console.WriteLine($"EMA55: {currentEMA55}");
 
             if (currentEMA9 is 0m || currentEMA21 is 0m || currentEMA55 is 0m)
                 return MarketAction.None;
