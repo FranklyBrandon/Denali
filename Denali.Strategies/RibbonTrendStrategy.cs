@@ -72,11 +72,14 @@ namespace Denali.Strategies
             if (currentBar is null || previousBar is null || previousEMA9 is 0m)
                 return MarketAction.None;
 
+            //If close is higher than ema9 (optional?)
+            //if current ema9 >= current ema 21 and (current ema9 - current ema 21) <= 2 and previous ema9 <= current ema21
+            // and is far enough away from ema 55?
             if (currentEMA9 > currentEMA21 && currentEMA21 > currentEMA55)
             {
                 if ((currentEMA9 - currentEMA21) < (currentEMA21 - currentEMA55))
                 {
-                    if (currentBar.ClosePrice > currentEMA9)
+                    if (currentBar.ClosePrice > currentEMA9 && context.LongOpen == false)
                     {
                         return MarketAction.Buy;
                     }

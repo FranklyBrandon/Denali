@@ -72,21 +72,21 @@ namespace Denali.Processors
                         var range = aggregateData.GetRange(0, y);
                         var action = strategy.ProcessTick(range, _tradingContext);
 
-                        //if (action == MarketAction.Buy)
-                        //{
-                        //    _logger.LogInformation($"Buy Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
-                        //    _tradingContext.LongOpen = true;
-                        //    _tradingContext.Transaction = new Transaction(aggregateData[y + 1].OpenPrice, aggregateData[y + 1].Time);
-                        //}
-                        //else if (action == MarketAction.Sell)
-                        //{
-                        //    _tradingContext.LongOpen = false;
-                        //    _tradingContext.Transaction.SellPrice = aggregateData[y + 1].OpenPrice;
-                        //    _tradingContext.Transaction.SellTime = aggregateData[y + 1].Time;
+                        if (action == MarketAction.Buy)
+                        {
+                            _logger.LogInformation($"Buy Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
+                            _tradingContext.LongOpen = true;
+                            _tradingContext.Transaction = new Transaction(aggregateData[y + 1].OpenPrice, aggregateData[y + 1].Time);
+                        }
+                        else if (action == MarketAction.Sell)
+                        {
+                            _tradingContext.LongOpen = false;
+                            _tradingContext.Transaction.SellPrice = aggregateData[y + 1].OpenPrice;
+                            _tradingContext.Transaction.SellTime = aggregateData[y + 1].Time;
 
-                        //    _logger.LogInformation($"Sell Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}: {_tradingContext.Transaction.NetGain}");
-                        //    _transactions.Add(_tradingContext.Transaction);
-                        //}
+                            _logger.LogInformation($"Sell Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}: {_tradingContext.Transaction.NetGain}");
+                            _transactions.Add(_tradingContext.Transaction);
+                        }
                     }
                 }
 
