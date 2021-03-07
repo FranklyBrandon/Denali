@@ -69,7 +69,7 @@ namespace Denali.Strategies
             if (currentBar is null || previousBar is null || previousEMA9 is 0m || previousEMA21 is 0m)
                 return MarketAction.None;
 
-            if (currentEMA9 >=  currentEMA21 && currentEMA21 > currentEMA55 && !_trendUtilized)
+            if (currentEMA9 >=  currentEMA21 && !_trendUtilized)
             {
                 if (!context.LongOpen)
                 {
@@ -77,6 +77,11 @@ namespace Denali.Strategies
                     return MarketAction.Buy;
                 }
             }
+
+            //if (context.Transaction != null && currentBar.ClosePrice >= context.Transaction.BuyPrice + 0.20m)
+            //{
+            //    return MarketAction.Sell;
+            //}
 
             if (currentEMA9 < previousEMA9)
             {

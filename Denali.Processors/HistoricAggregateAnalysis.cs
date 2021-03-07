@@ -103,8 +103,10 @@ namespace Denali.Processors
                 foreach (var transaction in _transactions)
                 {
                     _logger.LogInformation("[TRANSACTION]");
+                    _logger.LogInformation($"But Time: {_timeUtils.GetETDatetimefromUnixS(transaction.BuyTime)}");
                     _logger.LogInformation($"Buy : {transaction.BuyPrice}");
                     _logger.LogInformation($"Sell: {transaction.SellPrice}");
+                    _logger.LogInformation($"Sell Time: {_timeUtils.GetETDatetimefromUnixS(transaction.SellTime)}");
                     _logger.LogInformation($"High: {transaction.High}");
                     _logger.LogInformation($"Net : {transaction.NetGain}");
                 }
