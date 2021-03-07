@@ -74,7 +74,7 @@ namespace Denali.Processors
 
                         if (action == MarketAction.Buy)
                         {
-                            _logger.LogInformation($"Buy Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
+                            //_logger.LogInformation($"Buy Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
                             _tradingContext.LongOpen = true;
                             _tradingContext.Transaction = new Transaction(aggregateData[y + 1].OpenPrice, aggregateData[y + 1].Time);
                         }
@@ -84,10 +84,29 @@ namespace Denali.Processors
                             _tradingContext.Transaction.SellPrice = aggregateData[y + 1].OpenPrice;
                             _tradingContext.Transaction.SellTime = aggregateData[y + 1].Time;
 
-                            _logger.LogInformation($"Sell Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}: {_tradingContext.Transaction.NetGain}");
+                            //_logger.LogInformation($"Sell Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}: {_tradingContext.Transaction.NetGain}");
                             _transactions.Add(_tradingContext.Transaction);
                         }
+                        else
+                        {
+                            if (_tradingContext.Transaction is not null)
+                            {
+                                if (range.Last().HighPrice > _tradingContext.Transaction.High)
+                                {
+                                    _tradingContext.Transaction.High = range.Last().HighPrice;
+                                }
+                            }
+                        }
                     }
+                }
+
+                foreach (var transaction in _transactions)
+                {
+                    _logger.LogInformation("[TRANSACTION]");
+                    _logger.LogInformation($"Buy : {transaction.BuyPrice}");
+                    _logger.LogInformation($"Sell: {transaction.SellPrice}");
+                    _logger.LogInformation($"High: {transaction.High}");
+                    _logger.LogInformation($"Net : {transaction.NetGain}");
                 }
 
                 _logger.LogInformation($"Total Gain: {_transactions.Sum(x => x.NetGain)}");

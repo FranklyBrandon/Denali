@@ -19,6 +19,8 @@ namespace Denali.Strategies
         private readonly decimal _ribbonThreshold;
         private readonly TimeUtils _timeUtils;
 
+        private bool _trendUtilized = false;
+
         /// <summary>
         /// use EMAs, 9,21,55 If bar closes above 9ema and 9ema > 21 ema and > 55ema and 21ema - 9ema > 21ema-55 ema
         /// </summary>
@@ -51,39 +53,42 @@ namespace Denali.Strategies
             var currentEMA21 = _ema21.MovingAverages.LastOrDefault();
             var currentEMA55 = _ema55.MovingAverages.LastOrDefault();
 
-            Console.WriteLine($"Time: {_timeUtils.GetETDatetimefromUnixS(aggregateData.Last().Time)}");
-            Console.WriteLine($"EMA9: {currentEMA9}");
-            Console.WriteLine($"EMA21: {currentEMA21}");
-            Console.WriteLine($"EMA55: {currentEMA55}");
+            //Console.WriteLine($"Time: {_timeUtils.GetETDatetimefromUnixS(aggregateData.Last().Time)}");
+            //Console.WriteLine($"EMA9: {currentEMA9}");
+            //Console.WriteLine($"EMA21: {currentEMA21}");
+            //Console.WriteLine($"EMA55: {currentEMA55}");
 
             if (currentEMA9 is 0m || currentEMA21 is 0m || currentEMA55 is 0m)
-                return MarketAction.None;
-
-            var previousSma9 = _ema9.MovingAverages.ElementAtOrDefault(_ema9.MovingAverages.Count - 2);
-            var previousSma21 = _ema21.MovingAverages.ElementAtOrDefault(_ema21.MovingAverages.Count - 2);
-
-            if (previousSma9 is 0m || previousSma21 is 0m)
                 return MarketAction.None;
 
             var currentBar = aggregateData.LastOrDefault();
             var previousBar = aggregateData.ElementAtOrDefault(aggregateData.Count() - 2);
             var previousEMA9 = _ema9.MovingAverages.ElementAtOrDefault(_ema9.MovingAverages.Count() - 2);
+            var previousEMA21 = _ema21.MovingAverages.ElementAtOrDefault(_ema21.MovingAverages.Count() - 2);
 
-            if (currentBar is null || previousBar is null || previousEMA9 is 0m)
+            if (currentBar is null || previousBar is null || previousEMA9 is 0m || previousEMA21 is 0m)
                 return MarketAction.None;
 
-            //If close is higher than ema9 (optional?)
-            //if current ema9 >= current ema 21 and (current ema9 - current ema 21) <= 2 and previous ema9 <= current ema21
-            // and is far enough away from ema 55?
-            if (currentEMA9 > currentEMA21 && currentEMA21 > currentEMA55)
+            if (currentEMA9 >=  currentEMA21 && currentEMA21 > currentEMA55 && !_trendUtilized)
             {
-                if ((currentEMA9 - currentEMA21) < (currentEMA21 - currentEMA55))
+                if (!context.LongOpen)
                 {
-                    if (currentBar.ClosePrice > currentEMA9 && context.LongOpen == false)
-                    {
-                        return MarketAction.Buy;
-                    }
+                    _trendUtilized = true;
+                    return MarketAction.Buy;
                 }
+            }
+
+            if (currentEMA9 < previousEMA9)
+            {
+                if (context.LongOpen)
+                {
+                    return MarketAction.Sell;
+                }
+            }
+
+            if (currentEMA9 < currentEMA21)
+            {
+                _trendUtilized = false;
             }
 
             return MarketAction.None;

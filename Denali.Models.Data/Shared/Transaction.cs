@@ -18,7 +18,9 @@ namespace Denali.Models.Shared
         public decimal SellPrice { get; set; }
         public long BuyTime { get; set; }
         public long SellTime { get; set; }
+        public decimal High { get; set; }
 
         public decimal NetGain => SellPrice - BuyPrice;
+
     }
 }
