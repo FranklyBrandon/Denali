@@ -78,12 +78,12 @@ namespace Denali.Strategies
                 }
             }
 
-            //if (context.Transaction != null && currentBar.ClosePrice >= context.Transaction.BuyPrice + 0.20m)
-            //{
-            //    return MarketAction.Sell;
-            //}
+            if (context.Transaction != null && currentBar.ClosePrice >= context.Transaction.BuyPrice + 0.10m)
+            {
+                return MarketAction.Sell;
+            }
 
-            if (currentEMA9 < previousEMA9)
+            if (currentEMA9 <= previousEMA9)
             {
                 if (context.LongOpen)
                 {
@@ -91,7 +91,7 @@ namespace Denali.Strategies
                 }
             }
 
-            if (currentEMA9 < currentEMA21)
+            if (currentEMA9 <= currentEMA21)
             {
                 _trendUtilized = false;
             }
