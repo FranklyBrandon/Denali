@@ -2,7 +2,6 @@
 using Alpaca.Markets;
 using Denali.Models.Shared;
 using Denali.Services.Alpaca;
-using Denali.Services.Polygon;
 using Denali.Shared;
 using Denali.Shared.Utility;
 using Denali.Strategies;
@@ -49,7 +48,7 @@ namespace Denali.Processors
             _stockData = await GetHistoricData(backlogStart, symbols);
 
             //Initialize strategies
-            InitializeStrategies(symbols);
+            InitializeStrategies(symbols); 
 
             var dateRange = (toDate.Date - fromDate.Date).Days;
 
@@ -72,54 +71,48 @@ namespace Denali.Processors
                         var range = aggregateData.GetRange(0, y + 1);
                         var action = strategy.ProcessTick(range, _tradingContext);
 
-                        if (action == MarketAction.Buy)
-                        {
-                            //_logger.LogInformation($"Buy Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
-                            var time = _timeUtils.GetETDatetimefromUnixS(range.Last().Time);
-                            _tradingContext.LongOpen = true;
-                            _tradingContext.Transaction = new Transaction(aggregateData[y + 1].OpenPrice, aggregateData[y + 1].Time);
-                        }
-                        else if (action == MarketAction.Sell)
-                        {
-                            var time = _timeUtils.GetETDatetimefromUnixS(range.Last().Time);
-                            _tradingContext.LongOpen = false;
-                            _tradingContext.Transaction.SellPrice = aggregateData[y + 1].OpenPrice;
-                            _tradingContext.Transaction.SellTime = aggregateData[y + 1].Time;
+                        //if (action == MarketAction.Buy)
+                        //{
+                        //    //_logger.LogInformation($"Buy Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}");
+                        //    var time = _timeUtils.GetETDatetimefromUnixS(range.Last().Time);
+                        //    _tradingContext.LongOpen = true;
+                        //    _tradingContext.Transaction = new Transaction(aggregateData[y + 1].OpenPrice, aggregateData[y + 1].Time);
+                        //}
+                        //else if (action == MarketAction.Sell)
+                        //{
+                        //    var time = _timeUtils.GetETDatetimefromUnixS(range.Last().Time);
+                        //    _tradingContext.LongOpen = false;
+                        //    _tradingContext.Transaction.SellPrice = aggregateData[y + 1].OpenPrice;
+                        //    _tradingContext.Transaction.SellTime = aggregateData[y + 1].Time;
 
-                            //_logger.LogInformation($"Sell Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}: {_tradingContext.Transaction.NetGain}");
-                            _transactions.Add(_tradingContext.Transaction);
-                            _tradingContext.Transaction = null;
-                        }
-                        else
-                        {
-                            if (_tradingContext.Transaction is not null)
-                            {
-                                if (range.Last().HighPrice > _tradingContext.Transaction.High)
-                                {
-                                    _tradingContext.Transaction.High = range.Last().HighPrice;
-                                }
-                            }
-                        }
+                        //    //_logger.LogInformation($"Sell Initiated at: {_timeUtils.GetETDatetimefromUnixS(range.Last().Time)}: {_tradingContext.Transaction.NetGain}");
+                        //    _transactions.Add(_tradingContext.Transaction);
+                        //    _tradingContext.Transaction = null;
+                        //}
+                        //else
+                        //{
+                        //    if (_tradingContext.Transaction is not null)
+                        //    {
+                        //        if (range.Last().HighPrice > _tradingContext.Transaction.High)
+                        //        {
+                        //            _tradingContext.Transaction.High = range.Last().HighPrice;
+                        //        }
+                        //    }
+                        //}
                     }
                 }
 
                 foreach (var transaction in _transactions)
                 {
-                    _logger.LogInformation("[TRANSACTION]");
-                    _logger.LogInformation($"But Time: {_timeUtils.GetETDatetimefromUnixS(transaction.BuyTime)}");
-                    _logger.LogInformation($"Buy : {transaction.BuyPrice}");
-                    _logger.LogInformation($"Sell: {transaction.SellPrice}");
-                    _logger.LogInformation($"Sell Time: {_timeUtils.GetETDatetimefromUnixS(transaction.SellTime)}");
-                    _logger.LogInformation($"High: {transaction.High}");
-                    _logger.LogInformation($"Net : {transaction.NetGain}");
+                    //_logger.LogInformation("[TRANSACTION]");
+                    //_logger.LogInformation($"But Time: {_timeUtils.GetETDatetimefromUnixS(transaction.BuyTime)}");
+                    //_logger.LogInformation($"Buy : {transaction.BuyPrice}");
+                    //_logger.LogInformation($"Sell: {transaction.SellPrice}");
+                    //_logger.LogInformation($"Sell Time: {_timeUtils.GetETDatetimefromUnixS(transaction.SellTime)}");
+                    //_logger.LogInformation($"High: {transaction.High}");
+                    //_logger.LogInformation($"Net : {transaction.NetGain}");
                 }
             }
-
-            _logger.LogInformation("=====SUMMATION=====");
-            _logger.LogInformation($"Wins : {_transactions.Where(x => x.NetGain > 0).Count()}");
-            _logger.LogInformation($"Loses: {_transactions.Where(x => x.NetGain < 0).Count()}");
-            _logger.LogInformation($"Total Gain: {_transactions.Sum(x => x.NetGain)}");
-            FileHelper.WriteJSONToFile(_transactions, "AAPL_Run");
         }
 
         public Task ShutDown(CancellationToken stoppingToken)
@@ -153,7 +146,7 @@ namespace Denali.Processors
             var backlogStartTime = _timeUtils.GetNYSEOpenDateTime(startDate);
             var backlogEndtime = _timeUtils.GetNYSECloseDateTime(startDate);
 
-            return await _alpacaService.GetHistoricBarData(backlogStartTime, backlogEndtime, TimeFrame.Minute, symbols: symbols);
+            return await _alpacaService.GetHistoricBarData(backlogStartTime, backlogEndtime, TimeFrame.Day, symbols: symbols);
         }
 
         private DateTime GetBacklogStart(DateTime start)

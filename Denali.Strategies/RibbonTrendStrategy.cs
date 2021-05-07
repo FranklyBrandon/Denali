@@ -21,6 +21,9 @@ namespace Denali.Strategies
 
         private bool _trendUtilized = false;
 
+        private decimal _takProfit = 0.1m / 100;
+        private decimal _stopLoss = 0.05m / 100;
+
         /// <summary>
         /// use EMAs, 9,21,55 If bar closes above 9ema and 9ema > 21 ema and > 55ema and 21ema - 9ema > 21ema-55 ema
         /// </summary>
@@ -69,32 +72,38 @@ namespace Denali.Strategies
             if (currentBar is null || previousBar is null || previousEMA9 is 0m || previousEMA21 is 0m)
                 return MarketAction.None;
 
-            if (currentEMA9 >=  currentEMA21 && !_trendUtilized)
+            //if (currentEMA9 >=  currentEMA21 && !_trendUtilized)
+            //{
+            //    if (!context.LongOpen)
+            //    {
+            //        _trendUtilized = true;
+            //        return MarketAction.Buy;
+            //    }
+            //}
+
+            var time = _timeUtils.GetETDatetimefromUnixS(aggregateData.Last().Time);
+            if (currentEMA9 > currentEMA21 && currentEMA21 > currentEMA55)
             {
-                if (!context.LongOpen)
+                if (currentBar.OpenPrice <= currentEMA55 && currentBar.ClosePrice >= currentEMA9)
                 {
-                    _trendUtilized = true;
                     return MarketAction.Buy;
                 }
             }
 
-            if (context.Transaction != null && currentBar.ClosePrice >= context.Transaction.BuyPrice + 0.10m)
+            //if (context.Transaction != null && currentBar.ClosePrice >= context.Transaction.BuyPrice + _takProfit)
+            //{
+            //    return MarketAction.Sell;
+            //}
+
+            if (context.Transaction != null && currentEMA21 < previousEMA21)
             {
                 return MarketAction.Sell;
             }
 
-            if (currentEMA9 <= previousEMA9)
-            {
-                if (context.LongOpen)
-                {
-                    return MarketAction.Sell;
-                }
-            }
-
-            if (currentEMA9 <= currentEMA21)
-            {
-                _trendUtilized = false;
-            }
+            //if (context.LongOpen && currentBar.ClosePrice <= context.Transaction.BuyPrice - _stopLoss)
+            //{
+            //    return MarketAction.Sell;
+            //}
 
             return MarketAction.None;
         }

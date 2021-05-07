@@ -12,13 +12,13 @@ namespace Denali.Shared.Utility
 {
     public static class FileHelper
     {
-        public static void WriteJSONToFile(object content, string filename)
+        public static async Task WriteJSONToFile(object content, string filename)
         {
             var fullPath = AppDomain.CurrentDomain.BaseDirectory;
             var directory = Path.Combine(fullPath, filename + ".txt");
             var json = JsonSerializer.Serialize(content);
 
-            File.WriteAllTextAsync(directory, json);
+            await File.WriteAllTextAsync(directory, json);
         }
     }
 }

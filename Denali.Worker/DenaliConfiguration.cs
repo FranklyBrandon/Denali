@@ -3,7 +3,6 @@ using Denali.Processors;
 using Denali.Services;
 using Denali.Services.Alpaca;
 using Denali.Services.Google;
-using Denali.Services.Polygon;
 using Denali.Shared.Utility;
 using Denali.Strategies;
 using Microsoft.Extensions.Configuration;
@@ -40,8 +39,7 @@ namespace Denali.Worker
 
         private void AddProcessors()
         {
-            _services.AddScoped<HistoricAggregateAnalysis>();
-            //_services.AddScoped<TradingProcessor>();
+            _services.AddScoped<GapUpProcessor>();
         }
 
         private void AddHttpClients()
@@ -55,10 +53,6 @@ namespace Denali.Worker
             {
                 return _configuration.GetSection(DenaliSettings.Key).Get<DenaliSettings>();
             });
-            _services.AddScoped<PolygonSettings>((ctx) =>
-            {
-                return _configuration.GetSection(PolygonSettings.Key).Get<PolygonSettings>();
-            });
             _services.AddScoped<AlpacaSettings>((ctx) =>
             {
                 return _configuration.GetSection(AlpacaSettings.Key).Get<AlpacaSettings>();
@@ -69,7 +63,6 @@ namespace Denali.Worker
         {
             _services.AddScoped<DenaliSheetsService>();
             _services.AddScoped<GoogleSheetsService>();
-            _services.AddScoped<PolygonService>();
             _services.AddScoped<TimeUtils>();
             _services.AddScoped<AlpacaService>();
             _services.AddScoped<IAggregateStrategy, RibbonTrendStrategy>();
