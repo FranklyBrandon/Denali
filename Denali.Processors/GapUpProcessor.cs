@@ -18,6 +18,13 @@ namespace Denali.Processors
         private readonly TimeUtils _timeUtils;
         private readonly IConfiguration _configuration;
 
+        private const string GAP_UP_PAGE_URL = "https://www.barchart.com/stocks/performance/gap/gap-up";
+        private const string CHROME_PATH = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+        private const string BEGIN_STOCK_URL = "https://www.barchart.com/stocks/quotes/";
+        private const string END_STOCK_URL = "/overview";
+        private const string BROWSER_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36";
+        private const string PAGE_ANCHOR_SELECTOR = @"Array.from(document.querySelectorAll('a')).map(a => a.href);";
+
         public GapUpProcessor(AlpacaService alpacaService, IConfiguration configuration)
         {
             _alpacaService = alpacaService;
@@ -42,33 +49,36 @@ namespace Denali.Processors
             await _alpacaService.Disconnect();
         }
 
-        private async Task<List<string>> ScrapSymbols()
+        private async Task<IEnumerable<string>> ScrapSymbols()
         {
-            string fullUrl = "https://www.barchart.com/stocks/performance/gap/gap-up";
-
-            List<string> symbols = new List<string>();
-
             var options = new LaunchOptions()
             {
                 Headless = true,
-                ExecutablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+                ExecutablePath = CHROME_PATH,
                 Product = Product.Chrome           
             };
+
             var browser = await Puppeteer.LaunchAsync(options);
             var page = (await browser.PagesAsync()).First();
-            await page.SetUserAgentAsync("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36");
-            await page.GoToAsync(fullUrl);
-            var links = @"Array.from(document.querySelectorAll('a')).map(a => a.href);";
-            var urls = await page.EvaluateExpressionAsync<string[]>(links);
+            await page.SetUserAgentAsync(BROWSER_USER_AGENT);
+            await page.GoToAsync(GAP_UP_PAGE_URL);
+
+            var urls = await page.EvaluateExpressionAsync<string[]>(PAGE_ANCHOR_SELECTOR);
+
+            /*
+             *  Foreach tr in tbody (line 312) document.getElementsByTagName("tbody")[0];
+             *  Stock is equal to tr attribute: data-current-symbol
+             *  Volume is inside td where class: volume
+             * 
+             */
+            var stockUrls = urls
+                .Where(x => x.StartsWith(BEGIN_STOCK_URL) && x.EndsWith(END_STOCK_URL))
+                .Distinct();
+
             var html = await page.GetContentAsync();
 
-            foreach (string url in urls)
-            {
-                symbols.Add(url);
-            }
-
             await browser.DisposeAsync();
-            return symbols;
+            return stockUrls;
         }
         private async void CalculateWindows(string[] symbols)
         {
