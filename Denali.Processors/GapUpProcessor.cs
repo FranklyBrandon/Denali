@@ -24,8 +24,6 @@ namespace Denali.Processors
 
         private const string GAP_UP_PAGE_URL = "https://www.barchart.com/stocks/performance/gap/gap-up";
         private const string CHROME_PATH = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
-        private const string BEGIN_STOCK_URL = "https://www.barchart.com/stocks/quotes/";
-        private const string END_STOCK_URL = "/overview";
         private const string BROWSER_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36";
         private readonly string _pageAnchorSelector;
 
@@ -46,7 +44,7 @@ namespace Denali.Processors
         public async Task Process(DateTime startTime, CancellationToken stoppingToken)
         {
             var symbols = _configuration["symbols"].Split(',');
-            var la = ScrapSymbols();
+            await ScrapSymbols();
             //CalculateWindows(symbols);
         }
 
@@ -59,7 +57,7 @@ namespace Denali.Processors
         {
             var options = new LaunchOptions()
             {
-                Headless = false,
+                Headless = true,
                 ExecutablePath = CHROME_PATH,
                 Product = Product.Chrome           
             };
@@ -76,19 +74,10 @@ namespace Denali.Processors
             };
             IEnumerable<GapUpStock> stocks = JsonSerializer.Deserialize<IEnumerable<GapUpStock>>(stringifiedStocks, serializeOptions);
 
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+                , @$"GapUpStocks_{DateTime.Now.Month}_{DateTime.Now.Day}_{DateTime.Now.Year}.txt");
 
-            /*
-             *  Foreach tr in tbody (line 312) document.getElementsByTagName("tbody")[0];
-             *  Stock is equal to tr attribute: data-current-symbol
-             *  Volume is inside td where class: volume
-             * 
-             */
-
-            //var stockUrls = urls
-            //    .Where(x => x.StartsWith(BEGIN_STOCK_URL) && x.EndsWith(END_STOCK_URL))
-            //    .Distinct();
-
-            var html = await page.GetContentAsync();
+            File.WriteAllText(path, stringifiedStocks);
 
             await browser.DisposeAsync();
         }
