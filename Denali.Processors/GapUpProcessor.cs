@@ -1,12 +1,16 @@
-﻿using Denali.Models.Shared;
+﻿using Denali.Models;
+using Denali.Models.Shared;
 using Denali.Services.Alpaca;
 using Denali.Shared.Utility;
 using Microsoft.Extensions.Configuration;
 using PuppeteerSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,13 +27,15 @@ namespace Denali.Processors
         private const string BEGIN_STOCK_URL = "https://www.barchart.com/stocks/quotes/";
         private const string END_STOCK_URL = "/overview";
         private const string BROWSER_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36";
-        private const string PAGE_ANCHOR_SELECTOR = @"Array.from(document.querySelectorAll('a')).map(a => a.href);";
+        private readonly string _pageAnchorSelector;
 
         public GapUpProcessor(AlpacaService alpacaService, IConfiguration configuration)
         {
             _alpacaService = alpacaService;
             _configuration = configuration;
             _timeUtils = new();
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"GapUpStockSelector.js");
+            _pageAnchorSelector = File.ReadAllText(path);
         }
 
         public void OnBarReceived(IAggregateData barData)
@@ -41,7 +47,7 @@ namespace Denali.Processors
         {
             var symbols = _configuration["symbols"].Split(',');
             var la = ScrapSymbols();
-            CalculateWindows(symbols);
+            //CalculateWindows(symbols);
         }
 
         public async Task ShutDown(CancellationToken stoppingToken)
@@ -49,11 +55,11 @@ namespace Denali.Processors
             await _alpacaService.Disconnect();
         }
 
-        private async Task<IEnumerable<string>> ScrapSymbols()
+        private async Task ScrapSymbols()
         {
             var options = new LaunchOptions()
             {
-                Headless = true,
+                Headless = false,
                 ExecutablePath = CHROME_PATH,
                 Product = Product.Chrome           
             };
@@ -63,7 +69,13 @@ namespace Denali.Processors
             await page.SetUserAgentAsync(BROWSER_USER_AGENT);
             await page.GoToAsync(GAP_UP_PAGE_URL);
 
-            var urls = await page.EvaluateExpressionAsync<string[]>(PAGE_ANCHOR_SELECTOR);
+            var stringifiedStocks = await page.EvaluateExpressionAsync<string>(_pageAnchorSelector);
+            var serializeOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            IEnumerable<GapUpStock> stocks = JsonSerializer.Deserialize<IEnumerable<GapUpStock>>(stringifiedStocks, serializeOptions);
+
 
             /*
              *  Foreach tr in tbody (line 312) document.getElementsByTagName("tbody")[0];
@@ -71,14 +83,14 @@ namespace Denali.Processors
              *  Volume is inside td where class: volume
              * 
              */
-            var stockUrls = urls
-                .Where(x => x.StartsWith(BEGIN_STOCK_URL) && x.EndsWith(END_STOCK_URL))
-                .Distinct();
+
+            //var stockUrls = urls
+            //    .Where(x => x.StartsWith(BEGIN_STOCK_URL) && x.EndsWith(END_STOCK_URL))
+            //    .Distinct();
 
             var html = await page.GetContentAsync();
 
             await browser.DisposeAsync();
-            return stockUrls;
         }
         private async void CalculateWindows(string[] symbols)
         {
