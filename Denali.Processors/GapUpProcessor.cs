@@ -1,6 +1,7 @@
 ﻿using Denali.Models;
 using Denali.Models.Shared;
 using Denali.Services.Alpaca;
+using Denali.Services.WebScrap;
 using Denali.Shared.Utility;
 using Microsoft.Extensions.Configuration;
 using PuppeteerSharp;
@@ -18,22 +19,17 @@ namespace Denali.Processors
 {
     public class GapUpProcessor : IProcessor
     {
+        private readonly GapUpWebScrapService _gapUpWebScrapService;
         private readonly AlpacaService _alpacaService;
         private readonly TimeUtils _timeUtils;
         private readonly IConfiguration _configuration;
 
-        private const string GAP_UP_PAGE_URL = "https://www.barchart.com/stocks/performance/gap/gap-up";
-        private const string CHROME_PATH = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
-        private const string BROWSER_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36";
-        private readonly string _pageAnchorSelector;
-
-        public GapUpProcessor(AlpacaService alpacaService, IConfiguration configuration)
+        public GapUpProcessor(GapUpWebScrapService gapUpWebScrapService, AlpacaService alpacaService, IConfiguration configuration)
         {
+            _gapUpWebScrapService = gapUpWebScrapService;
             _alpacaService = alpacaService;
             _configuration = configuration;
             _timeUtils = new();
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"GapUpStockSelector.js");
-            _pageAnchorSelector = File.ReadAllText(path);
         }
 
         public void OnBarReceived(IAggregateData barData)
@@ -43,9 +39,8 @@ namespace Denali.Processors
 
         public async Task Process(DateTime startTime, CancellationToken stoppingToken)
         {
-            var symbols = _configuration["symbols"].Split(',');
-            await ScrapSymbols();
-            //CalculateWindows(symbols);
+            var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
+
         }
 
         public async Task ShutDown(CancellationToken stoppingToken)
@@ -53,34 +48,7 @@ namespace Denali.Processors
             await _alpacaService.Disconnect();
         }
 
-        private async Task ScrapSymbols()
-        {
-            var options = new LaunchOptions()
-            {
-                Headless = true,
-                ExecutablePath = CHROME_PATH,
-                Product = Product.Chrome           
-            };
-
-            var browser = await Puppeteer.LaunchAsync(options);
-            var page = (await browser.PagesAsync()).First();
-            await page.SetUserAgentAsync(BROWSER_USER_AGENT);
-            await page.GoToAsync(GAP_UP_PAGE_URL);
-
-            var stringifiedStocks = await page.EvaluateExpressionAsync<string>(_pageAnchorSelector);
-            var serializeOptions = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-            IEnumerable<GapUpStock> stocks = JsonSerializer.Deserialize<IEnumerable<GapUpStock>>(stringifiedStocks, serializeOptions);
-
-            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
-                , @$"GapUpStocks_{DateTime.Now.Month}_{DateTime.Now.Day}_{DateTime.Now.Year}.txt");
-
-            File.WriteAllText(path, stringifiedStocks);
-
-            await browser.DisposeAsync();
-        }
+      
         private async void CalculateWindows(string[] symbols)
         {
             _alpacaService.InitializeDataClient();

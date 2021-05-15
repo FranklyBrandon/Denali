@@ -26,6 +26,7 @@ namespace Denali.Worker
             _proccessTokenSource = new CancellationTokenSource();
         }
 
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             using (var scope = _provider.CreateScope())

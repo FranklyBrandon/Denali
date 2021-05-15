@@ -16,10 +16,4 @@
     <ProjectReference Include="..\Denali.Strategies\Denali.Strategies.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="GapUpStockSelector.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
