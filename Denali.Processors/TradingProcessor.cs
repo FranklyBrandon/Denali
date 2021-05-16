@@ -43,7 +43,7 @@ namespace Denali.Processors
         {
             InitializeServices();
             _logger.LogInformation("Filling Backlog Data");
-            _stockData = await GetBacklogData(startDate.AddDays(-2), symbols.ToArray());
+            _stockData = null; // await GetBacklogData(startDate.AddDays(-2), symbols.ToArray());
 
             //Initialize strategies
             InitializeStrategies(symbols);
@@ -98,13 +98,13 @@ namespace Denali.Processors
             }
         }
 
-        private async Task<Dictionary<string, List<IAggregateData>>> GetBacklogData(DateTime startDate, params string[] symbols)
-        {
-            var backlogStartTime = _timeUtils.GetNYSEOpenDateTime(startDate);
-            var backlogEndtime = _timeUtils.GetNYSECloseDateTime(startDate);
+        //private async Task<Dictionary<string, List<IAggregateData>>> GetBacklogData(DateTime startDate, params string[] symbols)
+        //{
+        //    var backlogStartTime = _timeUtils.GetNYSEOpenDateTime(startDate);
+        //    var backlogEndtime = _timeUtils.GetNYSECloseDateTime(startDate);
 
-            return await _alpacaService.GetHistoricBarData(backlogStartTime, backlogEndtime, TimeFrame.Minute, symbols: symbols);
-        }
+        //    return await _alpacaService.GetHistoricBarData(backlogStartTime, backlogEndtime, TimeFrame.Minute, symbols: symbols);
+        //}
 
         public Task Process(DateTime startTime, CancellationToken stoppingToken)
         {

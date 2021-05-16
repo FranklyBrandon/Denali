@@ -92,7 +92,7 @@ namespace Denali.Services.Alpaca
             DataStreamingClient = new AlpacaDataStreamingClient(config);
         }
 
-        public async Task<Dictionary<string, List<IAggregateData>>> GetHistoricBarData(DateTime from, DateTime to, TimeFrame timeframe, int limit = 1000, params string[] symbols)
+        public async Task<Dictionary<string, List<IAggregateData>>> GetHistoricBarData(DateTime from, DateTime to, TimeFrame timeframe, IEnumerable<string> symbols, int limit = 1000)
         {
             var response = await DataClient.GetBarSetAsync(
                 new BarSetRequest(symbols, timeframe) { Limit = limit }.SetInclusiveTimeInterval(from, to));

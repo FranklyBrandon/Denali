@@ -17,14 +17,14 @@ using System.Threading.Tasks;
 
 namespace Denali.Processors
 {
-    public class GapUpProcessor : IProcessor
+    public class HistoricGapUpProcessor : IProcessor
     {
         private readonly GapUpWebScrapService _gapUpWebScrapService;
         private readonly AlpacaService _alpacaService;
         private readonly TimeUtils _timeUtils;
         private readonly IConfiguration _configuration;
 
-        public GapUpProcessor(GapUpWebScrapService gapUpWebScrapService, AlpacaService alpacaService, IConfiguration configuration)
+        public HistoricGapUpProcessor(GapUpWebScrapService gapUpWebScrapService, AlpacaService alpacaService, IConfiguration configuration)
         {
             _gapUpWebScrapService = gapUpWebScrapService;
             _alpacaService = alpacaService;
@@ -39,7 +39,15 @@ namespace Denali.Processors
 
         public async Task Process(DateTime startTime, CancellationToken stoppingToken)
         {
-            var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
+            var stocks = await _gapUpWebScrapService.LoadGapUpStocksFromFile("GapUpStocks_5_14_2021.txt");
+            _alpacaService.InitializeDataClient();
+            var fromDate = DateTime.Parse(_configuration["from"]);
+            var toDate = DateTime.Parse(_configuration["to"]);
+            var barData = await _alpacaService.GetHistoricBarData(
+                _timeUtils.GetNYSEOpenDateTime(fromDate)
+                , _timeUtils.GetNYSECloseDateTime(toDate)
+                , Alpaca.Markets.TimeFrame.Day
+                , symbols: stocks.Select(x => x.Symbol));
 
         }
 

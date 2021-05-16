@@ -19,7 +19,7 @@ namespace Denali.Services.WebScrap
 
         public GapUpWebScrapService()
         {
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"GapUpStockSelector.js");
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "WebScrap", "GapUpStockSelector.js");
             _pageAnchorSelector = File.ReadAllText(path);
         }
 
@@ -52,6 +52,18 @@ namespace Denali.Services.WebScrap
             await browser.DisposeAsync();
 
             return stocks;
+        }
+        public async Task<IEnumerable<GapUpStock>> LoadGapUpStocksFromFile(string path)
+        {
+            var filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+                , @$"{path}");
+
+            var file = await File.ReadAllTextAsync(filePath);
+            var serializeOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            return JsonSerializer.Deserialize<IEnumerable<GapUpStock>>(file, serializeOptions);
         }
     }
 }

@@ -3,6 +3,7 @@ using Denali.Processors;
 using Denali.Services;
 using Denali.Services.Alpaca;
 using Denali.Services.Google;
+using Denali.Services.WebScrap;
 using Denali.Shared.Utility;
 using Denali.Strategies;
 using Microsoft.Extensions.Configuration;
@@ -39,7 +40,7 @@ namespace Denali.Worker
 
         private void AddProcessors()
         {
-            _services.AddScoped<GapUpProcessor>();
+            _services.AddScoped<HistoricGapUpProcessor>();
         }
 
         private void AddHttpClients()
@@ -63,6 +64,8 @@ namespace Denali.Worker
         {
             _services.AddScoped<DenaliSheetsService>();
             _services.AddScoped<GoogleSheetsService>();
+            _services.AddScoped<GapUpWebScrapService>();
+            _services.AddScoped<HistoricGapUpProcessor>();
             _services.AddScoped<TimeUtils>();
             _services.AddScoped<AlpacaService>();
             _services.AddScoped<IAggregateStrategy, RibbonTrendStrategy>();
