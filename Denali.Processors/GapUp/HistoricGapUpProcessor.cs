@@ -43,12 +43,21 @@ namespace Denali.Processors
             _alpacaService.InitializeDataClient();
             var fromDate = DateTime.Parse(_configuration["from"]);
             var toDate = DateTime.Parse(_configuration["to"]);
+
             var barData = await _alpacaService.GetHistoricBarData(
                 _timeUtils.GetNYSEOpenDateTime(fromDate)
                 , _timeUtils.GetNYSECloseDateTime(toDate)
                 , Alpaca.Markets.TimeFrame.Day
                 , symbols: stocks.Select(x => x.Symbol));
 
+            var tenTimestamp = _timeUtils.GetUnixMillisecondStamp(
+                _timeUtils.GetEasternLocalTime(fromDate, 10, 0, 0));
+
+            var openingHighs = new Dictionary<string, decimal>();
+            foreach (var stock in barData)
+            {
+                openingHighs[stock.Key] = stock.Value.Where(x => x.Time <= tenTimestamp).Max(x => x.HighPrice);
+            }
         }
 
         public async Task ShutDown(CancellationToken stoppingToken)
