@@ -58,9 +58,9 @@ namespace Denali.Shared.Utility
             return zonedDateTime.UniversalTime;
         }
 
-        public long GetUnixMillisecondStamp(DateTime date)
+        public long GetUnixSecondStamp(DateTime date)
         {
-            return ((DateTimeOffset)date).ToUnixTimeMilliseconds();
+            return ((DateTimeOffset)date).ToUnixTimeSeconds();
         }
     }
 }

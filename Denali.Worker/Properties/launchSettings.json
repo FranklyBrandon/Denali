@@ -2,7 +2,7 @@
   "profiles": {
     "Denali.Worker": {
       "commandName": "Project",
-      "commandLineArgs": "--env Development --from 2021-5-14 --to 2021-5-14 --timespan day --multiplier 1 --symbols ORGS,SBH,BRN,GOLF,HOME,ABEV,PACK",
+      "commandLineArgs": "--env Development --from 2021-5-17 --to 2021-5-17 --timespan day --multiplier 1 --symbols ORGS,SBH,BRN,GOLF,HOME,ABEV,PACK",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development",
         "ASPNETCORE_ENVIRONMENT": "Development"

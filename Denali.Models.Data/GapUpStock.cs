@@ -18,5 +18,7 @@ namespace Denali.Models
         public string High { get; set; }
         public string Low { get; set; }
         public string Volume { get; set; }
+        public int VolumeInt { get; set; }
+        public int Index { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using PuppeteerSharp;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -63,7 +64,15 @@ namespace Denali.Services.WebScrap
             {
                 PropertyNameCaseInsensitive = true
             };
-            return JsonSerializer.Deserialize<IEnumerable<GapUpStock>>(file, serializeOptions);
+
+            var models =  JsonSerializer.Deserialize<IEnumerable<GapUpStock>>(file, serializeOptions);
+            return models.Select((item, index) => 
+            { 
+                item.Index = index;
+                int.TryParse(item.Volume, NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out int num);
+                item.VolumeInt = num;
+                return item; 
+            });
         }
     }
 }

@@ -39,7 +39,11 @@ namespace Denali.Processors
 
         public async Task Process(DateTime startTime, CancellationToken stoppingToken)
         {
-            var stocks = await _gapUpWebScrapService.LoadGapUpStocksFromFile("GapUpStocks_5_14_2021.txt");
+            //var la = await _gapUpWebScrapService.ScrapGapUpSymbols();
+
+            var stocks = await _gapUpWebScrapService.LoadGapUpStocksFromFile("GapUpStocks_5_17_2021.txt");
+            //stocks = stocks.Where(x => x.VolumeInt >= 500000);
+
             _alpacaService.InitializeDataClient();
             var fromDate = DateTime.Parse(_configuration["from"]);
             var toDate = DateTime.Parse(_configuration["to"]);
@@ -47,16 +51,46 @@ namespace Denali.Processors
             var barData = await _alpacaService.GetHistoricBarData(
                 _timeUtils.GetNYSEOpenDateTime(fromDate)
                 , _timeUtils.GetNYSECloseDateTime(toDate)
-                , Alpaca.Markets.TimeFrame.Day
+                , Alpaca.Markets.TimeFrame.Minute
                 , symbols: stocks.Select(x => x.Symbol));
 
-            var tenTimestamp = _timeUtils.GetUnixMillisecondStamp(
+            var tenTimestamp = _timeUtils.GetUnixSecondStamp(
                 _timeUtils.GetEasternLocalTime(fromDate, 10, 0, 0));
 
-            var openingHighs = new Dictionary<string, decimal>();
-            foreach (var stock in barData)
+            foreach (var stock in stocks)
             {
-                openingHighs[stock.Key] = stock.Value.Where(x => x.Time <= tenTimestamp).Max(x => x.HighPrice);
+                var stockdata = barData[stock.Symbol];
+
+                bool brokeOpening = false;
+                decimal maxOpeningPrice = 0;
+                decimal maxPrice = 0;
+                decimal buyPrice = 0;
+                for (int i = 0; i < stockdata.Count - 1; i++)
+                {
+                    var data = stockdata[i];
+
+                    if (data.Time < tenTimestamp)
+                        maxOpeningPrice = (data.HighPrice > maxOpeningPrice) ? data.HighPrice : maxOpeningPrice;
+                    else
+                    {
+                        maxPrice = (data.HighPrice > maxPrice) ? data.HighPrice : maxPrice;
+
+                        if ((data.ClosePrice > maxOpeningPrice) && !brokeOpening)
+                        {
+                            buyPrice = stockdata[i + 1].OpenPrice;
+                            brokeOpening = true;
+                        }
+                    }
+                }
+
+                if (maxOpeningPrice > maxPrice)
+                    maxPrice = maxOpeningPrice;
+                if (brokeOpening)
+                {
+                    Console.WriteLine("========");
+                    Console.WriteLine($"{stock.Symbol}, Window: {maxPrice - buyPrice}");
+                    Console.WriteLine($"Two percent: {buyPrice * .02m}");
+                }
             }
         }
 
