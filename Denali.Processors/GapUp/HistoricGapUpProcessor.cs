@@ -41,8 +41,8 @@ namespace Denali.Processors
         {
             //var la = await _gapUpWebScrapService.ScrapGapUpSymbols();
 
-            var stocks = await _gapUpWebScrapService.LoadGapUpStocksFromFile("GapUpStocks_5_17_2021.txt");
-            //stocks = stocks.Where(x => x.VolumeInt >= 500000);
+            var stocks = await _gapUpWebScrapService.LoadGapUpStocksFromFile("GapUpStocks_5_21_2021.txt");
+            stocks = stocks.OrderByDescending(x => x.VolumeInt);
 
             _alpacaService.InitializeDataClient();
             var fromDate = DateTime.Parse(_configuration["from"]);
