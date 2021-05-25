@@ -18,11 +18,25 @@ namespace Denali.Processors.GapUp
         private readonly IMapper _mapper;
         private readonly Dictionary<string, List<IAggregateData>> _stockData;
 
+        public LiveGapUpProcessor(
+            GapUpWebScrapService gapUpWebScrapService
+            , AlpacaService alpacaService
+            , IMapper mapper)
+        {
+            this._gapUpWebScrapService = gapUpWebScrapService;
+            this._alpacaService = alpacaService;
+            this._mapper = mapper;
+        }
+
         public async Task Process(DateTime startTime, CancellationToken stoppingToken)
         {
             var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
-            stocks = stocks.OrderByDescending(x => x.VolumeInt).Take(30);
-            SubscribeToSymbols(stocks.Select(x => x.Symbol ));
+            stocks = stocks.OrderByDescending(x => x.VolumeInt).Take(1);
+            await SubscribeToSymbols(stocks.Select(x => x.Symbol ));
+            while (true)
+            {
+
+            }
         }
 
         public Task ShutDown(CancellationToken stoppingToken)
@@ -30,23 +44,25 @@ namespace Denali.Processors.GapUp
             throw new NotImplementedException();
         }
 
-        public async Task OnBarReceived(IAggregateData barData)
+        public void OnBarReceived(IAggregateData barData)
         {
             var stockData = _stockData[barData.Symbol];
             stockData.Add(barData);
         }
 
-        private void SubscribeToSymbols(IEnumerable<string> symbols)
+        private async Task SubscribeToSymbols(IEnumerable<string> symbols)
         {
-            _alpacaService.InitializeStreamingClient();
+            _alpacaService.InitializeDataStreamingclient();
+            var la = await _alpacaService.DataStreamingClient.ConnectAndAuthenticateAsync();
 
             foreach (var symbol in symbols)
             {
                 var subscription = _alpacaService.DataStreamingClient.GetMinuteAggSubscription(symbol);
-                subscription.Received += async (bar) =>
+                subscription.Received += (bar) =>
                 {
+                    Console.WriteLine("BAR RECEIVED!");
                     var mappedBar = _mapper.Map<AggregateData>(bar);
-                    await OnBarReceived(mappedBar);
+                    OnBarReceived(mappedBar);
                 };
                 _alpacaService.DataStreamingClient.Subscribe(subscription);
             }

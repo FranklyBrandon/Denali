@@ -14,7 +14,7 @@ namespace Denali.Services.Alpaca
         public AlpacaTradingClient TradingClient { get; private set; }
         public AlpacaStreamingClient StreamingClient { get; private set; }
         public AlpacaDataClient DataClient { get; private set; }
-        public AlpacaDataStreamingClient DataStreamingClient { get; private set; }
+        public IAlpacaDataStreamingClient DataStreamingClient { get; private set; }
 
         private readonly AlpacaSettings _settings;
         private readonly IMapper _mapper;
@@ -79,8 +79,8 @@ namespace Denali.Services.Alpaca
         {
             if (DataStreamingClient != null)
             {
-                DataClient.Dispose();
-                DataClient = null;
+                DataStreamingClient.Dispose();
+                DataStreamingClient = null;
             }
 
             var config = new AlpacaDataStreamingClientConfiguration
@@ -89,7 +89,8 @@ namespace Denali.Services.Alpaca
                 SecurityId = new SecretKey(_settings.APIKey, _settings.APISecret)
             };
 
-            DataStreamingClient = new AlpacaDataStreamingClient(config);
+            DataStreamingClient = Environments.Paper.GetAlpacaDataStreamingClient(new SecretKey(_settings.APIKey, _settings.APISecret));
+            var la = new AlpacaDataStreamingClient(config);
         }
 
         public async Task<Dictionary<string, List<IAggregateData>>> GetHistoricBarData(DateTime from, DateTime to, TimeFrame timeframe, IEnumerable<string> symbols, int limit = 1000)

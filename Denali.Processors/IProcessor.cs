@@ -9,6 +9,6 @@ namespace Denali.Processors
     {
         Task Process(DateTime startTime, CancellationToken stoppingToken);
         Task ShutDown(CancellationToken stoppingToken);
-        Task OnBarReceived(IAggregateData barData);
+        void OnBarReceived(IAggregateData barData);
     }
 }

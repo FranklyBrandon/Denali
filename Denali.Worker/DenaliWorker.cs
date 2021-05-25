@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Denali.Processors;
+using Denali.Processors.GapUp;
 using Denali.Shared.Utility;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,7 +33,7 @@ namespace Denali.Worker
             using (var scope = _provider.CreateScope())
             {
                 _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
-                _processor = scope.ServiceProvider.GetRequiredService<HistoricGapUpProcessor>();
+                _processor = scope.ServiceProvider.GetRequiredService<LiveGapUpProcessor>();
                 await _processor.Process(DateTime.Today.AddDays(-2), stoppingToken);
             }
         }
