@@ -30,13 +30,9 @@ namespace Denali.Processors.GapUp
 
         public async Task Process(DateTime startTime, CancellationToken stoppingToken)
         {
-            var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
-            stocks = stocks.OrderByDescending(x => x.VolumeInt).Take(1);
-            await SubscribeToSymbols(stocks.Select(x => x.Symbol ));
-            while (true)
-            {
-
-            }
+            //var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
+            //stocks = stocks.OrderByDescending(x => x.VolumeInt).Take(1);
+            await SubscribeToSymbols(new List<string> { "AAPL"});
         }
 
         public Task ShutDown(CancellationToken stoppingToken)
@@ -57,10 +53,12 @@ namespace Denali.Processors.GapUp
 
             foreach (var symbol in symbols)
             {
+                _stockData[symbol] = new List<IAggregateData>();
+
                 var subscription = _alpacaService.DataStreamingClient.GetMinuteAggSubscription(symbol);
                 subscription.Received += (bar) =>
                 {
-                    Console.WriteLine("BAR RECEIVED!");
+                    Console.WriteLine($"BAR RECEIVED! {DateTime.Now.ToString()}");
                     var mappedBar = _mapper.Map<AggregateData>(bar);
                     OnBarReceived(mappedBar);
                 };

@@ -89,8 +89,8 @@ namespace Denali.Services.Alpaca
                 SecurityId = new SecretKey(_settings.APIKey, _settings.APISecret)
             };
 
-            DataStreamingClient = Environments.Paper.GetAlpacaDataStreamingClient(new SecretKey(_settings.APIKey, _settings.APISecret));
-            var la = new AlpacaDataStreamingClient(config);
+            //DataStreamingClient = Environments.Paper.GetAlpacaDataStreamingClient(new SecretKey(_settings.APIKey, _settings.APISecret));
+            DataStreamingClient = new AlpacaDataStreamingClient(config);
         }
 
         public async Task<Dictionary<string, List<IAggregateData>>> GetHistoricBarData(DateTime from, DateTime to, TimeFrame timeframe, IEnumerable<string> symbols, int limit = 1000)
