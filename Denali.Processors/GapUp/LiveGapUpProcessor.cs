@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Denali.Algorithms.ActionAnalysis;
 using Denali.Models.Shared;
 using Denali.Services.Alpaca;
 using Denali.Services.WebScrap;
@@ -16,7 +17,7 @@ namespace Denali.Processors.GapUp
         private readonly GapUpWebScrapService _gapUpWebScrapService;
         private readonly AlpacaService _alpacaService;
         private readonly IMapper _mapper;
-        private readonly Dictionary<string, List<IAggregateData>> _stockData;
+        private readonly Dictionary<string, GapUpCoolOff> _stockData;
 
         public LiveGapUpProcessor(
             GapUpWebScrapService gapUpWebScrapService
@@ -30,9 +31,9 @@ namespace Denali.Processors.GapUp
 
         public async Task Process(DateTime startTime, CancellationToken stoppingToken)
         {
-            //var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
-            //stocks = stocks.OrderByDescending(x => x.VolumeInt).Take(1);
-            await SubscribeToSymbols(new List<string> { "AAPL"});
+            var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
+            var symbols = stocks.OrderByDescending(x => x.VolumeInt).Take(30).Select(x => x.Symbol);
+            await SubscribeToSymbols(symbols);
         }
 
         public Task ShutDown(CancellationToken stoppingToken)
@@ -42,18 +43,18 @@ namespace Denali.Processors.GapUp
 
         public void OnBarReceived(IAggregateData barData)
         {
-            var stockData = _stockData[barData.Symbol];
-            stockData.Add(barData);
+            var strategy = _stockData[barData.Symbol];
+            strategy.OnBarReceived(barData);
         }
 
         private async Task SubscribeToSymbols(IEnumerable<string> symbols)
         {
             _alpacaService.InitializeDataStreamingclient();
-            var la = await _alpacaService.DataStreamingClient.ConnectAndAuthenticateAsync();
+            var authenticationStatus = await _alpacaService.DataStreamingClient.ConnectAndAuthenticateAsync();
 
             foreach (var symbol in symbols)
             {
-                _stockData[symbol] = new List<IAggregateData>();
+                _stockData[symbol] = new GapUpCoolOff(10, 0);
 
                 var subscription = _alpacaService.DataStreamingClient.GetMinuteAggSubscription(symbol);
                 subscription.Received += (bar) =>
