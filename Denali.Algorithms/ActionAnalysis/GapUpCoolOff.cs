@@ -14,7 +14,7 @@ namespace Denali.Algorithms.ActionAnalysis
         private decimal _openingHigh;
 
         private readonly TimeUtils _timeUtils;
-        private readonly List<IAggregateData> _stockData;
+        private List<IAggregateData> _stockData;
 
         public GapUpCoolOff(int hour, int minutes)
         {
@@ -23,6 +23,8 @@ namespace Denali.Algorithms.ActionAnalysis
             _timeCutOff = _timeUtils.GetUnixSecondStamp(
                 _timeUtils.GetEasternLocalTime(DateTime.UtcNow, hour, minutes, seconds: 0));
         }
+
+        public void SetInitialData(List<IAggregateData> data) => this._stockData = data;
 
         public void OnBarReceived(IAggregateData bar)
         {

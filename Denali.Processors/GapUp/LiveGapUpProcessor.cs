@@ -27,6 +27,7 @@ namespace Denali.Processors.GapUp
             this._gapUpWebScrapService = gapUpWebScrapService;
             this._alpacaService = alpacaService;
             this._mapper = mapper;
+            _stockData = new Dictionary<string, GapUpCoolOff>();
         }
 
         public async Task Process(DateTime startTime, CancellationToken stoppingToken)
@@ -34,6 +35,7 @@ namespace Denali.Processors.GapUp
             var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
             var symbols = stocks.OrderByDescending(x => x.VolumeInt).Take(30).Select(x => x.Symbol);
             await SubscribeToSymbols(symbols);
+            //https://www.tradingview.com/chart/?symbol=NASDAQ:AAPL&interval=1
         }
 
         public Task ShutDown(CancellationToken stoppingToken)
@@ -59,7 +61,7 @@ namespace Denali.Processors.GapUp
                 var subscription = _alpacaService.DataStreamingClient.GetMinuteAggSubscription(symbol);
                 subscription.Received += (bar) =>
                 {
-                    Console.WriteLine($"BAR RECEIVED! {DateTime.Now.ToString()}");
+                    //Console.WriteLine($"BAR RECEIVED! {DateTime.Now.ToString()}");
                     var mappedBar = _mapper.Map<AggregateData>(bar);
                     OnBarReceived(mappedBar);
                 };
