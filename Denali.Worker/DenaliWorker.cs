@@ -33,7 +33,7 @@ namespace Denali.Worker
             using (var scope = _provider.CreateScope())
             {
                 _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
-                _processor = scope.ServiceProvider.GetRequiredService<LiveGapUpProcessor>();
+                _processor = scope.ServiceProvider.GetRequiredService<HistoricGapUpProcessor>();
                 await _processor.Process(DateTime.Today.AddDays(-2), stoppingToken);
             }
         }

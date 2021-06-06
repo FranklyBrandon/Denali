@@ -56,17 +56,21 @@ namespace Denali.Processors.GapUp
 
             foreach (var symbol in symbols)
             {
-                _stockData[symbol] = new GapUpCoolOff(10, 0);
+                _stockData[symbol] = new GapUpCoolOff(DateTime.UtcNow, 10, 0, symbol);
 
                 var subscription = _alpacaService.DataStreamingClient.GetMinuteAggSubscription(symbol);
                 subscription.Received += (bar) =>
                 {
-                    //Console.WriteLine($"BAR RECEIVED! {DateTime.Now.ToString()}");
                     var mappedBar = _mapper.Map<AggregateData>(bar);
                     OnBarReceived(mappedBar);
                 };
                 _alpacaService.DataStreamingClient.Subscribe(subscription);
             }
+        }
+
+        private async Task SubmitBuyOrder()
+        {
+            await _alpacaService.TradingClient.PostOrderAsync()
         }
     }
 }

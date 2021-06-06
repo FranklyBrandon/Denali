@@ -34,7 +34,7 @@ namespace Denali.Processors
         public async Task Process(DateTime startTime, CancellationToken stoppingToken)
         {
             //var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
-            var stocks = await _gapUpWebScrapService.LoadGapUpStocksFromFile("GapUpStocks_6_04_2021.txt");
+            var stocks = await _gapUpWebScrapService.LoadGapUpStocksFromFile("GapUpStocks_6_4_2021.txt");
             stocks = stocks.OrderByDescending(x => x.VolumeInt);
 
             _alpacaService.InitializeDataClient();
@@ -50,7 +50,7 @@ namespace Denali.Processors
             foreach (var stock in stocks)
             {
                 var stockdata = barData[stock.Symbol];
-                var strategy = new GapUpCoolOff(10, 0);
+                var strategy = new GapUpCoolOff(fromDate, 10, 0, stock.Symbol);
 
                 for (int i = 0; i < stockdata.Count - 1; i++)
                 {
@@ -63,31 +63,6 @@ namespace Denali.Processors
         public async Task ShutDown(CancellationToken stoppingToken)
         {
             await _alpacaService.Disconnect();
-        }
-
-      
-        private async void CalculateWindows(string[] symbols)
-        {
-            _alpacaService.InitializeDataClient();
-            var fromDate = DateTime.Parse(_configuration["from"]);
-            var toDate = DateTime.Parse(_configuration["to"]);
-
-            var barData = await _alpacaService.GetHistoricBarData(_timeUtils.GetNYSEOpenDateTime(fromDate), _timeUtils.GetNYSECloseDateTime(toDate), Alpaca.Markets.TimeFrame.Day, symbols: symbols);
-            foreach (var symbol in barData)
-            {
-                var bar = symbol.Value.First();
-                var log = $"Ticker {symbol.Key} is ";
-
-                if (bar.IsOpen)
-                    log += "OPEN";
-                else
-                    log += "CLOSED";
-
-                var change = Math.Round(((bar.HighPrice - bar.OpenPrice) / bar.OpenPrice) * 100, 2, MidpointRounding.AwayFromZero);
-                log += $". Profit window is {change}%";
-
-                Console.WriteLine(log);
-            }
         }
     }
 }
