@@ -17,7 +17,7 @@ namespace Denali.Processors
 {
     public class HistoricAggregateAnalysis : IProcessor
     {
-        private readonly AlpacaService _alpacaService;
+        private readonly AlpacaDataService _alpacaService;
         private readonly TimeUtils _timeUtils;
         private readonly IConfiguration _configuration;
         private readonly ITradingContext _tradingContext;
@@ -26,7 +26,7 @@ namespace Denali.Processors
         private Dictionary<string, IAggregateStrategy> _strategies;
         private List<Transaction> _transactions;
 
-        public HistoricAggregateAnalysis(AlpacaService alpacaService, IConfiguration configuration, ILogger<HistoricAggregateAnalysis> logger)
+        public HistoricAggregateAnalysis(AlpacaDataService alpacaService, IConfiguration configuration, ILogger<HistoricAggregateAnalysis> logger)
         {
             this._alpacaService = alpacaService;
             this._configuration = configuration;

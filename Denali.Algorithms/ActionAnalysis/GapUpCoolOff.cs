@@ -1,5 +1,7 @@
-﻿using Denali.Algorithms.AggregateAnalysis.EMA;
+﻿using Alpaca.Markets;
+using Denali.Algorithms.AggregateAnalysis.EMA;
 using Denali.Models.Shared;
+using Denali.Services.Alpaca;
 using Denali.Shared.Utility;
 using System;
 using System.Collections.Generic;
@@ -20,8 +22,9 @@ namespace Denali.Algorithms.ActionAnalysis
         private bool _reverseTriggered = false;
         private EMA _ema;
         private List<IAggregateData> _stockData;
+        private AlpacaTradingService _tradingService;
 
-        public GapUpCoolOff(DateTime date, int hour, int minutes, string ticker)
+        public GapUpCoolOff(DateTime date, int hour, int minutes, string ticker, AlpacaTradingService tradingService)
         {
             _timeUtils = new TimeUtils();
             _ema = new EMA(9);
@@ -29,6 +32,7 @@ namespace Denali.Algorithms.ActionAnalysis
             _timeCutOff = _timeUtils.GetUnixSecondStamp(
                 _timeUtils.GetEasternLocalTime(date, hour, minutes, seconds: 0));
             _ticker = ticker;
+            _tradingService = tradingService;
         }
 
         public void SetInitialData(List<IAggregateData> data) => this._stockData = data;
@@ -40,15 +44,23 @@ namespace Denali.Algorithms.ActionAnalysis
 
             if (bar.Time <= _timeCutOff )
                 _openingHigh = Math.Max(_openingHigh, bar.HighPrice); 
-            else if (bar.ClosePrice > _openingHigh && !_breakoutTriggered)
+            else
             {
-                _breakoutTriggered = true;
-                Console.WriteLine($"Opening breakout detected for {_ticker} at {_timeUtils.GetETDatetimefromUnixS(bar.Time)}");
-            }
-            else if (_breakoutTriggered && !_reverseTriggered  && (bar.ClosePrice < _openingHigh))
-            {
-                _reverseTriggered = true;
-                Console.WriteLine($"Reversion detected for {_ticker} at {_timeUtils.GetETDatetimefromUnixS(bar.Time)}");
+                var hasOpenPosition = _tradingService.HasOpenPosition(_ticker);
+
+                if (bar.ClosePrice > _openingHigh && !_breakoutTriggered)
+                {
+                    _breakoutTriggered = true;
+                    Console.WriteLine($"Opening breakout detected for {_ticker} at {_timeUtils.GetETDatetimefromUnixS(bar.Time)}");
+                    if (!hasOpenPosition)
+                        _tradingService.EnterPosition(_ticker, 1, OrderType.Market, TimeInForce.Day);
+                }
+                else if (_breakoutTriggered && bar.ClosePrice < _ema.MovingAverages.Last())
+                {
+                    Console.WriteLine($"Reversion detected for {_ticker} at {_timeUtils.GetETDatetimefromUnixS(bar.Time)}");
+                    if (hasOpenPosition)
+                        _tradingService.ClosePosition(_ticker, OrderType.Market, TimeInForce.Day);
+                }
             }
         }
     }

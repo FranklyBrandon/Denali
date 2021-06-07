@@ -69,7 +69,8 @@ namespace Denali.Worker
             _services.AddScoped<GapUpWebScrapService>();
             _services.AddScoped<HistoricGapUpProcessor>();
             _services.AddScoped<TimeUtils>();
-            _services.AddScoped<AlpacaService>();
+            _services.AddScoped<AlpacaDataService>();
+            _services.AddScoped<AlpacaTradingService>();
             _services.AddScoped<IAggregateStrategy, RibbonTrendStrategy>();
         }
     }

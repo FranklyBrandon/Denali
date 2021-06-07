@@ -9,53 +9,17 @@ using System.Threading.Tasks;
 
 namespace Denali.Services.Alpaca
 {
-    public class AlpacaService
+    public class AlpacaDataService
     {
-        public AlpacaTradingClient TradingClient { get; private set; }
-        public AlpacaStreamingClient StreamingClient { get; private set; }
         public AlpacaDataClient DataClient { get; private set; }
         public IAlpacaDataStreamingClient DataStreamingClient { get; private set; }
 
         private readonly AlpacaSettings _settings;
         private readonly IMapper _mapper;
-        public AlpacaService(AlpacaSettings settings, IMapper mapper)
+        public AlpacaDataService(AlpacaSettings settings, IMapper mapper)
         {
             this._settings = settings;
             this._mapper = mapper;
-        }
-
-        public void InitializeTradingClient()
-        {
-            if (TradingClient != null)
-            {
-                TradingClient.Dispose();
-                TradingClient = null;
-            }
-
-            var config = new AlpacaTradingClientConfiguration
-            {
-                ApiEndpoint = new Uri(_settings.MarketUrl),
-                SecurityId = new SecretKey(_settings.APIKey, _settings.APISecret)
-            };
-
-            TradingClient = new AlpacaTradingClient(config);
-        }
-
-        public void InitializeStreamingClient()
-        {
-            if (StreamingClient != null)
-            {
-                StreamingClient.Dispose();
-                StreamingClient = null;
-            }
-
-            var config = new AlpacaStreamingClientConfiguration
-            {
-                ApiEndpoint = new Uri(_settings.TradingStreamingURL),
-                SecurityId = new SecretKey(_settings.APIKey, _settings.APISecret)
-            };
-
-            StreamingClient = new AlpacaStreamingClient(config);
         }
 
         public void InitializeDataClient()
@@ -89,7 +53,6 @@ namespace Denali.Services.Alpaca
                 SecurityId = new SecretKey(_settings.APIKey, _settings.APISecret)
             };
 
-            //DataStreamingClient = Environments.Paper.GetAlpacaDataStreamingClient(new SecretKey(_settings.APIKey, _settings.APISecret));
             DataStreamingClient = new AlpacaDataStreamingClient(config);
         }
 
@@ -103,17 +66,17 @@ namespace Denali.Services.Alpaca
 
         public async Task Disconnect()
         {
-            if (StreamingClient != null)
+            if (DataStreamingClient != null)
             {
-                await StreamingClient.DisconnectAsync();
-                StreamingClient.Dispose();
-                StreamingClient = null;
+                await DataStreamingClient.DisconnectAsync();
+                DataStreamingClient.Dispose();
+                DataStreamingClient = null;
             }
 
-            if (TradingClient != null)
+            if (DataClient != null)
             {
-                TradingClient.Dispose();
-                TradingClient = null;
+                DataClient.Dispose();
+                DataClient = null;
             }
         }
     }

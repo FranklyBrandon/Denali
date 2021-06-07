@@ -15,17 +15,20 @@ namespace Denali.Processors.GapUp
     public class LiveGapUpProcessor : IProcessor
     {
         private readonly GapUpWebScrapService _gapUpWebScrapService;
-        private readonly AlpacaService _alpacaService;
+        private readonly AlpacaDataService _alpacaService;
+        private readonly AlpacaTradingService _alpacaTradingService;
         private readonly IMapper _mapper;
         private readonly Dictionary<string, GapUpCoolOff> _stockData;
 
         public LiveGapUpProcessor(
             GapUpWebScrapService gapUpWebScrapService
-            , AlpacaService alpacaService
+            , AlpacaDataService alpacaService
+            , AlpacaTradingService alpacaTradingService
             , IMapper mapper)
         {
             this._gapUpWebScrapService = gapUpWebScrapService;
             this._alpacaService = alpacaService;
+            this._alpacaTradingService = alpacaTradingService;
             this._mapper = mapper;
             _stockData = new Dictionary<string, GapUpCoolOff>();
         }
@@ -38,9 +41,10 @@ namespace Denali.Processors.GapUp
             //https://www.tradingview.com/chart/?symbol=NASDAQ:AAPL&interval=1
         }
 
-        public Task ShutDown(CancellationToken stoppingToken)
+        public async Task ShutDown(CancellationToken stoppingToken)
         {
-            throw new NotImplementedException();
+            await _alpacaService.Disconnect();
+            await _alpacaTradingService.Disconnect();
         }
 
         public void OnBarReceived(IAggregateData barData)
@@ -52,11 +56,15 @@ namespace Denali.Processors.GapUp
         private async Task SubscribeToSymbols(IEnumerable<string> symbols)
         {
             _alpacaService.InitializeDataStreamingclient();
-            var authenticationStatus = await _alpacaService.DataStreamingClient.ConnectAndAuthenticateAsync();
+            _alpacaTradingService.InitializeTradingClient();
+            _alpacaTradingService.InitializeStreamingClient();
+
+            var dataStreamAuth = await _alpacaService.DataStreamingClient.ConnectAndAuthenticateAsync();
+            var tradeStreamAuth = await _alpacaTradingService.StreamingClient.ConnectAndAuthenticateAsync();
 
             foreach (var symbol in symbols)
             {
-                _stockData[symbol] = new GapUpCoolOff(DateTime.UtcNow, 10, 0, symbol);
+                _stockData[symbol] = new GapUpCoolOff(DateTime.UtcNow, 10, 0, symbol, _alpacaTradingService);
 
                 var subscription = _alpacaService.DataStreamingClient.GetMinuteAggSubscription(symbol);
                 subscription.Received += (bar) =>
@@ -66,11 +74,6 @@ namespace Denali.Processors.GapUp
                 };
                 _alpacaService.DataStreamingClient.Subscribe(subscription);
             }
-        }
-
-        private async Task SubmitBuyOrder()
-        {
-            await _alpacaService.TradingClient.PostOrderAsync()
         }
     }
 }

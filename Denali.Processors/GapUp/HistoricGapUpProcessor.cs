@@ -14,11 +14,11 @@ namespace Denali.Processors
     public class HistoricGapUpProcessor : IProcessor
     {
         private readonly GapUpWebScrapService _gapUpWebScrapService;
-        private readonly AlpacaService _alpacaService;
+        private readonly AlpacaDataService _alpacaService;
         private readonly TimeUtils _timeUtils;
         private readonly IConfiguration _configuration;
 
-        public HistoricGapUpProcessor(GapUpWebScrapService gapUpWebScrapService, AlpacaService alpacaService, IConfiguration configuration)
+        public HistoricGapUpProcessor(GapUpWebScrapService gapUpWebScrapService, AlpacaDataService alpacaService, IConfiguration configuration)
         {
             _gapUpWebScrapService = gapUpWebScrapService;
             _alpacaService = alpacaService;
@@ -47,17 +47,17 @@ namespace Denali.Processors
                 , Alpaca.Markets.TimeFrame.Minute
                 , symbols: stocks.Select(x => x.Symbol));
 
-            foreach (var stock in stocks)
-            {
-                var stockdata = barData[stock.Symbol];
-                var strategy = new GapUpCoolOff(fromDate, 10, 0, stock.Symbol);
+            //foreach (var stock in stocks)
+            //{
+            //    var stockdata = barData[stock.Symbol];
+            //    var strategy = new GapUpCoolOff(fromDate, 10, 0, stock.Symbol);
 
-                for (int i = 0; i < stockdata.Count - 1; i++)
-                {
-                    var data = stockdata[i];
-                    strategy.OnBarReceived(data);
-                }
-            }
+            //    for (int i = 0; i < stockdata.Count - 1; i++)
+            //    {
+            //        var data = stockdata[i];
+            //        strategy.OnBarReceived(data);
+            //    }
+            //}
         }
 
         public async Task ShutDown(CancellationToken stoppingToken)

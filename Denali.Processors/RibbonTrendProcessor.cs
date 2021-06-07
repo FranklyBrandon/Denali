@@ -16,13 +16,13 @@ namespace Denali.Processors
     public class RibbonTrendProcessor : IProcessor
     {
         private readonly IConfiguration _configuration;
-        private readonly AlpacaService _alpacaService;
+        private readonly AlpacaDataService _alpacaService;
         private readonly TimeUtils _timeUtils;
         private readonly IMapper _mapper;
 
         public RibbonTrendProcessor(
             IConfiguration configuration,
-            AlpacaService alpacaService,
+            AlpacaDataService alpacaService,
             TimeUtils timeUtils,
             IMapper mapper)
         {
@@ -58,8 +58,6 @@ namespace Denali.Processors
         {
             _alpacaService.InitializeDataClient();
             _alpacaService.InitializeDataStreamingclient();
-            _alpacaService.InitializeTradingClient();
-            _alpacaService.InitializeStreamingClient();
         }
     }
 }

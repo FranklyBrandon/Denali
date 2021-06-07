@@ -16,7 +16,7 @@ namespace Denali.Processors
 {
     public class TradingProcessor : IProcessor
     {
-        private AlpacaService _alpacaService;
+        private AlpacaDataService _alpacaService;
         private TimeUtils _timeUtils;
         private IMapper _mapper;
         private Dictionary<string, List<IAggregateData>> _stockData;
@@ -25,7 +25,7 @@ namespace Denali.Processors
         private readonly ILogger<TradingProcessor> _logger;
 
         public TradingProcessor(
-            AlpacaService alpacaService
+            AlpacaDataService alpacaService
             , TimeUtils timeUtils
             , IMapper mapper
             , ILogger<TradingProcessor> logger )
