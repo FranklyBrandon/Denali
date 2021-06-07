@@ -42,7 +42,7 @@ namespace Denali.Processors.GapUp
             var toDate = _timeUtils.GetNYSECloseDateTime(DateTime.UtcNow);
             var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
             var symbols = stocks.OrderByDescending(x => x.VolumeInt).Take(30).Select(x => x.Symbol);
-            await SubscribeToSymbols(symbols);
+            await SubscribeToSymbols(symbols, fromDate, toDate);
             //https://www.tradingview.com/chart/?symbol=NASDAQ:AAPL&interval=1
         }
 
