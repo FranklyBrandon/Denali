@@ -35,7 +35,16 @@ namespace Denali.Algorithms.ActionAnalysis
             _tradingService = tradingService;
         }
 
-        public void SetInitialData(List<IAggregateData> data) => this._stockData = data;
+        public void SetInitialData(List<IAggregateData> data)
+        {
+            this._stockData = data;
+            var currentBarData = new List<IAggregateData>();
+            for (int i = 0; i <= data.Count() - 1; i++)
+            {
+                currentBarData.Add(data.ElementAt(i));
+                _ema.Analyze(currentBarData);
+            }
+        }
 
         public void OnBarReceived(IAggregateData bar)
         {
