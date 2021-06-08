@@ -34,7 +34,7 @@ namespace Denali.Worker
             {
                 _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
                 _processor = scope.ServiceProvider.GetRequiredService<LiveGapUpProcessor>();
-                await _processor.Process(DateTime.Today.AddDays(-2), stoppingToken);
+                await _processor.Process(DateTime.UtcNow.Date, stoppingToken);
             }
         }
 

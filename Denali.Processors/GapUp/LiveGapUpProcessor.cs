@@ -38,8 +38,8 @@ namespace Denali.Processors.GapUp
 
         public async Task Process(DateTime startTime, CancellationToken stoppingToken)
         {
-            var fromDate = _timeUtils.GetNYSEOpenDateTime(DateTime.UtcNow);
-            var toDate = _timeUtils.GetNYSECloseDateTime(DateTime.UtcNow);
+            var fromDate = _timeUtils.GetNYSEOpenDateTime(DateTime.UtcNow.Date);
+            var toDate = _timeUtils.GetNYSECloseDateTime(DateTime.UtcNow.Date);
             var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
             var symbols = stocks.OrderByDescending(x => x.VolumeInt).Take(30).Select(x => x.Symbol);
             await SubscribeToSymbols(symbols, fromDate, toDate);
@@ -60,6 +60,7 @@ namespace Denali.Processors.GapUp
 
         private async Task SubscribeToSymbols(IEnumerable<string> symbols, DateTime fromdate, DateTime toDate)
         {
+            _alpacaService.InitializeDataClient();
             _alpacaService.InitializeDataStreamingclient();
             _alpacaTradingService.InitializeTradingClient();
             _alpacaTradingService.InitializeStreamingClient();
@@ -70,7 +71,7 @@ namespace Denali.Processors.GapUp
 
             foreach (var symbol in symbols)
             {
-                _strategies[symbol] = new GapUpCoolOff(DateTime.UtcNow, 10, 0, symbol, _alpacaTradingService);
+                _strategies[symbol] = new GapUpCoolOff(DateTime.UtcNow.Date, 10, 0, symbol, _alpacaTradingService);
 
                 List<IAggregateData> currentBars;
                 if (existingData.TryGetValue(symbol, out currentBars))
