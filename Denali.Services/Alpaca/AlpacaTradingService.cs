@@ -33,6 +33,7 @@ namespace Denali.Services.Alpaca
             };
 
             TradingClient = new AlpacaTradingClient(config);
+            OrderMap = new ConcurrentDictionary<string, IOrder>();
         }
 
         public void InitializeStreamingClient()
