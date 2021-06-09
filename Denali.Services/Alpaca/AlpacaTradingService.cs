@@ -64,11 +64,10 @@ namespace Denali.Services.Alpaca
             IOrder order;
             if (OrderMap.TryGetValue(symbol, out order))
             {
-                if (order.OrderStatus == OrderStatus.Canceled
-                    || order.OrderStatus == OrderStatus.Fill
-                    || order.OrderStatus == OrderStatus.Filled)
+                if (order.OrderStatus == OrderStatus.Canceled || (order.OrderSide == OrderSide.Sell && order.OrderStatus == OrderStatus.Filled))
                     return false;
 
+                if (order.OrderSide == OrderSide.Buy && order.OrderStatus == OrderStatus.Filled)
                 return true;
             }
 
