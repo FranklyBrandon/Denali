@@ -55,25 +55,25 @@ namespace Denali.Algorithms.ActionAnalysis
                 _openingHigh = Math.Max(_openingHigh, bar.HighPrice); 
             else
             {
-                if (bar.ClosePrice > _openingHigh && !_breakoutTriggered)
+                if (bar.ClosePrice > _openingHigh && !_breakoutTriggered && _ema.MovingAverages.Any())
                 {
                     var hasOpenPosition = _tradingService.HasOpenPosition(_ticker);
 
                     _breakoutTriggered = true;
-                    Console.WriteLine($"Opening breakout detected for {_ticker} at {_timeUtils.GetETDatetimefromUnixS(bar.Time)}");
                     if (!hasOpenPosition)
                     {
+                        Console.WriteLine($"Opening breakout detected for {_ticker} at {_timeUtils.GetETDatetimefromUnixS(bar.Time)}");
                         _tradingService.EnterPosition(_ticker, 1, OrderType.Market, TimeInForce.Day);
                         Console.WriteLine("Order Placed");
                     }
                 }
-                else if (_breakoutTriggered && bar.ClosePrice < _ema.MovingAverages.Last())
+                else if (_breakoutTriggered && _ema.MovingAverages.Any() && bar.ClosePrice < _ema.MovingAverages.Last())
                 {
                     var hasOpenPosition = _tradingService.HasOpenPosition(_ticker);
 
-                    Console.WriteLine($"Reversion detected for {_ticker} at {_timeUtils.GetETDatetimefromUnixS(bar.Time)}");
                     if (hasOpenPosition)
                     {
+                        Console.WriteLine($"Reversion detected for {_ticker} at {_timeUtils.GetETDatetimefromUnixS(bar.Time)}");
                         _tradingService.ClosePosition(_ticker, OrderType.Market, TimeInForce.Day);
                         Console.WriteLine("Order Sold");
                     }
