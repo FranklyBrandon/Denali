@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { WebsocketConnectionService } from 'src/app/core/websocket-connection.service';
 
 @Component({
   selector: 'app-stock-alert',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StockAlertComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private readonly websocketService: WebsocketConnectionService
+    ) { }
 
   ngOnInit(): void {
+  }
+
+  public OnConnectButton() {
+    this.websocketService.EnsureConnected();
   }
 
 }
