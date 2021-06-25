@@ -1,2 +1,7 @@
 <p>stock-alert works!</p>
 <button (click)="OnConnectButton()">Connect</button>
+<ul>
+    <li *ngFor="let item of entryAlerts$ | async">
+      ticker: {{item.ticker}}
+    </li>
+  </ul>

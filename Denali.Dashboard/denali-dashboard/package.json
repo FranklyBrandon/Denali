@@ -19,6 +19,8 @@
     "@angular/platform-browser-dynamic": "~12.0.4",
     "@angular/router": "~12.0.4",
     "@ngrx/store": "^12.1.0",
+    "primeicons": "^4.1.0",
+    "primeng": "^12.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"

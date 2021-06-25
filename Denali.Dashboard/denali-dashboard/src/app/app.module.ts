@@ -5,7 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StockAlertComponent } from './dashboard/stock-alert/stock-alert.component';
-import { alertReducer } from './store/store.reducer';
+import { appReducers } from './store/reducers/app.reducer';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { alertReducer } from './store/store.reducer';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({state: alertReducer})
+    StoreModule.forRoot(appReducers)
   ],
   providers: [],
   bootstrap: [AppComponent]

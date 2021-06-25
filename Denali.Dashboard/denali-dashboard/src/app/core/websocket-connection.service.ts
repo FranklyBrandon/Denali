@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../store/store.state';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +8,7 @@ export class WebsocketConnectionService {
   private static socket: WebSocket ;
   private static url: string = 'ws://localhost:5000/api/websocket'
 
-  constructor(private store: Store<AppState>) { }
+  constructor() { }
 
   public EnsureConnected() {
   
