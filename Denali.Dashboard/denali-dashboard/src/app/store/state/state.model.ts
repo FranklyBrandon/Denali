@@ -10,7 +10,17 @@ export const initialAlertState: IAlertState = {
              ticker: 'AAPL',
              strategy: 'Gap Up',
              time: 'Today'
-         }
+         },
+         {
+            ticker: 'BOW',
+            strategy: 'Gap Up',
+            time: 'Today'
+        },
+        {
+            ticker: 'TSLA',
+            strategy: 'Gap Up',
+            time: 'Today'
+        }
      ]
 }
 

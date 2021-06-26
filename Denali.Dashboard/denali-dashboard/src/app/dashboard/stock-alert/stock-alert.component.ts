@@ -8,7 +8,7 @@ import { IAppState } from 'src/app/store/state/state.model';
 @Component({
   selector: 'app-stock-alert',
   templateUrl: './stock-alert.component.html',
-  styleUrls: ['./stock-alert.component.css']
+  styleUrls: ['./stock-alert.component.scss']
 })
 export class StockAlertComponent implements OnInit {
 
