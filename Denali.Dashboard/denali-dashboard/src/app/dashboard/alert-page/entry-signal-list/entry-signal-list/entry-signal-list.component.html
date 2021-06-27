@@ -1,0 +1,8 @@
+<p-scrollPanel [style]="{width: '300px', height: '100vh'}" styleClass="custombar1">
+    <div *ngFor="let item of entryAlerts$ | async">
+        <p-card header="{{item.ticker}}" subheader="Entry Signal" [style]="{width: '300px'}" styleClass="customCard">
+        <p>Strategy: {{item.strategy}}</p>
+        <p>Time: {{item.time}}</p>
+        </p-card>
+    </div>
+</p-scrollPanel>

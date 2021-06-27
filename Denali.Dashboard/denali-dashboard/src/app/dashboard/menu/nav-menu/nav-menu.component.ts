@@ -8,19 +8,18 @@ import { MenuItem } from 'primeng/api';
 })
 export class NavMenuComponent implements OnInit {
 
-  items: MenuItem[];
+  items: MenuItem[] = [];
 
-  activeItem: MenuItem;
+  activeItem: MenuItem = {};
 
   ngOnInit() {
       this.items = [
-          {label: 'Home', icon: 'pi pi-fw pi-home'},
-          {label: 'Calendar', icon: 'pi pi-fw pi-calendar'},
-          {label: 'Edit', icon: 'pi pi-fw pi-pencil'},
-          {label: 'Documentation', icon: 'pi pi-fw pi-file'},
+          {label: 'Denali', disabled: true, styleClass: 'title-text'},
+          {label: 'Alerts', icon: 'pi pi-fw pi-bell'},
+          {label: 'Portfolio', icon: 'pi pi-fw pi-chart-line'},
           {label: 'Settings', icon: 'pi pi-fw pi-cog'}
       ];
 
-      this.activeItem = this.items[0];
+      this.activeItem = this.items[1];
   }
 }

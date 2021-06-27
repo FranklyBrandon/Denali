@@ -6,17 +6,16 @@ import { selectEntryAlerts } from 'src/app/store/selector/alert.selector';
 import { IAppState } from 'src/app/store/state/state.model';
 
 @Component({
-  selector: 'app-stock-alert',
-  templateUrl: './stock-alert.component.html',
-  styleUrls: ['./stock-alert.component.scss']
+  selector: 'app-alert-page',
+  templateUrl: './alert-page.component.html',
+  styleUrls: ['./alert-page.component.scss']
 })
 export class StockAlertComponent implements OnInit {
 
-  entryAlerts$ = this.store.pipe(select(selectEntryAlerts));
+
 
   constructor(
-    private readonly websocketService: WebsocketConnectionService,
-    private store: Store<IAppState>) { }
+    private readonly websocketService: WebsocketConnectionService) { }
 
   ngOnInit(): void {
 

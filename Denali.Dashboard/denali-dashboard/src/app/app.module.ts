@@ -4,7 +4,7 @@ import { StoreModule } from '@ngrx/store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StockAlertComponent } from './dashboard/stock-alert/stock-alert.component';
+import { StockAlertComponent } from './dashboard/alert-page/alert-page.component';
 import { appReducers } from './store/reducers/app.reducer';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -13,12 +13,14 @@ import {ScrollPanelModule} from 'primeng/scrollpanel';
 import { NavMenuComponent } from './dashboard/menu/nav-menu/nav-menu.component';
 import {TabMenuModule} from 'primeng/tabmenu';
 import {MenuItem} from 'primeng/api';
+import { EntrySignalListComponent } from './dashboard/alert-page/entry-signal-list/entry-signal-list/entry-signal-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StockAlertComponent,
-    NavMenuComponent
+    NavMenuComponent,
+    EntrySignalListComponent
   ],
   imports: [
     BrowserModule,

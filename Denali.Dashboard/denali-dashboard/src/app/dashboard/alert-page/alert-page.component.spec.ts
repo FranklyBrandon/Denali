@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StockAlertComponent } from './stock-alert.component';
+import { StockAlertComponent } from './alert-page.component';
 
 describe('StockAlertComponent', () => {
   let component: StockAlertComponent;

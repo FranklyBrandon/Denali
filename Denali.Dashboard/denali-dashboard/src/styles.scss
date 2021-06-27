@@ -29,3 +29,14 @@ html {
     }
 }
 
+.title-text {
+    &.p-disabled, .p-component:disabled {
+        opacity: 1 !important;
+    }
+
+    .p-menuitem-text {
+        color: #9FA8DA !important;
+    }
+}
+
+
