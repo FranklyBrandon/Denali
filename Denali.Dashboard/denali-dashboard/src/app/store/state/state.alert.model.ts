@@ -23,11 +23,3 @@ export const initialAlertState: IAlertState = {
         }
      ]
 }
-
-export interface IAppState {
-    alertState: IAlertState;
-}
-
-export const initialAppState: IAppState = {
-    alertState: initialAlertState
-}

@@ -12,7 +12,7 @@ import { CardModule } from 'primeng/card';
 import {ScrollPanelModule} from 'primeng/scrollpanel';
 import { NavMenuComponent } from './dashboard/menu/nav-menu/nav-menu.component';
 import {TabMenuModule} from 'primeng/tabmenu';
-import {MenuItem} from 'primeng/api';
+import {MenubarModule} from 'primeng/menubar';
 import { EntrySignalListComponent } from './dashboard/alert-page/entry-signal-list/entry-signal-list/entry-signal-list.component';
 
 @NgModule({
@@ -29,6 +29,7 @@ import { EntrySignalListComponent } from './dashboard/alert-page/entry-signal-li
     CardModule,
     ScrollPanelModule,
     TabMenuModule,
+    MenubarModule,
     StoreModule.forRoot(appReducers)
   ],
   providers: [],

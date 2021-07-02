@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { selectEntryAlerts } from 'src/app/store/selector/alert.selector';
-import { IAppState } from 'src/app/store/state/state.model';
+import { IAppState } from 'src/app/store/state/state.app.model';
 
 @Component({
   selector: 'app-entry-signal-list',

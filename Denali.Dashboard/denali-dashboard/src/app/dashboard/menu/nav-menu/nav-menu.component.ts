@@ -17,7 +17,8 @@ export class NavMenuComponent implements OnInit {
           {label: 'Denali', disabled: true, styleClass: 'title-text'},
           {label: 'Alerts', icon: 'pi pi-fw pi-bell'},
           {label: 'Portfolio', icon: 'pi pi-fw pi-chart-line'},
-          {label: 'Settings', icon: 'pi pi-fw pi-cog'}
+          {label: 'Settings', icon: 'pi pi-fw pi-cog'},
+          {label: 'Connected', icon: 'pi pi-fw pi-times-circle', styleClass: 'connected-item'}
       ];
 
       this.activeItem = this.items[1];

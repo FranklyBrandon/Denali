@@ -1,5 +1,6 @@
 import { createSelector } from "@ngrx/store";
-import { IAlertState, IAppState } from "../state/state.model";
+import { IAlertState } from "../state/state.alert.model";
+import { IAppState } from "../state/state.app.model";
 
 const selectAlerts = (state: IAppState) => state.alertState;
 
