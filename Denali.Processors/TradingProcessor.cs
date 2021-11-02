@@ -49,13 +49,13 @@ namespace Denali.Processors
             InitializeStrategies(symbols);
 
             _logger.LogInformation("Connecting and Authenticating with Data Stream");
-            var authStatus = await _alpacaService.DataStreamingClient.ConnectAndAuthenticateAsync();
-            _logger.LogInformation($"Authentication Status: {authStatus}");
+            //var authStatus = await _alpacaService.DataStreamingClient.ConnectAndAuthenticateAsync();
+            //_logger.LogInformation($"Authentication Status: {authStatus}");
 
             _logger.LogInformation("Subscribing to Channels");
-            var subscription = _alpacaService.DataStreamingClient.GetMinuteAggSubscription("AAPL");
-            subscription.Received += Subscription_Received;
-            _alpacaService.DataStreamingClient.Subscribe(subscription);
+            //var subscription = _alpacaService.DataStreamingClient.GetMinuteAggSubscription("AAPL");
+            //subscription.Received += Subscription_Received;
+            //_alpacaService.DataStreamingClient.Subscribe(subscription);
 
             _logger.LogInformation("===Begin Strategy===");
 
@@ -65,11 +65,11 @@ namespace Denali.Processors
             }
         }
 
-        private void Subscription_Received(IStreamAgg obj)
-        {
-            var aggregate = _mapper.Map<AggregateData>(obj);
-            OnBarReceived(aggregate);
-        }
+        //private void Subscription_Received(IStreamAgg obj)
+        //{
+        //    var aggregate = _mapper.Map<AggregateData>(obj);
+        //    OnBarReceived(aggregate);
+        //}
 
         public void OnBarReceived(IAggregateData aggregate)
         {
@@ -80,13 +80,14 @@ namespace Denali.Processors
 
         public async Task ShutDown(CancellationToken stoppingToken)
         {
-            await _alpacaService.Disconnect();
+            return;
+            //await _alpacaService.Disconnect();
         }
 
         private void InitializeServices()
         {
-            _alpacaService.InitializeDataClient();
-            _alpacaService.InitializeDataStreamingclient();
+            //_alpacaService.InitializeDataClient();
+            //_alpacaService.InitializeDataStreamingclient();
         }
 
         private void InitializeStrategies(IEnumerable<string> symbols)

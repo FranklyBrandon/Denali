@@ -48,8 +48,8 @@ namespace Denali.Processors.GapUp
 
         public async Task ShutDown(CancellationToken stoppingToken)
         {
-            await _alpacaService.Disconnect();
-            await _alpacaTradingService.Disconnect();
+            //await _alpacaService.Disconnect();
+            //await _alpacaTradingService.Disconnect();
         }
 
         public void OnBarReceived(IAggregateData barData)
@@ -60,11 +60,12 @@ namespace Denali.Processors.GapUp
 
         private async Task SubscribeToSymbols(IEnumerable<string> symbols, DateTime fromdate, DateTime toDate)
         {
-            _alpacaService.InitializeDataClient();
-            _alpacaService.InitializeDataStreamingclient();
-            _alpacaTradingService.InitializeTradingClient();
-            _alpacaTradingService.InitializeStreamingClient();
+            //_alpacaService.InitializeDataClient();
+            //_alpacaService.InitializeDataStreamingclient();
+           // _alpacaTradingService.InitializeTradingClient();
+           // _alpacaTradingService.InitializeStreamingClient();
 
+            /*
             var dataStreamAuth = await _alpacaService.DataStreamingClient.ConnectAndAuthenticateAsync();
             var tradeStreamAuth = await _alpacaTradingService.StreamingClient.ConnectAndAuthenticateAsync();
             var existingData = await _alpacaService.GetHistoricBarData(fromdate, toDate, Alpaca.Markets.TimeFrame.Minute, symbols);
@@ -85,6 +86,7 @@ namespace Denali.Processors.GapUp
                 };
                 _alpacaService.DataStreamingClient.Subscribe(subscription);
             }
+            */
         }
     }
 }

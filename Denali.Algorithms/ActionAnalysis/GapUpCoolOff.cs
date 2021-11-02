@@ -48,6 +48,7 @@ namespace Denali.Algorithms.ActionAnalysis
 
         public void OnBarReceived(IAggregateData bar)
         {
+            /*
             _stockData.Add(bar);
             _ema.Analyze(_stockData);
 
@@ -79,6 +80,7 @@ namespace Denali.Algorithms.ActionAnalysis
                     }
                 }
             }
+            */
         }
     }
 }

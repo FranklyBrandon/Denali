@@ -56,8 +56,8 @@ namespace Denali.Processors
 
         private void InitializeClients()
         {
-            _alpacaService.InitializeDataClient();
-            _alpacaService.InitializeDataStreamingclient();
+            //_alpacaService.InitializeDataClient();
+            //_alpacaService.InitializeDataStreamingclient();
         }
     }
 }

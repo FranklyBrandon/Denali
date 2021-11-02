@@ -36,7 +36,7 @@ namespace Denali.Processors
             //var stocks = await _gapUpWebScrapService.ScrapGapUpSymbols();
             var stocks = await _gapUpWebScrapService.LoadGapUpStocksFromFile("GapUpStocks_6_4_2021.txt");
             stocks = stocks.OrderByDescending(x => x.VolumeInt);
-
+            /*
             _alpacaService.InitializeDataClient();
             var fromDate = DateTime.Parse(_configuration["from"]);
             var toDate = DateTime.Parse(_configuration["to"]);
@@ -46,7 +46,7 @@ namespace Denali.Processors
                 , _timeUtils.GetNYSECloseDateTime(toDate)
                 , Alpaca.Markets.TimeFrame.Minute
                 , symbols: stocks.Select(x => x.Symbol));
-
+            */
             //foreach (var stock in stocks)
             //{
             //    var stockdata = barData[stock.Symbol];
@@ -62,7 +62,7 @@ namespace Denali.Processors
 
         public async Task ShutDown(CancellationToken stoppingToken)
         {
-            await _alpacaService.Disconnect();
+            //await _alpacaService.Disconnect();
         }
     }
 }

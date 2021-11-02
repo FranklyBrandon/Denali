@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Alpaca.Markets" Version="4.1.7" />
+    <PackageReference Include="Alpaca.Markets" Version="5.2.2" />
     <PackageReference Include="Google.Apis.Sheets.v4" Version="1.49.0.2087" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.8" />
     <PackageReference Include="PuppeteerSharp" Version="4.0.0" />

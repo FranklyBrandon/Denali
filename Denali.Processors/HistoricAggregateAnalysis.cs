@@ -127,7 +127,7 @@ namespace Denali.Processors
 
         private void InitializeServices()
         {
-            _alpacaService.InitializeDataClient();
+            //_alpacaService.InitializeDataClient();
         }
 
         private void InitializeStrategies(IEnumerable<string> symbols)
@@ -146,7 +146,8 @@ namespace Denali.Processors
             var backlogStartTime = _timeUtils.GetNYSEOpenDateTime(startDate);
             var backlogEndtime = _timeUtils.GetNYSECloseDateTime(startDate);
 
-            return await _alpacaService.GetHistoricBarData(backlogStartTime, backlogEndtime, TimeFrame.Day, symbols: symbols);
+            return null;
+            //return await _alpacaService.GetHistoricBarData(backlogStartTime, backlogEndtime, TimeFrame.Day, symbols: symbols);
         }
 
         private DateTime GetBacklogStart(DateTime start)

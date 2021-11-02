@@ -7,6 +7,7 @@ namespace Denali.Services.Alpaca
 {
     public class AlpacaTradingService
     {
+        /*
         private readonly AlpacaSettings _settings;
         public AlpacaTradingClient TradingClient { get; private set; }
         public AlpacaStreamingClient StreamingClient { get; private set; }
@@ -108,5 +109,6 @@ namespace Denali.Services.Alpaca
                 TradingClient = null;
             }
         }
+        */
     }
 }

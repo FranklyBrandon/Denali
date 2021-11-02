@@ -11,7 +11,9 @@ namespace Denali.Services.Alpaca
 {
     public class AlpacaDataService
     {
+        /*
         public AlpacaDataClient DataClient { get; private set; }
+        public AlpacaDataClient alpacaDataClient;
         public IAlpacaDataStreamingClient DataStreamingClient { get; private set; }
 
         private readonly AlpacaSettings _settings;
@@ -79,5 +81,6 @@ namespace Denali.Services.Alpaca
                 DataClient = null;
             }
         }
+        */
     }
 }
