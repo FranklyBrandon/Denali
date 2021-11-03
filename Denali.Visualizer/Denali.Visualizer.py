@@ -1,3 +1,4 @@
+from re import X
 import plotly.graph_objects as go
 import json, os
 
@@ -8,6 +9,7 @@ file = open(path, "r")
 
 candleData = json.load(file)
 df = dict(Date=[], Open=[], Close=[], High=[], Low=[])
+ema = dict(X=[], Y=[])
 
 for index, value in enumerate(candleData['bars']):
     df['Date'].append(value['t'])
@@ -16,6 +18,9 @@ for index, value in enumerate(candleData['bars']):
     df['High'].append(value['h'])
     df['Low'].append(value['l'])
 
+    ema['X'].append(value['t'])
+    ema['Y'].append(value['c'])
+
 fig = go.Figure(data=[
     go.Candlestick(
         x=df['Date'],
@@ -23,5 +28,10 @@ fig = go.Figure(data=[
         high=df['High'],
         low=df['Low'],
         close=df['Close'])])
+
+fig.add_scatter(
+    x=ema['X'],
+    y=ema['Y']
+)
 
 fig.write_html('Denali_Results.html', auto_open=True)
