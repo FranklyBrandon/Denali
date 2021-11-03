@@ -12,9 +12,8 @@ def main():
     rawData = json.load(file)
     candleData = list(rawData['bars'])
     df = dict(Date=[], Open=[], Close=[], High=[], Low=[])
-    ema = dict(X=[], Y=[])
 
-    get_emas(candleData, 9)
+    smas = get_smas(candleData, 9)
 
     for value in candleData:
         df['Date'].append(value['t'])
@@ -22,9 +21,6 @@ def main():
         df['Close'].append(value['c'])
         df['High'].append(value['h'])
         df['Low'].append(value['l'])
-
-        ema['X'].append(value['t'])
-        ema['Y'].append(value['c'])
 
     fig = go.Figure(data=[
         go.Candlestick(
@@ -35,19 +31,28 @@ def main():
             close=df['Close'])])
 
     fig.add_scatter(
-        x=ema['X'],
-        y=ema['Y']
+        x=smas['Date'],
+        y=smas['Value']
     )
 
     fig.write_html('Denali_Results.html', auto_open=True)
 
 
-def get_emas(candleData, emaBacklook):
-    for index, value in enumerate(candleData):
-        print(value)
+def get_smas(candleData, emaBacklook):
 
-    emas = []
-    return emas
+    smas = dict(Value=[], Date=[])
+    for index, value in enumerate(candleData):
+        if (index < emaBacklook - 1):
+            continue
+
+        sum = 0
+        for x in range(index - (emaBacklook), index):
+            sum += candleData[x]['c']
+
+        smas['Value'].append(sum / emaBacklook)
+        smas['Date'].append(candleData[x]['t'])
+
+    return smas
 
 if __name__ == "__main__":
     main()
