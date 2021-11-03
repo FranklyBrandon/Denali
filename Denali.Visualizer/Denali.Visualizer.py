@@ -1,12 +1,20 @@
 import plotly.graph_objects as go
-import sys, os
+import json, os
 
-print('Hello World!')
+dir = "C:\\Denali\\Denali.Visualizer"
+fileName = "11_1_2021_AAPL.txt"
+path = os.path.join(dir, fileName)
+file = open(path, "r")
 
-df = dict(Date=[1,2], Open=[1,2], Close=[1,2], High=[1,2], Low=[1,2])
-dir = "C:\\Denali\\Denali.Worker\\bin\\Debug\\net5.0"
-path = os.path.join(dir, "filename")
+candleData = json.load(file)
+df = dict(Date=[], Open=[], Close=[], High=[], Low=[])
 
+for index, value in enumerate(candleData['bars']):
+    df['Date'].append(value['t'])
+    df['Open'].append(value['o'])
+    df['Close'].append(value['c'])
+    df['High'].append(value['h'])
+    df['Low'].append(value['l'])
 
 fig = go.Figure(data=[
     go.Candlestick(
