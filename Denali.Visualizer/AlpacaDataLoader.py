@@ -1,16 +1,10 @@
 import json, os
 from typing import List
 
-class AggregateData(object):
-    def __init__(self, jsonDict):
-        self.open = jsonDict['o']
-        self.close = jsonDict['c']
-        self.high = jsonDict['h']
-        self.low = jsonDict['l']
-        self.time = jsonDict['t']
+from Models import AggregateData
 
 def get_alpaca_candle_data() -> List[AggregateData]:
-    
+
     dir = "C:\\Denali\\Denali.Visualizer"
     fileName = "11_1_2021_AAPL.txt"
     path = os.path.join(dir, fileName)

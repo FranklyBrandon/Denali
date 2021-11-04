@@ -1,3 +1,8 @@
+from typing import List
+
+from Models import AggregateData, MovingAverage
+
+
 def get_emas(candleData, emaBacklog):
     smas = get_smas(candleData, emaBacklog)
     smoothingConstant = (2 / (emaBacklog + 1))
@@ -16,7 +21,7 @@ def get_emas(candleData, emaBacklog):
 
     return get_smas(candleData, emaBacklog)
 
-def get_smas(candleData, smaBacklog):
+def get_smas1(candleData, smaBacklog):
 
     smas = dict(Value=[], Date=[], CandleIndex=[])
     for index in range(0, len(candleData) - 1):
@@ -31,4 +36,20 @@ def get_smas(candleData, smaBacklog):
         smas['Date'].append(candleData[index]['t'])
         smas['CandleIndex'].append(index)
 
+    return smas
+
+
+def get_smas(aggregateData: List[AggregateData], backlog: int) -> List[MovingAverage]:
+    
+    smas = []
+    for index in range(0, len(aggregateData) - 1):
+        if (index < backlog - 1):
+            continue
+
+        sum = 0
+        for i in range(index - (backlog), index):
+            sum += aggregateData[i].close
+        
+        smas.append(MovingAverage(sum / backlog, aggregateData[index].time))
+    
     return smas

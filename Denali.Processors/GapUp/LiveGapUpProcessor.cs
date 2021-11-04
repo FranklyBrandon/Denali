@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Denali.Processors.GapUp
 {
-    public class LiveGapUpProcessor : IProcessor
+    public class LiveGapUpProcessor
     {
         private readonly GapUpWebScrapService _gapUpWebScrapService;
         private readonly AlpacaDataService _alpacaService;

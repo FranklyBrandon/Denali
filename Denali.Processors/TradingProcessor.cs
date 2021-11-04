@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Denali.Processors
 {
-    public class TradingProcessor : IProcessor
+    public class TradingProcessor
     {
         private AlpacaDataService _alpacaService;
         private TimeUtils _timeUtils;

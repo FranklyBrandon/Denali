@@ -16,7 +16,7 @@ namespace Denali.Worker
     {
         private readonly ILogger<DenaliWorker> _logger;
         private readonly ServiceProvider _provider;
-        private IProcessor _processor;
+        private ILiveProcessor _processor;
         private CancellationTokenSource _proccessTokenSource;
 
         public DenaliWorker(ILogger<DenaliWorker> logger, ServiceProvider provider)
@@ -32,8 +32,8 @@ namespace Denali.Worker
             using (var scope = _provider.CreateScope())
             {
                 _logger.LogInformation("Starting Denali Worker Process", DateTimeOffset.Now);
-                _processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
-                await _processor.Process(DateTime.UtcNow.Date, stoppingToken);
+                _processor = scope.ServiceProvider.GetRequiredService<ILiveProcessor>();
+                var la = _processor.Process(DateTime.UtcNow.Date, null, stoppingToken);
             }
         }
 

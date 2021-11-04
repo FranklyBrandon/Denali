@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Denali.Processors
 {
-    public class HistoricGapUpProcessor : IProcessor
+    public class HistoricGapUpProcessor
     {
         private readonly GapUpWebScrapService _gapUpWebScrapService;
         private readonly AlpacaDataService _alpacaService;
