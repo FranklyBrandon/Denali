@@ -11,6 +11,7 @@ namespace Denali.Processors
 {
     public class BarOverBarProcessor : ILiveProcessor
     {
+        private IEnumerable<string> _subscribedTickers;
         private Dictionary<string, List<IAggregateData>> _stockData;
 
         public BarOverBarProcessor()
@@ -24,6 +25,9 @@ namespace Denali.Processors
 
         public Task Process(DateTime startTime, IEnumerable<string> tickers, CancellationToken stoppingToken)
         {
+            // Get backlog data
+            // Get today data
+            // Subcribe to live streaming
             throw new NotImplementedException();
         }
 
