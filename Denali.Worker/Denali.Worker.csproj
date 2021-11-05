@@ -31,4 +31,13 @@
     <ProjectReference Include="..\Denali.Processors\Denali.Processors.csproj" />
     <ProjectReference Include="..\Denali.Services\Denali.Services.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\11_1_2021_AAPL.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\11_2_2021_AAPL.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

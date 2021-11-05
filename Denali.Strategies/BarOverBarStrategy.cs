@@ -46,10 +46,9 @@ namespace Denali.Strategies
                         Date = currentBar.Time
                     });
                 }
-                // check the magnitude of the climb
             }
 
-            throw new NotImplementedException();
+            return MarketAction.None;
         }
     }
 }

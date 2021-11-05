@@ -1,10 +1,8 @@
 ﻿using Denali.Models.Mapping;
+using Denali.Processors;
+using Denali.Processors.Analysis;
 using Denali.Services;
 using Denali.Services.Alpaca;
-using Denali.Services.Google;
-using Denali.Services.WebScrap;
-using Denali.Shared.Utility;
-using Denali.Strategies;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +18,7 @@ namespace Denali.Worker
             this._configuration = configuration;
             this._services = services;
         }
-        public void ConfigureServices()
+        public void ConfigureServices() 
         {
             _services.AddHostedService<DenaliWorker>();
  
@@ -61,13 +59,7 @@ namespace Denali.Worker
 
         private void AddUserServices()
         {
-            _services.AddScoped<DenaliSheetsService>();
-            _services.AddScoped<GoogleSheetsService>();  
-            _services.AddScoped<GapUpWebScrapService>();
-            _services.AddScoped<TimeUtils>();
-            _services.AddScoped<AlpacaDataService>();
-            _services.AddScoped<AlpacaTradingService>();
-            //_services.AddScoped<IAggregateStrategy, RibbonTrendStrategy>();
+            _services.AddScoped<IAnalysisProcessor, BarOverBarAnalysisProcessor>();
         }
     }
 }

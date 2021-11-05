@@ -6,10 +6,18 @@ using System.Threading.Tasks;
 
 namespace Denali.Processors
 {
-    public interface ILiveProcessor
+    public interface IProcessor
     {
         Task Process(DateTime startTime, IEnumerable<string> tickers, CancellationToken stoppingToken);
+    }
+    public interface ILiveProcessor : IProcessor
+    {
         Task ShutDown(CancellationToken stoppingToken);
         void OnBarReceived(IAggregateData barData);
+    }
+
+    public interface IAnalysisProcessor : IProcessor
+    {
+
     }
 }
