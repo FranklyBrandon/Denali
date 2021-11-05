@@ -13,11 +13,11 @@ namespace Denali.Algorithms.AggregateAnalysis.ParabolicSAR
         public decimal AccelerationFactor { get; set; }
         public decimal ExtremePoint { get; set; }
         public IList<SAR> SARs { get; set; }
-        public long Begin { get; set; }
+        public string Begin { get; set; }
         public long End { get; set; }
         public MarketSide Trend { get; set; }
 
-        public SARSegment(decimal extremePoint, long begin, MarketSide trend)
+        public SARSegment(decimal extremePoint, string begin, MarketSide trend)
         {
             ExtremePoint = extremePoint;
             Begin = begin;
@@ -57,9 +57,9 @@ namespace Denali.Algorithms.AggregateAnalysis.ParabolicSAR
     public struct SAR
     {
         public decimal Value { get; set; }
-        public long Time { get; set; }
+        public string Time { get; set; }
 
-        public SAR(decimal value, long time)
+        public SAR(decimal value, string time)
         {
             Value = value;
             Time = time;

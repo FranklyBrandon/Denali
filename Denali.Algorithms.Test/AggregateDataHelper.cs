@@ -22,7 +22,8 @@ namespace Denali.Algorithms.Test
         /// <returns></returns>
         public static List<IAggregateData> JWellesWilderSARExampleSheet()
         {
-            return new List<IAggregateData>
+            return new List<IAggregateData>();
+            /*
             {
                 //Date 4
                 new AggregateData
@@ -278,6 +279,7 @@ namespace Denali.Algorithms.Test
                     Time = 39
                 }
             };
+            */
         }
 
         /// <summary>
@@ -549,7 +551,8 @@ namespace Denali.Algorithms.Test
 
         public static List<IAggregateData> JWellesWilderADXExampleSheet()
         {
-            return new List<IAggregateData>
+            return new List<IAggregateData>();
+            /*
             {
                 new AggregateData
                 {
@@ -846,15 +849,17 @@ namespace Denali.Algorithms.Test
                     Time = 42
                 },
             };
+            */
         }
 
         /// <summary>
         /// Page 40
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<long, ADXResult> JWellesWilderADXResults()
+        public static Dictionary<string, ADXResult> JWellesWilderADXResults()
         {
-            return new List<ADXResult>
+            return new List<ADXResult>().ToDictionary(x => x.Time, y => y);
+            /*
             {
                 new ADXResult
                 {
@@ -948,6 +953,7 @@ namespace Denali.Algorithms.Test
                     Time = 14
                 }
             }.ToDictionary(x => x.Time, y => y);
+            */
         }
     }
 }

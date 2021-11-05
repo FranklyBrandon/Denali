@@ -22,7 +22,7 @@ namespace Denali.Shared.Utility
             await File.WriteAllTextAsync(directory, json);
         }
 
-        public static async Task<T> GetJSONFromFile<T>(string filename, CancellationToken cancellationToken = default)
+        public static async Task<T> DeserializeJSONFromFile<T>(string filename, CancellationToken cancellationToken = default)
         {
             var fullPath = AppDomain.CurrentDomain.BaseDirectory;
             var directory = Path.Combine(fullPath, filename);

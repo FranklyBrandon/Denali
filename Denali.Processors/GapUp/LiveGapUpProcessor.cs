@@ -54,7 +54,7 @@ namespace Denali.Processors.GapUp
 
         public void OnBarReceived(IAggregateData barData)
         {
-            var strategy = _strategies[barData.Symbol];
+            var strategy = _strategies[barData.Ticker];
             strategy.OnBarReceived(barData);
         }
 

@@ -18,6 +18,6 @@ namespace Denali.Algorithms.AggregateAnalysis.ADX
         public decimal ADX { get; set; }
         public decimal TrueRange { get; set; }
         public decimal SmoothedTrueRange { get; set; }
-        public long Time { get; set; }
+        public string Time { get; set; }
     }
 }

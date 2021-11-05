@@ -8,7 +8,7 @@ namespace Denali.Models.Shared
 {
     public class AggregateData : IAggregateData
     {
-        public string Symbol { get; set; }
+        public string Ticker { get; set; }
         [JsonPropertyName("o")]
         public decimal OpenPrice { get; set; }
         [JsonPropertyName("c")]
@@ -22,7 +22,7 @@ namespace Denali.Models.Shared
         [JsonPropertyName("vw")]
         public decimal VolumeWeightedAverage { get; set; }
         [JsonPropertyName("t")]
-        public long Time { get; set; }
+        public string Time { get; set; }
         [JsonPropertyName("n")]
         public int Number { get; set; }
     }

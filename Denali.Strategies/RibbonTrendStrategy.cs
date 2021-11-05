@@ -8,8 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
 namespace Denali.Strategies
 {
+
     public class RibbonTrendStrategy : IAggregateStrategy
     {
         private readonly EMA _ema9;
@@ -123,3 +125,4 @@ namespace Denali.Strategies
         }
     }
 }
+*/

@@ -11,6 +11,10 @@ namespace Denali.Services.Alpaca
 {
     public class AlpacaDataService
     {
+        public string LoadAlpacaAggregateJSONData()
+        {
+            return "";
+        }
         /*
         public AlpacaDataClient DataClient { get; private set; }
         public AlpacaDataClient alpacaDataClient;

@@ -74,8 +74,8 @@ namespace Denali.Processors
         public void OnBarReceived(IAggregateData aggregate)
         {
             _logger.LogInformation($"O: {aggregate.OpenPrice}, H: {aggregate.ClosePrice}, L: {aggregate.LowPrice}, C: {aggregate.ClosePrice}, T: {aggregate.Time}");
-            _stockData[aggregate.Symbol].Add(aggregate);
-            _strategies[aggregate.Symbol].ProcessTick(_stockData[aggregate.Symbol], new TradingContext());
+            _stockData[aggregate.Ticker].Add(aggregate);
+            //_strategies[aggregate.Ticker].ProcessTick(_stockData[aggregate.Ticker], new TradingContext());
         }
 
         public async Task ShutDown(CancellationToken stoppingToken)
@@ -94,7 +94,7 @@ namespace Denali.Processors
         {
             foreach (var symbol in symbols)
             {
-                _strategies[symbol] = new RibbonTrendStrategy();
+                //_strategies[symbol] = new RibbonTrendStrategy();
                 _strategies[symbol].Initialize(_stockData[symbol]);
             }
         }

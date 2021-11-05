@@ -8,13 +8,13 @@ namespace Denali.Models.Shared
 {
     public interface IAggregateData
     {
-        public string Symbol { get; set; }
+        public string Ticker { get; set; }
         public decimal OpenPrice { get; set; }
         public decimal ClosePrice { get; set; }
         public decimal LowPrice { get; set; }
         public decimal HighPrice { get; set; }
         public decimal Volume { get; set; }
-        public long Time { get; set; }
+        public string Time { get; set; }
 
         public bool IsOpen
         {

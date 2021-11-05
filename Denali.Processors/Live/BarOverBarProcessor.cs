@@ -1,5 +1,7 @@
 ﻿using Denali.Models.Shared;
+using Denali.Services.Alpaca;
 using Denali.Shared.Utility;
+using Denali.Strategies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,7 @@ namespace Denali.Processors
     public class BarOverBarProcessor : ILiveProcessor
     {
         private IEnumerable<string> _subscribedTickers;
-        private Dictionary<string, List<IAggregateData>> _stockData;
+        private Dictionary<string, List<IAggregateStrategy>> _strategies;
 
         public BarOverBarProcessor()
         {
@@ -20,7 +22,7 @@ namespace Denali.Processors
         }
         public void OnBarReceived(IAggregateData barData)
         {
-            throw new NotImplementedException();
+            _strategies[barData.Ticker].ForEach(x => x.ProcessTick(null, null));
         }
 
         public Task Process(DateTime startTime, IEnumerable<string> tickers, CancellationToken stoppingToken)

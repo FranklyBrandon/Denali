@@ -62,12 +62,12 @@ namespace Denali.Worker
         private void AddUserServices()
         {
             _services.AddScoped<DenaliSheetsService>();
-            _services.AddScoped<GoogleSheetsService>();
+            _services.AddScoped<GoogleSheetsService>();  
             _services.AddScoped<GapUpWebScrapService>();
             _services.AddScoped<TimeUtils>();
             _services.AddScoped<AlpacaDataService>();
             _services.AddScoped<AlpacaTradingService>();
-            _services.AddScoped<IAggregateStrategy, RibbonTrendStrategy>();
+            //_services.AddScoped<IAggregateStrategy, RibbonTrendStrategy>();
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Denali.Algorithms.Test.AggregateAnalysisTests
         [Test]
         public void JWellesWilderComparisonTest()
         {
+            /*
             var segment = new SARSegment(52.35M, 4, MarketSide.Bullish);
             var sar = new SAR(50.00M, 4);
             segment.SARs.Add(sar);
@@ -43,6 +44,7 @@ namespace Denali.Algorithms.Test.AggregateAnalysisTests
                     }
                 }
             }
+            */
         }
 
         [Test]

@@ -7,8 +7,8 @@ namespace Denali.Strategies
 {
     public interface IAggregateStrategy
     {
-        void Initialize(IEnumerable<IAggregateData> aggregateData);
-        MarketAction ProcessTick(IEnumerable<IAggregateData> aggregateData, ITradingContext context);
+        void Initialize(IList<IAggregateData> aggregateData);
+        MarketAction ProcessTick(IAggregateData aggregateData, ITradingContext context);
     }
 
     public interface ITradingContext
@@ -35,5 +35,11 @@ namespace Denali.Strategies
         Buy,
         Sell,
         None
+    }
+
+    public class MarketEvent
+    {
+        public string Event { get; set; }
+        public string Date { get; set; }
     }
 }
