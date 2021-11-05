@@ -31,6 +31,12 @@ namespace Denali.Models.Mapping
                 .ForMember(dest => dest.Volume, opt => opt.MapFrom(src => src.Volume))
                 .ForMember(dest => dest.Time, opt => opt.MapFrom(src => ((DateTimeOffset)src.TimeUtc).ToUnixTimeSeconds()));
             */
+            CreateMap<AlpacaAggregateData, List<AggregateData>>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.ForEach(x => x.Ticker = src.Ticker);
+                })
+                .ConvertUsing(source => source.Bars);
         }
     }
 }
