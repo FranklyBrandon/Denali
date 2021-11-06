@@ -27,6 +27,11 @@ namespace Denali.Processors.Analysis
             var currentBars = _mapper.Map<List<AggregateData>>(currentDaydata).Cast<IAggregateData>().ToList();
 
             strategy.Initialize(previousBars);
+
+            currentBars.ForEach(async x => await strategy.ProcessTick(x, null));
+
+            await FileHelper.SerializeJSONToFile(strategy.MarketEvents, "Resources\\events.txt");
+            await FileHelper.SerializeJSONToFile(strategy.EMAs, "Resources\\emas.txt");
         }
     }
 }

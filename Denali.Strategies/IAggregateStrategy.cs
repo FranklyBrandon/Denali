@@ -2,13 +2,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Denali.Strategies
 {
     public interface IAggregateStrategy
     {
         void Initialize(IList<IAggregateData> aggregateData);
-        MarketAction ProcessTick(IAggregateData aggregateData, ITradingContext context);
+        Task<MarketAction> ProcessTick(IAggregateData aggregateData, ITradingContext context);
     }
 
     public interface ITradingContext

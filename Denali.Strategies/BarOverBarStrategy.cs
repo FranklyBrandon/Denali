@@ -1,5 +1,6 @@
 ﻿using Denali.Algorithms.AggregateAnalysis.EMA;
 using Denali.Models.Shared;
+using Denali.Shared.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,23 +12,26 @@ namespace Denali.Strategies
     public class BarOverBarStrategy : IAggregateStrategy
     {
         private IList<IAggregateData> _aggregateData;
-        private IList<MarketEvent> _marketEvents;
+        public IList<MarketEvent> MarketEvents;
+        public IList<Average> EMAs;
         private EMA _ema9;
 
         public void Initialize(IList<IAggregateData> aggregateData)
         {
-            _marketEvents = new List<MarketEvent>();
+            MarketEvents = new List<MarketEvent>();
+            EMAs = new List<Average>();
             _ema9 = new EMA(9);
             _aggregateData = aggregateData;
             _ema9.Analyze(_aggregateData);
         }
 
-        public MarketAction ProcessTick(IAggregateData aggregateBar, ITradingContext context)
+        public async Task<MarketAction> ProcessTick(IAggregateData aggregateBar, ITradingContext context)
         {
             _aggregateData.Add(aggregateBar);
             _ema9.Analyze(_aggregateData);
 
             var currentEma = _ema9.MovingAverages.Last();
+            EMAs.Add(new Average(currentEma, aggregateBar.Time));
 
             // If the stock is in an uptrend
             if (aggregateBar.HighPrice > currentEma)
@@ -40,7 +44,7 @@ namespace Denali.Strategies
 
                 if (previousBar.HighPrice > _aggregateData.Last().HighPrice)
                 {
-                    _marketEvents.Add(new MarketEvent
+                    MarketEvents.Add(new MarketEvent
                     {
                         Event = "BarOverBar",
                         Date = currentBar.Time
