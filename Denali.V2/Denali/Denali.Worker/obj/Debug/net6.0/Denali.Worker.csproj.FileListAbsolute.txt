@@ -52,3 +52,4 @@ C:\Denali\Denali.V2\Denali\Denali.Worker\bin\Debug\net6.0\Denali.Processors.dll
 C:\Denali\Denali.V2\Denali\Denali.Worker\bin\Debug\net6.0\Denali.Services.dll
 C:\Denali\Denali.V2\Denali\Denali.Worker\bin\Debug\net6.0\Denali.Processors.pdb
 C:\Denali\Denali.V2\Denali\Denali.Worker\bin\Debug\net6.0\Denali.Services.pdb
+C:\Denali\Denali.V2\Denali\Denali.Worker\bin\Debug\net6.0\Resources\bars.json

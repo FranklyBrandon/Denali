@@ -55,6 +55,19 @@
         "runtime": {
           "lib/netcoreapp2.1/_._": {}
         }
+      },
+      "Denali.Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Alpaca.Markets": "5.2.7"
+        },
+        "compile": {
+          "bin/placeholder/Denali.Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Denali.Services.dll": {}
+        }
       }
     }
   },
@@ -191,11 +204,17 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "Denali.Services/1.0.0": {
+      "type": "project",
+      "path": "../Denali.Services/Denali.Services.csproj",
+      "msbuildProject": "../Denali.Services/Denali.Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "Alpaca.Markets >= 5.2.7"
+      "Alpaca.Markets >= 5.2.7",
+      "Denali.Services >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -228,7 +247,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Denali\\Denali.V2\\Denali\\Denali.Services\\Denali.Services.csproj": {
+              "projectPath": "C:\\Denali\\Denali.V2\\Denali\\Denali.Services\\Denali.Services.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

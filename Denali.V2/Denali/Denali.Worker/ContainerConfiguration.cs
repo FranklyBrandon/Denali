@@ -1,4 +1,5 @@
-﻿using Denali.Services;
+﻿using Denali.Processors.BarOverBar;
+using Denali.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Denali.Worker
         {
             services.AddHostedService<Worker>();
             services.AddScoped<FileService>();
+            services.AddScoped<BarOverBarAnalysis>();
 
             // Register a service provider so we can create scopes and resolve instances dynamically
             services.AddSingleton<ServiceProvider>((context) =>

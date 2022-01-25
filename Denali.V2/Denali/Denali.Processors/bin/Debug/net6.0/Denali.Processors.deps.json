@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v6.0": {
       "Denali.Processors/1.0.0": {
         "dependencies": {
-          "Alpaca.Markets": "5.2.7"
+          "Alpaca.Markets": "5.2.7",
+          "Denali.Services": "1.0.0"
         },
         "runtime": {
           "Denali.Processors.dll": {}
@@ -52,7 +53,15 @@
           }
         }
       },
-      "System.Threading.Tasks.Extensions/4.5.4": {}
+      "System.Threading.Tasks.Extensions/4.5.4": {},
+      "Denali.Services/1.0.0": {
+        "dependencies": {
+          "Alpaca.Markets": "5.2.7"
+        },
+        "runtime": {
+          "Denali.Services.dll": {}
+        }
+      }
     }
   },
   "libraries": {
@@ -95,6 +104,11 @@
       "sha512": "sha512-zteT+G8xuGu6mS+mzDzYXbzS7rd3K6Fjb9RiZlYlJPam2/hU7JCBZBVEcywNuR+oZ1ncTvc/cq0faRr3P01OVg==",
       "path": "system.threading.tasks.extensions/4.5.4",
       "hashPath": "system.threading.tasks.extensions.4.5.4.nupkg.sha512"
+    },
+    "Denali.Services/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

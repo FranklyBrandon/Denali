@@ -17,6 +17,10 @@ namespace Denali.Worker
         {
             while (!stoppingToken.IsCancellationRequested)
             {
+                using (var scope = _provider.CreateScope())
+                {
+                    var processor = scope.ServiceProvider.GetService<BarOverBarAnalysis>();
+                }
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(1000, stoppingToken);
             }

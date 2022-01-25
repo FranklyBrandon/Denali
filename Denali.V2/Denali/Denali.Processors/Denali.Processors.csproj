@@ -10,4 +10,8 @@
     <PackageReference Include="Alpaca.Markets" Version="5.2.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Denali.Services\Denali.Services.csproj" />
+  </ItemGroup>
+
 </Project>

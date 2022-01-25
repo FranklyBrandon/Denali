@@ -542,7 +542,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "Alpaca.Markets": "5.2.7"
+          "Alpaca.Markets": "5.2.7",
+          "Denali.Services": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Denali.Processors.dll": {}

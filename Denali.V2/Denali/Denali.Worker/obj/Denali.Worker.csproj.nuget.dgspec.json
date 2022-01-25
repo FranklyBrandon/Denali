@@ -30,7 +30,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Denali\\Denali.V2\\Denali\\Denali.Services\\Denali.Services.csproj": {
+                "projectPath": "C:\\Denali\\Denali.V2\\Denali\\Denali.Services\\Denali.Services.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
