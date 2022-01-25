@@ -1,0 +1,12 @@
+C:\Denali\Denali.V2\Denali\Denali.Services\bin\Debug\net6.0\Denali.Services.deps.json
+C:\Denali\Denali.V2\Denali\Denali.Services\bin\Debug\net6.0\Denali.Services.dll
+C:\Denali\Denali.V2\Denali\Denali.Services\bin\Debug\net6.0\ref\Denali.Services.dll
+C:\Denali\Denali.V2\Denali\Denali.Services\bin\Debug\net6.0\Denali.Services.pdb
+C:\Denali\Denali.V2\Denali\Denali.Services\obj\Debug\net6.0\Denali.Services.csproj.AssemblyReference.cache
+C:\Denali\Denali.V2\Denali\Denali.Services\obj\Debug\net6.0\Denali.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Denali\Denali.V2\Denali\Denali.Services\obj\Debug\net6.0\Denali.Services.AssemblyInfoInputs.cache
+C:\Denali\Denali.V2\Denali\Denali.Services\obj\Debug\net6.0\Denali.Services.AssemblyInfo.cs
+C:\Denali\Denali.V2\Denali\Denali.Services\obj\Debug\net6.0\Denali.Services.csproj.CoreCompileInputs.cache
+C:\Denali\Denali.V2\Denali\Denali.Services\obj\Debug\net6.0\Denali.Services.dll
+C:\Denali\Denali.V2\Denali\Denali.Services\obj\Debug\net6.0\ref\Denali.Services.dll
+C:\Denali\Denali.V2\Denali\Denali.Services\obj\Debug\net6.0\Denali.Services.pdb
