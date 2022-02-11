@@ -17,9 +17,9 @@ namespace Denali.Processors.BarOverBar
             this._fileService = fileService;
         }
 
-        public void Process()
+        public async void Process()
         {
-
+            var la = await _fileService.LoadResourceFromFile<string>(Path.Combine("Resources", "bars.json"));
         }
     }
 }
