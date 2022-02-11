@@ -2,6 +2,13 @@ using Denali.Worker;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services => ContainerConfiguration.Configure(services))
+    .ConfigureHostConfiguration(configHost =>
+    {
+        configHost.SetBasePath(Directory.GetCurrentDirectory());
+        configHost.AddCommandLine(args);
+        configHost.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}.json", optional: false);
+        configHost.AddEnvironmentVariables();
+    })
     .Build();
 
 await host.RunAsync();

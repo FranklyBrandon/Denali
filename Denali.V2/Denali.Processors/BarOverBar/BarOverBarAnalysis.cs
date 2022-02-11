@@ -10,10 +10,13 @@ namespace Denali.Processors.BarOverBar
 {
     public class BarOverBarAnalysis
     {
+        private readonly FileService _fileService;
+
         public BarOverBarAnalysis(FileService fileService)
         {
-
+            this._fileService = fileService;
         }
+
         public void Process()
         {
 
