@@ -1,9 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Alpaca.Markets;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace Denali.Models
 {
-    public class Bar
+    public class Bar : IBar
     {
         [JsonIgnore]
         public String Symbol { get; private set; } = String.Empty;
