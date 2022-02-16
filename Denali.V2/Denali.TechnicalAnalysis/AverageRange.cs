@@ -23,6 +23,7 @@ namespace Denali.TechnicalAnalysis
         {
             this._backlog = backlog;
             this.AverageRanges = new List<BarRange>();
+            Analyze(bars);
         }
 
         public void Analyze(IEnumerable<IBar> bars)
