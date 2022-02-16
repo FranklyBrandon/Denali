@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Denali.Models
 {
-    internal class HistoricalBarsResponse
+    public class HistoricalBarsResponse
     {
         [JsonPropertyName("bars")]
-        internal List<Bar> Bars { get; set; }
+        public List<Bar> Bars { get; set; }
         [JsonPropertyName("symbol")]
-        internal String Symbol { get; set; }
+        public String Symbol { get; set; }
     }
 }

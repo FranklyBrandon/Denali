@@ -1,4 +1,5 @@
 ﻿using Alpaca.Markets;
+using Denali.Models;
 using Denali.Services;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace Denali.Processors.BarOverBar
 
         public async void Process()
         {
-            var la = await _fileService.LoadResourceFromFile<string>(Path.Combine("Resources", "bars.json"));
+            var la = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars.json"));
         }
     }
 }
