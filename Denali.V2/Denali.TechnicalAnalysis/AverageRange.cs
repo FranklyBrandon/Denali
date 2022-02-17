@@ -34,17 +34,21 @@ namespace Denali.TechnicalAnalysis
 
             var limit = length - (_backlog - 1);
 
+            var currentBodyRange = 0M;
+            var currentTotalRange = 0M;
             var totalRange = 0M;
             var bodyRange = 0M;
             for (int i = length; i >= limit; i--)
             {
                 var bar = bars.ElementAt(i);
-                totalRange += (bar.High - bar.Low);
-                bodyRange += (Math.Abs(bar.Open - bar.Low));
+                currentTotalRange = (bar.High - bar.Low);
+                totalRange += currentTotalRange;
+                currentBodyRange = (Math.Abs(bar.Open - bar.Low));
+                bodyRange += currentBodyRange;
             }
 
             AverageRanges.Add(
-                new BarRange((bodyRange / _backlog).RoundToMoney(), (totalRange / _backlog).RoundToMoney())
+                new BarRange(currentBodyRange, currentTotalRange, (bodyRange / _backlog).RoundToMoney(), (totalRange / _backlog).RoundToMoney())
             );
         }
     }
@@ -53,11 +57,15 @@ namespace Denali.TechnicalAnalysis
     {
         public decimal BodyRange;
         public decimal TotalRange;
+        public decimal AverageBodyRange;
+        public decimal AverageTotalRange;
 
-        public BarRange(decimal bodyRange, decimal totalRange)
+        public BarRange(decimal bodyRange, decimal totalRange, decimal averageBodyRange, decimal averageTotalRange)
         {
             this.BodyRange = bodyRange;
             this.TotalRange = totalRange;
+            this.AverageBodyRange = averageBodyRange;
+            this.AverageTotalRange = averageTotalRange;
         }
     }
 }

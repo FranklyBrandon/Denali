@@ -20,7 +20,7 @@ namespace Denali.Worker
                 using (var scope = _provider.CreateScope())
                 {
                     var processor = scope.ServiceProvider.GetService<BarOverBarAnalysis>();
-                    processor.Process();
+                    await processor.Process();
                 }
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(1000, stoppingToken);
