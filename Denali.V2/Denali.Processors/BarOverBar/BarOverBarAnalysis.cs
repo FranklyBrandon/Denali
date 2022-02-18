@@ -31,8 +31,8 @@ namespace Denali.Processors.BarOverBar
                 var currentBar = bars.Last();
                 var currentBodyRange = Math.Abs(currentBar.Open - currentBar.Close);
 
-                if (currentBodyRange >= averageRange.AverageRanges.Last().AverageBodyRange * 3)
-                    Console.WriteLine("Ignition Candle Detected!");
+                if (averageRange.AverageRanges.Any() && currentBodyRange >= averageRange.AverageRanges.Last().AverageBodyRange * 2)
+                    Console.WriteLine($"Ignition Candle Detected at {currentBar.TimeUtc}!");
             }
         }
     }
