@@ -35,5 +35,14 @@ namespace Denali.Models
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetSymbol(String symbol) => Symbol = symbol;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public decimal BodyRange() => Math.Abs(Open - Low);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public decimal TotalRange() => (High - Low);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public decimal PercentageChange() => (Close - Open) / Open * 100;
     }
 }
