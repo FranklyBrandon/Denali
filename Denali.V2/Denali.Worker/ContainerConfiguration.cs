@@ -1,4 +1,4 @@
-﻿using Denali.Processors.BarOverBar;
+﻿using Denali.Processors.ThreeBarPlay;
 using Denali.Services;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace Denali.Worker
         {
             services.AddHostedService<Worker>();
             services.AddScoped<FileService>();
-            services.AddScoped<BarOverBarAnalysis>();
+            services.AddScoped<ThreeBarPlayAnalysis>();
 
             // Register a service provider so we can create scopes and resolve instances dynamically
             services.AddSingleton<ServiceProvider>((context) =>

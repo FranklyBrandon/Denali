@@ -1,4 +1,6 @@
-using Denali.Processors.BarOverBar;
+
+
+using Denali.Processors.ThreeBarPlay;
 
 namespace Denali.Worker
 {
@@ -19,7 +21,7 @@ namespace Denali.Worker
             {
                 using (var scope = _provider.CreateScope())
                 {
-                    var processor = scope.ServiceProvider.GetService<BarOverBarAnalysis>();
+                    var processor = scope.ServiceProvider.GetService<ThreeBarPlayAnalysis>();
                     await processor.Process();
                 }
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
