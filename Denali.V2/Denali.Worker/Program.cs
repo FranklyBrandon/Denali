@@ -1,4 +1,4 @@
-using Denali.Worker;
+using Denali.Worker.Configuration;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services => ContainerConfiguration.Configure(services))

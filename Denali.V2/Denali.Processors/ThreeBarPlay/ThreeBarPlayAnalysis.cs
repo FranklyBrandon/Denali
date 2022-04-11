@@ -27,8 +27,7 @@ namespace Denali.Processors.ThreeBarPlay
                 var bars = la.Bars.GetRange(0, i);
                 var currentBar = bars.Last();
 
-                if (currentBar.PercentageChange() > 0.50m)
-                    Console.WriteLine($"Ignition Candle Detected at {currentBar.TimeUtc} with change of {currentBar.PercentageChange()}!");
+              
             }
         }
     }
