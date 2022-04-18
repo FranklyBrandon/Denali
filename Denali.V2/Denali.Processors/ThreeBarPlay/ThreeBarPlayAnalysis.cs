@@ -2,6 +2,7 @@
 using Denali.Models;
 using Denali.Services;
 using Denali.TechnicalAnalysis;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace Denali.Processors.ThreeBarPlay
     public class ThreeBarPlayAnalysis
     {
         private readonly FileService _fileService;
+        private readonly ThreeBarPlaySettings _settings;
 
-        public ThreeBarPlayAnalysis(FileService fileService)
+        public ThreeBarPlayAnalysis(FileService fileService, IOptions<ThreeBarPlaySettings> settings)
         {
             this._fileService = fileService;
+            this._settings = settings.Value;
         }
 
         public async Task Process()

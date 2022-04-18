@@ -10,10 +10,16 @@ namespace Denali.Worker.Configuration
 {
     internal class ContainerConfiguration
     {
-        internal static void Configure(IServiceCollection services)
+        internal static void Configure(IConfiguration configuration, IServiceCollection services)
         {
             services.AddHostedService<Worker>();
             services.AddScoped<FileService>();
+
+
+
+            services.AddOptions<ThreeBarPlaySettings>()
+                .Bind(configuration.GetSection(ThreeBarPlaySettings.Settings));
+
             services.AddScoped<ThreeBarPlayAnalysis>();
 
             // Register a service provider so we can create scopes and resolve instances dynamically
@@ -21,6 +27,6 @@ namespace Denali.Worker.Configuration
             {
                 return services.BuildServiceProvider();
             });
-        }         
+        }
     }
 }

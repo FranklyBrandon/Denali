@@ -1,7 +1,7 @@
 using Denali.Worker.Configuration;
 
 IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services => ContainerConfiguration.Configure(services))
+    .ConfigureServices((hostContext, services) => ContainerConfiguration.Configure(hostContext.Configuration, services))
     .ConfigureHostConfiguration(configHost =>
     {
         configHost.SetBasePath(Directory.GetCurrentDirectory());

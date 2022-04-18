@@ -1,4 +1,6 @@
 ﻿using Denali.Models;
+using Denali.TechnicalAnalysis;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,18 @@ namespace Denali.Processors.ThreeBarPlay
     public class ThreeBarPlayStrategy
     {
         private bool _ignitionTripped = false;
+        private AverageRange _averageRange;
+
+        public ThreeBarPlayStrategy()
+        {
+            this._averageRange = new AverageRange(10);
+        }
+
+        public void Initialize(List<Bar> barData)
+        {
+            this._averageRange = new AverageRange(10, barData);
+        }
+
         public void ProcessTick(List<Bar> barData)
         {
             if (_ignitionTripped)
