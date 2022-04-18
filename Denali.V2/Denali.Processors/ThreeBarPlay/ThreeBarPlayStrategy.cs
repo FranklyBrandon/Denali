@@ -14,11 +14,6 @@ namespace Denali.Processors.ThreeBarPlay
         private bool _ignitionTripped = false;
         private AverageRange _averageRange;
 
-        public ThreeBarPlayStrategy()
-        {
-            this._averageRange = new AverageRange(10);
-        }
-
         public void Initialize(List<Bar> barData)
         {
             this._averageRange = new AverageRange(10, barData);

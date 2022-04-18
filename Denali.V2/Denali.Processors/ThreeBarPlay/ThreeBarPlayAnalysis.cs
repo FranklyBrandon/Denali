@@ -1,13 +1,7 @@
 ﻿using Alpaca.Markets;
 using Denali.Models;
 using Denali.Services;
-using Denali.TechnicalAnalysis;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denali.Processors.ThreeBarPlay
 {
@@ -24,6 +18,7 @@ namespace Denali.Processors.ThreeBarPlay
 
         public async Task Process()
         {
+
             var la = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars.json"));
             for (int i = 1; i < la.Bars.Count - 1; i++)
             {
