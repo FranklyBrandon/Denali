@@ -11,16 +11,24 @@ namespace Denali.Processors.ThreeBarPlay
 {
     public class ThreeBarPlayStrategy
     {
+        private readonly ThreeBarPlaySettings _settings;
         private bool _ignitionTripped = false;
         private AverageRange _averageRange;
 
+        public ThreeBarPlayStrategy(ThreeBarPlaySettings settings)
+        {
+            this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
+        }
+
         public void Initialize(List<Bar> barData)
         {
-            this._averageRange = new AverageRange(10, barData);
+            this._averageRange = new AverageRange(_settings.AveragesBacklog, barData);
         }
 
         public void ProcessTick(List<Bar> barData)
         {
+            _averageRange.Analyze(barData);
+
             if (_ignitionTripped)
                 processConsolidation(barData);
             else
@@ -35,8 +43,8 @@ namespace Denali.Processors.ThreeBarPlay
         private void proccessIgnition(List<Bar> bardata)
         {
             var currentBar = bardata.Last();
-
-            if (currentBar.PercentageChange() > 0.50m)
+            var currentRange = currentBar.BodyRange();
+            if (currentRange > _averageRange.AverageRanges.Last().BodyRange * _settings.LongSettings.IgnitingBarPercentageThreshold)
                 Console.WriteLine($"Ignition Candle Detected at {currentBar.TimeUtc} with change of {currentBar.PercentageChange()}!");
         }
     }

@@ -18,14 +18,16 @@ namespace Denali.Processors.ThreeBarPlay
 
         public async Task Process()
         {
+            var strategy = new ThreeBarPlayStrategy(_settings);
+            var premarketBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_BIDU_4_04_2022_premarket.json"));
+            var intradayBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_BIDU_4_04_2022.json"));
 
-            var la = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars.json"));
-            for (int i = 1; i < la.Bars.Count - 1; i++)
+            strategy.Initialize(premarketBars.Bars);
+
+            for (int i = 1; i < intradayBars.Bars.Count - 1; i++)
             {
-                var bars = la.Bars.GetRange(0, i);
-                var currentBar = bars.Last();
-
-              
+                var bars = intradayBars.Bars.GetRange(0, i);
+                strategy.ProcessTick(bars);         
             }
         }
     }
