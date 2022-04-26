@@ -37,7 +37,7 @@ namespace Denali.Models
         public void SetSymbol(String symbol) => Symbol = symbol;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public decimal BodyRange() => Math.Abs(Open - Low);
+        public decimal BodyRange() => Math.Abs(Open - Close);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public decimal TotalRange() => (High - Low);

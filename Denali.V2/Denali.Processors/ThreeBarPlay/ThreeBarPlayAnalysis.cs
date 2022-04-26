@@ -19,14 +19,22 @@ namespace Denali.Processors.ThreeBarPlay
         public async Task Process()
         {
             var strategy = new ThreeBarPlayStrategy(_settings);
-            var premarketBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_BIDU_4_04_2022_premarket.json"));
-            var intradayBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_BIDU_4_04_2022.json"));
+            var premarketBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_AAPL_4_21_2022.json"));
+            var intradayBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_AAPL_4_22_2022.json"));
 
             strategy.Initialize(premarketBars.Bars);
 
-            for (int i = 1; i < intradayBars.Bars.Count - 1; i++)
+            var allBars = new List<Bar>();
+            allBars.AddRange(premarketBars.Bars);
+            allBars.AddRange(intradayBars.Bars);
+
+            int start = premarketBars.Bars.Count + 1;
+            int count = allBars.Count - 1;
+
+            // Start analysis at start of day (not including premarket bars)
+            for (int i = start; i < count; i++)
             {
-                var bars = intradayBars.Bars.GetRange(0, i);
+                var bars = allBars.Take(i).ToList();
                 strategy.ProcessTick(bars);         
             }
         }

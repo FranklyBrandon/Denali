@@ -37,18 +37,19 @@ namespace Denali.TechnicalAnalysis
             var currentBodyRange = 0M;
             var currentTotalRange = 0M;
             var totalRange = 0M;
-            var bodyRange = 0M;
+            var totalBodyRange = 0M;
             for (int i = length; i >= limit; i--)
             {
                 var bar = bars.ElementAt(i);
+
                 currentTotalRange = (bar.High - bar.Low);
                 totalRange += currentTotalRange;
-                currentBodyRange = (Math.Abs(bar.Open - bar.Low));
-                bodyRange += currentBodyRange;
+                currentBodyRange = (Math.Abs(bar.Open - bar.Close));
+                totalBodyRange += currentBodyRange;
             }
 
             AverageRanges.Add(
-                new BarRange(currentBodyRange, currentTotalRange, (bodyRange / _backlog).RoundToMoney(), (totalRange / _backlog).RoundToMoney())
+                new BarRange(currentBodyRange, currentTotalRange, (totalBodyRange / _backlog).RoundToMoney(), (totalRange / _backlog).RoundToMoney())
             );
         }
     }

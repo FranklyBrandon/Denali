@@ -1,4 +1,5 @@
 ﻿using Denali.Models;
+using Denali.Shared;
 using Denali.TechnicalAnalysis;
 using Microsoft.Extensions.Options;
 using System;
@@ -44,8 +45,8 @@ namespace Denali.Processors.ThreeBarPlay
         {
             var currentBar = bardata.Last();
             var currentRange = currentBar.BodyRange();
-            if (currentRange > _averageRange.AverageRanges.Last().BodyRange * _settings.LongSettings.IgnitingBarPercentageThreshold)
-                Console.WriteLine($"Ignition Candle Detected at {currentBar.TimeUtc} with change of {currentBar.PercentageChange()}!");
+            var currentAverageRange = _averageRange.AverageRanges.Last().AverageBodyRange;
+            Console.WriteLine($"Current Body Range: {currentRange}, Current Average Body Range: {currentAverageRange} at {TimeUtils.GetNewYorkTime(currentBar.TimeUtc)}");
         }
     }
 }
