@@ -12,6 +12,7 @@ namespace Denali.TechnicalAnalysis.ElephantBars
     {
         private readonly ElephantBarSettings _settings;
         private readonly AverageRange _averageRange;
+        private bool _isElephant;
 
         public ElephantBars(ElephantBarSettings settings)
         {
@@ -21,6 +22,13 @@ namespace Denali.TechnicalAnalysis.ElephantBars
         public void Analyze(IEnumerable<IAggregateBar> bars)
         {
             _averageRange.Analyze(bars);
+            _isElephant = IsElephantBar(bars.Last(), _averageRange.AverageRanges.Last());
+        }
+
+        private bool IsElephantBar(IAggregateBar bar, BarRange average)
+        {
+            return bar.BodyRange() >= (average.BodyRange * _settings.OverAverageThreshold)
+                && (bar.TotalRange() / bar.BodyRange()) >= _settings.BodyPercentageThreshold;
         }
     }
 }
