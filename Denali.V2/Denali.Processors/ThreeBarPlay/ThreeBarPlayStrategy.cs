@@ -21,12 +21,12 @@ namespace Denali.Processors.ThreeBarPlay
             this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public void Initialize(List<Bar> barData)
+        public void Initialize(List<IAggregateBar> barData)
         {
             this._averageRange = new AverageRange(_settings.AveragesBacklog, barData);
         }
 
-        public void ProcessTick(List<Bar> barData)
+        public void ProcessTick(List<IAggregateBar> barData)
         {
             _averageRange.Analyze(barData);
 
@@ -36,12 +36,12 @@ namespace Denali.Processors.ThreeBarPlay
                 proccessIgnition(barData);
         }
 
-        private void processConsolidation(List<Bar> barData)
+        private void processConsolidation(List<IAggregateBar> barData)
         {
 
         }
 
-        private void proccessIgnition(List<Bar> bardata)
+        private void proccessIgnition(List<IAggregateBar> bardata)
         {
             var currentBar = bardata.Last();
             var currentRange = currentBar.BodyRange();

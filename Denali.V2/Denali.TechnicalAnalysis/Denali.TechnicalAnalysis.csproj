@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Denali.Models\Denali.Models.csproj" />
     <ProjectReference Include="..\Denali.Shared\Denali.Shared.csproj" />
   </ItemGroup>
 

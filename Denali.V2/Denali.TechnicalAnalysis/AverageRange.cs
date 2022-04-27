@@ -1,4 +1,5 @@
 ﻿using Alpaca.Markets;
+using Denali.Models;
 using Denali.Shared;
 
 namespace Denali.TechnicalAnalysis
@@ -19,14 +20,14 @@ namespace Denali.TechnicalAnalysis
             this.AverageRanges = new List<BarRange>();
         }
 
-        public AverageRange(int backlog, IEnumerable<IBar> bars)
+        public AverageRange(int backlog, IEnumerable<IAggregateBar> bars)
         {
             this._backlog = backlog;
             this.AverageRanges = new List<BarRange>();
             Analyze(bars);
         }
 
-        public void Analyze(IEnumerable<IBar> bars)
+        public void Analyze(IEnumerable<IAggregateBar> bars)
         {
             var length = bars.Count() - 1;
             if (length < _backlog - 1)
@@ -42,9 +43,9 @@ namespace Denali.TechnicalAnalysis
             {
                 var bar = bars.ElementAt(i);
 
-                currentTotalRange = (bar.High - bar.Low);
+                currentTotalRange = bar.TotalRange();
                 totalRange += currentTotalRange;
-                currentBodyRange = (Math.Abs(bar.Open - bar.Close));
+                currentBodyRange = bar.BodyRange();
                 totalBodyRange += currentBodyRange;
             }
 
@@ -54,19 +55,5 @@ namespace Denali.TechnicalAnalysis
         }
     }
 
-    public struct BarRange
-    {
-        public decimal BodyRange;
-        public decimal TotalRange;
-        public decimal AverageBodyRange;
-        public decimal AverageTotalRange;
-
-        public BarRange(decimal bodyRange, decimal totalRange, decimal averageBodyRange, decimal averageTotalRange)
-        {
-            this.BodyRange = bodyRange;
-            this.TotalRange = totalRange;
-            this.AverageBodyRange = averageBodyRange;
-            this.AverageTotalRange = averageTotalRange;
-        }
-    }
+    public record BarRange(decimal BodyRange, decimal TotalRange, decimal AverageBodyRange, decimal AverageTotalRange);
 }

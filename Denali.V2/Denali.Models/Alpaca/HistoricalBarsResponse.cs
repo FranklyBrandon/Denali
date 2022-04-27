@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Denali.Models
+namespace Denali.Models.Alpaca
 {
     public class HistoricalBarsResponse
     {

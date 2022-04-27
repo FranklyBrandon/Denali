@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
-namespace Denali.Models
+namespace Denali.Models.Alpaca
 {
     public class Bar : IBar
     {

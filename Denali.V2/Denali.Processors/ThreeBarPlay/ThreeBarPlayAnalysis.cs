@@ -1,5 +1,6 @@
 ﻿using Alpaca.Markets;
 using Denali.Models;
+using Denali.Models.Alpaca;
 using Denali.Services;
 using Microsoft.Extensions.Options;
 
@@ -22,7 +23,8 @@ namespace Denali.Processors.ThreeBarPlay
             var premarketBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_AAPL_4_21_2022.json"));
             var intradayBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_AAPL_4_22_2022.json"));
 
-            strategy.Initialize(premarketBars.Bars);
+            // TODO: use mapper to map to denali models
+            //strategy.Initialize(premarketBars.Bars);
 
             var allBars = new List<Bar>();
             allBars.AddRange(premarketBars.Bars);
@@ -35,7 +37,8 @@ namespace Denali.Processors.ThreeBarPlay
             for (int i = start; i < count; i++)
             {
                 var bars = allBars.Take(i).ToList();
-                strategy.ProcessTick(bars);         
+                // TODO: use mapper to map to denali models
+                //strategy.ProcessTick(bars);         
             }
         }
     }
