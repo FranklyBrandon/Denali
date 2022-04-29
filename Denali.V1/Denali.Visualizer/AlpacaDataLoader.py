@@ -5,8 +5,8 @@ from Models import AggregateData
 
 def get_alpaca_candle_data() -> List[AggregateData]:
 
-    dir = "C:\\Denali\\Denali.Visualizer"
-    fileName = "11_1_2021_AAPL.txt"
+    dir = "C:\\Denali\\Denali.V1\\Denali.Visualizer"
+    fileName = "4_28_2022_AAPL.txt"
     path = os.path.join(dir, fileName)
     file = open(path, "r")
 
