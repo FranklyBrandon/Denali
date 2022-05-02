@@ -10,25 +10,55 @@ namespace Denali.TechnicalAnalysis.ElephantBars
 {
     public class ElephantBars
     {
+        public IList<DateTime> Elephants { get; }
         private readonly ElephantBarSettings _settings;
         private readonly AverageRange _averageRange;
         private bool _isElephant;
 
         public ElephantBars(ElephantBarSettings settings)
         {
-            settings = _settings ?? throw new ArgumentNullException(nameof(settings));
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _averageRange = new AverageRange(_settings.RangeAveragesBacklog);
+            Elephants = new List<DateTime>();
+        }
+
+        public void Initialize(IEnumerable<IAggregateBar> bars)
+        {
+            _averageRange.Analyze(bars);
         }
 
         public void Analyze(IEnumerable<IAggregateBar> bars)
         {
             _averageRange.Analyze(bars);
-            _isElephant = IsElephantBar(bars.Last(), _averageRange.AverageRanges.Last());
+            var lastBar = bars.Last();
+
+            if (IsElephantBar(lastBar, _averageRange.AverageRanges.Last()))
+            {
+                _isElephant = true;
+                Elephants.Add(lastBar.TimeUtc);
+            }
+            else
+                _isElephant = false;
         }
+
+        public bool IsLatestElephant() => _isElephant;
 
         private bool IsElephantBar(IAggregateBar bar, BarRange average)
         {
-            return bar.BodyRange() >= (average.BodyRange * _settings.OverAverageThreshold)
-                && (bar.TotalRange() / bar.BodyRange()) >= _settings.BodyPercentageThreshold;
+            //return bar.BodyRange() >= (average.BodyRange * _settings.OverAverageThreshold);
+            //TODO: Use body percentage to weed out false elephant bars
+
+            var currentRange = bar.BodyRange();
+            var threshold = average.BodyRange * _settings.OverAverageThreshold;
+
+            var la = (bar.BodyRange() / bar.TotalRange());
+
+            if (currentRange >= threshold)
+                return true;
+            else
+                return false;
         }
+
+
     }
 }

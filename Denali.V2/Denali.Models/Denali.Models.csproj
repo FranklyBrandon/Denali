@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Alpaca.Markets" Version="5.2.8" />
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
   </ItemGroup>
 
 </Project>

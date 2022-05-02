@@ -1,6 +1,7 @@
 ﻿using Denali.Models;
 using Denali.Shared;
 using Denali.TechnicalAnalysis;
+using Denali.TechnicalAnalysis.ElephantBars;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -13,40 +14,22 @@ namespace Denali.Processors.ThreeBarPlay
     public class ThreeBarPlayStrategy
     {
         private readonly ThreeBarPlaySettings _settings;
-        private bool _ignitionTripped = false;
-        private AverageRange _averageRange;
+        private ElephantBars _elephantBars; 
 
         public ThreeBarPlayStrategy(ThreeBarPlaySettings settings)
         {
             this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            this._elephantBars = new ElephantBars(_settings.ElephantBarSettings);
         }
 
         public void Initialize(List<IAggregateBar> barData)
         {
-            this._averageRange = new AverageRange(_settings.AveragesBacklog, barData);
+            this._elephantBars.Initialize(barData);
         }
 
         public void ProcessTick(List<IAggregateBar> barData)
         {
-            _averageRange.Analyze(barData);
-
-            if (_ignitionTripped)
-                processConsolidation(barData);
-            else
-                proccessIgnition(barData);
-        }
-
-        private void processConsolidation(List<IAggregateBar> barData)
-        {
-
-        }
-
-        private void proccessIgnition(List<IAggregateBar> bardata)
-        {
-            var currentBar = bardata.Last();
-            var currentRange = currentBar.BodyRange();
-            var currentAverageRange = _averageRange.AverageRanges.Last().AverageBodyRange;
-            Console.WriteLine($"Current Body Range: {currentRange}, Current Average Body Range: {currentAverageRange} at {TimeUtils.GetNewYorkTime(currentBar.TimeUtc)}");
+            _elephantBars.Analyze(barData);
         }
     }
 }

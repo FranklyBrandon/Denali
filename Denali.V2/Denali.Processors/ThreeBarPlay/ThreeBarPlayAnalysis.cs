@@ -1,4 +1,5 @@
 ﻿using Alpaca.Markets;
+using AutoMapper;
 using Denali.Models;
 using Denali.Models.Alpaca;
 using Denali.Services;
@@ -10,11 +11,13 @@ namespace Denali.Processors.ThreeBarPlay
     {
         private readonly FileService _fileService;
         private readonly ThreeBarPlaySettings _settings;
+        private readonly IMapper _mapper;
 
-        public ThreeBarPlayAnalysis(FileService fileService, IOptions<ThreeBarPlaySettings> settings)
+        public ThreeBarPlayAnalysis(FileService fileService, IOptions<ThreeBarPlaySettings> settings, IMapper mapper)
         {
             this._fileService = fileService;
             this._settings = settings.Value;
+            this._mapper = mapper;
         }
 
         public async Task Process()
@@ -23,12 +26,15 @@ namespace Denali.Processors.ThreeBarPlay
             var premarketBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_AAPL_4_21_2022.json"));
             var intradayBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_AAPL_4_22_2022.json"));
 
-            // TODO: use mapper to map to denali models
-            //strategy.Initialize(premarketBars.Bars);
+            var mappedPremarketBars = _mapper.Map<List<AggregateBar>>(premarketBars.Bars);
+            var mappedIntradayBars = _mapper.Map<List<AggregateBar>>(intradayBars.Bars);
 
-            var allBars = new List<Bar>();
-            allBars.AddRange(premarketBars.Bars);
-            allBars.AddRange(intradayBars.Bars);
+            strategy.Initialize(mappedPremarketBars.Cast<IAggregateBar>().ToList());
+
+            var allBars = new List<IAggregateBar>();
+            allBars.AddRange(mappedPremarketBars);
+            allBars.AddRange(mappedIntradayBars);
+            allBars = allBars.Where(x => x.TotalRange() > 0).ToList();
 
             int start = premarketBars.Bars.Count + 1;
             int count = allBars.Count - 1;
@@ -37,8 +43,7 @@ namespace Denali.Processors.ThreeBarPlay
             for (int i = start; i < count; i++)
             {
                 var bars = allBars.Take(i).ToList();
-                // TODO: use mapper to map to denali models
-                //strategy.ProcessTick(bars);         
+                strategy.ProcessTick(bars);         
             }
         }
     }
