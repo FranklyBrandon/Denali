@@ -45,6 +45,8 @@ namespace Denali.Processors.ThreeBarPlay
                 var bars = allBars.Take(i).ToList();
                 strategy.ProcessTick(bars);         
             }
+
+            await _fileService.WriteResourceToFile(Path.Combine("Resources", "AAPL_Elephants_4_22_2022.json"), strategy.ElephantBars.Elephants);
         }
     }
 }

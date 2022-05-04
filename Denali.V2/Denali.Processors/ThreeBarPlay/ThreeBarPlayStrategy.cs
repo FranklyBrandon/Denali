@@ -14,22 +14,22 @@ namespace Denali.Processors.ThreeBarPlay
     public class ThreeBarPlayStrategy
     {
         private readonly ThreeBarPlaySettings _settings;
-        private ElephantBars _elephantBars; 
+        public ElephantBars ElephantBars; 
 
         public ThreeBarPlayStrategy(ThreeBarPlaySettings settings)
         {
             this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            this._elephantBars = new ElephantBars(_settings.ElephantBarSettings);
+            this.ElephantBars = new ElephantBars(_settings.ElephantBarSettings);
         }
 
         public void Initialize(List<IAggregateBar> barData)
         {
-            this._elephantBars.Initialize(barData);
+            this.ElephantBars.Initialize(barData);
         }
 
         public void ProcessTick(List<IAggregateBar> barData)
         {
-            _elephantBars.Analyze(barData);
+            ElephantBars.Analyze(barData);
         }
     }
 }
