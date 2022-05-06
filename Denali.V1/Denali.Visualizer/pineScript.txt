@@ -1,0 +1,61 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © MelonLordRobertshttps://www.tradingview.com/chart/lpuvUwJC/?symbol=NASDAQ%3AAAPL#
+
+//Elephant Retracment Strategy
+1.) Identiify large movments of price action, typically indicated by a large body range
+2.) Wait for a retracmeent within the next 1-3 Bars
+3.) Enter when the price breaks the retracement high/low
+
+    Algorithm steps:
+    - Identity Elephant bars
+    - Identity Retracements that follow Elephant bars
+    - Enter position if price breaks retracement within a specified timeframe with a 
+    stop loss and target ratio of 1:1. Use the retracement low/high as the stoploss, and 
+    a target price of 1:1 stop loss to entry price.
+
+
+
+
+//@version=5
+indicator("Elephant Bars", overlay=true)
+
+//--Elephants--
+bodyRangeAverageLen = input.int(100, title="Length of body range average")
+elephantBarThreshold = input.float(1.5, title="Threshold of Elephant bar above average")
+retracementThreshold = input.float(0.25, title="Threshold of Retracemnt bar percentage of elephant")
+
+bodyRange = math.abs((open - close))
+bodyRangeAverage = ta.sma(bodyRange, bodyRangeAverageLen)
+bool elephantBar = (bodyRange >= bodyRangeAverage * elephantBarThreshold)
+    
+plotchar(elephantBar, "Elephant", "🐘", location.abovebar, color.silver, size = size.tiny)
+
+//--Retracement--
+bool retracement = elephantBar[1]
+bool retracmentThresholdMet = bodyRange <= bodyRange[1] * retracementThreshold
+float midpoint = math.avg(open[1], close[1])
+bool candleOpen = (close[1] > open[1])
+plotchar(retracement, "Retracement", "❕", location.abovebar, color.silver, size = size.tiny)
+
+
+//SMAs
+// Checkbox's for the other 2 MA's
+a = input(true, title="Enable 1st MA")
+b = input(true, title="Enable 2nd MA")
+c = input(true, title="Enable 3rd MA")
+
+len1 = input.int(3, minval=1, title="Length1")
+len2 = input.int(8, minval=1, title="Length2")
+len3 = input.int(21, minval=1, title="Length3")
+
+src1 = input(close, title="Source1")
+src2 = input(close, title="Source2")
+src3 = input(close, title="Source3")
+
+out1 = ta.sma(src1, len1)
+out2 = ta.sma(src2, len2)
+out3 = ta.sma(src3, len3)
+
+plot(a and out1 ? out1: na, title="SMA1", color=color.green, linewidth=1, transp=50)
+plot(b and out2 ? out2: na, title="SMA2", color=color.blue, linewidth=2, transp=50)
+plot(c and out3 ? out3: na, title="SMA3", color=color.orange, linewidth=3, transp=50)
