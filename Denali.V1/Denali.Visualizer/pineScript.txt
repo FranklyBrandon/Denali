@@ -1,41 +1,39 @@
 // This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
 // © MelonLordRobertshttps://www.tradingview.com/chart/lpuvUwJC/?symbol=NASDAQ%3AAAPL#
 
-//Elephant Retracment Strategy
-1.) Identiify large movments of price action, typically indicated by a large body range
-2.) Wait for a retracmeent within the next 1-3 Bars
-3.) Enter when the price breaks the retracement high/low
-
-    Algorithm steps:
-    - Identity Elephant bars
-    - Identity Retracements that follow Elephant bars
-    - Enter position if price breaks retracement within a specified timeframe with a 
-    stop loss and target ratio of 1:1. Use the retracement low/high as the stoploss, and 
-    a target price of 1:1 stop loss to entry price.
-
-
-
-
 //@version=5
 indicator("Elephant Bars", overlay=true)
 
-//--Elephants--
-bodyRangeAverageLen = input.int(100, title="Length of body range average")
-elephantBarThreshold = input.float(1.5, title="Threshold of Elephant bar above average")
-retracementThreshold = input.float(0.25, title="Threshold of Retracemnt bar percentage of elephant")
+//--Elephants Input--
+averageRangeBacklog = input.int(100, title="Length of the lookback period in the calculation of SMA for the body range of the bars.")
+elephantBarThreshold = input.float(1.5, title="The threshold a bar's body range must exceed in order to be classied as an Elephant.")
+retracementBodyThreshold = input.float(0.50, title="The threshold a bar's body range must NOT exceed in order to be classified as a Retracemnt, calculated as a percentage of the Elephant bar's body range.")
+retracementPriceThreshold = input.float(0.25, title="The threshold a bar's price must NOT exceed away from the Elephant bar's close to be classified as a retracement, calculated as a percentage of the Elephant bar's body range.")
+retracementConsolidatonMaxLength = input.int(1, title="The total number of bars a retracment consolidation can last before an Elephant is abondoned")
 
-bodyRange = math.abs((open - close))
-bodyRangeAverage = ta.sma(bodyRange, bodyRangeAverageLen)
+//--Current Tick calculations
+bodyRange = math.abs(open - close)
+bodyRangeAverage = ta.sma(bodyRange, averageRangeBacklog)
+bodyMidPoint = math.avg(open, close)
 bool elephantBar = (bodyRange >= bodyRangeAverage * elephantBarThreshold)
+
+retracementBar = false
+for barBack = 1 to retracementConsolidatonMaxLength
+    if(elephantBar[barBack])
+        long = (close[barBack] > open[barBack])
+        retracementBody = (bodyRange <= bodyRange[barBack] * retracementBodyThreshold)
+        retracementBar := retracementBody
+        //retracementPrice = (math.lowest(open, close) >= bodyMidpoint[barback] and math.highest(open, close) <= )
     
 plotchar(elephantBar, "Elephant", "🐘", location.abovebar, color.silver, size = size.tiny)
+plotchar(retracementBar, "Retracement", "❕", location.abovebar, color.silver, size = size.tiny)
 
 //--Retracement--
 bool retracement = elephantBar[1]
-bool retracmentThresholdMet = bodyRange <= bodyRange[1] * retracementThreshold
+bool retracmentThresholdMet = bodyRange <= bodyRange[1] * retracementBodyThreshold
 float midpoint = math.avg(open[1], close[1])
 bool candleOpen = (close[1] > open[1])
-plotchar(retracement, "Retracement", "❕", location.abovebar, color.silver, size = size.tiny)
+
 
 
 //SMAs
