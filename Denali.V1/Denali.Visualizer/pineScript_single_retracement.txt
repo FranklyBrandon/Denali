@@ -18,20 +18,30 @@ bodyRangeAverage = ta.sma(bodyRange, averageRangeBacklog)
 bodyMidPoint = math.avg(open, close)
 bool elephantBar = (bodyRange >= bodyRangeAverage * elephantBarThreshold)
 
-//Look back unitl an elephant bar is found
-//Note: A retracmeent ba rmight just be a bar whos body lies within the midpoint to upper price threshold and with a small enough body
+
+//For now, only consider retracements that last one bar
 retracementBar = false
-for barBack = 1 to retracementConsolidatonMaxLength
-    if(elephantBar[barBack])
-        //long = (close[barBack] > open[barBack])
-        //Ensure retracmeents
-        retracementBody = (bodyRange <= bodyRange[barBack] * retracementBodyThreshold)
-        //Ensure retracements are chained together
-        retracementBar := retracementBody and (elephantBar[1] or retracementBody[1])
-        //retracementPrice = (math.lowest(open, close) >= bodyMidpoint[barback] and math.highest(open, close) <= )
+long =false
+if(elephantBar[1])
+    retracementBody = false
+    retracementPrice = false
+    //Whether or not we are looking for a long or short continuation
+    long := (close[1] > open[1])
+    retracementBody := (bodyRange <= bodyRange[1] * retracementBodyThreshold)
+    if(long)
+        retracementPrice := ((bodyRange[1] * retracementPriceThreshold) + close[1]) >= math.max(open, close)
+    else
+        retracementPrice := ((bodyRange[1] * retracementPriceThreshold) - close[1]) <= math.min(open, close)
+
+    retracementBar := (retracementBody and retracementPrice)
+    
+buy = false
+if(retracementBar[1] and (close[2] > open[2]) and close > math.max(open[1], close[1]))
+    buy := true
     
 plotchar(elephantBar, "Elephant", "🐘", location.abovebar, color.silver, size = size.tiny)
 plotchar(retracementBar, "Retracement", "❕", location.abovebar, color.silver, size = size.tiny)
+plotchar(buy, "Retracement", "🐉", location.abovebar, color.silver, size = size.tiny)
 
 //--Retracement--
 bool retracement = elephantBar[1]
