@@ -5,7 +5,7 @@ from Models import AggregateData
 
 def get_alpaca_candle_data() -> List[AggregateData]:
 
-    rawData = get_json_data("bars_AAPL_4_21_2022.json")
+    rawData = get_json_data("bars_AAPL_4_22_2022.json")
     candleData = list(rawData['bars'])
     aggregateData = list()
 
