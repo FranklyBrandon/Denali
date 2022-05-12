@@ -45,18 +45,8 @@ namespace Denali.TechnicalAnalysis.ElephantBars
 
         private bool IsElephantBar(IAggregateBar bar, BarRange average)
         {
-            //return bar.BodyRange() >= (average.BodyRange * _settings.OverAverageThreshold);
             //TODO: Use body percentage to weed out false elephant bars
-
-            var currentRange = bar.BodyRange();
-            var threshold = average.BodyRange * _settings.OverAverageThreshold;
-
-            var la = (bar.BodyRange() / bar.TotalRange());
-
-            if (currentRange >= threshold)
-                return true;
-            else
-                return false;
+            return  (bar.BodyRange() >= average.AverageBodyRange * _settings.OverAverageThreshold);
         }
 
 

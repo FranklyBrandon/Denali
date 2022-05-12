@@ -1,0 +1,4 @@
+1 min candles = 390
+5 min candles = 78
+
+emas = use fibonocci in case big algos use sequence

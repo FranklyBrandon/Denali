@@ -23,8 +23,8 @@ namespace Denali.Processors.ThreeBarPlay
         public async Task Process()
         {
             var strategy = new ThreeBarPlayStrategy(_settings);
-            var premarketBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_AAPL_4_21_2022.json"));
-            var intradayBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "bars_AAPL_4_22_2022.json"));
+            var premarketBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "5_09_to_5_10_2022_AAPL_5Min.json"));
+            var intradayBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "5_11_2022_AAPL_5Min.json"));
 
             var mappedPremarketBars = _mapper.Map<List<AggregateBar>>(premarketBars.Bars);
             var mappedIntradayBars = _mapper.Map<List<AggregateBar>>(intradayBars.Bars);
@@ -46,7 +46,7 @@ namespace Denali.Processors.ThreeBarPlay
                 strategy.ProcessTick(bars);         
             }
 
-            await _fileService.WriteResourceToFile(Path.Combine("Resources", "AAPL_Elephants_4_22_2022.json"), strategy.ElephantBars.Elephants);
+            await _fileService.WriteResourceToFile(Path.Combine("Resources", "AAPL_Elephants_5_11_2022.json"), strategy.ElephantBars.Elephants);
         }
     }
 }
