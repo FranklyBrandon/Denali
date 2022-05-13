@@ -2,3 +2,5 @@
 5 min candles = 78
 
 emas = use fibonocci in case big algos use sequence
+
+https://github.com/tradingview/lightweight-charts
