@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
-    buildChart();
+    var chart = buildChart();
+    var candleSeries = buildCandleSeries(chart)
+    setBarData(candleSeries)
 });
 
 
 function buildChart() {
-    var chart = LightweightCharts.createChart(document.getElementById('chartContainer'), {
+    return LightweightCharts.createChart(document.getElementById('chartContainer'), {
         width: window.innerWidth - 50,
-      height: window.innerHeight - 50,
+        height: window.innerHeight - 50,
         layout: {
             backgroundColor: '#000000',
             textColor: 'rgba(255, 255, 255, 0.9)',
@@ -27,18 +29,40 @@ function buildChart() {
         },
         timeScale: {
             borderColor: 'rgba(197, 203, 206, 0.8)',
+            timeVisible: true
         },
     });
-    
-    var candleSeries = chart.addCandlestickSeries({
-      upColor: 'rgba(255, 144, 0, 1)',
-      downColor: '#000',
-      borderDownColor: 'rgba(255, 144, 0, 1)',
-      borderUpColor: 'rgba(255, 144, 0, 1)',
-      wickDownColor: 'rgba(255, 144, 0, 1)',
-      wickUpColor: 'rgba(255, 144, 0, 1)',
-    });
-    
+}
+
+function buildCandleSeries(chart) {
+    return chart.addCandlestickSeries({
+        upColor: 'rgba(255, 144, 0, 1)',
+        downColor: '#000',
+        borderDownColor: 'rgba(255, 144, 0, 1)',
+        borderUpColor: 'rgba(255, 144, 0, 1)',
+        wickDownColor: 'rgba(255, 144, 0, 1)',
+        wickUpColor: 'rgba(255, 144, 0, 1)',
+      });
+}
+
+function setBarData(candleSeries) {       
+
+    let bars = barData.bars
+    let candles = []
+    for (const bar of bars) {
+        candles.push(
+            { 
+                time: (Date.parse(bar.t) / 1000),
+                open: bar.o,
+                high: bar.h,
+                low: bar.l,
+                close: bar.c
+            }
+        )
+    }
+    console.log(candles)
+    candleSeries.setData(candles)
+    /*
     candleSeries.setData([
         { time: '2018-10-19', open: 180.34, high: 180.99, low: 178.57, close: 179.85 },
         { time: '2018-10-22', open: 180.82, high: 181.40, low: 177.56, close: 178.75 },
@@ -190,5 +214,6 @@ function buildChart() {
         { time: '2019-05-23', open: 188.45, high: 192.54, low: 186.27, close: 192.00 },
         { time: '2019-05-24', open: 192.54, high: 193.86, low: 190.41, close: 193.59 },
     ]);
+    */
 }
 
