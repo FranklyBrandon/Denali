@@ -6,9 +6,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Denali.Processors.ThreeBarPlay
+namespace Denali.Processors.ElephantStrategy
 {
-    public class ThreeBarPlaySettings
+    public class ElephantStrategySettings
     {
         public static string Settings = "ThreeBarPlaySettings";
 

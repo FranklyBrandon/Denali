@@ -1,6 +1,6 @@
 
 
-using Denali.Processors.ThreeBarPlay;
+using Denali.Processors.ElephantStrategy;
 
 namespace Denali.Worker
 {
@@ -21,7 +21,7 @@ namespace Denali.Worker
             {
                 using (var scope = _provider.CreateScope())
                 {
-                    var processor = scope.ServiceProvider.GetService<ThreeBarPlayAnalysis>();
+                    var processor = scope.ServiceProvider.GetService<ElephantStrategyAnalysis>();
                     await processor.Process();
                 }
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);

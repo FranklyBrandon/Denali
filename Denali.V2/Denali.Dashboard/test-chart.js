@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     var chart = buildChart();
     var candleSeries = buildCandleSeries(chart)
-    setBarData(candleSeries)
-    setElephants(candleSeries)
+    markers = setBarData(candleSeries)
+
+    setMarkers(candleSeries)
 });
 
 
@@ -64,21 +65,35 @@ function setBarData(candleSeries) {
     candleSeries.setData(candles)
 }
 
-function setElephants(candleSeries) {
+function setMarkers(candleSeries) {
+    markers = []
 
-    let elephants = []
     elephantData.forEach(elephant => {
-        elephants.push(
+        markers.push(
             {
                 time: (Date.parse(elephant) / 1000), 
                 position: 'aboveBar', 
-                color: '#f68410', 
-                shape: 'circle', 
+                color: '#d64161', 
+                shape: 'circle',
                 text: 'E'
             }
         )
     });
-    console.log(elephants)
-    candleSeries.setMarkers(elephants)
+
+    retracementData.forEach(elephant => {
+        markers.push(
+            {
+                time: (Date.parse(elephant) / 1000), 
+                position: 'aboveBar', 
+                color: '#4435a6', 
+                shape: 'square',
+                text: 'R'
+            }
+        )
+    });
+
+    //Sort markers so they are in order by time ascending
+    markers.sort(function(a,b) { return a.time - b.time } );
+    candleSeries.setMarkers(markers)
 }
 

@@ -5,15 +5,15 @@ using Denali.Models.Alpaca;
 using Denali.Services;
 using Microsoft.Extensions.Options;
 
-namespace Denali.Processors.ThreeBarPlay
+namespace Denali.Processors.ElephantStrategy
 {
-    public class ThreeBarPlayAnalysis
+    public class ElephantStrategyAnalysis
     {
         private readonly FileService _fileService;
-        private readonly ThreeBarPlaySettings _settings;
+        private readonly ElephantStrategySettings _settings;
         private readonly IMapper _mapper;
 
-        public ThreeBarPlayAnalysis(FileService fileService, IOptions<ThreeBarPlaySettings> settings, IMapper mapper)
+        public ElephantStrategyAnalysis(FileService fileService, IOptions<ElephantStrategySettings> settings, IMapper mapper)
         {
             this._fileService = fileService;
             this._settings = settings.Value;
@@ -22,7 +22,7 @@ namespace Denali.Processors.ThreeBarPlay
 
         public async Task Process()
         {
-            var strategy = new ThreeBarPlayStrategy(_settings);
+            var strategy = new ElephantStrategy(_settings);
             var premarketBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "5_11_2022_AAPL_1Min.json"));
             var intradayBars = await _fileService.LoadResourceFromFile<HistoricalBarsResponse>(Path.Combine("Resources", "5_12_2022_AAPL_1Min.json"));
 
@@ -47,6 +47,7 @@ namespace Denali.Processors.ThreeBarPlay
             }
 
             await _fileService.WriteResourceToFile(Path.Combine("Resources", "AAPL_Elephants_5_12_2022.json"), strategy.ElephantBars.Elephants);
+            await _fileService.WriteResourceToFile(Path.Combine("Resources", "AAPL_Retracements_5_12_2022.json"), strategy.Retracements);
         }
     }
 }

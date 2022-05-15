@@ -10,7 +10,7 @@ namespace Denali.TechnicalAnalysis.ElephantBars
 {
     public class ElephantBars
     {
-        public IList<DateTime> Elephants { get; }
+        public HashSet<DateTime> Elephants { get; }
         private readonly ElephantBarSettings _settings;
         private readonly AverageRange _averageRange;
         private bool _isElephant;
@@ -19,7 +19,7 @@ namespace Denali.TechnicalAnalysis.ElephantBars
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             _averageRange = new AverageRange(_settings.RangeAveragesBacklog);
-            Elephants = new List<DateTime>();
+            Elephants = new();
         }
 
         public void Initialize(IEnumerable<IAggregateBar> bars)

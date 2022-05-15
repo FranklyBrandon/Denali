@@ -1,6 +1,6 @@
 ﻿using Alpaca.Markets;
 using Denali.Models;
-using Denali.Shared;
+using Denali.Shared.Extensions;
 
 namespace Denali.TechnicalAnalysis
 {

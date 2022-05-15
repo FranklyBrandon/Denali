@@ -2,6 +2,7 @@
 using Denali.Shared;
 using Denali.TechnicalAnalysis;
 using Denali.TechnicalAnalysis.ElephantBars;
+using Denali.Shared.Extensions;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -9,17 +10,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Denali.Processors.ThreeBarPlay
+namespace Denali.Processors.ElephantStrategy
 {
-    public class ThreeBarPlayStrategy
+    public class ElephantStrategy
     {
-        private readonly ThreeBarPlaySettings _settings;
-        public ElephantBars ElephantBars; 
+        private readonly ElephantStrategySettings _settings;
+        public ElephantBars ElephantBars;
+        public List<DateTime> Retracements;
+        public List<DateTime> Continuations;
 
-        public ThreeBarPlayStrategy(ThreeBarPlaySettings settings)
+        public ElephantStrategy(ElephantStrategySettings settings)
         {
             this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this.ElephantBars = new ElephantBars(_settings.ElephantBarSettings);
+            this.Retracements = new();
+            this.Continuations = new();
         }
 
         public void Initialize(List<IAggregateBar> barData)
@@ -30,6 +35,13 @@ namespace Denali.Processors.ThreeBarPlay
         public void ProcessTick(List<IAggregateBar> barData)
         {
             ElephantBars.Analyze(barData);
+
+            //Retracement
+            if (ElephantBars.Elephants.Contains(barData.GetHistoricValue(1).TimeUtc) && !ElephantBars.Elephants.Contains(barData.Last().TimeUtc))
+            {
+                Retracements.Add(barData.Last().TimeUtc);
+            }
+
         }
     }
 }

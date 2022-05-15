@@ -1,5 +1,5 @@
 ﻿using Denali.Models.Mapping;
-using Denali.Processors.ThreeBarPlay;
+using Denali.Processors.ElephantStrategy;
 using Denali.Services;
 using Denali.TechnicalAnalysis.ElephantBars;
 using System;
@@ -19,12 +19,12 @@ namespace Denali.Worker.Configuration
 
 
 
-            services.AddOptions<ThreeBarPlaySettings>()
-                .Bind(configuration.GetSection(ThreeBarPlaySettings.Settings));
+            services.AddOptions<ElephantStrategySettings>()
+                .Bind(configuration.GetSection(ElephantStrategySettings.Settings));
             services.AddOptions<ElephantBarSettings>()
                 .Bind(configuration.GetSection(ElephantBarSettings.Settings));
 
-            services.AddScoped<ThreeBarPlayAnalysis>();
+            services.AddScoped<ElephantStrategyAnalysis>();
             services.AddAutoMapper(typeof(DenaliMapper));
 
             // Register a service provider so we can create scopes and resolve instances dynamically

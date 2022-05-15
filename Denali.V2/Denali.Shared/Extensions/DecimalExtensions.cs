@@ -1,4 +1,4 @@
-﻿namespace Denali.Shared
+﻿namespace Denali.Shared.Extensions
 {
     public static class DecimalExtensions
     {
