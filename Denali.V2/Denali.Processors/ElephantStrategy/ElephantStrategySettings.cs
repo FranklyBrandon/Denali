@@ -14,5 +14,7 @@ namespace Denali.Processors.ElephantStrategy
 
         [JsonPropertyName("ElephantBarSettings")]
         public ElephantBarSettings ElephantBarSettings { get; set; }
+
+        public int MaxRetracementPeriodLength { get; set; }
     }
 }
