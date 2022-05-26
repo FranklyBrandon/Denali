@@ -41,7 +41,6 @@ namespace Denali.Processors.ElephantStrategy
             {
                 Retracements.Add(barData.Last().TimeUtc);
             }
-
         }
 
         public void ProcessRetracements(List<IAggregateBar> barData)

@@ -6,8 +6,6 @@ namespace Denali.Services
     {
         public async Task<T> LoadResourceFromFile<T>(string filename)
         {
-            //var directory = AppDomain.CurrentDomain.BaseDirectory;
-            //var fullpath = Path.Combine(directory, filename);
             var json = File.OpenRead(DirectoryPath(filename));
             return await JsonSerializer.DeserializeAsync<T>(json);
         }
