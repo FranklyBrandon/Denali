@@ -17,5 +17,6 @@ namespace Denali.Processors.ElephantStrategy
 
         public int MaxRetracementPeriodLength { get; set; }
         public decimal RetracementPriceThreshold { get; set; }
+        public decimal RetracmentBodyThreshold { get; set; }
     }
 }

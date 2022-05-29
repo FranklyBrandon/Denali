@@ -42,7 +42,7 @@ namespace Denali.Processors.ElephantStrategy
 
         public void ProcessRetracements(List<IAggregateBar> barData)
         {
-            //Find the closest Eelphant bar within the max retracement period range
+            // Find the closest Elephant bar within the max retracement period range
             int elephantDistance = 0;
             for (int i = 1; i < _settings.MaxRetracementPeriodLength - 1; i++)
             {
@@ -53,11 +53,12 @@ namespace Denali.Processors.ElephantStrategy
                 }
             }
 
+            // If an Elephant bar was found, calculate if the current bar is a retracement 
             if (elephantDistance > 0)
             {
                 var elephant = barData.GetHistoricValue(elephantDistance);
                 var currentBar = barData.Last();
-                var retracmentBody = (currentBar.BodyRange() <= elephant.BodyRange() * _settings.ElephantBarSettings.OverAverageThreshold);
+                var retracmentBody = (currentBar.BodyRange() <= elephant.BodyRange() * _settings.RetracmentBodyThreshold);
 
                 bool retracementPrice = false;
                 if (elephant.Green())
