@@ -18,6 +18,9 @@ namespace Denali.Processors.ElephantStrategy
         public ElephantBars ElephantBars;
         public List<DateTime> Retracements;
         public List<DateTime> Continuations;
+        public ExponentialMovingAverage ShortEMA;
+        public ExponentialMovingAverage MidEMA;
+        public ExponentialMovingAverage LongEMA;
 
         public ElephantStrategy(ElephantStrategySettings settings)
         {
@@ -25,6 +28,9 @@ namespace Denali.Processors.ElephantStrategy
             this.ElephantBars = new ElephantBars(_settings.ElephantBarSettings);
             this.Retracements = new();
             this.Continuations = new();
+            this.ShortEMA = new ExponentialMovingAverage(3);
+            this.MidEMA = new ExponentialMovingAverage(8);
+            this.LongEMA = new ExponentialMovingAverage(21);
         }
 
         public void Initialize(List<IAggregateBar> barData)
@@ -35,6 +41,9 @@ namespace Denali.Processors.ElephantStrategy
         public void ProcessTick(List<IAggregateBar> barData)
         {
             ElephantBars.Analyze(barData);
+            ShortEMA.Analyze(barData);
+            MidEMA.Analyze(barData);
+            LongEMA.Analyze(barData);
 
             //Retracement
             ProcessRetracements(barData);
