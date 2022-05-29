@@ -34,6 +34,7 @@ namespace Denali.Models
         public decimal TotalRange();
 
         public decimal PercentageChange();
+        public bool Green();
     }
 
     public class AggregateBar : IAggregateBar
@@ -63,5 +64,6 @@ namespace Denali.Models
         public decimal TotalRange() => (High - Low);
 
         public decimal PercentageChange() => (Close - Open) / Open * 100;
+        public bool Green() => (Close > Open);
     }
 }

@@ -37,10 +37,7 @@ namespace Denali.Processors.ElephantStrategy
             ElephantBars.Analyze(barData);
 
             //Retracement
-            if (ElephantBars.Elephants.Contains(barData.GetHistoricValue(1).TimeUtc) && !ElephantBars.Elephants.Contains(barData.Last().TimeUtc))
-            {
-                Retracements.Add(barData.Last().TimeUtc);
-            }
+            ProcessRetracements(barData);
         }
 
         public void ProcessRetracements(List<IAggregateBar> barData)
@@ -59,7 +56,17 @@ namespace Denali.Processors.ElephantStrategy
             if (elephantDistance > 0)
             {
                 var elephant = barData.GetHistoricValue(elephantDistance);
-                //TODO: check if current bar is a retracement compared to elephant bar
+                var currentBar = barData.Last();
+                var retracmentBody = (currentBar.BodyRange() <= elephant.BodyRange() * _settings.ElephantBarSettings.OverAverageThreshold);
+
+                bool retracementPrice = false;
+                if (elephant.Green())
+                    retracementPrice = ((elephant.BodyRange() * _settings.RetracementPriceThreshold) + elephant.Close) >= Math.Max(currentBar.Open, currentBar.Close);
+                else
+                    retracementPrice = ((elephant.BodyRange() * _settings.RetracementPriceThreshold) - elephant.Close) <= Math.Min(currentBar.Open, currentBar.Close);
+
+                if (retracmentBody && retracementPrice)
+                    Retracements.Add(currentBar.TimeUtc);              
             }
         }
     }

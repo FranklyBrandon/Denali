@@ -16,5 +16,6 @@ namespace Denali.Processors.ElephantStrategy
         public ElephantBarSettings ElephantBarSettings { get; set; }
 
         public int MaxRetracementPeriodLength { get; set; }
+        public decimal RetracementPriceThreshold { get; set; }
     }
 }
