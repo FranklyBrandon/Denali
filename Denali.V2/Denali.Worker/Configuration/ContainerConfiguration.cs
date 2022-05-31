@@ -1,22 +1,18 @@
-﻿using Denali.Models.Mapping;
+﻿using Alpaca.Markets;
+using Denali.Models.Mapping;
 using Denali.Processors.ElephantStrategy;
 using Denali.Services;
 using Denali.TechnicalAnalysis.ElephantBars;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace Denali.Worker.Configuration
 {
     internal class ContainerConfiguration
     {
-        internal static void Configure(IConfiguration configuration, IServiceCollection services)
+        internal static void Configure(IConfiguration configuration, IHostEnvironment hostEnvironmnet, IServiceCollection services)
         {
             services.AddHostedService<Worker>();
             services.AddScoped<FileService>();
-
 
 
             services.AddOptions<ElephantStrategySettings>()
@@ -27,10 +23,23 @@ namespace Denali.Worker.Configuration
             services.AddScoped<ElephantStrategyAnalysis>();
             services.AddAutoMapper(typeof(DenaliMapper));
 
+            RegisterAlpaca(configuration, hostEnvironmnet, services);
+
             // Register a service provider so we can create scopes and resolve instances dynamically
-            services.AddSingleton<ServiceProvider>((context) =>
+            services.AddSingleton((context) =>
             {
                 return services.BuildServiceProvider();
+            });
+        }
+
+        private static void RegisterAlpaca(IConfiguration configuration, IHostEnvironment hostEnvironment, IServiceCollection services)
+        {
+            var secretKey = new SecretKey(configuration["Alpaca:API-Key"], configuration["Alpaca:API-Secret"]);
+            services.AddScoped<IAlpacaStreamingClient>((context) =>
+            {
+                return hostEnvironment.IsProduction() 
+                    ? Alpaca.Markets.Environments.Live.GetAlpacaStreamingClient(secretKey) 
+                    : Alpaca.Markets.Environments.Paper.GetAlpacaStreamingClient(secretKey);
             });
         }
     }

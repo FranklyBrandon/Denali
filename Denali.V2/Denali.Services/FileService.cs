@@ -4,13 +4,13 @@ namespace Denali.Services
 {
     public class FileService
     {
-        public async Task<T> LoadResourceFromFile<T>(string filename)
+        public async Task<T> LoadJSONResourceFromFile<T>(string filename)
         {
             var json = File.OpenRead(DirectoryPath(filename));
             return await JsonSerializer.DeserializeAsync<T>(json);
         }
 
-        public async Task WriteResourceToFile(string filename, object data)
+        public async Task WriteJSONResourceToFile(string filename, object data)
         {
             var json = JsonSerializer.Serialize(data);
             await File.AppendAllTextAsync(DirectoryPath(filename), json);
