@@ -71,9 +71,9 @@ namespace Denali.Processors.ElephantStrategy
 
                 bool retracementPrice = false;
                 if (elephant.Green())
-                    retracementPrice = ((elephant.BodyRange() * _settings.RetracementPriceThreshold) + elephant.Close) >= Math.Max(currentBar.Open, currentBar.Close);
+                    retracementPrice = (elephant.Close + (elephant.BodyRange() * _settings.RetracementPriceThreshold)) >= Math.Max(currentBar.Open, currentBar.Close);
                 else
-                    retracementPrice = ((elephant.BodyRange() * _settings.RetracementPriceThreshold) - elephant.Close) <= Math.Min(currentBar.Open, currentBar.Close);
+                    retracementPrice = (elephant.Close - (elephant.BodyRange() * _settings.RetracementPriceThreshold)) <= Math.Min(currentBar.Open, currentBar.Close);
 
                 if (retracmentBody && retracementPrice)
                     Retracements.Add(currentBar.TimeUtc);              
