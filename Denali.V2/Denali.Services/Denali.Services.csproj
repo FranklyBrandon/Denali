@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Alpaca.Markets" Version="5.2.8" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

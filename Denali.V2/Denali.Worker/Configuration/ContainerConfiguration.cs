@@ -41,6 +41,24 @@ namespace Denali.Worker.Configuration
                     ? Alpaca.Markets.Environments.Live.GetAlpacaStreamingClient(secretKey) 
                     : Alpaca.Markets.Environments.Paper.GetAlpacaStreamingClient(secretKey);
             });
+            services.AddScoped<IAlpacaDataStreamingClient>((context) =>
+            {
+                return hostEnvironment.IsProduction()
+                    ? Alpaca.Markets.Environments.Live.GetAlpacaDataStreamingClient(secretKey)
+                    : Alpaca.Markets.Environments.Paper.GetAlpacaDataStreamingClient(secretKey);
+            });
+            services.AddScoped<IAlpacaDataClient>((context) =>
+            {
+                return hostEnvironment.IsProduction()
+                    ? Alpaca.Markets.Environments.Live.GetAlpacaDataClient(secretKey)
+                    : Alpaca.Markets.Environments.Paper.GetAlpacaDataClient(secretKey);
+            });
+            services.AddScoped<IAlpacaTradingClient>((context) =>
+            {
+                return hostEnvironment.IsProduction()
+                    ? Alpaca.Markets.Environments.Live.GetAlpacaTradingClient(secretKey)
+                    : Alpaca.Markets.Environments.Paper.GetAlpacaTradingClient(secretKey);
+            });
         }
     }
 }
