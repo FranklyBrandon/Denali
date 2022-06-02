@@ -1,5 +1,15 @@
 using Denali.Worker;
 using Denali.Worker.Configuration;
+using Serilog;
+using Serilog.Events;
+using System.Reflection;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .WriteTo.Console()
+    .WriteTo.File(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "elephant_logs.txt"), rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) => ContainerConfiguration.Configure(hostContext.Configuration, hostContext.HostingEnvironment, services))
@@ -14,6 +24,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         if (environment.Equals(Environments.Development))
             configHost.AddUserSecrets<Worker>(optional: false);
     })
+    .UseSerilog()
     .Build();
 
 await host.RunAsync();

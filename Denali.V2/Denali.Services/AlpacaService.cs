@@ -1,6 +1,7 @@
 ﻿using Alpaca.Markets;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +12,38 @@ namespace Denali.Services
 {
     public class AlpacaService
     {
-        private readonly IAlpacaStreamingClient _alpacaStreamingclient;
-        private readonly IAlpacaDataStreamingClient _alpacaDataStreamingClient;
-        private readonly IAlpacaDataClient _alpacaDataClient;
-        private readonly IAlpacaTradingClient _alpacaTradingClient;
-        private readonly SecretKey _secretKey;
-        private readonly IHostEnvironment _hostEnvironment;
-        public AlpacaService(IHostEnvironment hostEnvironment, IConfiguration configuration)
+        private IAlpacaStreamingClient _alpacaStreamingclient;
+        private IAlpacaDataStreamingClient _alpacaDataStreamingClient;
+        private IAlpacaDataClient _alpacaDataClient;
+        private IAlpacaTradingClient _alpacaTradingClient;
+        private SecretKey _secretKey;
+        private IHostEnvironment _hostEnvironment;
+
+        private ILogger _logger;
+        public AlpacaService(IHostEnvironment hostEnvironment, IConfiguration configuration, ILogger<AlpacaService> logger)
         {
             _hostEnvironment = hostEnvironment;
+            _logger = logger;
             _secretKey = new SecretKey(configuration["Alpaca:API-Key"], configuration["Alpaca:API-Secret"]);
         }
+
+        public async Task InitializeStreamingClient()
+        {
+            _alpacaStreamingclient = BuildStreamingclient();
+            var authStatus = await _alpacaStreamingclient.ConnectAndAuthenticateAsync();
+            _logger.LogInformation($"Streaming Client Auth Status: {authStatus}");
+        }
+
+        public async Task InitializeDataStreamingClient()
+        {
+            _alpacaDataStreamingClient = BuildDataStreamingClient();
+            var authStatus = await _alpacaDataStreamingClient.ConnectAndAuthenticateAsync();
+            _logger.LogInformation($"Data Streaming Client Auth Status: {authStatus}");
+        }
+
+        public async Task InitializeDataClient() => _alpacaDataClient = BuildDataclient();
+
+        public async Task InitializeTradingclient() => _alpacaTradingClient = BuildTradingClient();
 
         private IAlpacaStreamingClient BuildStreamingclient() => _hostEnvironment.IsProduction()
             ? Alpaca.Markets.Environments.Live.GetAlpacaStreamingClient(_secretKey) 

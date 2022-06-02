@@ -13,7 +13,7 @@ namespace Denali.Processors
 
         public Task Process()
         {
-
+            return Task.CompletedTask;
         }
     }
 }
