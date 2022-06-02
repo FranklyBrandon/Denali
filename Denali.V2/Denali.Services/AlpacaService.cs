@@ -12,6 +12,11 @@ namespace Denali.Services
 {
     public class AlpacaService
     {
+        public IAlpacaStreamingClient AlpacaStreamingclient => _alpacaStreamingclient;
+        public IAlpacaDataStreamingClient AlpacaDataStreamingClient => _alpacaDataStreamingClient;
+        public IAlpacaDataClient AlpacaDataClient => _alpacaDataClient;
+        public IAlpacaTradingClient AlpacaTradingClient => _alpacaTradingClient;
+
         private IAlpacaStreamingClient _alpacaStreamingclient;
         private IAlpacaDataStreamingClient _alpacaDataStreamingClient;
         private IAlpacaDataClient _alpacaDataClient;

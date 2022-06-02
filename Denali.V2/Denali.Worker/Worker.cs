@@ -1,5 +1,6 @@
 
 
+using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
 
 namespace Denali.Worker
@@ -21,10 +22,9 @@ namespace Denali.Worker
             {
                 using (var scope = _provider.CreateScope())
                 {
-                    var processor = scope.ServiceProvider.GetService<ElephantStrategyAnalysis>();
-                    await processor.Process();
+                    var processor = scope.ServiceProvider.GetService<LiveTradingProcessor>();
+                    await processor.Process(stoppingToken);
                 }
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(1000, stoppingToken);
             }
         }
