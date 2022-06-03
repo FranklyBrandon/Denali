@@ -25,10 +25,17 @@ namespace Denali.Processors
 
             _logger.LogInformation("Loading Data Backlog");
             await _alpacaService.InitializeTradingclient();
+
             // Check the last 5 days (to account for weekends and holidys)
-            var lastMarketDate = await GeOpenMarketDays(5);
-            // Use the last two days for market data
-            var bracketDates = lastMarketDate.Take(2);
+            var lastMarketDates = await GeOpenMarketDays(5);
+            if (lastMarketDates.FirstOrDefault() == null || !lastMarketDates.First().TradingDateUtc.Equals(DateTime.Today))
+            {
+                _logger.LogInformation($"No trading window detected today {DateTime.Today}");
+                return;
+            }
+
+            // Use the previous two days for market data, as well ass the current day for any data already present
+            var bracketDates = lastMarketDates.Take(3);
             var startDate = bracketDates.Last();
             var endDate = bracketDates.First();
 
