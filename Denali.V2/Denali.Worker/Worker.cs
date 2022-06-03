@@ -22,8 +22,8 @@ namespace Denali.Worker
             {
                 using (var scope = _provider.CreateScope())
                 {
-                    var processor = scope.ServiceProvider.GetService<LiveTradingProcessor>();
-                    await processor.Process(stoppingToken);
+                    var processor = scope.ServiceProvider.GetService<ElephantRideStrategyAnalysis>();
+                    await processor.Process(stoppingToken, DateTime.Today.AddDays(-1));
                 }
                 await Task.Delay(1000, stoppingToken);
             }

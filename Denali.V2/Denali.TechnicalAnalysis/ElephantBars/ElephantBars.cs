@@ -11,28 +11,28 @@ namespace Denali.TechnicalAnalysis.ElephantBars
     public class ElephantBars
     {
         public HashSet<DateTime> Elephants { get; }
+        public readonly AverageRange AverageRange;
         private readonly ElephantBarSettings _settings;
-        private readonly AverageRange _averageRange;
         private bool _isElephant;
 
         public ElephantBars(ElephantBarSettings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            _averageRange = new AverageRange(_settings.RangeAveragesBacklog);
+            AverageRange = new AverageRange(_settings.RangeAveragesBacklog);
             Elephants = new();
         }
 
         public void Initialize(IEnumerable<IAggregateBar> bars)
         {
-            _averageRange.Analyze(bars);
+            AverageRange.Analyze(bars);
         }
 
         public void Analyze(IEnumerable<IAggregateBar> bars)
         {
-            _averageRange.Analyze(bars);
+            AverageRange.Analyze(bars);
             var lastBar = bars.Last();
 
-            if (IsElephantBar(lastBar, _averageRange.AverageRanges.Last()))
+            if (IsElephantBar(lastBar, AverageRange.AverageRanges.Last()))
             {
                 _isElephant = true;
                 Elephants.Add(lastBar.TimeUtc);
@@ -45,8 +45,8 @@ namespace Denali.TechnicalAnalysis.ElephantBars
 
         private bool IsElephantBar(IAggregateBar bar, BarRange average)
         {
-            //TODO: Use body percentage to weed out false elephant bars
-            return  (bar.BodyRange() >= average.AverageBodyRange * _settings.OverAverageThreshold);
+            return  (bar.BodyRange() >= average.AverageBodyRange * _settings.OverAverageThreshold) 
+                 && (bar.BodyRange() / bar.TotalRange() > _settings.BodyPercentageThreshold);
         }
 
 

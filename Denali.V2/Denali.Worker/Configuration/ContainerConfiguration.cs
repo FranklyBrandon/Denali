@@ -24,6 +24,7 @@ namespace Denali.Worker.Configuration
             services.AddScoped<ElephantStrategyAnalysis>();
             services.AddScoped<LiveTradingProcessor>();
             services.AddScoped<AlpacaService>();
+            services.AddScoped<ElephantRideStrategyAnalysis>();
             services.AddAutoMapper(typeof(DenaliMapper));
 
 
