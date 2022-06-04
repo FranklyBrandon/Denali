@@ -50,6 +50,12 @@ namespace Denali.Services
 
         public async Task InitializeTradingclient() => _alpacaTradingClient = BuildTradingClient();
 
+        public async Task<IEnumerable<IIntervalCalendar>> GeOpenMarketDays(int pastDays, DateTime day)
+        {
+            var calenders = await _alpacaTradingClient.ListIntervalCalendarAsync(new CalendarRequest().SetInclusiveTimeInterval(day.AddDays(-pastDays), day));
+            return calenders.OrderByDescending(x => x.GetTradingDate());
+        }
+
         private IAlpacaStreamingClient BuildStreamingclient() => _hostEnvironment.IsProduction()
             ? Alpaca.Markets.Environments.Live.GetAlpacaStreamingClient(_secretKey) 
             : Alpaca.Markets.Environments.Paper.GetAlpacaStreamingClient(_secretKey);

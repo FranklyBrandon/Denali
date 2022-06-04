@@ -38,13 +38,13 @@ namespace Denali.Processors.ElephantStrategy
             var backlogDay2 = bracketDates.Skip(2).First();
 
             var backlog1 = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-                new HistoricalBarsRequest("AAPL", backlogDay1.TradingOpenTimeUtc, backlogDay1.TradingCloseTimeUtc, new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
+                new HistoricalBarsRequest("AAPL", backlogDay1.GetSessionOpenTimeUtc(), backlogDay1.GetTradingCloseTimeUtc(), new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
 
             var backlog2 = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-                new HistoricalBarsRequest("AAPL", backlogDay2.TradingOpenTimeUtc, backlogDay2.TradingCloseTimeUtc, new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
+                new HistoricalBarsRequest("AAPL", backlogDay2.GetTradingOpenTimeUtc(), backlogDay2.GetTradingCloseTimeUtc(), new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
 
             var alpacaCurrentData = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-                new HistoricalBarsRequest("AAPL", currentDay.TradingOpenTimeUtc, currentDay.TradingCloseTimeUtc, new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
+                new HistoricalBarsRequest("AAPL", currentDay.GetTradingOpenTimeUtc(), currentDay.GetTradingCloseTimeUtc(), new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
 
             var alpacaBackLog = backlog2.Items.ToList();
             alpacaBackLog.AddRange(backlog1.Items.ToList());
@@ -91,10 +91,10 @@ namespace Denali.Processors.ElephantStrategy
             _logger.LogInformation($"Total: {total}");
         }
 
-        private async Task<IEnumerable<ICalendar>> GeOpenMarketDays(int pastDays, DateTime day)
+        private async Task<IEnumerable<IIntervalCalendar>> GeOpenMarketDays(int pastDays, DateTime day)
         {
-            var calenders = await _alpacaService.AlpacaTradingClient.ListCalendarAsync((new CalendarRequest().SetInclusiveTimeInterval(day.AddDays(-pastDays), day)));
-            return calenders.OrderByDescending(x => x.TradingDateEst).Take(pastDays);
+            var calenders = await _alpacaService.AlpacaTradingClient.ListIntervalCalendarAsync((new CalendarRequest().SetInclusiveTimeInterval(day.AddDays(-pastDays), day)));
+            return calenders.OrderByDescending(x => x.GetTradingDate());
         }
 
     }
