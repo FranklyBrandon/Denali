@@ -46,9 +46,9 @@ namespace Denali.Services
             _logger.LogInformation($"Data Streaming Client Auth Status: {authStatus}");
         }
 
-        public async Task InitializeDataClient() => _alpacaDataClient = BuildDataclient();
+        public void InitializeDataClient() => _alpacaDataClient = BuildDataclient();
 
-        public async Task InitializeTradingclient() => _alpacaTradingClient = BuildTradingClient();
+        public void InitializeTradingclient() => _alpacaTradingClient = BuildTradingClient();
 
         public async Task<IEnumerable<IIntervalCalendar>> GeOpenMarketDays(int pastDays, DateTime day)
         {

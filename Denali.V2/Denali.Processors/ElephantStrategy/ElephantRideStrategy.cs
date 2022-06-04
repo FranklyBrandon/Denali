@@ -1,7 +1,9 @@
 ﻿using Alpaca.Markets;
+using Denali.Processors.Exceptions;
 using Denali.Services;
 using Denali.TechnicalAnalysis.ElephantBars;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +22,10 @@ namespace Denali.Processors.ElephantStrategy
         private const int BACKLOG_MARKET_DAYS = 5;
 
         public ElephantBars ElephantBars { get; private set; }
-        public ElephantRideStrategy(AlpacaService alpacaService, ElephantBarSettings elephantBarSettings, ILogger<ElephantRideStrategy> logger)
+        public ElephantRideStrategy(AlpacaService alpacaService, IOptions<ElephantBarSettings> elephantBarSettings, ILogger<ElephantRideStrategy> logger)
         {
             _alpacaService = alpacaService ?? throw new ArgumentNullException(nameof(alpacaService));
-            _elephantBarSettings = elephantBarSettings ?? throw new ArgumentNullException(nameof(elephantBarSettings));
+            _elephantBarSettings = elephantBarSettings?.Value ?? throw new ArgumentNullException(nameof(elephantBarSettings));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -40,10 +42,20 @@ namespace Denali.Processors.ElephantStrategy
             // Get backlog market days plus the current date
             var daysThatNeedData = marketDays.Take(BACKLOG_DAYS + 1);
             var currentDate = daysThatNeedData.First();
+            if (currentDate.GetSessionOpenTimeUtc().Day != date.Day)
+            {
+                _logger.LogInformation($"No trading window detected for day {date.Day}");
+                throw new NoTradingWindowException();
+            }
+            
             var lastBacklogDate = daysThatNeedData.Last();
 
-            var allData = _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-                new HistoricalBarsRequest("AAPL", lastBacklogDate.GetSessionOpenTimeUtc(), currentDate.GetTradingCloseTimeUtc(), new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
+            var allData = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
+                new HistoricalBarsRequest("AAPL", lastBacklogDate.GetTradingOpenTimeUtc(), currentDate.GetTradingCloseTimeUtc(), new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
+
+
+
+
         }
 
         public async Task OnBarReceived()

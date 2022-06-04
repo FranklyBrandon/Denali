@@ -1,5 +1,7 @@
 ﻿using Alpaca.Markets;
+using Denali.Processors.ElephantStrategy;
 using Denali.Services;
+using Denali.TechnicalAnalysis.ElephantBars;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,44 +14,22 @@ namespace Denali.Processors
     public class LiveTradingProcessor
     {
         private readonly AlpacaService _alpacaService;
+        private readonly ElephantRideStrategy _elephantRideStrategy;
         private readonly ILogger _logger;
-        public LiveTradingProcessor(AlpacaService alpacaService, ILogger<LiveTradingProcessor> logger)
+        public LiveTradingProcessor(AlpacaService alpacaService, ElephantRideStrategy elephantRideStrategy, ILogger<LiveTradingProcessor> logger)
         {
             _alpacaService = alpacaService;
+            _elephantRideStrategy = elephantRideStrategy;
             _logger = logger;
         }
 
-        public async Task Process(CancellationToken stoppingToken)
+        public async Task Process(CancellationToken stoppingToken, DateTime date)
         {
-            _logger.LogInformation("===== Starting Live Trading for Ticker AAPL =====");
+            _alpacaService.InitializeTradingclient();
+            _alpacaService.InitializeDataClient();
 
-            _logger.LogInformation("Loading Data Backlog");
-            await _alpacaService.InitializeTradingclient();
+            await _elephantRideStrategy.Setup(date.AddDays(-1));
 
-            // Check the last 5 days (to account for weekends and holidys)
-            var lastMarketDates = await GeOpenMarketDays(5);
-            if (lastMarketDates.FirstOrDefault() == null || !lastMarketDates.First().TradingDateUtc.Equals(DateTime.Today))
-            {
-                _logger.LogInformation($"No trading window detected today {DateTime.Today}");
-                return;
-            }
-
-            // Use the previous two days for market data, as well ass the current day for any data already present
-            var bracketDates = lastMarketDates.Take(3);
-            var startDate = bracketDates.Last();
-            var endDate = bracketDates.First();
-
-            await _alpacaService.InitializeDataClient();
-            var backlogData = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-                new HistoricalBarsRequest("AAPL", startDate.TradingOpenTimeUtc, endDate.TradingCloseTimeUtc, new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
-
-        }
-
-        private async Task<IEnumerable<ICalendar>> GeOpenMarketDays(int pastDays)
-        {
-            var today = DateTime.Now;
-            var calenders = await _alpacaService.AlpacaTradingClient.ListCalendarAsync((new CalendarRequest().SetInclusiveTimeInterval(today.AddDays(-pastDays), today)));
-            return calenders.OrderByDescending(x => x.TradingDateEst).Take(pastDays);
         }
     }
 }

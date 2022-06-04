@@ -26,8 +26,8 @@ namespace Denali.Processors.ElephantStrategy
         public async Task Process(CancellationToken stoppingToken, DateTime day)
         {
             int backLogDayLength = 2;
-            await _alpacaService.InitializeTradingclient();
-            await _alpacaService.InitializeDataClient();
+            _alpacaService.InitializeTradingclient();
+            _alpacaService.InitializeDataClient();
 
             // Check the last 5 days (to account for weekends and holidys)
             var lastMarketDates = await GeOpenMarketDays(5, day);
@@ -80,7 +80,8 @@ namespace Denali.Processors.ElephantStrategy
                         diff = (lastBar.Open - elephantBodyentry) - nextBar.Open;
                     }
 
-                    _logger.LogInformation($"Elephant at {lastBar.TimeUtc}: {diff}");
+                    diff = (diff * 20) - 0.70m;
+                    _logger.LogInformation($"Elephant at {lastBar.TimeUtc}: Gain of {diff}");
                     total += diff;
 
                     //TODO: Factor in false elephants
@@ -88,7 +89,7 @@ namespace Denali.Processors.ElephantStrategy
                 }
             }
 
-            _logger.LogInformation($"Total: {total}");
+            _logger.LogInformation($"Total Profit: {total}");
         }
 
         private async Task<IEnumerable<IIntervalCalendar>> GeOpenMarketDays(int pastDays, DateTime day)
