@@ -23,7 +23,7 @@ namespace Denali.Worker
                 using (var scope = _provider.CreateScope())
                 {
                     var processor = scope.ServiceProvider.GetService<ElephantRideStrategyAnalysis>();
-                    await processor.Process(stoppingToken, DateTime.Today.AddDays(-1));
+                    await processor.Process(stoppingToken, DateTime.Today);
                 }
                 await Task.Delay(1000, stoppingToken);
             }

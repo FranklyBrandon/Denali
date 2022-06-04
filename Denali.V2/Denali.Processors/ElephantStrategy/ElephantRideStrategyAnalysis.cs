@@ -67,7 +67,7 @@ namespace Denali.Processors.ElephantStrategy
                 if (elephantBars.IsLatestElephant())
                 {
                     var lastBar = bars.Last();
-                    var nextBar = currentData.ElementAt(i + 1);
+                    var nextBar = currentData.ElementAt(i);
 
                     var elephantBodyentry = (elephantBars.AverageRange.AverageRanges.Last().AverageBodyRange * _settings.OverAverageThreshold);
                     decimal diff = 0.0m;
