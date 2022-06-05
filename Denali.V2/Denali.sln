@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Processors", "Denali
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Models", "Denali.Models\Denali.Models.csproj", "{C8F8EB62-D7EB-41F4-9879-A50A62646F27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.TechnicalAnalysis", "Denali.TechnicalAnalysis\Denali.TechnicalAnalysis.csproj", "{7AD00A7F-669C-493D-A221-2892CD8FFF8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.TechnicalAnalysis", "Denali.TechnicalAnalysis\Denali.TechnicalAnalysis.csproj", "{7AD00A7F-669C-493D-A221-2892CD8FFF8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.Shared", "Denali.Shared\Denali.Shared.csproj", "{8849C483-23ED-4A41-86C4-21332730B0C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Shared", "Denali.Shared\Denali.Shared.csproj", "{8849C483-23ED-4A41-86C4-21332730B0C4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpAPI", "..\..\TWS API\source\CSharpClient\client\CSharpAPI.csproj", "{290E4653-402F-4EC8-967F-FE8E42926104}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{8849C483-23ED-4A41-86C4-21332730B0C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8849C483-23ED-4A41-86C4-21332730B0C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8849C483-23ED-4A41-86C4-21332730B0C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{290E4653-402F-4EC8-967F-FE8E42926104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{290E4653-402F-4EC8-967F-FE8E42926104}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{290E4653-402F-4EC8-967F-FE8E42926104}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{290E4653-402F-4EC8-967F-FE8E42926104}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
