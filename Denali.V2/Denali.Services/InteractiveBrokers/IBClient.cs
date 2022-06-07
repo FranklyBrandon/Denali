@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace Denali.Services.InteractiveBrokers
         public int ClientId { get; set; }
 
         private EReaderMonitorSignal _signal = new EReaderMonitorSignal();
+        private ILogger<IBClient> _logger;
 
-        public IBClient()
+        public IBClient(ILogger<IBClient> logger)
         {
             // TODO: Pass in IBService and have subsribale events in service class?
             ClientSocket = new EClientSocket(this, _signal);
+            _logger = logger;
         }
 
         public async Task ConnectAndProcess(int clientId, string host, int port, CancellationToken stoppingToken)
@@ -39,9 +42,9 @@ namespace Denali.Services.InteractiveBrokers
                     }
                 });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.Error.WriteLine("connection issue");
+                _logger.LogError($"Connection issue: {ex.Message}");
             }
         }
 
@@ -53,7 +56,32 @@ namespace Denali.Services.InteractiveBrokers
 
         public void connectionClosed()
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("IB Connection has closed");
+        }
+
+        void EWrapper.error(Exception ex)
+        {
+            _logger.LogError($"Exception error from IB: {ex.Message}");
+        }
+
+        void EWrapper.error(string str)
+        {
+            _logger.LogError($"String error from IB: {str}");
+        }
+
+        void EWrapper.error(int id, int errorCode, string errorMsg, string advancedOrderRejectJson)
+        {
+            _logger.LogError($"Error Code from IB: {errorCode}: {errorMsg}");
+        }
+
+        void EWrapper.managedAccounts(string accountsList)
+        {
+            _logger.LogInformation($"Managed Accounts Received: {accountsList}");
+        }
+
+        void EWrapper.nextValidId(int orderId)
+        {
+            _logger.LogInformation($"Next valid id received: {orderId}");
         }
 
         #region Unsupported

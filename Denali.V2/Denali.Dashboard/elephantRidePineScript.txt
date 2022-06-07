@@ -1,0 +1,44 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © MelonLordRobertshttps://www.tradingview.com/chart/lpuvUwJC/?symbol=NASDAQ%3AAAPL#
+
+//@version=5
+indicator("Elephant Ride", overlay=true)
+//strategy("pullback", calc_on_every_tick=true, process_orders_on_close=true, overlay=true)
+
+//--Elephants Input--
+averageRangeBacklog = input.int(100, title="Length of the lookback period in the calculation of SMA for the body range of the bars.")
+elephantBarThreshold = input.float(2.5, title="The threshold a bar's body range must exceed in order to be classied as an Elephant.")
+elephantBodyThreshold = input.float(0.50, title="The threshold for how much of the total range of the bar the body musr take up.")
+
+
+//--Current Tick calculations
+bodyRange = math.abs(open - close)
+totalRange = (high - low)
+bodyRangeAverage = ta.sma(bodyRange, averageRangeBacklog)
+currentElephantBodyThreshold = (bodyRangeAverage * elephantBarThreshold)
+bool elephant = (bodyRange >= currentElephantBodyThreshold) and (bodyRange / totalRange > elephantBodyThreshold)
+bool falseLongElephant = (high - open) >= currentElephantBodyThreshold and ((high-open) > elephantBodyThreshold)
+bool falseShortElephant = (open - low) >= currentElephantBodyThreshold and ((open-low) > elephantBodyThreshold)
+    
+if (elephant or falseLongElephant or falseShortElephant)
+    entry = 0.0
+    if(elephant)
+        long = (close > open)
+        if (long)
+            entry := (open + currentElephantBodyThreshold)
+        else
+            entry := (open - currentElephantBodyThreshold)
+            
+    if(falseLongElephant)
+        entry := (open + currentElephantBodyThreshold)
+    
+    if(falseShortElephant)
+        entry := (open - currentElephantBodyThreshold)
+        
+    line.new(bar_index, entry, bar_index + 1, entry, width = 1)
+
+plotchar(elephant, "Elephant", "🐘", location.abovebar, color.silver, size = size.tiny)
+plotchar((falseLongElephant or falseShortElephant) and not elephant, "Elephant", "❗", location.abovebar, color.silver, size = size.tiny)
+
+
+

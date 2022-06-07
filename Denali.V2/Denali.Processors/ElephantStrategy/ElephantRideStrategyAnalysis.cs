@@ -64,12 +64,13 @@ namespace Denali.Processors.ElephantStrategy
             {
                 var bars = currentData.Take(i);
                 elephantBars.Analyze(bars);
-                if (elephantBars.IsLatestElephant())
-                {
-                    var lastBar = bars.Last();
-                    var nextBar = currentData.ElementAt(i);
 
-                    var elephantBodyentry = (elephantBars.AverageRange.AverageRanges.Last().AverageBodyRange * _settings.OverAverageThreshold);
+                var lastBar = bars.Last();
+                var nextBar = currentData.ElementAt(i);
+                var elephantBodyentry = (elephantBars.AverageRange.AverageRanges.Last().AverageBodyRange * _settings.OverAverageThreshold);
+
+                if (elephantBars.IsLatestElephant() || ((lastBar.High - lastBar.Open) >= elephantBodyentry || (lastBar.Open - lastBar.Low) > elephantBodyentry))
+                {
                     decimal diff = 0.0m;
                     if (lastBar.Green())
                     {
@@ -83,9 +84,6 @@ namespace Denali.Processors.ElephantStrategy
                     diff = (diff * 20) - 0.70m;
                     _logger.LogInformation($"Elephant at {lastBar.TimeUtc}: Gain of {diff}");
                     total += diff;
-
-                    //TODO: Factor in false elephants
-                    // if open to high is elephant or open to close is elephant
                 }
             }
 
