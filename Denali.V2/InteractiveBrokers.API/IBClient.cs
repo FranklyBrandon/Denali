@@ -1,12 +1,7 @@
 ﻿using IBApi;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Denali.Services.InteractiveBrokers
+namespace InteractiveBrokers.API
 {
     public class IBClient : EWrapper
     {
@@ -82,6 +77,16 @@ namespace Denali.Services.InteractiveBrokers
         void EWrapper.nextValidId(int orderId)
         {
             _logger.LogInformation($"Next valid id received: {orderId}");
+        }
+
+        public void historicalData(int reqId, Bar bar)
+        {
+            _logger.LogInformation($"Historic data received: {bar.Time}, id: {reqId}");
+        }
+
+        public void historicalDataEnd(int reqId, string start, string end)
+        {
+            _logger.LogInformation($"Historic Data End");
         }
 
         #region Unsupported
@@ -201,16 +206,6 @@ namespace Denali.Services.InteractiveBrokers
         }
 
         public void histogramData(int reqId, HistogramEntry[] data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void historicalData(int reqId, Bar bar)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void historicalDataEnd(int reqId, string start, string end)
         {
             throw new NotImplementedException();
         }

@@ -14,9 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\TWS API\source\CSharpClient\client\CSharpAPI.csproj" />
     <ProjectReference Include="..\Denali.Models\Denali.Models.csproj" />
     <ProjectReference Include="..\Denali.Services\Denali.Services.csproj" />
     <ProjectReference Include="..\Denali.TechnicalAnalysis\Denali.TechnicalAnalysis.csproj" />
+    <ProjectReference Include="..\InteractiveBrokers.API\InteractiveBrokers.API.csproj" />
   </ItemGroup>
 
 </Project>

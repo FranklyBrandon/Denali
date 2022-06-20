@@ -2,6 +2,7 @@
 using Denali.Processors.ElephantStrategy;
 using Denali.Services;
 using Denali.TechnicalAnalysis.ElephantBars;
+using InteractiveBrokers.API;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,20 +16,19 @@ namespace Denali.Processors
     {
         private readonly AlpacaService _alpacaService;
         private readonly ElephantRideStrategy _elephantRideStrategy;
+        private readonly IBService _ibService;
         private readonly ILogger _logger;
-        public LiveTradingProcessor(AlpacaService alpacaService, ElephantRideStrategy elephantRideStrategy, ILogger<LiveTradingProcessor> logger)
+        public LiveTradingProcessor(IBService ibService, ILogger<LiveTradingProcessor> logger)
         {
-            _alpacaService = alpacaService;
-            _elephantRideStrategy = elephantRideStrategy;
+            _ibService = ibService;
             _logger = logger;
         }
 
         public async Task Process(CancellationToken stoppingToken, DateTime date)
         {
-            _alpacaService.InitializeTradingclient();
-            _alpacaService.InitializeDataClient();
+            await _ibService.Start(stoppingToken);
 
-            await _elephantRideStrategy.Setup(date.AddDays(-1));
+
 
         }
     }

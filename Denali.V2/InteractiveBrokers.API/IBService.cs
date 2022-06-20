@@ -1,12 +1,8 @@
-﻿using Denali.Services.InteractiveBrokers;
+﻿using IBApi;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
-namespace Denali.Services.IB
+namespace InteractiveBrokers.API
 {
     public class IBService
     {
@@ -24,13 +20,18 @@ namespace Denali.Services.IB
             _ibClient = new IBClient(ibClientLogger);
         }
 
-        public async Task Start(CancellationToken stoppingToken) 
+        public async Task Start(CancellationToken stoppingToken)
         {
-            int port = 1447;
+            int port = 7497;
             int clientId = 127;
             string host = "127.0.0.1";
 
             await _ibClient.ConnectAndProcess(clientId, host, port, stoppingToken);
+        }
+
+        public async Task GetHistoricalData(int requestId, Contract contract, DateTime endDate, CancellationToken cancellationToken = default)
+        {
+            _ibClient.ClientSocket.reqHistoricalData(requestId, contract, endDate.ToString("yyyyMMdd HH:mm:ss"), "1 D", "1 min", "MIDPOINT", 1, 1, false, new List<TagValue>());
         }
 
         public void OnConnectionClose() =>

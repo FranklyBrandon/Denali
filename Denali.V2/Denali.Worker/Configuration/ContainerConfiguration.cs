@@ -4,6 +4,7 @@ using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
 using Denali.Services;
 using Denali.TechnicalAnalysis.ElephantBars;
+using InteractiveBrokers.API;
 using Microsoft.Extensions.Hosting;
 
 namespace Denali.Worker.Configuration
@@ -27,6 +28,10 @@ namespace Denali.Worker.Configuration
             services.AddScoped<ElephantRideStrategyAnalysis>();
             services.AddScoped<ElephantRideStrategy>();
             services.AddAutoMapper(typeof(DenaliMapper));
+            services.AddScoped<ElephantRestStrategyAnalysis>();
+
+            services.AddScoped<IBService>();
+            services.AddScoped<IBClient>();
 
 
             // Register a service provider so we can create scopes and resolve instances dynamically
