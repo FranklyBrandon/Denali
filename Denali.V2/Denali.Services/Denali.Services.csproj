@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\TWS API\source\CSharpClient\client\CSharpAPI.csproj" />
+    <ProjectReference Include="..\Denali.Models\Denali.Models.csproj" />
   </ItemGroup>
 
 </Project>

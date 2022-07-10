@@ -18,15 +18,22 @@ namespace Denali.Processors
         private readonly ElephantRideStrategy _elephantRideStrategy;
         private readonly IBService _ibService;
         private readonly ILogger _logger;
-        public LiveTradingProcessor(IBService ibService, ILogger<LiveTradingProcessor> logger)
+        public LiveTradingProcessor(IBService ibService, ElephantRideStrategy strategy, ILogger<LiveTradingProcessor> logger)
         {
             _ibService = ibService;
+            _elephantRideStrategy = strategy;
             _logger = logger;
         }
 
         public async Task Process(CancellationToken stoppingToken, DateTime date)
         {
-            await _ibService.Start(stoppingToken);
+            await _elephantRideStrategy.Setup(date);
+
+            //stoppingToken.WaitHandle.WaitOne();
+            while (1 == 1)
+            {
+                Thread.Sleep(1000);
+            }
 
 
 

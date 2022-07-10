@@ -17,14 +17,12 @@ namespace Denali.Processors.ElephantStrategy
         }
         public async Task Process(CancellationToken stoppingToken, DateTime day)
         {
-            var processTask = _ibService.Start(stoppingToken);
+            //var processTask = _ibService.Start(stoppingToken);
             var contract = new Contract();
             contract.ConId = 12087792;
             contract.Exchange = "IDEALPRO";
 
-            _ibService.GetHistoricalData(1, contract, new DateTime(2022, 06, 17, 20, 0, 0, DateTimeKind.Utc));
-
-            await processTask;
+            //_ibService.GetHistoricalData(1, contract, new DateTime(2022, 06, 17, 20, 0, 0, DateTimeKind.Utc));
         }
     }
 }

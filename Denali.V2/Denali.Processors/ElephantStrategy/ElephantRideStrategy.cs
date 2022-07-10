@@ -17,6 +17,7 @@ namespace Denali.Processors.ElephantStrategy
         private readonly AlpacaService _alpacaService;
         private readonly ElephantBarSettings _elephantBarSettings;
         private readonly ILogger<ElephantRideStrategy> _logger;
+        private readonly List<ITrade> _trades;
 
         private const int BACKLOG_DAYS = 2;
         private const int BACKLOG_MARKET_DAYS = 5;
@@ -27,6 +28,7 @@ namespace Denali.Processors.ElephantStrategy
             _alpacaService = alpacaService ?? throw new ArgumentNullException(nameof(alpacaService));
             _elephantBarSettings = elephantBarSettings?.Value ?? throw new ArgumentNullException(nameof(elephantBarSettings));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _trades = new List<ITrade>();
         }
 
         /// <summary>
@@ -37,35 +39,40 @@ namespace Denali.Processors.ElephantStrategy
         public async Task Setup(DateTime date)
         {
             ElephantBars = new ElephantBars(_elephantBarSettings);
+            await _alpacaService.InitializeDataStreamingClient();
+            _alpacaService.InitializeTradingclient();
+            _alpacaService.InitializeDataClient();
+
             var marketDays = await _alpacaService.GeOpenMarketDays(BACKLOG_MARKET_DAYS, date);
 
             // Get backlog market days plus the current date
-            var daysThatNeedData = marketDays.Take(BACKLOG_DAYS + 1);
-            var currentDate = daysThatNeedData.First();
+            var daysThatNeedData = marketDays.Skip(1).Take(BACKLOG_DAYS).Reverse();
+            var currentDate = marketDays.First();
             if (currentDate.GetSessionOpenTimeUtc().Day != date.Day)
             {
                 _logger.LogInformation($"No trading window detected for day {date.Day}");
                 throw new NoTradingWindowException();
             }
-            
-            var lastBacklogDate = daysThatNeedData.Last();
 
-            var allData = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-                new HistoricalBarsRequest("AAPL", lastBacklogDate.GetTradingOpenTimeUtc(), currentDate.GetTradingCloseTimeUtc(), new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
+            var backlogBars = new List<IBar>();
+            foreach (var day in daysThatNeedData)
+            {
+                var response = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
+                    new HistoricalBarsRequest("AAPL", day.GetTradingOpenTimeUtc(), day.GetTradingCloseTimeUtc(), new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
+                
+                if (!string.IsNullOrWhiteSpace(response.NextPageToken))
+                    throw new Exception("More than one page");
 
+                backlogBars.AddRange(response.Items);
+            }
 
-
-
+            var tradeSubscription = _alpacaService.AlpacaDataStreamingClient.GetTradeSubscription("AAPL");
+            tradeSubscription.Received += OnTradePrice;
         }
 
-        public async Task OnBarReceived()
+        public void OnTradePrice(ITrade trade)
         {
-
-        }
-
-        public async Task OnTradePrice()
-        {
-
+            _trades.Add(trade);
         }
     }
 }
