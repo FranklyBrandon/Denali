@@ -17,16 +17,22 @@ namespace Denali.Processors.ElephantStrategy
         private readonly AlpacaService _alpacaService;
         private readonly ElephantBarSettings _elephantBarSettings;
         private readonly ILogger<ElephantRideStrategy> _logger;
+        private readonly TradeAggregator _tradeAggregator;
         private readonly List<ITrade> _trades;
 
         private const int BACKLOG_DAYS = 2;
         private const int BACKLOG_MARKET_DAYS = 5;
 
         public ElephantBars ElephantBars { get; private set; }
-        public ElephantRideStrategy(AlpacaService alpacaService, IOptions<ElephantBarSettings> elephantBarSettings, ILogger<ElephantRideStrategy> logger)
+        public ElephantRideStrategy(
+            AlpacaService alpacaService, 
+            IOptions<ElephantBarSettings> elephantBarSettings, 
+            TradeAggregator tradeAggregator,
+            ILogger<ElephantRideStrategy> logger)
         {
             _alpacaService = alpacaService ?? throw new ArgumentNullException(nameof(alpacaService));
             _elephantBarSettings = elephantBarSettings?.Value ?? throw new ArgumentNullException(nameof(elephantBarSettings));
+            _tradeAggregator = tradeAggregator ?? throw new ArgumentNullException(nameof(_tradeAggregator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _trades = new List<ITrade>();
         }
@@ -68,11 +74,23 @@ namespace Denali.Processors.ElephantStrategy
 
             var tradeSubscription = _alpacaService.AlpacaDataStreamingClient.GetTradeSubscription("AAPL");
             tradeSubscription.Received += OnTradePrice;
+
+            var barSubscription = _alpacaService.AlpacaDataStreamingClient.GetMinuteBarSubscription("AAPL");
+            barSubscription.Received += OnBar;
+
+            _tradeAggregator.StartTimer();
+
+
         }
 
         public void OnTradePrice(ITrade trade)
         {
             _trades.Add(trade);
+        }
+
+        public void OnBar(IBar bar)
+        {
+            _logger.LogInformation("Minute Bar received");
         }
     }
 }
