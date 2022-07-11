@@ -29,7 +29,7 @@ namespace Denali.Worker.Configuration
             services.AddScoped<ElephantRideStrategy>();
             services.AddAutoMapper(typeof(DenaliMapper));
             services.AddScoped<ElephantRestStrategyAnalysis>();
-            services.AddScoped<TradeAggregator>();
+            services.AddScoped<BarAggregator>();
 
             services.AddScoped<IBService>();
             services.AddScoped<IBClient>();

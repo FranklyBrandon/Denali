@@ -1,14 +1,10 @@
 ﻿using Alpaca.Markets;
+using Denali.Models;
 using Denali.Processors.Exceptions;
 using Denali.Services;
 using Denali.TechnicalAnalysis.ElephantBars;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denali.Processors.ElephantStrategy
 {
@@ -17,7 +13,7 @@ namespace Denali.Processors.ElephantStrategy
         private readonly AlpacaService _alpacaService;
         private readonly ElephantBarSettings _elephantBarSettings;
         private readonly ILogger<ElephantRideStrategy> _logger;
-        private readonly TradeAggregator _tradeAggregator;
+        private readonly BarAggregator _barAggregator;
         private readonly List<ITrade> _trades;
 
         private const int BACKLOG_DAYS = 2;
@@ -27,12 +23,12 @@ namespace Denali.Processors.ElephantStrategy
         public ElephantRideStrategy(
             AlpacaService alpacaService, 
             IOptions<ElephantBarSettings> elephantBarSettings, 
-            TradeAggregator tradeAggregator,
+            BarAggregator barAggregator,
             ILogger<ElephantRideStrategy> logger)
         {
             _alpacaService = alpacaService ?? throw new ArgumentNullException(nameof(alpacaService));
             _elephantBarSettings = elephantBarSettings?.Value ?? throw new ArgumentNullException(nameof(elephantBarSettings));
-            _tradeAggregator = tradeAggregator ?? throw new ArgumentNullException(nameof(_tradeAggregator));
+            _barAggregator = barAggregator ?? throw new ArgumentNullException(nameof(barAggregator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _trades = new List<ITrade>();
         }
@@ -60,6 +56,7 @@ namespace Denali.Processors.ElephantStrategy
                 throw new NoTradingWindowException();
             }
 
+            // Populate backlog data
             var backlogBars = new List<IBar>();
             foreach (var day in daysThatNeedData)
             {
@@ -72,15 +69,19 @@ namespace Denali.Processors.ElephantStrategy
                 backlogBars.AddRange(response.Items);
             }
 
+            // Subscribe to realtime trades and candlestick data
             var tradeSubscription = _alpacaService.AlpacaDataStreamingClient.GetTradeSubscription("AAPL");
             tradeSubscription.Received += OnTradePrice;
 
             var barSubscription = _alpacaService.AlpacaDataStreamingClient.GetMinuteBarSubscription("AAPL");
-            barSubscription.Received += OnBar;
+            barSubscription.Received += OnMinuteBar;
 
-            _tradeAggregator.StartTimer();
+            await _alpacaService.AlpacaDataStreamingClient.SubscribeAsync(tradeSubscription);
+            await _alpacaService.AlpacaDataStreamingClient.SubscribeAsync(barSubscription);
 
-
+            // Initialize the bar aggregator to calculate the specified intervals
+            _barAggregator.SetLastUpdateMinute((int)_barAggregator.Round(DateTime.UtcNow.Minute));
+            _barAggregator.OnBar += OnIntervalBar;
         }
 
         public void OnTradePrice(ITrade trade)
@@ -88,9 +89,15 @@ namespace Denali.Processors.ElephantStrategy
             _trades.Add(trade);
         }
 
-        public void OnBar(IBar bar)
+        public void OnMinuteBar(IBar bar)
         {
-            _logger.LogInformation("Minute Bar received");
+            _logger.LogInformation($"Minute Bar received: Open: {bar.Open}, High: {bar.High}, Low: {bar.Low}, Close: {bar.Close}");
+            _barAggregator.OnMinuteBar(bar);
+        }
+
+        public void OnIntervalBar(IAggregateBar bar)
+        {
+            _logger.LogInformation($"Interval Bar received: Open: {bar.Open}, High: {bar.High}, Low: {bar.Low}, Close: {bar.Close}");
         }
     }
 }
