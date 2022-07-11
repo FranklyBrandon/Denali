@@ -6,22 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Denali.Services
+namespace Denali.Services.Aggregators
 {
-    public class BarAggregator
+    public class BarAggregator : BaseAggregator
     {
         public event Action<IAggregateBar> OnBar;
-
-        private readonly int _minuteInterval = 5;
         private readonly List<IBar> _intervalBars;
-        private int _lastUpdateMinute = 0;
 
         public BarAggregator()
         {
             _intervalBars = new List<IBar>();
         }
-
-        public void SetLastUpdateMinute(int minute) => _lastUpdateMinute = minute;
 
         public void OnMinuteBar(IBar bar)
         {
@@ -48,11 +43,6 @@ namespace Denali.Services
             };
 
             OnBar.Invoke(aggregatBar);
-        }
-
-        public decimal Round(decimal value)
-        {
-            return Math.Floor(value / _minuteInterval) * _minuteInterval;
         }
     }
 }

@@ -3,6 +3,7 @@ using Denali.Models.Mapping;
 using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
 using Denali.Services;
+using Denali.Services.Aggregators;
 using Denali.TechnicalAnalysis.ElephantBars;
 using InteractiveBrokers.API;
 using Microsoft.Extensions.Hosting;
@@ -30,6 +31,7 @@ namespace Denali.Worker.Configuration
             services.AddAutoMapper(typeof(DenaliMapper));
             services.AddScoped<ElephantRestStrategyAnalysis>();
             services.AddScoped<BarAggregator>();
+            services.AddScoped<TradeAggregator>();
 
             services.AddScoped<IBService>();
             services.AddScoped<IBClient>();
