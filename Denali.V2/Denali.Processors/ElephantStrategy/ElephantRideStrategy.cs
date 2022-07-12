@@ -1,8 +1,10 @@
 ﻿using Alpaca.Markets;
+using AutoMapper;
 using Denali.Models;
 using Denali.Processors.Exceptions;
 using Denali.Services;
 using Denali.Services.Aggregators;
+using Denali.TechnicalAnalysis;
 using Denali.TechnicalAnalysis.ElephantBars;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,10 +18,15 @@ namespace Denali.Processors.ElephantStrategy
         private readonly ILogger<ElephantRideStrategy> _logger;
         private readonly BarAggregator _barAggregator;
         private readonly TradeAggregator _tradeAggregator;
-        private readonly List<ITrade> _trades;
+        private readonly IMapper _mapper;
 
         private const int BACKLOG_DAYS = 2;
         private const int BACKLOG_MARKET_DAYS = 5;
+
+        private List<IAggregateBar> AggregateBars;
+        private SimpleMovingAverage _sma3;
+        private SimpleMovingAverage _sma8;
+        private SimpleMovingAverage _sma21;
 
         public ElephantBars ElephantBars { get; private set; }
         public ElephantRideStrategy(
@@ -27,14 +34,19 @@ namespace Denali.Processors.ElephantStrategy
             IOptions<ElephantBarSettings> elephantBarSettings, 
             BarAggregator barAggregator,
             TradeAggregator tradeAggregator,
+            IMapper mapper,
             ILogger<ElephantRideStrategy> logger)
         {
             _alpacaService = alpacaService ?? throw new ArgumentNullException(nameof(alpacaService));
             _elephantBarSettings = elephantBarSettings?.Value ?? throw new ArgumentNullException(nameof(elephantBarSettings));
             _barAggregator = barAggregator ?? throw new ArgumentNullException(nameof(barAggregator));
             _tradeAggregator = tradeAggregator ?? throw new ArgumentNullException(nameof(tradeAggregator));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _trades = new List<ITrade>();
+
+            _sma3 = new SimpleMovingAverage(3);
+            _sma8 = new SimpleMovingAverage(8);
+            _sma21 = new SimpleMovingAverage(21);
 
             ElephantBars = new ElephantBars(_elephantBarSettings);
         }
@@ -74,6 +86,14 @@ namespace Denali.Processors.ElephantStrategy
                 backlogBars.AddRange(response.Items);
             }
 
+            IEnumerable<IAggregateBar> mappedBars = _mapper.Map<List<AggregateBar>>(backlogBars);
+            AggregateBars = mappedBars.ToList();
+
+            // Initialize SMAs
+            _sma3.Analyze(AggregateBars);
+            _sma8.Analyze(AggregateBars);
+            _sma21.Analyze(AggregateBars);        
+
             // Subscribe to realtime trades and candlestick data
             var tradeSubscription = _alpacaService.AlpacaDataStreamingClient.GetTradeSubscription("AAPL");
             tradeSubscription.Received += OnTradePrice;
@@ -93,23 +113,32 @@ namespace Denali.Processors.ElephantStrategy
             _tradeAggregator.SetLastUpdateMinute(lastUpdate);
 
             _barAggregator.OnBar += OnIntervalBar;
+            _tradeAggregator.OnBarOpen += OnBarOpen;
         }
 
         public void OnTradePrice(ITrade trade)
         {
-            _trades.Add(trade);
             _tradeAggregator.OnTrade(trade);
         }
 
         public void OnMinuteBar(IBar bar)
         {
-            _logger.LogInformation($"Minute Bar received: Open: {bar.Open}, High: {bar.High}, Low: {bar.Low}, Close: {bar.Close}");
+            _logger.LogInformation($"Minute Bar received: Open: {bar.Open}, High: {bar.High}, Low: {bar.Low}, Close: {bar.Close}, Time: {bar.TimeUtc}, LastUpdateMinute: {_barAggregator._lastUpdateMinute}");
             _barAggregator.OnMinuteBar(bar);
         }
 
         public void OnIntervalBar(IAggregateBar bar)
         {
-            _logger.LogInformation($"Interval Bar received: Open: {bar.Open}, High: {bar.High}, Low: {bar.Low}, Close: {bar.Close}");
+            _logger.LogInformation($"Interval Bar received: Open: {bar.Open}, High: {bar.High}, Low: {bar.Low}, Close: {bar.Close}, Time: {bar.TimeUtc}, LastUpdateMinute: {_barAggregator._lastUpdateMinute}");
+            AggregateBars.Add(bar);
+            _sma3.Analyze(AggregateBars);
+            _sma8.Analyze(AggregateBars);
+            _sma21.Analyze(AggregateBars);
+        }
+
+        public void OnBarOpen(IAggregateBar bar)
+        {
+            _logger.LogInformation($"Bar Open Received: Open: {bar.Open}, High: {bar.High}, Low: {bar.Low}, Close: {bar.Close}, Time: {bar.TimeUtc}, LastUpdateMinute: {_barAggregator._lastUpdateMinute}");
         }
     }
 }

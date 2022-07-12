@@ -32,7 +32,8 @@ namespace Denali.Services.Aggregators
 
         public void Aggregate(DateTime timeUtc)
         {
-            _lastUpdateMinute = timeUtc.Minute + 1;
+            var minute = (int)Round(timeUtc.Minute + 1);
+            _lastUpdateMinute = minute == 60 ? 0 : minute;
             var aggregatBar = new AggregateBar
             {
                 Open = _intervalBars.First().Open,

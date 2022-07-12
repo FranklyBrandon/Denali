@@ -6,7 +6,8 @@ namespace Denali.Services.Aggregators
 {
     public class TradeAggregator : BaseAggregator
     {
-        public IAggregateBar CurrentBar { get; private set; }
+        public IAggregateBar ProvisionalBar { get; private set; }
+        public event Action<IAggregateBar> OnBarOpen;
 
         //private System.Threading.Timer timer;
         private readonly ILogger<TradeAggregator> _logger;
@@ -14,27 +15,28 @@ namespace Denali.Services.Aggregators
         public TradeAggregator(ILogger<TradeAggregator> logger)
         {
             _logger = logger;
-            CurrentBar = new AggregateBar();
+            ProvisionalBar = new AggregateBar();
         }
 
         public void OnTrade(ITrade trade)
         {
             if (Round(trade.TimestampUtc.Minute) != _lastUpdateMinute)
             {
-                SetLastUpdateMinute(trade.TimestampUtc.Minute);
-                CurrentBar = new AggregateBar
+                SetLastUpdateMinute((int) Round(trade.TimestampUtc.Minute));
+                ProvisionalBar = new AggregateBar
                 {
                     Open = trade.Price,
                     High = trade.Price,
                     Low = trade.Price,
                     Close = trade.Price
                 };
+                OnBarOpen.Invoke(ProvisionalBar);
             }
             else
             {
-                CurrentBar.Close = trade.Price;
-                CurrentBar.High = Math.Max(CurrentBar.High, trade.Price);
-                CurrentBar.Low = Math.Min(CurrentBar.Low, trade.Price);
+                ProvisionalBar.Close = trade.Price;
+                ProvisionalBar.High = Math.Max(ProvisionalBar.High, trade.Price);
+                ProvisionalBar.Low = Math.Min(ProvisionalBar.Low, trade.Price);
             }
         }
 
