@@ -29,7 +29,7 @@ namespace Denali.TechnicalAnalysis
 
             var limit = length - (_backlog - 1);
 
-            MovingAverages.Add((GetMovingAverageValue(data, length, limit);
+            MovingAverages.Add(GetMovingAverageValue(data, length, limit));
         }
 
         public void ProvisionalChange(ITrade trade, IEnumerable<IAggregateBar> data)

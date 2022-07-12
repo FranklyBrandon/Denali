@@ -15,6 +15,8 @@ namespace Denali.TechnicalAnalysis.ElephantBars
         private readonly ElephantBarSettings _settings;
         private bool _isElephant;
 
+        public decimal Trigger => AverageRange.AverageRanges.Last().AverageBodyRange * _settings.OverAverageThreshold;
+
         public ElephantBars(ElephantBarSettings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));

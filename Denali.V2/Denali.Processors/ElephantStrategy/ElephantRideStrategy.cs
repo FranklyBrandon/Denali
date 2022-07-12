@@ -27,8 +27,8 @@ namespace Denali.Processors.ElephantStrategy
         private SimpleMovingAverage _sma3;
         private SimpleMovingAverage _sma8;
         private SimpleMovingAverage _sma21;
+        private ElephantBars _elephantBars;
 
-        public ElephantBars ElephantBars { get; private set; }
         public ElephantRideStrategy(
             AlpacaService alpacaService, 
             IOptions<ElephantBarSettings> elephantBarSettings, 
@@ -48,7 +48,7 @@ namespace Denali.Processors.ElephantStrategy
             _sma8 = new SimpleMovingAverage(8);
             _sma21 = new SimpleMovingAverage(21);
 
-            ElephantBars = new ElephantBars(_elephantBarSettings);
+            _elephantBars = new ElephantBars(_elephantBarSettings);
         }
 
         /// <summary>
@@ -89,10 +89,11 @@ namespace Denali.Processors.ElephantStrategy
             IEnumerable<IAggregateBar> mappedBars = _mapper.Map<List<AggregateBar>>(backlogBars);
             AggregateBars = mappedBars.ToList();
 
-            // Initialize SMAs
+            // Initialize TA
             _sma3.Analyze(AggregateBars);
             _sma8.Analyze(AggregateBars);
-            _sma21.Analyze(AggregateBars);        
+            _sma21.Analyze(AggregateBars);
+            _elephantBars.Initialize(AggregateBars);
 
             // Subscribe to realtime trades and candlestick data
             var tradeSubscription = _alpacaService.AlpacaDataStreamingClient.GetTradeSubscription("AAPL");
@@ -118,6 +119,7 @@ namespace Denali.Processors.ElephantStrategy
 
         public void OnTradePrice(ITrade trade)
         {
+            //_sma3.ProvisionalChange(trade, new List<IAggregateBar>(AggregateBars));
             _tradeAggregator.OnTrade(trade);
         }
 
@@ -134,6 +136,7 @@ namespace Denali.Processors.ElephantStrategy
             _sma3.Analyze(AggregateBars);
             _sma8.Analyze(AggregateBars);
             _sma21.Analyze(AggregateBars);
+            _elephantBars.Analyze(AggregateBars);
         }
 
         public void OnBarOpen(IAggregateBar bar)
