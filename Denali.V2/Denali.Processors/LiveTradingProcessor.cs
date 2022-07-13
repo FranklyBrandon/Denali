@@ -29,14 +29,7 @@ namespace Denali.Processors
         {
             await _elephantRideStrategy.Setup(date);
 
-            //stoppingToken.WaitHandle.WaitOne();
-            while (1 == 1)
-            {
-                Thread.Sleep(1000);
-            }
-
-
-
+            stoppingToken.WaitHandle.WaitOne();
         }
     }
 }
