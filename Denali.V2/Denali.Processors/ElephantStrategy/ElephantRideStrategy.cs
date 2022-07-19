@@ -141,26 +141,25 @@ namespace Denali.Processors.ElephantStrategy
 
         public void OnIntervalBar(IAggregateBar bar)
         {
-            _logger.LogInformation($"Interval Bar received: Open: {bar.Open}, High: {bar.High}, Low: {bar.Low}, Close: {bar.Close}, Time: {bar.TimeUtc}, LastUpdateMinute: {_barAggregator._lastUpdateMinute}");
+
             AggregateBars.Add(bar);
             _sma3.Analyze(AggregateBars);
             _sma8.Analyze(AggregateBars);
             _sma21.Analyze(AggregateBars);
             _elephantBars.Analyze(AggregateBars);
+            _logger.LogInformation($"Interval Bar received: OHLC: ({bar.Open},{bar.High},{bar.Low},{bar.Close}), SMAS: ({_sma3.MovingAverages.Last()}, {_sma8.MovingAverages.Last()}, {_sma21.MovingAverages.Last()}) Time: {bar.TimeUtc}");
         }
 
         public void OnBarOpen(IAggregateBar bar)
         {
-            _logger.LogInformation($"Bar Open Received: Open: {bar.Open}, High: {bar.High}, Low: {bar.Low}, Close: {bar.Close}, Time: {bar.TimeUtc}, LastUpdateMinute: {_barAggregator._lastUpdateMinute}");
+            _logger.LogInformation($"Bar Open Received: Open: {bar.Open}, SMAs: ({_sma3.ProvisionalValue}, {_sma8.ProvisionalValue}, {_sma21.ProvisionalValue}), Elephant Trigger: {_elephantBars.Trigger} Time: {bar.TimeUtc}");
             ProcessBarOpen(bar.Open);
         }
 
         private void OnTradeUpdate(ITradeUpdate tradeUpdate)
         {
-            if (tradeUpdate.Order.OrderId == _limitOrderId)
-            {
-                _logger.LogInformation($"Limit Order Update: {tradeUpdate.Event}");
-                if (tradeUpdate.Event == TradeEvent.Fill)
+                _logger.LogInformation($"Order Update: {tradeUpdate.Order.OrderId}: {tradeUpdate.Event}");
+                if (tradeUpdate.Event == TradeEvent.Fill) 
                 {
                     _limitOrderOpen = false;
                     _limitOrderFilled = true;
@@ -170,7 +169,6 @@ namespace Denali.Processors.ElephantStrategy
                     _limitOrderOpen = false;
                     _limitOrderFilled = false;
                 }
-            }
         }
 
         private async Task ProcessBarOpen(decimal openPrice)
@@ -188,22 +186,21 @@ namespace Denali.Processors.ElephantStrategy
                 && (_sma3.MovingAverages.GetHistoricValue(1) < _sma3.ProvisionalValue && _sma8.MovingAverages.GetHistoricValue(1) < _sma8.ProvisionalValue))
             {
                 var triggerPrice = openPrice + _elephantBars.Trigger;
-                _logger.LogInformation($"Long Limit at: {openPrice + _elephantBars.Trigger}"); 
-
                 var limitOrder = StopLimitOrder.Buy("AAPL", OrderQuantity.FromInt64(1), triggerPrice, triggerPrice);
                 var order = await _alpacaService.AlpacaTradingClient.PostOrderAsync(limitOrder);
                 _limitOrderId = order.OrderId;
-                _limitOrderOpen = true;        
+                _limitOrderOpen = true;
+                _logger.LogInformation($"Long Limit at: {triggerPrice}: {order.OrderId}");
             }
             else if ((_sma3.ProvisionalValue < _sma8.ProvisionalValue && _sma8.ProvisionalValue < _sma21.ProvisionalValue)
                 && (_sma3.MovingAverages.GetHistoricValue(1) > _sma3.ProvisionalValue && _sma8.MovingAverages.GetHistoricValue(1) > _sma8.ProvisionalValue))
             {
                 var triggerPrice = openPrice - _elephantBars.Trigger;
-                _logger.LogInformation($"Short Limit at: {triggerPrice}");
                 var limitOrder = StopLimitOrder.Sell("AAPL", OrderQuantity.FromInt64(1), triggerPrice, triggerPrice);
                 var order = await _alpacaService.AlpacaTradingClient.PostOrderAsync(limitOrder);
                 _limitOrderId = order.OrderId;
                 _limitOrderOpen = true;
+                _logger.LogInformation($"Short Limit at: {triggerPrice}: {order.OrderId}");
             }
         }
     }

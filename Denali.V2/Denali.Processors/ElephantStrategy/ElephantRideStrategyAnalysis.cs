@@ -2,6 +2,7 @@
 using AutoMapper;
 using Denali.Models;
 using Denali.Services;
+using Denali.TechnicalAnalysis;
 using Denali.TechnicalAnalysis.ElephantBars;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -38,7 +39,7 @@ namespace Denali.Processors.ElephantStrategy
             var backlogDay2 = bracketDates.Skip(2).First();
 
             var backlog1 = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-                new HistoricalBarsRequest("AAPL", backlogDay1.GetSessionOpenTimeUtc(), backlogDay1.GetTradingCloseTimeUtc(), new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
+                new HistoricalBarsRequest("AAPL", backlogDay1.GetTradingOpenTimeUtc(), backlogDay1.GetTradingCloseTimeUtc(), new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
 
             var backlog2 = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
                 new HistoricalBarsRequest("AAPL", backlogDay2.GetTradingOpenTimeUtc(), backlogDay2.GetTradingCloseTimeUtc(), new BarTimeFrame(5, BarTimeFrameUnit.Minute)));
@@ -53,41 +54,35 @@ namespace Denali.Processors.ElephantStrategy
             var currentData = _mapper.Map<List<AggregateBar>>(alpacaCurrentData.Items);
 
             var elephantBars = new ElephantBars(_settings);
+            var sma3 = new SimpleMovingAverage(3);
+            var sma8 = new SimpleMovingAverage(8);
+            var sma21 = new SimpleMovingAverage(21);
+            sma3.Analyze(backlogData);
+            sma8.Analyze(backlogData);
+            sma21.Analyze(backlogData);
             elephantBars.Initialize(backlogData);
 
-            int start = 1;
+            var movingData = new List<AggregateBar>();
+            movingData.AddRange(backlogData);
+
+            int start = 0;
             int count = currentData.Count - 1;
 
             // Start analysis at start of day (not including premarket bars)
             decimal total = 0.0m;
             for (int i = start; i < count; i++)
             {
-                var bars = currentData.Take(i);
-                elephantBars.Analyze(bars);
+                var currentBar = currentData.ElementAt(i);
+                movingData.Add(currentBar);
 
-                var lastBar = bars.Last();
-                var nextBar = currentData.ElementAt(i);
-                var elephantBodyentry = (elephantBars.AverageRange.AverageRanges.Last().AverageBodyRange * _settings.OverAverageThreshold);
+                elephantBars.Analyze(movingData);
+                sma3.Analyze(movingData);
+                sma8.Analyze(movingData);
+                sma21.Analyze(movingData);
 
-                if (elephantBars.IsLatestElephant() || ((lastBar.High - lastBar.Open) >= elephantBodyentry || (lastBar.Open - lastBar.Low) > elephantBodyentry))
-                {
-                    decimal diff = 0.0m;
-                    if (lastBar.Green())
-                    {
-                        diff = nextBar.Open - (lastBar.Open + elephantBodyentry);
-                    }
-                    else
-                    {
-                        diff = (lastBar.Open - elephantBodyentry) - nextBar.Open;
-                    }
+                _logger.LogInformation($"Time: {currentBar.TimeUtc},OHLC: ({currentBar.Open},{currentBar.High},{currentBar.Low},{currentBar.Close}), SMAS: ({sma3.MovingAverages.Last()},{sma8.MovingAverages.Last()},{sma21.MovingAverages.Last()}), Trigger: {currentBar.Open + elephantBars.Trigger}");
 
-                    diff = (diff * 20) - 0.70m;
-                    _logger.LogInformation($"Elephant at {lastBar.TimeUtc}: Gain of {diff}");
-                    total += diff;
-                }
             }
-
-            _logger.LogInformation($"Total Profit: {total}");
         }
 
         private async Task<IEnumerable<IIntervalCalendar>> GeOpenMarketDays(int pastDays, DateTime day)
