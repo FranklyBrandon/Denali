@@ -64,6 +64,7 @@ namespace Denali.Processors.ElephantStrategy
 
                 if (currentDay != null)
                 {
+                    _logger.LogInformation($"Day: {currentDay.GetTradingDate()}");
                     var currentBars = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
                             new HistoricalBarsRequest(ticker, currentDay.GetTradingOpenTimeUtc(), currentDay.GetTradingCloseTimeUtc(), barTimeFrame));
                     var currentData = _mapper.Map<List<AggregateBar>>(currentBars.Items);
@@ -72,6 +73,7 @@ namespace Denali.Processors.ElephantStrategy
                     int count = currentData.Count - 1;
                     var movingData = backlogData;
 
+                    decimal sum = 0.0m;
                     for (int j = start; j < count; j++)
                     {
                         var currentBar = currentData.ElementAt(j);
@@ -85,14 +87,29 @@ namespace Denali.Processors.ElephantStrategy
                         //_logger.LogInformation($"Time: {currentBar.TimeUtc},OHLC: ({currentBar.Open},{currentBar.High},{currentBar.Low},{currentBar.Close}), SMAS: ({sma3.MovingAverages.Last()},{sma8.MovingAverages.Last()},{sma21.MovingAverages.Last()}), Trigger: {currentBar.Open + elephantBars.Trigger}");
                         if (sma3.MovingAverages.Last() > sma8.MovingAverages.Last() && sma8.MovingAverages.Last() > sma21.MovingAverages.Last())
                         {
-                            var threshold = currentBar.Open + (averageRange.AverageRanges.Last().AverageBodyRange * 2);
+                            var threshold = currentBar.Open + (averageRange.AverageRanges.Last().AverageBodyRange * 1.3m);
                             if (currentBar.High >= threshold)
                             {
                                 var nextBar = currentData.ElementAtOrDefault(j + 1);
-                                _logger.LogInformation($"Trade at: {currentBar.TimeUtc.TimeOfDay}, Gain of: {nextBar?.Open - threshold}");
+                                var profit = nextBar?.Open - threshold;
+                                _logger.LogInformation($"Trade at: {currentBar.TimeUtc.TimeOfDay}, Gain of: {profit}");
+                                sum += profit.Value;
+                            }
+                        }
+                        else if (sma21.MovingAverages.Last() > sma8.MovingAverages.Last() && sma8.MovingAverages.Last() > sma3.MovingAverages.Last())
+                        {
+                            var threshold = currentBar.Open - (averageRange.AverageRanges.Last().AverageBodyRange * 1.3m);
+                            if (currentBar.Low <= threshold)
+                            {
+                                var nextBar = currentData.ElementAtOrDefault(j + 1);
+                                var profit = threshold - nextBar?.Open;
+                                _logger.LogInformation($"Trade at: {currentBar.TimeUtc.TimeOfDay}, Gain of: {profit}");
+                                sum += profit.Value;
                             }
                         }
                     }
+
+                    _logger.LogInformation($"Total Profit for Day: {sum}");
                 }
             }
 
