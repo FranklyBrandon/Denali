@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Alpaca.Markets" Version="6.0.3" />
     <PackageReference Include="Alpaca.Markets.Extensions" Version="6.0.3" />
+    <PackageReference Include="Meta.Numerics" Version="4.1.4" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
   </ItemGroup>
 
