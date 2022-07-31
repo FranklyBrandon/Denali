@@ -2,6 +2,7 @@
 using Denali.Models.Mapping;
 using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
+using Denali.Processors.StatArb;
 using Denali.Services;
 using Denali.Services.Aggregators;
 using Denali.TechnicalAnalysis.ElephantBars;
@@ -32,6 +33,7 @@ namespace Denali.Worker.Configuration
             services.AddScoped<ElephantRestStrategyAnalysis>();
             services.AddScoped<BarAggregator>();
             services.AddScoped<TradeAggregator>();
+            services.AddScoped<PairAnalysis>();
 
             services.AddScoped<IBService>();
             services.AddScoped<IBClient>();

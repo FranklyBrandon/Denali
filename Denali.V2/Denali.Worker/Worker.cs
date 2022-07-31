@@ -2,6 +2,7 @@
 
 using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
+using Denali.Processors.StatArb;
 
 namespace Denali.Worker
 {
@@ -22,8 +23,8 @@ namespace Denali.Worker
             {
                 using (var scope = _provider.CreateScope())
                 {
-                    var processor = scope.ServiceProvider.GetService<ElephantRideStrategyAnalysis>();
-                    await processor.Process(stoppingToken, "AAPL", new DateTime(2022, 7, 11), new DateTime(2022, 7, 15), new Alpaca.Markets.BarTimeFrame(5, Alpaca.Markets.BarTimeFrameUnit.Minute), 2);
+                    var processor = scope.ServiceProvider.GetService<PairAnalysis>();
+                    await processor.Process("VTI", "VOO", new DateTime(2022, 7, 29), new DateTime(2022, 7, 29), new Alpaca.Markets.BarTimeFrame(1, Alpaca.Markets.BarTimeFrameUnit.Minute), 2, stoppingToken);
                 }
                 await Task.Delay(1000, stoppingToken);
             }
