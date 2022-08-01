@@ -11,6 +11,7 @@ namespace Denali.TechnicalAnalysis
         public double CalculateStandardDeviation(IEnumerable<double> series, double mean, int backlog)
         {
             var length = series.Count() - 1;
+
             var limit = length - (backlog - 1);
             var sum = 0d;
             for (int i = length; i >= limit; i--)

@@ -20,6 +20,8 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
         public PairSpreadCalculation(int backlog)
         {
             _backlog = backlog;
+            _spreadAverage = new SimpleMovingAverageDouble(backlog);
+            _std = new StandardDeviation();
         }
 
         public void Analyze(IEnumerable<AggregateBar> tickerAData, IEnumerable<AggregateBar> tickerBData)
@@ -46,8 +48,11 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
                 var spread = percentageChangeA - percentageChangeB;
                 spreadValues.Add(spread);
 
-
                 _spreadAverage.Analyze(spread);
+
+                if (spreadValues.Count < _backlog)
+                    continue;
+
                 var mean = _spreadAverage.MovingAverages.Last();
                 var std = _std.CalculateStandardDeviation(spreadValues, mean, 100);
                 var zScore = (spread - mean) / std;
