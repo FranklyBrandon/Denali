@@ -25,9 +25,9 @@ namespace Denali.Processors.ElephantStrategy
         private const int BACKLOG_MARKET_DAYS = 5;
 
         private List<IAggregateBar> AggregateBars;
-        private SimpleMovingAverage _sma3;
-        private SimpleMovingAverage _sma8;
-        private SimpleMovingAverage _sma21;
+        private SimpleMovingAverageClose _sma3;
+        private SimpleMovingAverageClose _sma8;
+        private SimpleMovingAverageClose _sma21;
         private ElephantBars _elephantBars;
 
         private Guid _limitOrderId;
@@ -49,9 +49,9 @@ namespace Denali.Processors.ElephantStrategy
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            _sma3 = new SimpleMovingAverage(3);
-            _sma8 = new SimpleMovingAverage(8);
-            _sma21 = new SimpleMovingAverage(21);
+            _sma3 = new SimpleMovingAverageClose(3);
+            _sma8 = new SimpleMovingAverageClose(8);
+            _sma21 = new SimpleMovingAverageClose(21);
 
             _elephantBars = new ElephantBars(_elephantBarSettings);
         }

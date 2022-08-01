@@ -12,13 +12,13 @@ namespace Denali.TechnicalAnalysis
     {
         private readonly int _backlog;
         private readonly decimal _smoothingConstant;
-        private readonly SimpleMovingAverage _sma;
+        private readonly SimpleMovingAverageClose _sma;
         public IList<decimal> MovingAverages { get; set; }
 
         public ExponentialMovingAverage(int backlog)
         {
             this._backlog = backlog;
-            this._sma = new SimpleMovingAverage(backlog);
+            this._sma = new SimpleMovingAverageClose(backlog);
             this.MovingAverages = new List<decimal>();
             this._smoothingConstant = (2m / (_backlog + 1m));
         }

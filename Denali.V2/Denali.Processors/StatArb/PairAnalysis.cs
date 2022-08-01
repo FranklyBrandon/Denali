@@ -2,6 +2,7 @@
 using AutoMapper;
 using Denali.Models;
 using Denali.Services;
+using Denali.TechnicalAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,14 @@ namespace Denali.Processors.StatArb
     public class PairAnalysis : StrategyProcessorBase
     {
         private readonly FileService _fileService;
+        private readonly SimpleMovingAverageDouble _spreadAverage;
+        private readonly StandardDeviation _std;
 
         public PairAnalysis(AlpacaService alpacaService, FileService fileService, IMapper mapper) : base(alpacaService, mapper)
         {
             _fileService = fileService;
+            _spreadAverage = new SimpleMovingAverageDouble(100);
+            _std = new StandardDeviation();
         }
 
         public async Task Process(string tickerA, string tickerB, DateTime startDate, DateTime endDate, BarTimeFrame barTimeFrame, int numberOfBacklogDays, CancellationToken stoppingToken)
@@ -40,10 +45,11 @@ namespace Denali.Processors.StatArb
                 var tickerAData = _mapper.Map<List<AggregateBar>>(tickerAbars.Items);
                 var tickerBData = _mapper.Map<List<AggregateBar>>(tickerBbars.Items);
 
-                //Ignore first bar because we don't want to calculate percentage change from yesterday or pre-market
+                // Ignore first bar because we don't want to calculate percentage change from yesterday or pre-market
                 int start = 1;
                 int length = tickerAData.Count() - 1;
-                List<object> spread = new List<object>();
+                List<object> zScoreValues = new List<object>();
+                List<double> spreadValues = new List<double>();
 
                 for (int i = start; i < length; i++)
                 {
@@ -55,19 +61,28 @@ namespace Denali.Processors.StatArb
                     var percentageChangeA = PercentageDifference(originalA.Close, newA.Close);
                     var percentageChangeB = PercentageDifference(originalB.Close, newB.Close);
 
-                    spread.Add(new
+                    var spread = percentageChangeA - percentageChangeB;
+                    spreadValues.Add(spread);
+  
+
+                    _spreadAverage.Analyze(spread);
+                    var mean = _spreadAverage.MovingAverages.Last();
+                    var std = _std.CalculateStandardDeviation(spreadValues, mean, 100);
+                    var zScore = (spread - mean) / std;
+
+                    zScoreValues.Add(new
                     {
                         Time = originalA.TimeUtc,
-                        Value = percentageChangeA - percentageChangeB
+                        Value = zScore
                     });
                 }
 
-                var json = JsonSerializer.Serialize(spread);
+                var json = JsonSerializer.Serialize(zScoreValues);
             }
         }
 
-        private decimal PercentageDifference(decimal originalValue, decimal newValue) =>
-            (Math.Abs(originalValue - newValue) / originalValue) * 100;
+        private double PercentageDifference(decimal originalValue, decimal newValue) =>
+            (double)(Math.Abs(originalValue - newValue) / originalValue) * 100;
 
         //https://www.reddit.com/r/algotrading/comments/obbb5d/kalman_filter_stat_arb/
         //https://algotrading101.com/learn/quantitative-trader-guide/#how-can-I-create-a-pairs-trading-strategy

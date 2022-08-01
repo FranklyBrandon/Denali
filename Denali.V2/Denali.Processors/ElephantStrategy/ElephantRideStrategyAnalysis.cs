@@ -46,9 +46,9 @@ namespace Denali.Processors.ElephantStrategy
             var backlogData = _mapper.Map<List<AggregateBar>>(backlogBars);
 
             var averageRange = new AverageRange(100);
-            var sma3 = new SimpleMovingAverage(3);
-            var sma8 = new SimpleMovingAverage(8);
-            var sma21 = new SimpleMovingAverage(21);
+            var sma3 = new SimpleMovingAverageClose(3);
+            var sma8 = new SimpleMovingAverageClose(8);
+            var sma21 = new SimpleMovingAverageClose(21);
 
             averageRange.Analyze(backlogData);
             sma3.Analyze(backlogData);
