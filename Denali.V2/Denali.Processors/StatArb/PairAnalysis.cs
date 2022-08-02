@@ -2,7 +2,9 @@
 using AutoMapper;
 using Denali.Models;
 using Denali.Services;
+using Denali.Shared.Extensions;
 using Denali.TechnicalAnalysis;
+using Denali.TechnicalAnalysis.StatisticalArbitrage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +19,14 @@ namespace Denali.Processors.StatArb
         private readonly FileService _fileService;
         private readonly SimpleMovingAverageDouble _spreadAverage;
         private readonly StandardDeviation _std;
+        private readonly PairSpreadCalculation _pairSpread;
 
         public PairAnalysis(AlpacaService alpacaService, FileService fileService, IMapper mapper) : base(alpacaService, mapper)
         {
             _fileService = fileService;
             _spreadAverage = new SimpleMovingAverageDouble(100);
             _std = new StandardDeviation();
+            _pairSpread = new PairSpreadCalculation(100);
         }
 
         public async Task Process(string tickerA, string tickerB, DateTime startDate, DateTime endDate, BarTimeFrame barTimeFrame, int numberOfBacklogDays, CancellationToken stoppingToken)
@@ -45,39 +49,12 @@ namespace Denali.Processors.StatArb
                 var tickerAData = _mapper.Map<List<AggregateBar>>(tickerAbars.Items);
                 var tickerBData = _mapper.Map<List<AggregateBar>>(tickerBbars.Items);
 
-                // Ignore first bar because we don't want to calculate percentage change from yesterday or pre-market
-                int start = 1;
-                int length = tickerAData.Count() - 1;
-                List<object> zScoreValues = new List<object>();
-                List<double> spreadValues = new List<double>();
+                _pairSpread.Analyze(tickerAData, tickerBData);
+                var zscores = _pairSpread.PairSpreads.Select(x =>
+                    new PairSpread(x.varienceMean, x.standardDeviation, x.zScore.RoundToFourPlaces(), x.timeUTC)
+                ).ToList();
 
-                for (int i = start; i < length; i++)
-                {
-                    var originalA = tickerAData.ElementAt(i - 1);
-                    var originalB = tickerBData.ElementAt(i - 1);
-                    var newA = tickerAData.ElementAt(i);
-                    var newB = tickerBData.ElementAt(i);
-
-                    var percentageChangeA = PercentageDifference(originalA.Close, newA.Close);
-                    var percentageChangeB = PercentageDifference(originalB.Close, newB.Close);
-
-                    var spread = percentageChangeA - percentageChangeB;
-                    spreadValues.Add(spread);
-  
-
-                    _spreadAverage.Analyze(spread);
-                    var mean = _spreadAverage.MovingAverages.Last();
-                    var std = _std.CalculateStandardDeviation(spreadValues, mean, 100);
-                    var zScore = (spread - mean) / std;
-
-                    zScoreValues.Add(new
-                    {
-                        Time = originalA.TimeUtc,
-                        Value = zScore
-                    });
-                }
-
-                var json = JsonSerializer.Serialize(zScoreValues);
+                var json = JsonSerializer.Serialize(zscores);
             }
         }
 

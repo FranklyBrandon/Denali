@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 {
-    public record PairSpread(double varienceMean, double standardDeviation, double zScore);
+    public record PairSpread(double varienceMean, double standardDeviation, double zScore, DateTime timeUTC);
 
     public class PairSpreadCalculation
     {
@@ -22,6 +22,7 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
             _backlog = backlog;
             _spreadAverage = new SimpleMovingAverageDouble(backlog);
             _std = new StandardDeviation();
+            PairSpreads = new List<PairSpread>();
         }
 
         public void Analyze(IEnumerable<AggregateBar> tickerAData, IEnumerable<AggregateBar> tickerBData)
@@ -31,7 +32,7 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
                 return;
 
             // Skip the first bar
-            int start = length - _backlog + 1;
+            int start = 1;
 
             List<double> spreadValues = new List<double>();
 
@@ -57,7 +58,7 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
                 var std = _std.CalculateStandardDeviation(spreadValues, mean, 100);
                 var zScore = (spread - mean) / std;
 
-                PairSpreads.Add(new PairSpread(mean, std, zScore));
+                PairSpreads.Add(new PairSpread(mean, std, zScore, originalA.TimeUtc));
             }
         }
 

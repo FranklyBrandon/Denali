@@ -39,8 +39,8 @@ function addSpreadData(chart) {
     for (const point of spreadData) {
         series.push(
             { 
-                time: (Date.parse(point.Time) / 1000),
-                value: point.Value
+                time: (Date.parse(point.timeUTC) / 1000),
+                value: point.zScore
             }
         )
     }
