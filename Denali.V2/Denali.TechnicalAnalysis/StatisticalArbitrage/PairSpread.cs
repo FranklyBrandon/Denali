@@ -25,13 +25,13 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
             PairSpreads = new List<PairSpread>();
         }
 
-        public void Analyze(IEnumerable<AggregateBar> tickerAData, IEnumerable<AggregateBar> tickerBData)
+        public void Initialize(IEnumerable<AggregateBar> tickerAData, IEnumerable<AggregateBar> tickerBData)
         {
             var length = tickerAData.Count() - 1;
             if (length < _backlog - 1)
                 return;
 
-            // Skip the first bar
+            // Skip the first bar, because spread is calculated using the previous bar
             int start = 1;
 
             List<double> spreadValues = new List<double>();

@@ -34,6 +34,7 @@ namespace Denali.Processors.StatArb
             _alpacaService.InitializeTradingclient();
             _alpacaService.InitializeDataClient();
 
+            var backlogDays = await GetOpenBacklogDays(numberOfBacklogDays + 5, startDate);
             var marketDays = await GetOpenMarketDays(startDate, endDate);
             if (marketDays != null && marketDays.Any())
             {
@@ -49,7 +50,7 @@ namespace Denali.Processors.StatArb
                 var tickerAData = _mapper.Map<List<AggregateBar>>(tickerAbars.Items);
                 var tickerBData = _mapper.Map<List<AggregateBar>>(tickerBbars.Items);
 
-                _pairSpread.Analyze(tickerAData, tickerBData);
+                _pairSpread.Initialize(tickerAData, tickerBData);
                 var zscores = _pairSpread.PairSpreads.Select(x =>
                     new PairSpread(x.varienceMean, x.standardDeviation, x.zScore.RoundToFourPlaces(), x.timeUTC)
                 ).ToList();
