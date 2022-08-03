@@ -85,6 +85,7 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
             return new PairSpread(mean, std, zScore, _spreadAverage.RawValues.Last(), timeUTC);
         }
 
+        // TODO: Why is Math.Abs here? Bug?
         private double PercentageDifference(decimal originalValue, decimal newValue) =>
             (double)(Math.Abs(originalValue - newValue) / originalValue) * 100;
 
