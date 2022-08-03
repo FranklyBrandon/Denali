@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 {
-    public record PairSpread(double varienceMean, double standardDeviation, double zScore, DateTime timeUTC);
+    public record PairSpread(double varienceMean, double standardDeviation, double zScore, double spread, DateTime timeUTC);
 
     public class PairSpreadCalculation
     {
@@ -69,10 +69,11 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 
         private double CaclulateSpread(AggregateBar originalA, AggregateBar currentA, AggregateBar originalB, AggregateBar currentB)
         {
-            var percentageChangeA = PercentageDifference(originalA.Close, currentA.Close);
-            var percentageChangeB = PercentageDifference(originalB.Close, currentB.Close);
+            //var percentageChangeA = PercentageDifference(originalA.Close, currentA.Close);
+            //var percentageChangeB = PercentageDifference(originalB.Close, currentB.Close);
 
-            return percentageChangeA - percentageChangeB;
+            //return percentageChangeA - percentageChangeB;
+            return (double)(currentA.Close - currentB.Close);
         }
 
         private PairSpread CalculateZScore(DateTime timeUTC)
@@ -81,7 +82,7 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
             var std = _std.CalculateStandardDeviation(_spreadAverage.RawValues, mean, _backlog);
             var zScore = (_spreadAverage.RawValues.Last() - mean) / std;
 
-            return new PairSpread(mean, std, zScore, timeUTC);
+            return new PairSpread(mean, std, zScore, _spreadAverage.RawValues.Last(), timeUTC);
         }
 
         private double PercentageDifference(decimal originalValue, decimal newValue) =>
