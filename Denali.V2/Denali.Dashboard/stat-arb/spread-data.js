@@ -1,1743 +1,4077 @@
 spreadData =
 [
    {
-      "varienceMean":0.0025259613946778973,
-      "standardDeviation":0.019654581969039797,
-      "zScore":-0.0479,
-      "timeUTC":"2022-07-29T15:09:00Z"
+      "varienceMean":0.0009501812121113799,
+      "standardDeviation":0.019272200848579932,
+      "zScore":-0.0718,
+      "timeUTC":"2022-08-01T15:09:00Z"
    },
    {
-      "varienceMean":0.002505069253415307,
-      "standardDeviation":0.019654029079835197,
-      "zScore":-0.0262,
-      "timeUTC":"2022-07-29T15:10:00Z"
+      "varienceMean":0.00044603351583413965,
+      "standardDeviation":0.01891506261000647,
+      "zScore":-0.6042,
+      "timeUTC":"2022-08-01T15:10:00Z"
    },
    {
-      "varienceMean":0.0027154166720009614,
-      "standardDeviation":0.019446661827917745,
-      "zScore":-0.4557,
-      "timeUTC":"2022-07-29T15:11:00Z"
+      "varienceMean":0.0005699554402603256,
+      "standardDeviation":0.018859707371012564,
+      "zScore":-0.1221,
+      "timeUTC":"2022-08-01T15:11:00Z"
    },
    {
-      "varienceMean":0.0028448802230868053,
-      "standardDeviation":0.019459369319333026,
-      "zScore":0.4274,
-      "timeUTC":"2022-07-29T15:12:00Z"
+      "varienceMean":0.000670478844569062,
+      "standardDeviation":0.018781115827894043,
+      "zScore":-0.5185,
+      "timeUTC":"2022-08-01T15:12:00Z"
    },
    {
-      "varienceMean":0.0025877828285725607,
-      "standardDeviation":0.019270804033553277,
-      "zScore":0.0766,
-      "timeUTC":"2022-07-29T15:13:00Z"
+      "varienceMean":0.00046453617613643875,
+      "standardDeviation":0.018518065507301496,
+      "zScore":0.7359,
+      "timeUTC":"2022-08-01T15:13:00Z"
    },
    {
-      "varienceMean":0.002671410849991027,
-      "standardDeviation":0.0192145282815859,
-      "zScore":-0.4585,
-      "timeUTC":"2022-07-29T15:14:00Z"
+      "varienceMean":0.00026679267518226125,
+      "standardDeviation":0.01844623562336793,
+      "zScore":-0.1667,
+      "timeUTC":"2022-08-01T15:14:00Z"
    },
    {
-      "varienceMean":0.0021210322552459955,
-      "standardDeviation":0.019294687367465303,
-      "zScore":-1.5573,
-      "timeUTC":"2022-07-29T15:15:00Z"
+      "varienceMean":0.00031310875360527875,
+      "standardDeviation":0.018431867111837412,
+      "zScore":-0.186,
+      "timeUTC":"2022-08-01T15:15:00Z"
    },
    {
-      "varienceMean":0.0016653146690674325,
-      "standardDeviation":0.019604263733876037,
-      "zScore":-1.8246,
-      "timeUTC":"2022-07-29T15:16:00Z"
+      "varienceMean":-0.000494433344220849,
+      "standardDeviation":0.017344664257169667,
+      "zScore":-0.9161,
+      "timeUTC":"2022-08-01T15:16:00Z"
    },
    {
-      "varienceMean":0.0017959085629330811,
-      "standardDeviation":0.019388566208232646,
-      "zScore":-1.3274,
-      "timeUTC":"2022-07-29T15:17:00Z"
+      "varienceMean":-0.00030736863007204367,
+      "standardDeviation":0.017405325469282473,
+      "zScore":0.8557,
+      "timeUTC":"2022-08-01T15:17:00Z"
    },
    {
-      "varienceMean":0.002007216152551933,
-      "standardDeviation":0.019399326968990063,
-      "zScore":0.5901,
-      "timeUTC":"2022-07-29T15:18:00Z"
+      "varienceMean":-0.0005732865640157663,
+      "standardDeviation":0.01741078412887376,
+      "zScore":-0.7765,
+      "timeUTC":"2022-08-01T15:18:00Z"
    },
    {
-      "varienceMean":0.0022339057388298623,
-      "standardDeviation":0.019204989710123348,
-      "zScore":-0.2773,
-      "timeUTC":"2022-07-29T15:19:00Z"
+      "varienceMean":-0.00031074426359499626,
+      "standardDeviation":0.01733154444525264,
+      "zScore":0.4473,
+      "timeUTC":"2022-08-01T15:19:00Z"
    },
    {
-      "varienceMean":0.0016656756804342837,
-      "standardDeviation":0.018141397059926984,
-      "zScore":0.3762,
-      "timeUTC":"2022-07-29T15:20:00Z"
+      "varienceMean":-0.0005063408801308596,
+      "standardDeviation":0.017389152204982737,
+      "zScore":-0.8508,
+      "timeUTC":"2022-08-01T15:20:00Z"
    },
    {
-      "varienceMean":0.0015497457329675373,
-      "standardDeviation":0.018001436282480125,
-      "zScore":0.8932,
-      "timeUTC":"2022-07-29T15:21:00Z"
+      "varienceMean":-0.0006070849637440358,
+      "standardDeviation":0.01737578796878046,
+      "zScore":-0.1543,
+      "timeUTC":"2022-08-01T15:21:00Z"
    },
    {
-      "varienceMean":0.0010572706637777542,
-      "standardDeviation":0.017980205685584262,
-      "zScore":-1.3127,
-      "timeUTC":"2022-07-29T15:22:00Z"
+      "varienceMean":-0.0006088595744637966,
+      "standardDeviation":0.017373700689987517,
+      "zScore":1.1712,
+      "timeUTC":"2022-08-01T15:22:00Z"
    },
    {
-      "varienceMean":0.001055506118670426,
-      "standardDeviation":0.01797946323984835,
-      "zScore":0.4159,
-      "timeUTC":"2022-07-29T15:23:00Z"
+      "varienceMean":-0.0003650541335596833,
+      "standardDeviation":0.01721055533088369,
+      "zScore":0.0289,
+      "timeUTC":"2022-08-01T15:23:00Z"
    },
    {
-      "varienceMean":0.0012090788684560884,
-      "standardDeviation":0.017983715592874393,
-      "zScore":0.4504,
-      "timeUTC":"2022-07-29T15:24:00Z"
+      "varienceMean":-0.00039937939626856397,
+      "standardDeviation":0.01720392882089682,
+      "zScore":0.0943,
+      "timeUTC":"2022-08-01T15:24:00Z"
    },
    {
-      "varienceMean":0.0013396675032586588,
-      "standardDeviation":0.017967667948579458,
-      "zScore":0.2368,
-      "timeUTC":"2022-07-29T15:25:00Z"
+      "varienceMean":-0.0005762395971495111,
+      "standardDeviation":0.017191203006608386,
+      "zScore":-0.4373,
+      "timeUTC":"2022-08-01T15:25:00Z"
    },
    {
-      "varienceMean":0.0010063789648736773,
-      "standardDeviation":0.01775189458343298,
-      "zScore":-0.278,
-      "timeUTC":"2022-07-29T15:26:00Z"
+      "varienceMean":-0.00015709817755950686,
+      "standardDeviation":0.01719537753365874,
+      "zScore":1.2165,
+      "timeUTC":"2022-08-01T15:26:00Z"
    },
    {
-      "varienceMean":0.0008589956157946506,
-      "standardDeviation":0.01774626838180659,
-      "zScore":-0.3729,
-      "timeUTC":"2022-07-29T15:27:00Z"
+      "varienceMean":-3.551378718290872E-05,
+      "standardDeviation":0.017346694782480496,
+      "zScore":1.5861,
+      "timeUTC":"2022-08-01T15:27:00Z"
    },
    {
-      "varienceMean":0.0005400960978714197,
-      "standardDeviation":0.01746748723411904,
-      "zScore":-0.0225,
-      "timeUTC":"2022-07-29T15:28:00Z"
+      "varienceMean":-0.00018986594426760494,
+      "standardDeviation":0.017407736613332656,
+      "zScore":-0.8337,
+      "timeUTC":"2022-08-01T15:28:00Z"
    },
    {
-      "varienceMean":0.0008050055293907721,
-      "standardDeviation":0.017370490244339537,
-      "zScore":0.3877,
-      "timeUTC":"2022-07-29T15:29:00Z"
+      "varienceMean":0.0002582129326723583,
+      "standardDeviation":0.017045270899526108,
+      "zScore":0.4837,
+      "timeUTC":"2022-08-01T15:29:00Z"
    },
    {
-      "varienceMean":0.0005013678963916322,
-      "standardDeviation":0.01721951160945228,
-      "zScore":-0.3734,
-      "timeUTC":"2022-07-29T15:30:00Z"
+      "varienceMean":0.0001918502846603393,
+      "standardDeviation":0.017012489571434166,
+      "zScore":0.3014,
+      "timeUTC":"2022-08-01T15:30:00Z"
    },
    {
-      "varienceMean":0.000721535908043037,
-      "standardDeviation":0.01711994419396715,
-      "zScore":0.183,
-      "timeUTC":"2022-07-29T15:31:00Z"
+      "varienceMean":-5.0258051254091736E-05,
+      "standardDeviation":0.016789875357407873,
+      "zScore":0.2118,
+      "timeUTC":"2022-08-01T15:31:00Z"
    },
    {
-      "varienceMean":0.0006812415437819519,
-      "standardDeviation":0.01712639834743855,
-      "zScore":-0.2766,
-      "timeUTC":"2022-07-29T15:32:00Z"
+      "varienceMean":8.890637191295629E-05,
+      "standardDeviation":0.016903989816566746,
+      "zScore":1.2247,
+      "timeUTC":"2022-08-01T15:32:00Z"
    },
    {
-      "varienceMean":0.0009452612310047294,
-      "standardDeviation":0.017062320540763704,
-      "zScore":0.5228,
-      "timeUTC":"2022-07-29T15:33:00Z"
+      "varienceMean":-0.000298770034361584,
+      "standardDeviation":0.01689254303725217,
+      "zScore":-1.1065,
+      "timeUTC":"2022-08-01T15:33:00Z"
    },
    {
-      "varienceMean":0.0009136240924599532,
-      "standardDeviation":0.01708040190879289,
-      "zScore":-0.6629,
-      "timeUTC":"2022-07-29T15:34:00Z"
+      "varienceMean":2.3772245858384096E-05,
+      "standardDeviation":0.01661607605642199,
+      "zScore":0.0966,
+      "timeUTC":"2022-08-01T15:34:00Z"
    },
    {
-      "varienceMean":0.0007130975211712425,
-      "standardDeviation":0.017244054249751777,
-      "zScore":-1.3879,
-      "timeUTC":"2022-07-29T15:35:00Z"
+      "varienceMean":0.00024002833079869257,
+      "standardDeviation":0.01653610241741047,
+      "zScore":0.2766,
+      "timeUTC":"2022-08-01T15:35:00Z"
    },
    {
-      "varienceMean":0.0006401605982409532,
-      "standardDeviation":0.01714815238272442,
-      "zScore":1.108,
-      "timeUTC":"2022-07-29T15:36:00Z"
+      "varienceMean":-3.339259579855872E-06,
+      "standardDeviation":0.016327817563371795,
+      "zScore":0.1235,
+      "timeUTC":"2022-08-01T15:36:00Z"
    },
    {
-      "varienceMean":0.0003989857287591347,
-      "standardDeviation":0.017204824436944304,
-      "zScore":-0.9285,
-      "timeUTC":"2022-07-29T15:37:00Z"
+      "varienceMean":-0.00032430168530559286,
+      "standardDeviation":0.0167128880250582,
+      "zScore":-2.1365,
+      "timeUTC":"2022-08-01T15:37:00Z"
    },
    {
-      "varienceMean":0.0010050560922377468,
-      "standardDeviation":0.01695250651863105,
-      "zScore":1.3503,
-      "timeUTC":"2022-07-29T15:38:00Z"
+      "varienceMean":-0.00024600377322824707,
+      "standardDeviation":0.016731074397553534,
+      "zScore":0.4638,
+      "timeUTC":"2022-08-01T15:38:00Z"
    },
    {
-      "varienceMean":0.0003900316893450817,
-      "standardDeviation":0.015729274904735777,
-      "zScore":0.1308,
-      "timeUTC":"2022-07-29T15:39:00Z"
+      "varienceMean":-0.0003867063136663329,
+      "standardDeviation":0.016789170356498375,
+      "zScore":-0.827,
+      "timeUTC":"2022-08-01T15:39:00Z"
    },
    {
-      "varienceMean":-0.00030515792817183363,
-      "standardDeviation":0.01538174240102038,
-      "zScore":-1.7316,
-      "timeUTC":"2022-07-29T15:40:00Z"
+      "varienceMean":-0.0003847000864619975,
+      "standardDeviation":0.01678958172840811,
+      "zScore":0.211,
+      "timeUTC":"2022-08-01T15:40:00Z"
    },
    {
-      "varienceMean":-0.0008175407227639236,
-      "standardDeviation":0.014946073432371181,
-      "zScore":-0.8343,
-      "timeUTC":"2022-07-29T15:41:00Z"
+      "varienceMean":-0.00037758239567661306,
+      "standardDeviation":0.01678718355050455,
+      "zScore":-0.316,
+      "timeUTC":"2022-08-01T15:41:00Z"
    },
    {
-      "varienceMean":-0.0011037529863872928,
-      "standardDeviation":0.014809372070149214,
-      "zScore":-0.4768,
-      "timeUTC":"2022-07-29T15:42:00Z"
+      "varienceMean":-0.0007411803718884051,
+      "standardDeviation":0.016923101201310672,
+      "zScore":-1.4358,
+      "timeUTC":"2022-08-01T15:42:00Z"
    },
    {
-      "varienceMean":-0.0012015778591529368,
-      "standardDeviation":0.014785024023613773,
-      "zScore":-0.0784,
-      "timeUTC":"2022-07-29T15:43:00Z"
+      "varienceMean":-0.000647779197847444,
+      "standardDeviation":0.017051252784659913,
+      "zScore":1.638,
+      "timeUTC":"2022-08-01T15:43:00Z"
    },
    {
-      "varienceMean":-0.0011620330561152555,
-      "standardDeviation":0.014808971290239574,
-      "zScore":0.7373,
-      "timeUTC":"2022-07-29T15:44:00Z"
+      "varienceMean":-0.0008189146215532354,
+      "standardDeviation":0.016826705021324544,
+      "zScore":0.8174,
+      "timeUTC":"2022-08-01T15:44:00Z"
    },
    {
-      "varienceMean":-0.0010891398587093918,
-      "standardDeviation":0.014881740323863371,
-      "zScore":1.2383,
-      "timeUTC":"2022-07-29T15:45:00Z"
+      "varienceMean":-0.0004632368276231524,
+      "standardDeviation":0.01675840704360736,
+      "zScore":0.8582,
+      "timeUTC":"2022-08-01T15:45:00Z"
    },
    {
-      "varienceMean":-0.001101195278194133,
-      "standardDeviation":0.01486999425438435,
-      "zScore":0.9346,
-      "timeUTC":"2022-07-29T15:46:00Z"
+      "varienceMean":-0.00041566839140987506,
+      "standardDeviation":0.016747501811636162,
+      "zScore":-0.0887,
+      "timeUTC":"2022-08-01T15:46:00Z"
    },
    {
-      "varienceMean":-0.0011293297901991553,
-      "standardDeviation":0.014870353801798823,
-      "zScore":-0.1064,
-      "timeUTC":"2022-07-29T15:47:00Z"
+      "varienceMean":-0.00038021252728903573,
+      "standardDeviation":0.01674468186168958,
+      "zScore":0.0253,
+      "timeUTC":"2022-08-01T15:47:00Z"
    },
    {
-      "varienceMean":-0.0009430585214330059,
-      "standardDeviation":0.014797691898264511,
-      "zScore":0.2321,
-      "timeUTC":"2022-07-29T15:48:00Z"
+      "varienceMean":-0.00024927039442450115,
+      "standardDeviation":0.016652834265782842,
+      "zScore":-0.3141,
+      "timeUTC":"2022-08-01T15:48:00Z"
    },
    {
-      "varienceMean":-0.0008828492570036093,
-      "standardDeviation":0.01483170006061495,
-      "zScore":0.7651,
-      "timeUTC":"2022-07-29T15:49:00Z"
+      "varienceMean":-0.00015721897572389918,
+      "standardDeviation":0.016679544056435996,
+      "zScore":0.5631,
+      "timeUTC":"2022-08-01T15:49:00Z"
    },
    {
-      "varienceMean":-0.000616388086806731,
-      "standardDeviation":0.014873886503173861,
-      "zScore":1.0449,
-      "timeUTC":"2022-07-29T15:50:00Z"
+      "varienceMean":-0.0003484678335734138,
+      "standardDeviation":0.016469710806425873,
+      "zScore":0.5294,
+      "timeUTC":"2022-08-01T15:50:00Z"
    },
    {
-      "varienceMean":-0.0007241940754785122,
-      "standardDeviation":0.014933697779579317,
-      "zScore":-0.911,
-      "timeUTC":"2022-07-29T15:51:00Z"
+      "varienceMean":-0.0002832590199300345,
+      "standardDeviation":0.01651370027924278,
+      "zScore":0.8692,
+      "timeUTC":"2022-08-01T15:51:00Z"
    },
    {
-      "varienceMean":-0.0007025378725736191,
-      "standardDeviation":0.01494730507957936,
-      "zScore":0.6998,
-      "timeUTC":"2022-07-29T15:52:00Z"
+      "varienceMean":-0.00037045445650378967,
+      "standardDeviation":0.016443099229938935,
+      "zScore":0.5489,
+      "timeUTC":"2022-08-01T15:52:00Z"
    },
    {
-      "varienceMean":-0.0009506579004244654,
-      "standardDeviation":0.014922360844722869,
-      "zScore":-0.7224,
-      "timeUTC":"2022-07-29T15:53:00Z"
+      "varienceMean":-0.0002479011044227943,
+      "standardDeviation":0.0164045624523584,
+      "zScore":0.055,
+      "timeUTC":"2022-08-01T15:53:00Z"
    },
    {
-      "varienceMean":-0.0011059259316261684,
-      "standardDeviation":0.014916335819012892,
-      "zScore":-0.4764,
-      "timeUTC":"2022-07-29T15:54:00Z"
+      "varienceMean":-0.0009882177442852758,
+      "standardDeviation":0.017001765939433873,
+      "zScore":-2.9479,
+      "timeUTC":"2022-08-01T15:54:00Z"
    },
    {
-      "varienceMean":-0.0009710324541381713,
-      "standardDeviation":0.014930812825379374,
-      "zScore":0.5545,
-      "timeUTC":"2022-07-29T15:55:00Z"
+      "varienceMean":-0.0011657656301145606,
+      "standardDeviation":0.017493525826994077,
+      "zScore":-3.2332,
+      "timeUTC":"2022-08-01T15:55:00Z"
    },
    {
-      "varienceMean":-0.0012317055792183528,
-      "standardDeviation":0.014995354362463105,
-      "zScore":-1.1076,
-      "timeUTC":"2022-07-29T15:56:00Z"
+      "varienceMean":-0.0013874384154317946,
+      "standardDeviation":0.017318872134635597,
+      "zScore":0.1583,
+      "timeUTC":"2022-08-01T15:56:00Z"
    },
    {
-      "varienceMean":-0.001152657624686294,
-      "standardDeviation":0.01491795370064417,
-      "zScore":-0.7194,
-      "timeUTC":"2022-07-29T15:57:00Z"
+      "varienceMean":-0.0013724287183506042,
+      "standardDeviation":0.017317351669012347,
+      "zScore":-0.0584,
+      "timeUTC":"2022-08-01T15:57:00Z"
    },
    {
-      "varienceMean":-0.0009182668131498075,
-      "standardDeviation":0.01480545052955774,
+      "varienceMean":-0.0015623681083696056,
+      "standardDeviation":0.017161166743258162,
+      "zScore":0.2782,
+      "timeUTC":"2022-08-01T15:58:00Z"
+   },
+   {
+      "varienceMean":-0.0013717875406111008,
+      "standardDeviation":0.01721536266112462,
+      "zScore":0.8319,
+      "timeUTC":"2022-08-01T15:59:00Z"
+   },
+   {
+      "varienceMean":-0.0012959978435595975,
+      "standardDeviation":0.01724412915233542,
+      "zScore":0.5968,
+      "timeUTC":"2022-08-01T16:00:00Z"
+   },
+   {
+      "varienceMean":-0.00125723985878919,
+      "standardDeviation":0.017258739987538355,
+      "zScore":0.488,
+      "timeUTC":"2022-08-01T16:01:00Z"
+   },
+   {
+      "varienceMean":-0.0013132225186399393,
+      "standardDeviation":0.01727998116854466,
+      "zScore":-0.5396,
+      "timeUTC":"2022-08-01T16:02:00Z"
+   },
+   {
+      "varienceMean":-0.001152370872207079,
+      "standardDeviation":0.017325233114812908,
+      "zScore":0.7405,
+      "timeUTC":"2022-08-01T16:03:00Z"
+   },
+   {
+      "varienceMean":-0.0011664689716545961,
+      "standardDeviation":0.017312940263492733,
+      "zScore":0.832,
+      "timeUTC":"2022-08-01T16:04:00Z"
+   },
+   {
+      "varienceMean":-0.001245796969014261,
+      "standardDeviation":0.01727474636551668,
+      "zScore":0.2547,
+      "timeUTC":"2022-08-01T16:05:00Z"
+   },
+   {
+      "varienceMean":-0.0011324089632866587,
+      "standardDeviation":0.017430144681162368,
+      "zScore":1.6864,
+      "timeUTC":"2022-08-01T16:06:00Z"
+   },
+   {
+      "varienceMean":-0.0007103144640406185,
+      "standardDeviation":0.01774071964278736,
+      "zScore":1.9071,
+      "timeUTC":"2022-08-01T16:07:00Z"
+   },
+   {
+      "varienceMean":-0.001173094134561511,
+      "standardDeviation":0.01767464155266342,
+      "zScore":-1.153,
+      "timeUTC":"2022-08-01T16:08:00Z"
+   },
+   {
+      "varienceMean":-0.0012670452343174305,
+      "standardDeviation":0.017750046077283824,
+      "zScore":-1.0629,
+      "timeUTC":"2022-08-01T16:09:00Z"
+   },
+   {
+      "varienceMean":-0.0013951640693270445,
+      "standardDeviation":0.0177475751843869,
+      "zScore":-0.3381,
+      "timeUTC":"2022-08-01T16:10:00Z"
+   },
+   {
+      "varienceMean":-0.0015915587809734275,
+      "standardDeviation":0.017706426996145466,
+      "zScore":-0.3393,
+      "timeUTC":"2022-08-01T16:11:00Z"
+   },
+   {
+      "varienceMean":-0.0016941581856374077,
+      "standardDeviation":0.017624924346370814,
+      "zScore":0.5081,
+      "timeUTC":"2022-08-01T16:12:00Z"
+   },
+   {
+      "varienceMean":-0.0017562129742513773,
+      "standardDeviation":0.0176055983234739,
+      "zScore":0.1371,
+      "timeUTC":"2022-08-01T16:13:00Z"
+   },
+   {
+      "varienceMean":-0.0019460351063962985,
+      "standardDeviation":0.017610422611288815,
+      "zScore":-0.559,
+      "timeUTC":"2022-08-01T16:14:00Z"
+   },
+   {
+      "varienceMean":-0.0017752095452900768,
+      "standardDeviation":0.017548771814705027,
+      "zScore":0.1203,
+      "timeUTC":"2022-08-01T16:15:00Z"
+   },
+   {
+      "varienceMean":-0.002097215980949414,
+      "standardDeviation":0.017669566396444028,
+      "zScore":-1.2759,
+      "timeUTC":"2022-08-01T16:16:00Z"
+   },
+   {
+      "varienceMean":-0.002051589969909158,
+      "standardDeviation":0.017676335402344128,
+      "zScore":0.2761,
+      "timeUTC":"2022-08-01T16:17:00Z"
+   },
+   {
+      "varienceMean":-0.0025064974666995036,
+      "standardDeviation":0.017094680601025,
+      "zScore":-0.0169,
+      "timeUTC":"2022-08-01T16:18:00Z"
+   },
+   {
+      "varienceMean":-0.002104095069640965,
+      "standardDeviation":0.016607473729968136,
+      "zScore":-0.0291,
+      "timeUTC":"2022-08-01T16:19:00Z"
+   },
+   {
+      "varienceMean":-0.0018168376918244464,
+      "standardDeviation":0.016306706990346812,
+      "zScore":-0.1847,
+      "timeUTC":"2022-08-01T16:20:00Z"
+   },
+   {
+      "varienceMean":-0.0016573155763699792,
+      "standardDeviation":0.016435190851272933,
+      "zScore":1.2827,
+      "timeUTC":"2022-08-01T16:21:00Z"
+   },
+   {
+      "varienceMean":-0.0014815494981500596,
+      "standardDeviation":0.016471422108454196,
+      "zScore":0.7341,
+      "timeUTC":"2022-08-01T16:22:00Z"
+   },
+   {
+      "varienceMean":-0.0014173425222808278,
+      "standardDeviation":0.0165315770408199,
+      "zScore":1.1274,
+      "timeUTC":"2022-08-01T16:23:00Z"
+   },
+   {
+      "varienceMean":-0.0013672835056200456,
+      "standardDeviation":0.016601367886604813,
+      "zScore":1.5405,
+      "timeUTC":"2022-08-01T16:24:00Z"
+   },
+   {
+      "varienceMean":-0.0011432932809108901,
+      "standardDeviation":0.016473245499472954,
+      "zScore":0.0988,
+      "timeUTC":"2022-08-01T16:25:00Z"
+   },
+   {
+      "varienceMean":-0.0006904515409379798,
+      "standardDeviation":0.01612825992349189,
+      "zScore":0.6199,
+      "timeUTC":"2022-08-01T16:26:00Z"
+   },
+   {
+      "varienceMean":-0.0007169447086070195,
+      "standardDeviation":0.016161633546545352,
+      "zScore":-1.3395,
+      "timeUTC":"2022-08-01T16:27:00Z"
+   },
+   {
+      "varienceMean":-0.000675115709088014,
+      "standardDeviation":0.016129616659610196,
+      "zScore":-0.6378,
+      "timeUTC":"2022-08-01T16:28:00Z"
+   },
+   {
+      "varienceMean":-0.0005484242040485252,
+      "standardDeviation":0.01619851663412561,
+      "zScore":0.9298,
+      "timeUTC":"2022-08-01T16:29:00Z"
+   },
+   {
+      "varienceMean":-0.0003411449726467455,
+      "standardDeviation":0.015985282276700184,
+      "zScore":-0.3937,
+      "timeUTC":"2022-08-01T16:30:00Z"
+   },
+   {
+      "varienceMean":-0.0010504033536966528,
+      "standardDeviation":0.016198634672184922,
+      "zScore":-2.4662,
+      "timeUTC":"2022-08-01T16:31:00Z"
+   },
+   {
+      "varienceMean":-0.0007883458644090194,
+      "standardDeviation":0.016483707780127626,
+      "zScore":1.8654,
+      "timeUTC":"2022-08-01T16:32:00Z"
+   },
+   {
+      "varienceMean":-0.0008670749764625298,
+      "standardDeviation":0.01644493129853237,
+      "zScore":0.2561,
+      "timeUTC":"2022-08-01T16:33:00Z"
+   },
+   {
+      "varienceMean":-0.0005083437888258056,
+      "standardDeviation":0.015770602530335364,
+      "zScore":-0.794,
+      "timeUTC":"2022-08-01T16:34:00Z"
+   },
+   {
+      "varienceMean":-0.0005666849174115722,
+      "standardDeviation":0.015719992887496228,
+      "zScore":0.6852,
+      "timeUTC":"2022-08-01T16:35:00Z"
+   },
+   {
+      "varienceMean":-0.0005517038469511419,
+      "standardDeviation":0.01571960472310687,
+      "zScore":0.0213,
+      "timeUTC":"2022-08-01T16:36:00Z"
+   },
+   {
+      "varienceMean":-0.0005848688497600709,
+      "standardDeviation":0.015721792587844632,
+      "zScore":-0.1704,
+      "timeUTC":"2022-08-01T16:37:00Z"
+   },
+   {
+      "varienceMean":-0.0006378394483488481,
+      "standardDeviation":0.015724099328197974,
+      "zScore":-0.2103,
+      "timeUTC":"2022-08-01T16:38:00Z"
+   },
+   {
+      "varienceMean":-0.0005530479307345796,
+      "standardDeviation":0.01572706149187487,
       "zScore":0.3018,
-      "timeUTC":"2022-07-29T15:58:00Z"
+      "timeUTC":"2022-08-01T16:39:00Z"
    },
    {
-      "varienceMean":-0.001211567703724409,
-      "standardDeviation":0.01457916802639649,
-      "zScore":-0.2183,
-      "timeUTC":"2022-07-29T15:59:00Z"
+      "varienceMean":-0.00027946128255847954,
+      "standardDeviation":0.015791303015534656,
+      "zScore":1.0919,
+      "timeUTC":"2022-08-01T16:40:00Z"
    },
    {
-      "varienceMean":-0.0012443820160485339,
-      "standardDeviation":0.014577100531980927,
-      "zScore":-0.0484,
-      "timeUTC":"2022-07-29T16:00:00Z"
+      "varienceMean":-0.00012640856133808707,
+      "standardDeviation":0.015826176391655275,
+      "zScore":0.7063,
+      "timeUTC":"2022-08-01T16:41:00Z"
    },
    {
-      "varienceMean":-0.0012565531144109962,
-      "standardDeviation":0.014578647917404668,
-      "zScore":-0.1685,
-      "timeUTC":"2022-07-29T16:01:00Z"
+      "varienceMean":-5.4413021218360364E-05,
+      "standardDeviation":0.0158138529334611,
+      "zScore":0.0541,
+      "timeUTC":"2022-08-01T16:42:00Z"
    },
    {
-      "varienceMean":-0.001237212530813663,
-      "standardDeviation":0.014573970500215855,
-      "zScore":-0.1762,
-      "timeUTC":"2022-07-29T16:02:00Z"
+      "varienceMean":0.0003457376210790853,
+      "standardDeviation":0.01645945869224607,
+      "zScore":2.7852,
+      "timeUTC":"2022-08-01T16:43:00Z"
    },
    {
-      "varienceMean":-0.0012403668672283557,
-      "standardDeviation":0.014578611416012542,
-      "zScore":-1.4818,
-      "timeUTC":"2022-07-29T16:03:00Z"
+      "varienceMean":0.00013604359955366003,
+      "standardDeviation":0.016815775701781013,
+      "zScore":-2.2985,
+      "timeUTC":"2022-08-01T16:44:00Z"
    },
    {
-      "varienceMean":-0.001161454486400739,
-      "standardDeviation":0.01457541356242197,
-      "zScore":0.2275,
-      "timeUTC":"2022-07-29T16:04:00Z"
+      "varienceMean":0.00010252276715573136,
+      "standardDeviation":0.016809580738633312,
+      "zScore":0.0861,
+      "timeUTC":"2022-08-01T16:45:00Z"
    },
    {
-      "varienceMean":-0.001256159470581724,
-      "standardDeviation":0.01461723830903873,
-      "zScore":-0.7617,
-      "timeUTC":"2022-07-29T16:05:00Z"
+      "varienceMean":0.00014147363310708543,
+      "standardDeviation":0.016817059922076143,
+      "zScore":0.3066,
+      "timeUTC":"2022-08-01T16:46:00Z"
    },
    {
-      "varienceMean":-0.0012641274294656268,
-      "standardDeviation":0.014614286878393069,
-      "zScore":0.3435,
-      "timeUTC":"2022-07-29T16:06:00Z"
+      "varienceMean":0.0003852144074818459,
+      "standardDeviation":0.01666461927135572,
+      "zScore":0.0957,
+      "timeUTC":"2022-08-01T16:47:00Z"
    },
    {
-      "varienceMean":-0.0012051275861452806,
-      "standardDeviation":0.014651713758384567,
-      "zScore":0.8329,
-      "timeUTC":"2022-07-29T16:07:00Z"
+      "varienceMean":0.00020941628056946933,
+      "standardDeviation":0.01684753839724653,
+      "zScore":-1.5514,
+      "timeUTC":"2022-08-01T16:48:00Z"
    },
    {
-      "varienceMean":-0.0011411297065474179,
-      "standardDeviation":0.014645002751450444,
-      "zScore":0.1114,
-      "timeUTC":"2022-07-29T16:08:00Z"
+      "varienceMean":-0.00011080214870325028,
+      "standardDeviation":0.01715818189473289,
+      "zScore":-1.8851,
+      "timeUTC":"2022-08-01T16:49:00Z"
    },
    {
-      "varienceMean":-0.0018186115721674481,
-      "standardDeviation":0.014756451881760543,
-      "zScore":-2.4365,
-      "timeUTC":"2022-07-29T16:09:00Z"
+      "varienceMean":0.00023261367225230483,
+      "standardDeviation":0.017280367628227503,
+      "zScore":1.3383,
+      "timeUTC":"2022-08-01T16:50:00Z"
    },
    {
-      "varienceMean":-0.001436338873932816,
-      "standardDeviation":0.015388275228269832,
-      "zScore":2.8485,
-      "timeUTC":"2022-07-29T16:10:00Z"
+      "varienceMean":0.0003124423554138624,
+      "standardDeviation":0.01728954024462897,
+      "zScore":0.3434,
+      "timeUTC":"2022-08-01T16:51:00Z"
    },
    {
-      "varienceMean":-0.0015111439056898646,
-      "standardDeviation":0.015315411448126332,
-      "zScore":0.7346,
-      "timeUTC":"2022-07-29T16:11:00Z"
+      "varienceMean":0.00030198490716919733,
+      "standardDeviation":0.01729552590035533,
+      "zScore":-0.6022,
+      "timeUTC":"2022-08-01T16:52:00Z"
    },
    {
-      "varienceMean":-0.0014655264855994977,
-      "standardDeviation":0.015333413875867601,
-      "zScore":0.5417,
-      "timeUTC":"2022-07-29T16:12:00Z"
+      "varienceMean":0.0002056527267081746,
+      "standardDeviation":0.017245207512475682,
+      "zScore":0.2466,
+      "timeUTC":"2022-08-01T16:53:00Z"
    },
    {
-      "varienceMean":-0.0010787325852772431,
-      "standardDeviation":0.014826981655364254,
-      "zScore":-0.0404,
-      "timeUTC":"2022-07-29T16:13:00Z"
+      "varienceMean":0.0002780828045628788,
+      "standardDeviation":0.017247608598474004,
+      "zScore":0.241,
+      "timeUTC":"2022-08-01T16:54:00Z"
    },
    {
-      "varienceMean":-0.0009132351670078718,
-      "standardDeviation":0.01470163563515284,
-      "zScore":-0.2034,
-      "timeUTC":"2022-07-29T16:14:00Z"
+      "varienceMean":0.0003316736733030131,
+      "standardDeviation":0.017245309537702928,
+      "zScore":0.1109,
+      "timeUTC":"2022-08-01T16:55:00Z"
    },
    {
-      "varienceMean":-0.0006743640233170041,
-      "standardDeviation":0.014673396053363328,
-      "zScore":0.6875,
-      "timeUTC":"2022-07-29T16:15:00Z"
+      "varienceMean":0.0004896258990570848,
+      "standardDeviation":0.01716362136288751,
+      "zScore":-0.0629,
+      "timeUTC":"2022-08-01T16:56:00Z"
    },
    {
-      "varienceMean":-0.000740731123145789,
-      "standardDeviation":0.0146599602654355,
-      "zScore":-0.0216,
-      "timeUTC":"2022-07-29T16:16:00Z"
+      "varienceMean":0.0003415793681186566,
+      "standardDeviation":0.0171051371364284,
+      "zScore":-0.0327,
+      "timeUTC":"2022-08-01T16:57:00Z"
    },
    {
-      "varienceMean":-0.0006366843671893002,
-      "standardDeviation":0.014695569753085124,
-      "zScore":0.6923,
-      "timeUTC":"2022-07-29T16:17:00Z"
+      "varienceMean":0.0005486895477660413,
+      "standardDeviation":0.017054411502660564,
+      "zScore":0.3558,
+      "timeUTC":"2022-08-01T16:58:00Z"
    },
    {
-      "varienceMean":-0.0004972725793664846,
-      "standardDeviation":0.014808718715909495,
-      "zScore":1.2745,
-      "timeUTC":"2022-07-29T16:18:00Z"
+      "varienceMean":0.0006065868757704017,
+      "standardDeviation":0.01708751123388949,
+      "zScore":0.7389,
+      "timeUTC":"2022-08-01T16:59:00Z"
    },
    {
-      "varienceMean":-0.00040257542754536225,
-      "standardDeviation":0.014844772416168687,
-      "zScore":0.696,
-      "timeUTC":"2022-07-29T16:19:00Z"
+      "varienceMean":0.0008304517525609735,
+      "standardDeviation":0.01702415912118373,
+      "zScore":0.3674,
+      "timeUTC":"2022-08-01T17:00:00Z"
    },
    {
-      "varienceMean":-0.0005151230296186526,
-      "standardDeviation":0.014715452951983716,
-      "zScore":0.7755,
-      "timeUTC":"2022-07-29T16:20:00Z"
+      "varienceMean":0.0008290392396837918,
+      "standardDeviation":0.017024506634667397,
+      "zScore":-0.2501,
+      "timeUTC":"2022-08-01T17:01:00Z"
    },
    {
-      "varienceMean":-0.0004299750240411625,
-      "standardDeviation":0.01471038375096431,
-      "zScore":0.227,
-      "timeUTC":"2022-07-29T16:21:00Z"
+      "varienceMean":0.0006322319679044841,
+      "standardDeviation":0.016918187041841212,
+      "zScore":-0.0339,
+      "timeUTC":"2022-08-01T17:02:00Z"
    },
    {
-      "varienceMean":-0.0004758429127251109,
-      "standardDeviation":0.01470866385626294,
-      "zScore":-0.1169,
-      "timeUTC":"2022-07-29T16:22:00Z"
+      "varienceMean":0.0007436274160137638,
+      "standardDeviation":0.016951168361215966,
+      "zScore":0.6211,
+      "timeUTC":"2022-08-01T17:03:00Z"
    },
    {
-      "varienceMean":-0.0005333260938078333,
-      "standardDeviation":0.0146668058842031,
-      "zScore":0.5352,
-      "timeUTC":"2022-07-29T16:23:00Z"
+      "varienceMean":0.0007535083326730765,
+      "standardDeviation":0.016951733107926862,
+      "zScore":0.086,
+      "timeUTC":"2022-08-01T17:04:00Z"
    },
    {
-      "varienceMean":-0.0005305621531079456,
-      "standardDeviation":0.014667449854001995,
-      "zScore":0.2423,
-      "timeUTC":"2022-07-29T16:24:00Z"
+      "varienceMean":0.0008724275556550477,
+      "standardDeviation":0.016930952735283753,
+      "zScore":0.1728,
+      "timeUTC":"2022-08-01T17:05:00Z"
    },
    {
-      "varienceMean":-0.0004305476131570558,
-      "standardDeviation":0.014700322213446327,
-      "zScore":0.6651,
-      "timeUTC":"2022-07-29T16:25:00Z"
+      "varienceMean":0.0007846227404967653,
+      "standardDeviation":0.016850153760436817,
+      "zScore":0.6645,
+      "timeUTC":"2022-08-01T17:06:00Z"
    },
    {
-      "varienceMean":-0.0001573929540059449,
-      "standardDeviation":0.014725080038812415,
-      "zScore":1.0088,
-      "timeUTC":"2022-07-29T16:26:00Z"
+      "varienceMean":0.0005370375549608744,
+      "standardDeviation":0.016636667511829673,
+      "zScore":0.1312,
+      "timeUTC":"2022-08-01T17:07:00Z"
    },
    {
-      "varienceMean":-1.1116728032597341E-05,
-      "standardDeviation":0.014763573722493786,
-      "zScore":0.7533,
-      "timeUTC":"2022-07-29T16:27:00Z"
+      "varienceMean":0.0007374139662541694,
+      "standardDeviation":0.01657245738552375,
+      "zScore":0.2774,
+      "timeUTC":"2022-08-01T17:08:00Z"
    },
    {
-      "varienceMean":0.0001693112565521798,
-      "standardDeviation":0.014701186895769991,
-      "zScore":0.261,
-      "timeUTC":"2022-07-29T16:28:00Z"
+      "varienceMean":0.0006221150699592744,
+      "standardDeviation":0.016558130900584375,
+      "zScore":-0.2204,
+      "timeUTC":"2022-08-01T17:09:00Z"
    },
    {
-      "varienceMean":0.0001157562254073002,
-      "standardDeviation":0.014759542613485553,
-      "zScore":-1.2671,
-      "timeUTC":"2022-07-29T16:29:00Z"
+      "varienceMean":0.0006440552179976353,
+      "standardDeviation":0.016565791319905106,
+      "zScore":0.4146,
+      "timeUTC":"2022-08-01T17:10:00Z"
    },
    {
-      "varienceMean":0.0002198916725697059,
-      "standardDeviation":0.014662254095037857,
-      "zScore":-0.5858,
-      "timeUTC":"2022-07-29T16:30:00Z"
+      "varienceMean":0.0006443221531771468,
+      "standardDeviation":0.016565837644416395,
+      "zScore":0.1743,
+      "timeUTC":"2022-08-01T17:11:00Z"
    },
    {
-      "varienceMean":-4.1747126649132634E-05,
-      "standardDeviation":0.014746638551263517,
-      "zScore":-1.1998,
-      "timeUTC":"2022-07-29T16:31:00Z"
+      "varienceMean":0.0004987982136489052,
+      "standardDeviation":0.016451735065144905,
+      "zScore":0.3489,
+      "timeUTC":"2022-08-01T17:12:00Z"
    },
    {
-      "varienceMean":-0.00014069488321121826,
-      "standardDeviation":0.014783540659192778,
-      "zScore":-0.7038,
-      "timeUTC":"2022-07-29T16:32:00Z"
+      "varienceMean":0.000569769626918739,
+      "standardDeviation":0.016382673063018,
+      "zScore":-0.7607,
+      "timeUTC":"2022-08-01T17:13:00Z"
    },
    {
-      "varienceMean":-4.278130656697491E-06,
-      "standardDeviation":0.014808663634702955,
-      "zScore":0.64,
-      "timeUTC":"2022-07-29T16:33:00Z"
+      "varienceMean":0.0005910907736496992,
+      "standardDeviation":0.016385424467636543,
+      "zScore":0.1934,
+      "timeUTC":"2022-08-01T17:14:00Z"
    },
    {
-      "varienceMean":0.0002918458586056825,
-      "standardDeviation":0.015242536370043403,
-      "zScore":2.406,
-      "timeUTC":"2022-07-29T16:34:00Z"
+      "varienceMean":0.0004925316626894542,
+      "standardDeviation":0.016389364235067032,
+      "zScore":-0.3376,
+      "timeUTC":"2022-08-01T17:15:00Z"
    },
    {
-      "varienceMean":0.0003412820031822417,
-      "standardDeviation":0.015248119154742397,
-      "zScore":0.2734,
-      "timeUTC":"2022-07-29T16:35:00Z"
+      "varienceMean":0.0006557161318274391,
+      "standardDeviation":0.016484654596935606,
+      "zScore":1.0723,
+      "timeUTC":"2022-08-01T17:16:00Z"
    },
    {
-      "varienceMean":0.0004868322093674433,
-      "standardDeviation":0.015369457876271232,
-      "zScore":1.2991,
-      "timeUTC":"2022-07-29T16:36:00Z"
+      "varienceMean":0.00042114063477767234,
+      "standardDeviation":0.01715818944487328,
+      "zScore":-3.4917,
+      "timeUTC":"2022-08-01T17:17:00Z"
    },
    {
-      "varienceMean":0.0007204071695651314,
-      "standardDeviation":0.015122468006475804,
-      "zScore":-0.3015,
-      "timeUTC":"2022-07-29T16:37:00Z"
+      "varienceMean":0.0007280598682142356,
+      "standardDeviation":0.017552291687842086,
+      "zScore":2.1352,
+      "timeUTC":"2022-08-01T17:18:00Z"
    },
    {
-      "varienceMean":0.0006318419830275285,
-      "standardDeviation":0.015131579687648467,
-      "zScore":-0.3926,
-      "timeUTC":"2022-07-29T16:38:00Z"
+      "varienceMean":0.0009150012764470497,
+      "standardDeviation":0.017490984666752696,
+      "zScore":0.2005,
+      "timeUTC":"2022-08-01T17:19:00Z"
    },
    {
-      "varienceMean":0.0006549106181134123,
-      "standardDeviation":0.015135048119632543,
-      "zScore":0.2258,
-      "timeUTC":"2022-07-29T16:39:00Z"
+      "varienceMean":0.0006943877173982978,
+      "standardDeviation":0.01760010162625295,
+      "zScore":-1.1135,
+      "timeUTC":"2022-08-01T17:20:00Z"
    },
    {
-      "varienceMean":0.0005207771509318023,
-      "standardDeviation":0.015034793034276765,
-      "zScore":0.3083,
-      "timeUTC":"2022-07-29T16:40:00Z"
+      "varienceMean":0.00046015464426261125,
+      "standardDeviation":0.017837663905560824,
+      "zScore":-1.6575,
+      "timeUTC":"2022-08-01T17:21:00Z"
    },
    {
-      "varienceMean":0.0005185460687927563,
-      "standardDeviation":0.015036461188055933,
-      "zScore":-0.755,
-      "timeUTC":"2022-07-29T16:41:00Z"
+      "varienceMean":0.0003975453536289105,
+      "standardDeviation":0.0179377649982477,
+      "zScore":-1.7671,
+      "timeUTC":"2022-08-01T17:22:00Z"
    },
    {
-      "varienceMean":0.0006166367752825759,
-      "standardDeviation":0.015110518406890377,
-      "zScore":1.0745,
-      "timeUTC":"2022-07-29T16:42:00Z"
+      "varienceMean":-0.00024178039541600696,
+      "standardDeviation":0.018106666843319078,
+      "zScore":-2.0107,
+      "timeUTC":"2022-08-01T17:23:00Z"
    },
    {
-      "varienceMean":0.0005100794805410315,
-      "standardDeviation":0.015117398160625262,
-      "zScore":-0.4135,
-      "timeUTC":"2022-07-29T16:43:00Z"
+      "varienceMean":-0.00042396979472031083,
+      "standardDeviation":0.01806477030910026,
+      "zScore":-0.269,
+      "timeUTC":"2022-08-01T17:24:00Z"
    },
    {
-      "varienceMean":0.0005304894674914204,
-      "standardDeviation":0.015125568653676015,
-      "zScore":0.467,
-      "timeUTC":"2022-07-29T16:44:00Z"
+      "varienceMean":-0.00043639659518210095,
+      "standardDeviation":0.018055324922395356,
+      "zScore":0.7262,
+      "timeUTC":"2022-08-01T17:25:00Z"
    },
    {
-      "varienceMean":0.0005666555749319262,
-      "standardDeviation":0.015132767554861723,
-      "zScore":0.3173,
-      "timeUTC":"2022-07-29T16:45:00Z"
+      "varienceMean":-0.0003477797459222005,
+      "standardDeviation":0.018069656823510145,
+      "zScore":0.4044,
+      "timeUTC":"2022-08-01T17:26:00Z"
    },
    {
-      "varienceMean":0.0010097866664385369,
-      "standardDeviation":0.014365597318639324,
-      "zScore":-0.2506,
-      "timeUTC":"2022-07-29T16:46:00Z"
+      "varienceMean":-0.00025071325090361604,
+      "standardDeviation":0.01809754467324734,
+      "zScore":0.5526,
+      "timeUTC":"2022-08-01T17:27:00Z"
    },
    {
-      "varienceMean":0.0006073913951751345,
-      "standardDeviation":0.013430146087893393,
-      "zScore":0.9225,
-      "timeUTC":"2022-07-29T16:47:00Z"
+      "varienceMean":-0.0003948174691526822,
+      "standardDeviation":0.01819572206748822,
+      "zScore":-1.0715,
+      "timeUTC":"2022-08-01T17:28:00Z"
    },
    {
-      "varienceMean":0.0007606501594920869,
-      "standardDeviation":0.013535036104600292,
-      "zScore":1.2422,
-      "timeUTC":"2022-07-29T16:48:00Z"
+      "varienceMean":-0.00048304158010430864,
+      "standardDeviation":0.018170186166529864,
+      "zScore":0.0493,
+      "timeUTC":"2022-08-01T17:29:00Z"
    },
    {
-      "varienceMean":0.0008471868382000364,
-      "standardDeviation":0.013567653199743667,
-      "zScore":0.6922,
-      "timeUTC":"2022-07-29T16:49:00Z"
+      "varienceMean":-0.0002825657652713775,
+      "standardDeviation":0.01837618448340162,
+      "zScore":1.5618,
+      "timeUTC":"2022-08-01T17:30:00Z"
    },
    {
-      "varienceMean":0.0008214348900510996,
-      "standardDeviation":0.013567901591809248,
-      "zScore":-0.1036,
-      "timeUTC":"2022-07-29T16:50:00Z"
+      "varienceMean":-0.0005498914772730357,
+      "standardDeviation":0.01835988816270517,
+      "zScore":-0.6597,
+      "timeUTC":"2022-08-01T17:31:00Z"
    },
    {
-      "varienceMean":0.0009007726058949653,
-      "standardDeviation":0.01355011387700751,
-      "zScore":0.0655,
-      "timeUTC":"2022-07-29T16:51:00Z"
+      "varienceMean":-0.0005461619252423123,
+      "standardDeviation":0.018361795556043763,
+      "zScore":0.5215,
+      "timeUTC":"2022-08-01T17:32:00Z"
    },
    {
-      "varienceMean":0.0006939858660300982,
-      "standardDeviation":0.013549716782954762,
-      "zScore":-0.7535,
-      "timeUTC":"2022-07-29T16:52:00Z"
+      "varienceMean":-0.0006016473392062012,
+      "standardDeviation":0.018366467649532092,
+      "zScore":-0.2337,
+      "timeUTC":"2022-08-01T17:33:00Z"
    },
    {
-      "varienceMean":0.0007734652186369091,
-      "standardDeviation":0.013592497525561787,
-      "zScore":0.8269,
-      "timeUTC":"2022-07-29T16:53:00Z"
+      "varienceMean":-0.00024522950688554403,
+      "standardDeviation":0.017717241879058352,
+      "zScore":-0.8591,
+      "timeUTC":"2022-08-01T17:34:00Z"
    },
    {
-      "varienceMean":0.0008283756502863382,
-      "standardDeviation":0.013575546802399715,
-      "zScore":-0.1087,
-      "timeUTC":"2022-07-29T16:54:00Z"
+      "varienceMean":0.00020856863898633193,
+      "standardDeviation":0.01679639596522192,
+      "zScore":-0.7475,
+      "timeUTC":"2022-08-01T17:35:00Z"
    },
    {
-      "varienceMean":0.0011125781795892796,
-      "standardDeviation":0.013264505147340438,
-      "zScore":-0.0467,
-      "timeUTC":"2022-07-29T16:55:00Z"
+      "varienceMean":0.000270996871289848,
+      "standardDeviation":0.016812131138247022,
+      "zScore":0.4357,
+      "timeUTC":"2022-08-01T17:36:00Z"
    },
    {
-      "varienceMean":0.001441313405181488,
-      "standardDeviation":0.012786366347265161,
-      "zScore":-0.209,
-      "timeUTC":"2022-07-29T16:56:00Z"
+      "varienceMean":0.00040684290322594074,
+      "standardDeviation":0.01684498260341871,
+      "zScore":0.6408,
+      "timeUTC":"2022-08-01T17:37:00Z"
    },
    {
-      "varienceMean":0.0016499136989724056,
-      "standardDeviation":0.012538318559196515,
-      "zScore":-0.3773,
-      "timeUTC":"2022-07-29T16:57:00Z"
+      "varienceMean":0.0003703445369502403,
+      "standardDeviation":0.016842820597635068,
+      "zScore":-0.048,
+      "timeUTC":"2022-08-01T17:38:00Z"
    },
    {
-      "varienceMean":0.0014623667925712546,
-      "standardDeviation":0.012500551531779109,
-      "zScore":-0.541,
-      "timeUTC":"2022-07-29T16:58:00Z"
+      "varienceMean":0.00015687756865496387,
+      "standardDeviation":0.016817290070331947,
+      "zScore":-0.5086,
+      "timeUTC":"2022-08-01T17:39:00Z"
    },
    {
-      "varienceMean":0.001453852755726664,
-      "standardDeviation":0.012503940323273238,
-      "zScore":-0.4317,
-      "timeUTC":"2022-07-29T16:59:00Z"
+      "varienceMean":7.037129189716752E-07,
+      "standardDeviation":0.016806999562282484,
+      "zScore":-0.3941,
+      "timeUTC":"2022-08-01T17:40:00Z"
    },
    {
-      "varienceMean":0.0014191650282837536,
-      "standardDeviation":0.012489175362857319,
-      "zScore":0.2884,
-      "timeUTC":"2022-07-29T17:00:00Z"
+      "varienceMean":0.0001101226965440053,
+      "standardDeviation":0.016888702101881793,
+      "zScore":1.0656,
+      "timeUTC":"2022-08-01T17:41:00Z"
    },
    {
-      "varienceMean":0.0014531937814022716,
-      "standardDeviation":0.012537835268592312,
-      "zScore":1.5615,
-      "timeUTC":"2022-07-29T17:01:00Z"
+      "varienceMean":0.00017299541964406408,
+      "standardDeviation":0.016860255919763867,
+      "zScore":-0.2682,
+      "timeUTC":"2022-08-01T17:42:00Z"
    },
    {
-      "varienceMean":0.0017508194866918203,
-      "standardDeviation":0.012315927948941064,
-      "zScore":0.4439,
-      "timeUTC":"2022-07-29T17:02:00Z"
+      "varienceMean":0.00019413526453171504,
+      "standardDeviation":0.01687598524912449,
+      "zScore":0.8057,
+      "timeUTC":"2022-08-01T17:43:00Z"
    },
    {
-      "varienceMean":0.0017122205878661299,
-      "standardDeviation":0.012300649792509555,
-      "zScore":0.2407,
-      "timeUTC":"2022-07-29T17:03:00Z"
+      "varienceMean":-0.00043795054582675694,
+      "standardDeviation":0.017546056130002513,
+      "zScore":-2.8231,
+      "timeUTC":"2022-08-01T17:44:00Z"
    },
    {
-      "varienceMean":0.001776675903400464,
-      "standardDeviation":0.012357045094775044,
-      "zScore":1.1312,
-      "timeUTC":"2022-07-29T17:04:00Z"
+      "varienceMean":-0.00026108825524414166,
+      "standardDeviation":0.017670069565815662,
+      "zScore":1.1942,
+      "timeUTC":"2022-08-01T17:45:00Z"
    },
    {
-      "varienceMean":0.001845616198671525,
-      "standardDeviation":0.012397319709033756,
-      "zScore":0.8585,
-      "timeUTC":"2022-07-29T17:05:00Z"
+      "varienceMean":-0.0003577693101326924,
+      "standardDeviation":0.017539711565663717,
+      "zScore":1.0805,
+      "timeUTC":"2022-08-01T17:46:00Z"
    },
    {
-      "varienceMean":0.001885886727312396,
-      "standardDeviation":0.012385031442094633,
-      "zScore":-0.1443,
-      "timeUTC":"2022-07-29T17:06:00Z"
+      "varienceMean":-0.0006158213468259252,
+      "standardDeviation":0.017232370814826693,
+      "zScore":0.4604,
+      "timeUTC":"2022-08-01T17:47:00Z"
    },
    {
-      "varienceMean":0.001959507506156528,
-      "standardDeviation":0.012361227741843438,
-      "zScore":-0.0288,
-      "timeUTC":"2022-07-29T17:07:00Z"
+      "varienceMean":-0.0003662263110008204,
+      "standardDeviation":0.017107623903202245,
+      "zScore":0.2206,
+      "timeUTC":"2022-08-01T17:48:00Z"
    },
    {
-      "varienceMean":0.002026771600375434,
-      "standardDeviation":0.0123694772067367,
-      "zScore":0.3918,
-      "timeUTC":"2022-07-29T17:08:00Z"
+      "varienceMean":-7.60084102373787E-05,
+      "standardDeviation":0.017015746162793492,
+      "zScore":0.5268,
+      "timeUTC":"2022-08-01T17:49:00Z"
    },
    {
-      "varienceMean":0.0021643782798233856,
-      "standardDeviation":0.012505835192195633,
-      "zScore":1.5302,
-      "timeUTC":"2022-07-29T17:09:00Z"
+      "varienceMean":0.00026398738336418803,
+      "standardDeviation":0.017204739341440567,
+      "zScore":1.531,
+      "timeUTC":"2022-08-01T17:50:00Z"
    },
    {
-      "varienceMean":0.0025606824280133083,
-      "standardDeviation":0.012865832104184792,
-      "zScore":2.4204,
-      "timeUTC":"2022-07-29T17:10:00Z"
+      "varienceMean":0.0005852021216649462,
+      "standardDeviation":0.017354145587939768,
+      "zScore":1.3793,
+      "timeUTC":"2022-08-01T17:51:00Z"
    },
    {
-      "varienceMean":0.0027570871495870408,
-      "standardDeviation":0.013032920247826953,
-      "zScore":1.5912,
-      "timeUTC":"2022-07-29T17:11:00Z"
+      "varienceMean":0.0008016864668151061,
+      "standardDeviation":0.01756975230309954,
+      "zScore":1.5997,
+      "timeUTC":"2022-08-01T17:52:00Z"
    },
    {
-      "varienceMean":0.002815519328828263,
-      "standardDeviation":0.013015330063950904,
-      "zScore":-0.079,
-      "timeUTC":"2022-07-29T17:12:00Z"
+      "varienceMean":0.0009373684436338059,
+      "standardDeviation":0.01762043634340615,
+      "zScore":0.7542,
+      "timeUTC":"2022-08-01T17:53:00Z"
    },
    {
-      "varienceMean":0.0026638541034217367,
-      "standardDeviation":0.01302066046216081,
-      "zScore":-0.6117,
-      "timeUTC":"2022-07-29T17:13:00Z"
+      "varienceMean":0.000891317202016099,
+      "standardDeviation":0.0176596128404324,
+      "zScore":-0.9789,
+      "timeUTC":"2022-08-01T17:54:00Z"
    },
    {
-      "varienceMean":0.0028123220775019904,
-      "standardDeviation":0.012955230624816417,
-      "zScore":0.1255,
-      "timeUTC":"2022-07-29T17:14:00Z"
+      "varienceMean":0.0008482069848531184,
+      "standardDeviation":0.01766617613399358,
+      "zScore":-0.273,
+      "timeUTC":"2022-08-01T17:55:00Z"
    },
    {
-      "varienceMean":0.0029650068190834127,
-      "standardDeviation":0.012735646528577883,
-      "zScore":-0.8571,
-      "timeUTC":"2022-07-29T17:15:00Z"
+      "varienceMean":0.0010597947597952304,
+      "standardDeviation":0.01748539384887961,
+      "zScore":-0.2598,
+      "timeUTC":"2022-08-01T17:56:00Z"
    },
    {
-      "varienceMean":0.002902129287140916,
-      "standardDeviation":0.012668508205547959,
-      "zScore":0.8249,
-      "timeUTC":"2022-07-29T17:16:00Z"
+      "varienceMean":0.0007237699167947212,
+      "standardDeviation":0.017768749967805995,
+      "zScore":-1.7726,
+      "timeUTC":"2022-08-01T17:57:00Z"
    },
    {
-      "varienceMean":0.0029793930861722858,
-      "standardDeviation":0.012578824201616568,
-      "zScore":-0.8608,
-      "timeUTC":"2022-07-29T17:17:00Z"
+      "varienceMean":0.0009458968226117684,
+      "standardDeviation":0.017861970175978053,
+      "zScore":1.0341,
+      "timeUTC":"2022-08-01T17:58:00Z"
    },
    {
-      "varienceMean":0.0026620581846396184,
-      "standardDeviation":0.012446747044659905,
-      "zScore":-0.8436,
-      "timeUTC":"2022-07-29T17:18:00Z"
+      "varienceMean":0.0010089612136481704,
+      "standardDeviation":0.017860516367981215,
+      "zScore":0.1517,
+      "timeUTC":"2022-08-01T17:59:00Z"
    },
    {
-      "varienceMean":0.00259271542606766,
-      "standardDeviation":0.012467051544176657,
-      "zScore":-0.5679,
-      "timeUTC":"2022-07-29T17:19:00Z"
+      "varienceMean":0.001163046329222981,
+      "standardDeviation":0.01787594888831917,
+      "zScore":0.5268,
+      "timeUTC":"2022-08-01T18:00:00Z"
    },
    {
-      "varienceMean":0.0027835733481805258,
-      "standardDeviation":0.012155667636251097,
-      "zScore":-0.8752,
-      "timeUTC":"2022-07-29T17:20:00Z"
+      "varienceMean":0.0009025535741178379,
+      "standardDeviation":0.01779756426675094,
+      "zScore":-0.4229,
+      "timeUTC":"2022-08-01T18:01:00Z"
    },
    {
-      "varienceMean":0.0028115744919154488,
-      "standardDeviation":0.012121794164416826,
-      "zScore":-1.0971,
-      "timeUTC":"2022-07-29T17:21:00Z"
+      "varienceMean":0.0007916718779623186,
+      "standardDeviation":0.01777125821979009,
+      "zScore":-0.0714,
+      "timeUTC":"2022-08-01T18:02:00Z"
    },
    {
-      "varienceMean":0.0029332420089103767,
-      "standardDeviation":0.012071964395685593,
-      "zScore":0.0885,
-      "timeUTC":"2022-07-29T17:22:00Z"
+      "varienceMean":0.0009215942702602191,
+      "standardDeviation":0.01793760850689514,
+      "zScore":1.633,
+      "timeUTC":"2022-08-01T18:03:00Z"
    },
    {
-      "varienceMean":0.003001506274970066,
-      "standardDeviation":0.012061129885688266,
-      "zScore":0.1214,
-      "timeUTC":"2022-07-29T17:23:00Z"
+      "varienceMean":0.0009610556364925816,
+      "standardDeviation":0.017993046448197377,
+      "zScore":1.5113,
+      "timeUTC":"2022-08-01T18:04:00Z"
    },
    {
-      "varienceMean":0.002850923030007182,
-      "standardDeviation":0.012069857232943765,
-      "zScore":-0.6755,
-      "timeUTC":"2022-07-29T17:24:00Z"
+      "varienceMean":0.001047379413708194,
+      "standardDeviation":0.018011253105956092,
+      "zScore":0.448,
+      "timeUTC":"2022-08-01T18:05:00Z"
    },
    {
-      "varienceMean":0.0027706113030105508,
-      "standardDeviation":0.01199970221307679,
-      "zScore":0.5448,
-      "timeUTC":"2022-07-29T17:25:00Z"
+      "varienceMean":0.0009624032946112409,
+      "standardDeviation":0.017992120083310102,
+      "zScore":-0.0085,
+      "timeUTC":"2022-08-01T18:06:00Z"
    },
    {
-      "varienceMean":0.002625387517952719,
-      "standardDeviation":0.011965318588982109,
-      "zScore":-0.3637,
-      "timeUTC":"2022-07-29T17:26:00Z"
+      "varienceMean":0.0011907125725706437,
+      "standardDeviation":0.017838847332188833,
+      "zScore":-0.0407,
+      "timeUTC":"2022-08-01T18:07:00Z"
    },
    {
-      "varienceMean":0.002529171942233478,
-      "standardDeviation":0.012046261628132663,
-      "zScore":-1.2338,
-      "timeUTC":"2022-07-29T17:27:00Z"
+      "varienceMean":0.0012653106005709438,
+      "standardDeviation":0.01780343049158882,
+      "zScore":-0.2678,
+      "timeUTC":"2022-08-01T18:08:00Z"
    },
    {
-      "varienceMean":0.002472987477481516,
-      "standardDeviation":0.01205940470221964,
-      "zScore":-0.4644,
-      "timeUTC":"2022-07-29T17:28:00Z"
+      "varienceMean":0.000965642122508807,
+      "standardDeviation":0.01783009642037127,
+      "zScore":-0.9209,
+      "timeUTC":"2022-08-01T18:09:00Z"
    },
    {
-      "varienceMean":0.0022710130631227073,
-      "standardDeviation":0.012092944859574272,
-      "zScore":-0.9926,
-      "timeUTC":"2022-07-29T17:29:00Z"
+      "varienceMean":0.0012026768083152428,
+      "standardDeviation":0.017884950250914314,
+      "zScore":0.8871,
+      "timeUTC":"2022-08-01T18:10:00Z"
    },
    {
-      "varienceMean":0.002268516547816985,
-      "standardDeviation":0.012090357765663291,
-      "zScore":1.0262,
-      "timeUTC":"2022-07-29T17:30:00Z"
+      "varienceMean":0.0016570736629425748,
+      "standardDeviation":0.0173769878389832,
+      "zScore":0.1602,
+      "timeUTC":"2022-08-01T18:11:00Z"
    },
    {
-      "varienceMean":0.0024826922566535143,
-      "standardDeviation":0.011983668515193701,
-      "zScore":0.3843,
-      "timeUTC":"2022-07-29T17:31:00Z"
+      "varienceMean":0.0014001096359238239,
+      "standardDeviation":0.017145003083756,
+      "zScore":0.167,
+      "timeUTC":"2022-08-01T18:12:00Z"
    },
    {
-      "varienceMean":0.002397524383390826,
-      "standardDeviation":0.011961911683041707,
-      "zScore":-0.0967,
-      "timeUTC":"2022-07-29T17:32:00Z"
+      "varienceMean":0.0014029858663911585,
+      "standardDeviation":0.017145353239703807,
+      "zScore":0.13,
+      "timeUTC":"2022-08-01T18:13:00Z"
    },
    {
-      "varienceMean":0.0024653740504567926,
-      "standardDeviation":0.011900665219053879,
-      "zScore":-0.6228,
-      "timeUTC":"2022-07-29T17:33:00Z"
+      "varienceMean":0.0015738983632137451,
+      "standardDeviation":0.01708571084073428,
+      "zScore":0.1456,
+      "timeUTC":"2022-08-01T18:14:00Z"
    },
    {
-      "varienceMean":0.0026646810750390526,
-      "standardDeviation":0.011887051067561284,
-      "zScore":0.7616,
-      "timeUTC":"2022-07-29T17:34:00Z"
+      "varienceMean":0.001330027544911211,
+      "standardDeviation":0.017134760497396706,
+      "zScore":-0.9054,
+      "timeUTC":"2022-08-01T18:15:00Z"
    },
    {
-      "varienceMean":0.0025370046868165787,
-      "standardDeviation":0.011905048074692889,
-      "zScore":-0.6717,
-      "timeUTC":"2022-07-29T17:35:00Z"
+      "varienceMean":0.0010146831853405482,
+      "standardDeviation":0.017447657602640564,
+      "zScore":-1.878,
+      "timeUTC":"2022-08-01T18:16:00Z"
    },
    {
-      "varienceMean":0.0027751256678653817,
-      "standardDeviation":0.01173197891491633,
-      "zScore":0.2725,
-      "timeUTC":"2022-07-29T17:36:00Z"
+      "varienceMean":0.0015141041172657052,
+      "standardDeviation":0.018023321459199097,
+      "zScore":2.5059,
+      "timeUTC":"2022-08-01T18:17:00Z"
    },
    {
-      "varienceMean":0.0027194125671360825,
-      "standardDeviation":0.011814402860838761,
-      "zScore":-1.7077,
-      "timeUTC":"2022-07-29T17:37:00Z"
+      "varienceMean":0.0015203038639362678,
+      "standardDeviation":0.01802154923287742,
+      "zScore":-0.2688,
+      "timeUTC":"2022-08-01T18:18:00Z"
    },
    {
-      "varienceMean":0.002766184112104933,
-      "standardDeviation":0.011826852928803495,
-      "zScore":0.4618,
-      "timeUTC":"2022-07-29T17:38:00Z"
+      "varienceMean":0.001442616441622976,
+      "standardDeviation":0.018026602217782576,
+      "zScore":-0.2784,
+      "timeUTC":"2022-08-01T18:19:00Z"
    },
    {
-      "varienceMean":0.00283231202239493,
-      "standardDeviation":0.011805095733780142,
-      "zScore":-0.052,
-      "timeUTC":"2022-07-29T17:39:00Z"
+      "varienceMean":0.0014442189812682955,
+      "standardDeviation":0.018027989003682472,
+      "zScore":0.8697,
+      "timeUTC":"2022-08-01T18:20:00Z"
    },
    {
-      "varienceMean":0.0030379015889805,
-      "standardDeviation":0.01189866645031502,
-      "zScore":1.3086,
-      "timeUTC":"2022-07-29T17:40:00Z"
+      "varienceMean":0.0012579120646736565,
+      "standardDeviation":0.018024006302467647,
+      "zScore":-0.4903,
+      "timeUTC":"2022-08-01T18:21:00Z"
    },
    {
-      "varienceMean":0.003185876316149068,
-      "standardDeviation":0.011905808326497905,
-      "zScore":0.6635,
-      "timeUTC":"2022-07-29T17:41:00Z"
+      "varienceMean":0.001177644753181607,
+      "standardDeviation":0.018043722484690772,
+      "zScore":-0.4657,
+      "timeUTC":"2022-08-01T18:22:00Z"
    },
    {
-      "varienceMean":0.0035517534592724286,
-      "standardDeviation":0.012242768036933093,
-      "zScore":2.3876,
-      "timeUTC":"2022-07-29T17:42:00Z"
+      "varienceMean":0.0004780011631456571,
+      "standardDeviation":0.017636719205082065,
+      "zScore":-1.3752,
+      "timeUTC":"2022-08-01T18:23:00Z"
    },
    {
-      "varienceMean":0.003902830819341379,
-      "standardDeviation":0.011981440462143292,
-      "zScore":0.698,
-      "timeUTC":"2022-07-29T17:43:00Z"
+      "varienceMean":0.0006786265607837863,
+      "standardDeviation":0.017302969687639513,
+      "zScore":-1.1056,
+      "timeUTC":"2022-08-01T18:24:00Z"
    },
    {
-      "varienceMean":0.003962917253351379,
-      "standardDeviation":0.01198758439653932,
-      "zScore":0.3503,
-      "timeUTC":"2022-07-29T17:44:00Z"
+      "varienceMean":0.0007437727499309931,
+      "standardDeviation":0.017318386230390188,
+      "zScore":0.4227,
+      "timeUTC":"2022-08-01T18:25:00Z"
    },
    {
-      "varienceMean":0.0041116866542061465,
-      "standardDeviation":0.011875503190047381,
-      "zScore":-0.1368,
-      "timeUTC":"2022-07-29T17:45:00Z"
+      "varienceMean":0.00067215534754526,
+      "standardDeviation":0.01731421262745048,
+      "zScore":-0.1465,
+      "timeUTC":"2022-08-01T18:26:00Z"
    },
    {
-      "varienceMean":0.004056859453942999,
-      "standardDeviation":0.011889669867875756,
-      "zScore":-0.4865,
-      "timeUTC":"2022-07-29T17:46:00Z"
+      "varienceMean":0.0005457754262550247,
+      "standardDeviation":0.01735028897126432,
+      "zScore":-0.6457,
+      "timeUTC":"2022-08-01T18:27:00Z"
    },
    {
-      "varienceMean":0.003936646999830552,
-      "standardDeviation":0.011879650890857447,
-      "zScore":-0.4175,
-      "timeUTC":"2022-07-29T17:47:00Z"
+      "varienceMean":0.0011511092685414625,
+      "standardDeviation":0.01747165655425004,
+      "zScore":1.9148,
+      "timeUTC":"2022-08-01T18:28:00Z"
    },
    {
-      "varienceMean":0.0038479897915897087,
-      "standardDeviation":0.01193797605059323,
-      "zScore":-1.0239,
-      "timeUTC":"2022-07-29T17:48:00Z"
+      "varienceMean":0.001379483132650567,
+      "standardDeviation":0.01717766248810604,
+      "zScore":-0.6403,
+      "timeUTC":"2022-08-01T18:29:00Z"
    },
    {
-      "varienceMean":0.004108982622327204,
-      "standardDeviation":0.011293081190774643,
-      "zScore":-1.3975,
-      "timeUTC":"2022-07-29T17:49:00Z"
+      "varienceMean":0.0011207753271092675,
+      "standardDeviation":0.017038954868300028,
+      "zScore":-0.2132,
+      "timeUTC":"2022-08-01T18:30:00Z"
    },
    {
-      "varienceMean":0.003579105256393778,
-      "standardDeviation":0.01071228608201795,
-      "zScore":-1.3227,
-      "timeUTC":"2022-07-29T17:50:00Z"
+      "varienceMean":0.0011255776816616278,
+      "standardDeviation":0.017040467469263305,
+      "zScore":0.3289,
+      "timeUTC":"2022-08-01T18:31:00Z"
    },
    {
-      "varienceMean":0.0034379473161024053,
-      "standardDeviation":0.01072317763918504,
-      "zScore":-0.7287,
-      "timeUTC":"2022-07-29T17:51:00Z"
+      "varienceMean":0.001328557812116068,
+      "standardDeviation":0.017026266964233743,
+      "zScore":0.5201,
+      "timeUTC":"2022-08-01T18:32:00Z"
    },
    {
-      "varienceMean":0.0032153179189466463,
-      "standardDeviation":0.010880188338829004,
-      "zScore":-1.713,
-      "timeUTC":"2022-07-29T17:52:00Z"
+      "varienceMean":0.001352551948476282,
+      "standardDeviation":0.017032350151016548,
+      "zScore":0.3232,
+      "timeUTC":"2022-08-01T18:33:00Z"
    },
    {
-      "varienceMean":0.0033625589831918694,
-      "standardDeviation":0.010912565950298535,
-      "zScore":0.8875,
-      "timeUTC":"2022-07-29T17:53:00Z"
+      "varienceMean":0.001581973703848116,
+      "standardDeviation":0.01722574112451865,
+      "zScore":1.4975,
+      "timeUTC":"2022-08-01T18:34:00Z"
    },
    {
-      "varienceMean":0.0033643276320578157,
-      "standardDeviation":0.010911402443255344,
-      "zScore":-0.6499,
-      "timeUTC":"2022-07-29T17:54:00Z"
+      "varienceMean":0.0014068296450096612,
+      "standardDeviation":0.01730696204666539,
+      "zScore":-0.9636,
+      "timeUTC":"2022-08-01T18:35:00Z"
    },
    {
-      "varienceMean":0.003225111135731473,
-      "standardDeviation":0.010922142105994277,
-      "zScore":-0.708,
-      "timeUTC":"2022-07-29T17:55:00Z"
+      "varienceMean":0.001474706444906393,
+      "standardDeviation":0.01731230955388409,
+      "zScore":0.2728,
+      "timeUTC":"2022-08-01T18:36:00Z"
    },
    {
-      "varienceMean":0.0032727363627754464,
-      "standardDeviation":0.010913747901026576,
-      "zScore":0.0397,
-      "timeUTC":"2022-07-29T17:56:00Z"
+      "varienceMean":0.0013378619144449263,
+      "standardDeviation":0.01737910367477874,
+      "zScore":-0.8769,
+      "timeUTC":"2022-08-01T18:37:00Z"
    },
    {
-      "varienceMean":0.0032269986709537856,
-      "standardDeviation":0.010896970541166458,
-      "zScore":0.1593,
-      "timeUTC":"2022-07-29T17:57:00Z"
+      "varienceMean":0.0013049464454255887,
+      "standardDeviation":0.01737218880342607,
+      "zScore":0.1163,
+      "timeUTC":"2022-08-01T18:38:00Z"
    },
    {
-      "varienceMean":0.0027881225037204704,
-      "standardDeviation":0.011158624358986938,
-      "zScore":-2.5361,
-      "timeUTC":"2022-07-29T17:58:00Z"
+      "varienceMean":0.0010668323394682545,
+      "standardDeviation":0.017370265272603064,
+      "zScore":-0.6705,
+      "timeUTC":"2022-08-01T18:39:00Z"
    },
    {
-      "varienceMean":0.0029068567081956638,
-      "standardDeviation":0.011296305564970703,
-      "zScore":1.6728,
-      "timeUTC":"2022-07-29T17:59:00Z"
+      "varienceMean":0.0011292079714476677,
+      "standardDeviation":0.017402933137329234,
+      "zScore":0.7007,
+      "timeUTC":"2022-08-01T18:40:00Z"
    },
    {
-      "varienceMean":0.002794537265433554,
-      "standardDeviation":0.011272120621261443,
-      "zScore":-0.2777,
-      "timeUTC":"2022-07-29T18:00:00Z"
+      "varienceMean":0.0010069615225912487,
+      "standardDeviation":0.017477301788408513,
+      "zScore":-0.9533,
+      "timeUTC":"2022-08-01T18:41:00Z"
    },
    {
-      "varienceMean":0.0027681401720872304,
-      "standardDeviation":0.011274912316632206,
-      "zScore":-0.2216,
-      "timeUTC":"2022-07-29T18:01:00Z"
+      "varienceMean":0.000792243072089008,
+      "standardDeviation":0.01761895716686246,
+      "zScore":-1.2603,
+      "timeUTC":"2022-08-01T18:42:00Z"
    },
    {
-      "varienceMean":0.002722920143600949,
-      "standardDeviation":0.011303757410135484,
-      "zScore":-0.8351,
-      "timeUTC":"2022-07-29T18:02:00Z"
+      "varienceMean":0.0006934023071095928,
+      "standardDeviation":0.017587588006620913,
+      "zScore":0.0395,
+      "timeUTC":"2022-08-01T18:43:00Z"
    },
    {
-      "varienceMean":0.0026229068187051947,
-      "standardDeviation":0.011306916002368295,
-      "zScore":-0.4694,
-      "timeUTC":"2022-07-29T18:03:00Z"
+      "varienceMean":0.0007666558909744053,
+      "standardDeviation":0.01760900064334728,
+      "zScore":0.4981,
+      "timeUTC":"2022-08-01T18:44:00Z"
    },
    {
-      "varienceMean":0.0024626346929026988,
-      "standardDeviation":0.011413192196321826,
-      "zScore":-1.3551,
-      "timeUTC":"2022-07-29T18:04:00Z"
+      "varienceMean":0.0007836018488912019,
+      "standardDeviation":0.017612725210232646,
+      "zScore":0.2674,
+      "timeUTC":"2022-08-01T18:45:00Z"
    },
    {
-      "varienceMean":0.002303013772989333,
-      "standardDeviation":0.011427413177456937,
-      "zScore":-0.7805,
-      "timeUTC":"2022-07-29T18:05:00Z"
+      "varienceMean":0.0008121845888530713,
+      "standardDeviation":0.0176331813207335,
+      "zScore":0.7955,
+      "timeUTC":"2022-08-01T18:46:00Z"
    },
    {
-      "varienceMean":0.0022312815138548292,
-      "standardDeviation":0.011371765110159247,
-      "zScore":0.4654,
-      "timeUTC":"2022-07-29T18:06:00Z"
+      "varienceMean":0.0008509835070390575,
+      "standardDeviation":0.01764160074144034,
+      "zScore":0.3258,
+      "timeUTC":"2022-08-01T18:47:00Z"
    },
    {
-      "varienceMean":0.002074140108923578,
-      "standardDeviation":0.01135655652402691,
-      "zScore":-0.5881,
-      "timeUTC":"2022-07-29T18:07:00Z"
+      "varienceMean":0.0006748946841451747,
+      "standardDeviation":0.017683794042641265,
+      "zScore":-0.7322,
+      "timeUTC":"2022-08-01T18:48:00Z"
    },
    {
-      "varienceMean":0.0020076246654746953,
-      "standardDeviation":0.011364520393106696,
-      "zScore":-0.4094,
-      "timeUTC":"2022-07-29T18:08:00Z"
+      "varienceMean":0.0005153506643465288,
+      "standardDeviation":0.017788134569735655,
+      "zScore":-1.096,
+      "timeUTC":"2022-08-01T18:49:00Z"
    },
    {
-      "varienceMean":0.0022177755387304573,
-      "standardDeviation":0.011174477889594484,
-      "zScore":0.0189,
-      "timeUTC":"2022-07-29T18:09:00Z"
+      "varienceMean":0.00012679668651558945,
+      "standardDeviation":0.018053433747257347,
+      "zScore":-1.7431,
+      "timeUTC":"2022-08-01T18:50:00Z"
    },
    {
-      "varienceMean":0.0022382912354665767,
-      "standardDeviation":0.011156891685941986,
-      "zScore":-0.7669,
-      "timeUTC":"2022-07-29T18:10:00Z"
+      "varienceMean":0.00017516981396219835,
+      "standardDeviation":0.01806896803084665,
+      "zScore":0.4535,
+      "timeUTC":"2022-08-01T18:51:00Z"
    },
    {
-      "varienceMean":0.0023839203677869496,
-      "standardDeviation":0.010989008608380904,
-      "zScore":-0.5056,
-      "timeUTC":"2022-07-29T18:11:00Z"
+      "varienceMean":0.00013977721465423796,
+      "standardDeviation":0.01806051896747822,
+      "zScore":0.1418,
+      "timeUTC":"2022-08-01T18:52:00Z"
    },
    {
-      "varienceMean":0.00242633813499478,
-      "standardDeviation":0.010947127039960354,
-      "zScore":-0.7974,
-      "timeUTC":"2022-07-29T18:12:00Z"
+      "varienceMean":0.00026282713403551384,
+      "standardDeviation":0.018019993091949873,
+      "zScore":0.0083,
+      "timeUTC":"2022-08-01T18:53:00Z"
    },
    {
-      "varienceMean":0.002273752485338513,
-      "standardDeviation":0.010954178667273875,
-      "zScore":-0.7357,
-      "timeUTC":"2022-07-29T18:13:00Z"
+      "varienceMean":0.0004308167001984834,
+      "standardDeviation":0.018129788174774453,
+      "zScore":1.1103,
+      "timeUTC":"2022-08-01T18:54:00Z"
    },
    {
-      "varienceMean":0.0018948921771760128,
-      "standardDeviation":0.010388343206913194,
-      "zScore":-0.2711,
-      "timeUTC":"2022-07-29T18:14:00Z"
+      "varienceMean":0.0005330467140361124,
+      "standardDeviation":0.018127466879748394,
+      "zScore":0.2564,
+      "timeUTC":"2022-08-01T18:55:00Z"
    },
    {
-      "varienceMean":0.0019084822762057319,
-      "standardDeviation":0.010392643479937956,
-      "zScore":0.3811,
-      "timeUTC":"2022-07-29T18:15:00Z"
+      "varienceMean":0.00016780268844032928,
+      "standardDeviation":0.018133127943270096,
+      "zScore":-1.0125,
+      "timeUTC":"2022-08-01T18:56:00Z"
    },
    {
-      "varienceMean":0.0018474876799160862,
-      "standardDeviation":0.010301117472635716,
-      "zScore":1.2141,
-      "timeUTC":"2022-07-29T18:16:00Z"
+      "varienceMean":0.0006590884257092983,
+      "standardDeviation":0.017148979681183344,
+      "zScore":-0.6426,
+      "timeUTC":"2022-08-01T18:57:00Z"
    },
    {
-      "varienceMean":0.0019171903129932646,
-      "standardDeviation":0.010285973552153887,
-      "zScore":0.118,
-      "timeUTC":"2022-07-29T18:17:00Z"
+      "varienceMean":0.00010126174770830208,
+      "standardDeviation":0.016822734148808315,
+      "zScore":-1.0509,
+      "timeUTC":"2022-08-01T18:58:00Z"
    },
    {
-      "varienceMean":0.0020383283982644525,
-      "standardDeviation":0.010271486166033697,
-      "zScore":0.4641,
-      "timeUTC":"2022-07-29T18:18:00Z"
+      "varienceMean":-2.8285608137611772E-05,
+      "standardDeviation":0.01683883204369967,
+      "zScore":-0.505,
+      "timeUTC":"2022-08-01T18:59:00Z"
    },
    {
-      "varienceMean":0.0019286126726956545,
-      "standardDeviation":0.010307708847649383,
-      "zScore":-0.8565,
-      "timeUTC":"2022-07-29T18:19:00Z"
+      "varienceMean":-0.0003059844159262611,
+      "standardDeviation":0.017368488953453904,
+      "zScore":-2.6697,
+      "timeUTC":"2022-08-01T19:00:00Z"
    },
    {
-      "varienceMean":0.0017179835182973388,
-      "standardDeviation":0.01045377310672724,
-      "zScore":-1.686,
-      "timeUTC":"2022-07-29T18:20:00Z"
+      "varienceMean":-8.393641473254456E-05,
+      "standardDeviation":0.017139313265362235,
+      "zScore":-0.3977,
+      "timeUTC":"2022-08-01T19:01:00Z"
    },
    {
-      "varienceMean":0.0019152169224074137,
-      "standardDeviation":0.010401023491599782,
-      "zScore":0.6705,
-      "timeUTC":"2022-07-29T18:21:00Z"
+      "varienceMean":2.0535673123953794E-06,
+      "standardDeviation":0.017003511510543037,
+      "zScore":-1.3352,
+      "timeUTC":"2022-08-01T19:02:00Z"
    },
    {
-      "varienceMean":0.0017746403697854068,
-      "standardDeviation":0.01029262184155517,
-      "zScore":0.0991,
-      "timeUTC":"2022-07-29T18:22:00Z"
+      "varienceMean":0.0006025186626279157,
+      "standardDeviation":0.01675704457818292,
+      "zScore":1.3603,
+      "timeUTC":"2022-08-01T19:03:00Z"
    },
    {
-      "varienceMean":0.0017849845164789383,
-      "standardDeviation":0.010285581449314865,
-      "zScore":-0.6311,
-      "timeUTC":"2022-07-29T18:23:00Z"
+      "varienceMean":0.0005407472011306159,
+      "standardDeviation":0.01678998074017806,
+      "zScore":-0.7148,
+      "timeUTC":"2022-08-01T19:04:00Z"
    },
    {
-      "varienceMean":0.0017047193189115093,
-      "standardDeviation":0.010271243309531412,
-      "zScore":-0.2081,
-      "timeUTC":"2022-07-29T18:24:00Z"
+      "varienceMean":0.0006528780382323875,
+      "standardDeviation":0.016907678528395014,
+      "zScore":1.3743,
+      "timeUTC":"2022-08-01T19:05:00Z"
    },
    {
-      "varienceMean":0.0016832277856066206,
-      "standardDeviation":0.010265802041892076,
-      "zScore":0.1496,
-      "timeUTC":"2022-07-29T18:25:00Z"
+      "varienceMean":0.00038493742679745124,
+      "standardDeviation":0.01701755448270354,
+      "zScore":-1.1881,
+      "timeUTC":"2022-08-01T19:06:00Z"
    },
    {
-      "varienceMean":0.0018476279606901391,
-      "standardDeviation":0.010327509651123347,
-      "zScore":1.1622,
-      "timeUTC":"2022-07-29T18:26:00Z"
+      "varienceMean":7.170117154765131E-05,
+      "standardDeviation":0.017130207950566557,
+      "zScore":-1.2636,
+      "timeUTC":"2022-08-01T19:07:00Z"
    },
    {
-      "varienceMean":0.0016916863991542632,
-      "standardDeviation":0.010275578688830465,
+      "varienceMean":0.0001340954711990556,
+      "standardDeviation":0.017068634884188586,
+      "zScore":-0.8077,
+      "timeUTC":"2022-08-01T19:08:00Z"
+   },
+   {
+      "varienceMean":0.00032853275577904376,
+      "standardDeviation":0.017181078527025936,
+      "zScore":1.1366,
+      "timeUTC":"2022-08-01T19:09:00Z"
+   },
+   {
+      "varienceMean":-0.00032583676522397634,
+      "standardDeviation":0.017344163919413715,
+      "zScore":-2.1156,
+      "timeUTC":"2022-08-01T19:10:00Z"
+   },
+   {
+      "varienceMean":-0.00022925321741563726,
+      "standardDeviation":0.017302035679942703,
+      "zScore":-0.1604,
+      "timeUTC":"2022-08-01T19:11:00Z"
+   },
+   {
+      "varienceMean":-0.0005097605314175455,
+      "standardDeviation":0.017376891372192553,
+      "zScore":-1.0653,
+      "timeUTC":"2022-08-01T19:12:00Z"
+   },
+   {
+      "varienceMean":-0.00043843155598535354,
+      "standardDeviation":0.0173733856528384,
+      "zScore":0.1541,
+      "timeUTC":"2022-08-01T19:13:00Z"
+   },
+   {
+      "varienceMean":-0.000477503952603531,
+      "standardDeviation":0.017411491014208524,
+      "zScore":-1.0853,
+      "timeUTC":"2022-08-01T19:14:00Z"
+   },
+   {
+      "varienceMean":-7.334158436509569E-05,
+      "standardDeviation":0.017599371207054883,
+      "zScore":1.5991,
+      "timeUTC":"2022-08-01T19:15:00Z"
+   },
+   {
+      "varienceMean":-4.034646194925429E-05,
+      "standardDeviation":0.017616804391449876,
+      "zScore":0.6208,
+      "timeUTC":"2022-08-01T19:16:00Z"
+   },
+   {
+      "varienceMean":-0.00019626227793749084,
+      "standardDeviation":0.01758559356590497,
+      "zScore":-0.2385,
+      "timeUTC":"2022-08-01T19:17:00Z"
+   },
+   {
+      "varienceMean":-0.00010800208154371152,
+      "standardDeviation":0.017606292231557383,
+      "zScore":0.4825,
+      "timeUTC":"2022-08-01T19:18:00Z"
+   },
+   {
+      "varienceMean":-9.853691641084241E-05,
+      "standardDeviation":0.017602087502243523,
+      "zScore":-0.4177,
+      "timeUTC":"2022-08-01T19:19:00Z"
+   },
+   {
+      "varienceMean":-0.0001702222939444011,
+      "standardDeviation":0.01764305860723872,
+      "zScore":-0.772,
+      "timeUTC":"2022-08-01T19:20:00Z"
+   },
+   {
+      "varienceMean":-8.248215423664451E-05,
+      "standardDeviation":0.017755192659660954,
+      "zScore":1.5186,
+      "timeUTC":"2022-08-01T19:21:00Z"
+   },
+   {
+      "varienceMean":-0.00018962860458926988,
+      "standardDeviation":0.01781285533771206,
+      "zScore":-0.835,
+      "timeUTC":"2022-08-01T19:22:00Z"
+   },
+   {
+      "varienceMean":-0.0005973443570588017,
+      "standardDeviation":0.017954224374102212,
+      "zScore":-1.4694,
+      "timeUTC":"2022-08-01T19:23:00Z"
+   },
+   {
+      "varienceMean":0.00013872597058696865,
+      "standardDeviation":0.017415700014860213,
+      "zScore":1.3492,
+      "timeUTC":"2022-08-01T19:24:00Z"
+   },
+   {
+      "varienceMean":-4.9743766351021577E-05,
+      "standardDeviation":0.01729219460155468,
+      "zScore":0.1181,
+      "timeUTC":"2022-08-01T19:25:00Z"
+   },
+   {
+      "varienceMean":-0.0003702942450621771,
+      "standardDeviation":0.017240654156173214,
+      "zScore":-0.7593,
+      "timeUTC":"2022-08-01T19:26:00Z"
+   },
+   {
+      "varienceMean":-0.0006849297359314878,
+      "standardDeviation":0.017383988253404165,
+      "zScore":-1.3496,
+      "timeUTC":"2022-08-01T19:27:00Z"
+   },
+   {
+      "varienceMean":-0.0006248344720344895,
+      "standardDeviation":0.017408400751653556,
+      "zScore":0.5768,
+      "timeUTC":"2022-08-01T19:28:00Z"
+   },
+   {
+      "varienceMean":-0.0008237727137118775,
+      "standardDeviation":0.017412220067315326,
+      "zScore":-0.5847,
+      "timeUTC":"2022-08-01T19:29:00Z"
+   },
+   {
+      "varienceMean":-0.0012265448446300482,
+      "standardDeviation":0.017238061469482386,
+      "zScore":-0.722,
+      "timeUTC":"2022-08-01T19:30:00Z"
+   },
+   {
+      "varienceMean":-0.0014625369345073252,
+      "standardDeviation":0.01704438782156863,
+      "zScore":0.14,
+      "timeUTC":"2022-08-01T19:31:00Z"
+   },
+   {
+      "varienceMean":-0.0017161411752835616,
+      "standardDeviation":0.016777179220170118,
+      "zScore":0.3138,
+      "timeUTC":"2022-08-01T19:32:00Z"
+   },
+   {
+      "varienceMean":-0.0019169711629773148,
+      "standardDeviation":0.016705186210465815,
+      "zScore":-0.2358,
+      "timeUTC":"2022-08-01T19:33:00Z"
+   },
+   {
+      "varienceMean":-0.0018954570045468882,
+      "standardDeviation":0.016687903111042138,
+      "zScore":-0.7399,
+      "timeUTC":"2022-08-01T19:34:00Z"
+   },
+   {
+      "varienceMean":-0.0019289914640183415,
+      "standardDeviation":0.0166954156223116,
+      "zScore":-0.3234,
+      "timeUTC":"2022-08-01T19:35:00Z"
+   },
+   {
+      "varienceMean":-0.0018735160043787265,
+      "standardDeviation":0.016699374348234486,
+      "zScore":0.2358,
+      "timeUTC":"2022-08-01T19:36:00Z"
+   },
+   {
+      "varienceMean":-0.001417655990406001,
+      "standardDeviation":0.016525534648957705,
+      "zScore":0.9821,
+      "timeUTC":"2022-08-01T19:37:00Z"
+   },
+   {
+      "varienceMean":-0.001524842924048245,
+      "standardDeviation":0.01642449816374355,
+      "zScore":0.6225,
+      "timeUTC":"2022-08-01T19:38:00Z"
+   },
+   {
+      "varienceMean":-0.0015578305987536253,
+      "standardDeviation":0.01641724437269966,
+      "zScore":0.1205,
+      "timeUTC":"2022-08-01T19:39:00Z"
+   },
+   {
+      "varienceMean":-0.001813485572927831,
+      "standardDeviation":0.01642529678273926,
+      "zScore":-0.8019,
+      "timeUTC":"2022-08-01T19:40:00Z"
+   },
+   {
+      "varienceMean":-0.0016920443368178622,
+      "standardDeviation":0.016434168346401126,
+      "zScore":0.4388,
+      "timeUTC":"2022-08-01T19:41:00Z"
+   },
+   {
+      "varienceMean":-0.0018781394552745668,
+      "standardDeviation":0.016524479973655585,
+      "zScore":-1.0414,
+      "timeUTC":"2022-08-01T19:42:00Z"
+   },
+   {
+      "varienceMean":-0.002224855669745327,
+      "standardDeviation":0.016208214939152244,
+      "zScore":-0.1378,
+      "timeUTC":"2022-08-01T19:43:00Z"
+   },
+   {
+      "varienceMean":-0.002696431530339477,
+      "standardDeviation":0.016002219857605294,
+      "zScore":-1.0191,
+      "timeUTC":"2022-08-01T19:44:00Z"
+   },
+   {
+      "varienceMean":-0.002777748822745676,
+      "standardDeviation":0.015962592609434025,
+      "zScore":0.2358,
+      "timeUTC":"2022-08-01T19:45:00Z"
+   },
+   {
+      "varienceMean":-0.0026131892283716373,
+      "standardDeviation":0.016083091632412283,
+      "zScore":1.236,
+      "timeUTC":"2022-08-01T19:46:00Z"
+   },
+   {
+      "varienceMean":-0.0023615992611928983,
+      "standardDeviation":0.016324246025198615,
+      "zScore":1.7143,
+      "timeUTC":"2022-08-01T19:47:00Z"
+   },
+   {
+      "varienceMean":-0.002421464847631549,
+      "standardDeviation":0.016339292399630785,
+      "zScore":-0.4326,
+      "timeUTC":"2022-08-01T19:48:00Z"
+   },
+   {
+      "varienceMean":-0.002374978230240441,
+      "standardDeviation":0.01630873377918301,
+      "zScore":-0.5169,
+      "timeUTC":"2022-08-01T19:49:00Z"
+   },
+   {
+      "varienceMean":-0.0026288470396488807,
+      "standardDeviation":0.01620133134704403,
+      "zScore":-0.3512,
+      "timeUTC":"2022-08-01T19:50:00Z"
+   },
+   {
+      "varienceMean":-0.0024809147876657315,
+      "standardDeviation":0.016332212846924172,
+      "zScore":1.3296,
+      "timeUTC":"2022-08-01T19:51:00Z"
+   },
+   {
+      "varienceMean":-0.002595805451257574,
+      "standardDeviation":0.016324773571505646,
+      "zScore":-0.2836,
+      "timeUTC":"2022-08-01T19:52:00Z"
+   },
+   {
+      "varienceMean":-0.0026545939864675793,
+      "standardDeviation":0.01631281899218198,
+      "zScore":0.025,
+      "timeUTC":"2022-08-01T19:53:00Z"
+   },
+   {
+      "varienceMean":-0.002591417410259626,
+      "standardDeviation":0.016350895427802343,
+      "zScore":0.7933,
+      "timeUTC":"2022-08-01T19:54:00Z"
+   },
+   {
+      "varienceMean":-0.002477722848407728,
+      "standardDeviation":0.016309374936974604,
+      "zScore":-0.0206,
+      "timeUTC":"2022-08-01T19:55:00Z"
+   },
+   {
+      "varienceMean":-0.002021979383546997,
+      "standardDeviation":0.016120645333069106,
+      "zScore":0.9829,
+      "timeUTC":"2022-08-01T19:56:00Z"
+   },
+   {
+      "varienceMean":-0.0025906807757085505,
+      "standardDeviation":0.015378617548825418,
+      "zScore":-0.4943,
+      "timeUTC":"2022-08-01T19:57:00Z"
+   },
+   {
+      "varienceMean":-0.0026674097694233236,
+      "standardDeviation":0.015401212640921542,
+      "zScore":-0.5409,
+      "timeUTC":"2022-08-01T19:58:00Z"
+   },
+   {
+      "varienceMean":-0.002537317686286438,
+      "standardDeviation":0.015447867758285883,
+      "zScore":0.7749,
+      "timeUTC":"2022-08-02T13:30:00Z"
+   },
+   {
+      "varienceMean":-0.00312028376079767,
+      "standardDeviation":0.01579107990562857,
+      "zScore":-2.4097,
+      "timeUTC":"2022-08-02T13:31:00Z"
+   },
+   {
+      "varienceMean":-0.0030620108717052735,
+      "standardDeviation":0.01578526986243544,
+      "zScore":0.083,
+      "timeUTC":"2022-08-02T13:32:00Z"
+   },
+   {
+      "varienceMean":-0.0025951904255826826,
+      "standardDeviation":0.016335910278035277,
+      "zScore":2.5742,
+      "timeUTC":"2022-08-02T13:33:00Z"
+   },
+   {
+      "varienceMean":-0.001899466809621398,
+      "standardDeviation":0.016891087776821596,
+      "zScore":2.8237,
+      "timeUTC":"2022-08-02T13:34:00Z"
+   },
+   {
+      "varienceMean":-0.0009233858388794174,
+      "standardDeviation":0.018636408069157215,
+      "zScore":4.2969,
+      "timeUTC":"2022-08-02T13:35:00Z"
+   },
+   {
+      "varienceMean":-0.0006488801974441274,
+      "standardDeviation":0.0189660331287241,
+      "zScore":1.9068,
+      "timeUTC":"2022-08-02T13:36:00Z"
+   },
+   {
+      "varienceMean":-0.000829754328518282,
+      "standardDeviation":0.01906275762683177,
+      "zScore":-1.0031,
+      "timeUTC":"2022-08-02T13:37:00Z"
+   },
+   {
+      "varienceMean":-0.0006338050268530418,
+      "standardDeviation":0.0190614373161167,
+      "zScore":0.5021,
+      "timeUTC":"2022-08-02T13:38:00Z"
+   },
+   {
+      "varienceMean":-0.0008643798010923259,
+      "standardDeviation":0.018771011932354312,
+      "zScore":0.6613,
+      "timeUTC":"2022-08-02T13:39:00Z"
+   },
+   {
+      "varienceMean":-0.0007548265144616751,
+      "standardDeviation":0.018751558716347906,
+      "zScore":0.1115,
+      "timeUTC":"2022-08-02T13:40:00Z"
+   },
+   {
+      "varienceMean":-0.0009330272925152616,
+      "standardDeviation":0.018851822319011117,
+      "zScore":-1.0291,
+      "timeUTC":"2022-08-02T13:41:00Z"
+   },
+   {
+      "varienceMean":-0.0007763894903663937,
+      "standardDeviation":0.018979487458229312,
+      "zScore":1.2208,
+      "timeUTC":"2022-08-02T13:42:00Z"
+   },
+   {
+      "varienceMean":-0.0008857079284737067,
+      "standardDeviation":0.01894749611158663,
+      "zScore":0.0073,
+      "timeUTC":"2022-08-02T13:43:00Z"
+   },
+   {
+      "varienceMean":-0.0007546431991543958,
+      "standardDeviation":0.019045681781490038,
+      "zScore":1.0878,
+      "timeUTC":"2022-08-02T13:44:00Z"
+   },
+   {
+      "varienceMean":-0.0009109236847235799,
+      "standardDeviation":0.018877579057048757,
+      "zScore":0.6706,
+      "timeUTC":"2022-08-02T13:45:00Z"
+   },
+   {
+      "varienceMean":-0.0008453148939017583,
+      "standardDeviation":0.01883892228374096,
       "zScore":-0.4174,
-      "timeUTC":"2022-07-29T18:27:00Z"
+      "timeUTC":"2022-08-02T13:46:00Z"
    },
    {
-      "varienceMean":0.001477593207113056,
-      "standardDeviation":0.010164866004960025,
-      "zScore":-0.5226,
-      "timeUTC":"2022-07-29T18:28:00Z"
+      "varienceMean":-0.0008819660335460033,
+      "standardDeviation":0.018828745754824155,
+      "zScore":0.1814,
+      "timeUTC":"2022-08-02T13:47:00Z"
    },
    {
-      "varienceMean":0.0014382575707408147,
-      "standardDeviation":0.010138464034402923,
-      "zScore":0.48,
-      "timeUTC":"2022-07-29T18:29:00Z"
+      "varienceMean":-0.0007160045926948331,
+      "standardDeviation":0.01878634229235618,
+      "zScore":0.1815,
+      "timeUTC":"2022-08-02T13:48:00Z"
    },
    {
-      "varienceMean":0.0013604747730014282,
-      "standardDeviation":0.010183419713201849,
-      "zScore":-0.9548,
-      "timeUTC":"2022-07-29T18:30:00Z"
+      "varienceMean":-0.00068706680456984,
+      "standardDeviation":0.018794772850560464,
+      "zScore":0.3675,
+      "timeUTC":"2022-08-02T13:49:00Z"
    },
    {
-      "varienceMean":0.0012789240810965896,
-      "standardDeviation":0.010212282011194415,
-      "zScore":-0.7487,
-      "timeUTC":"2022-07-29T18:31:00Z"
+      "varienceMean":-0.0006832871965402307,
+      "standardDeviation":0.018792821017995676,
+      "zScore":-0.5065,
+      "timeUTC":"2022-08-02T13:50:00Z"
    },
    {
-      "varienceMean":0.0013260015280175444,
-      "standardDeviation":0.010173186674808649,
-      "zScore":-0.603,
-      "timeUTC":"2022-07-29T18:32:00Z"
+      "varienceMean":-0.001237686886318958,
+      "standardDeviation":0.019185121562326737,
+      "zScore":-2.1308,
+      "timeUTC":"2022-08-02T13:51:00Z"
    },
    {
-      "varienceMean":0.0010541742229653224,
-      "standardDeviation":0.0102469056938181,
-      "zScore":-1.5833,
-      "timeUTC":"2022-07-29T18:33:00Z"
+      "varienceMean":-0.0011563392573698565,
+      "standardDeviation":0.019141017740403523,
+      "zScore":-0.3324,
+      "timeUTC":"2022-08-02T13:52:00Z"
    },
    {
-      "varienceMean":0.0011511843355737766,
-      "standardDeviation":0.010276220899473802,
-      "zScore":0.769,
-      "timeUTC":"2022-07-29T18:34:00Z"
+      "varienceMean":-0.0008488376771825651,
+      "standardDeviation":0.019059948645120086,
+      "zScore":0.5344,
+      "timeUTC":"2022-08-02T13:53:00Z"
    },
    {
-      "varienceMean":0.0011785071477660334,
-      "standardDeviation":0.010278067377787815,
-      "zScore":0.1992,
-      "timeUTC":"2022-07-29T18:35:00Z"
+      "varienceMean":-0.0007359111706771284,
+      "standardDeviation":0.019106261375487855,
+      "zScore":0.7022,
+      "timeUTC":"2022-08-02T13:54:00Z"
    },
    {
-      "varienceMean":0.0010144692605748727,
-      "standardDeviation":0.010444772744196662,
-      "zScore":-1.7856,
-      "timeUTC":"2022-07-29T18:36:00Z"
+      "varienceMean":-0.0007711560112431586,
+      "standardDeviation":0.019090523268535217,
+      "zScore":0.3553,
+      "timeUTC":"2022-08-02T13:55:00Z"
    },
    {
-      "varienceMean":0.0008539102323832292,
-      "standardDeviation":0.010628293519253979,
-      "zScore":-1.8809,
-      "timeUTC":"2022-07-29T18:37:00Z"
+      "varienceMean":-0.0008631756867692271,
+      "standardDeviation":0.019082282287510476,
+      "zScore":-0.1491,
+      "timeUTC":"2022-08-02T13:56:00Z"
    },
    {
-      "varienceMean":0.0009505687450102766,
-      "standardDeviation":0.01061583196910638,
-      "zScore":0.3217,
-      "timeUTC":"2022-07-29T18:38:00Z"
+      "varienceMean":-0.0012222281899209953,
+      "standardDeviation":0.019121200941056092,
+      "zScore":-1.0378,
+      "timeUTC":"2022-08-02T13:57:00Z"
    },
    {
-      "varienceMean":0.0010081982499245564,
-      "standardDeviation":0.010604742554861182,
-      "zScore":0.0765,
-      "timeUTC":"2022-07-29T18:39:00Z"
+      "varienceMean":-0.001474506000861035,
+      "standardDeviation":0.019182672184965256,
+      "zScore":-0.8943,
+      "timeUTC":"2022-08-02T13:58:00Z"
    },
    {
-      "varienceMean":0.0009330111839200298,
-      "standardDeviation":0.010602676549248418,
-      "zScore":-0.3235,
-      "timeUTC":"2022-07-29T18:40:00Z"
+      "varienceMean":-0.0015730976441672704,
+      "standardDeviation":0.019263090327036436,
+      "zScore":-1.0673,
+      "timeUTC":"2022-08-02T13:59:00Z"
    },
    {
-      "varienceMean":0.0008245784159242336,
-      "standardDeviation":0.010450937408922932,
-      "zScore":0.896,
-      "timeUTC":"2022-07-29T18:41:00Z"
+      "varienceMean":-0.0011700074213790298,
+      "standardDeviation":0.019316268297919777,
+      "zScore":1.1647,
+      "timeUTC":"2022-08-02T14:00:00Z"
    },
    {
-      "varienceMean":0.0008915455959718038,
-      "standardDeviation":0.010512961292698004,
-      "zScore":1.2388,
-      "timeUTC":"2022-07-29T18:42:00Z"
+      "varienceMean":-0.001102175256679584,
+      "standardDeviation":0.01922187254360753,
+      "zScore":-1.2203,
+      "timeUTC":"2022-08-02T14:01:00Z"
    },
    {
-      "varienceMean":0.0008425978799947854,
-      "standardDeviation":0.01050663212617252,
-      "zScore":-0.1013,
-      "timeUTC":"2022-07-29T18:43:00Z"
+      "varienceMean":-0.00039317538442877045,
+      "standardDeviation":0.020800887577836755,
+      "zScore":3.8298,
+      "timeUTC":"2022-08-02T14:02:00Z"
    },
    {
-      "varienceMean":0.0007071617978213247,
-      "standardDeviation":0.010400292635293634,
-      "zScore":0.1446,
-      "timeUTC":"2022-07-29T18:44:00Z"
+      "varienceMean":-0.0004842660607591112,
+      "standardDeviation":0.02080708529213454,
+      "zScore":-0.2847,
+      "timeUTC":"2022-08-02T14:03:00Z"
    },
    {
-      "varienceMean":0.0006308145728334612,
-      "standardDeviation":0.010341380400744116,
-      "zScore":0.4084,
-      "timeUTC":"2022-07-29T18:45:00Z"
+      "varienceMean":-0.0003437557424527896,
+      "standardDeviation":0.0208600415188572,
+      "zScore":0.7098,
+      "timeUTC":"2022-08-02T14:04:00Z"
    },
    {
-      "varienceMean":0.0005067820111456846,
-      "standardDeviation":0.010421098582583211,
-      "zScore":-1.2294,
-      "timeUTC":"2022-07-29T18:46:00Z"
+      "varienceMean":-0.000664715745438274,
+      "standardDeviation":0.020782720683969552,
+      "zScore":-0.5231,
+      "timeUTC":"2022-08-02T14:05:00Z"
    },
    {
-      "varienceMean":0.0005042180010461994,
-      "standardDeviation":0.010420860056243361,
-      "zScore":0.0809,
-      "timeUTC":"2022-07-29T18:47:00Z"
+      "varienceMean":-0.0006807972818976679,
+      "standardDeviation":0.020778812292905034,
+      "zScore":0.2047,
+      "timeUTC":"2022-08-02T14:06:00Z"
    },
    {
-      "varienceMean":0.0005374299880716679,
-      "standardDeviation":0.010446365677716478,
-      "zScore":0.9244,
-      "timeUTC":"2022-07-29T18:48:00Z"
+      "varienceMean":-0.0007430030245723508,
+      "standardDeviation":0.020840365127205288,
+      "zScore":-1.1358,
+      "timeUTC":"2022-08-02T14:07:00Z"
    },
    {
-      "varienceMean":0.00037262287962621754,
-      "standardDeviation":0.010245567988379063,
-      "zScore":0.4341,
-      "timeUTC":"2022-07-29T18:49:00Z"
+      "varienceMean":-0.00046598724270619353,
+      "standardDeviation":0.020894716663336886,
+      "zScore":0.8522,
+      "timeUTC":"2022-08-02T14:08:00Z"
    },
    {
-      "varienceMean":0.00011082608176249986,
-      "standardDeviation":0.009711136220610712,
-      "zScore":0.7631,
-      "timeUTC":"2022-07-29T18:50:00Z"
+      "varienceMean":-0.0002762276537856376,
+      "standardDeviation":0.020824507263687037,
+      "zScore":0.0804,
+      "timeUTC":"2022-08-02T14:09:00Z"
    },
    {
-      "varienceMean":-0.00011067998764605416,
-      "standardDeviation":0.009423579990417832,
+      "varienceMean":-0.00022606231615618523,
+      "standardDeviation":0.02081059593810081,
+      "zScore":-0.1581,
+      "timeUTC":"2022-08-02T14:10:00Z"
+   },
+   {
+      "varienceMean":6.32374734692374E-05,
+      "standardDeviation":0.02035907374033595,
+      "zScore":-0.8747,
+      "timeUTC":"2022-08-02T14:11:00Z"
+   },
+   {
+      "varienceMean":0.0003412287437597672,
+      "standardDeviation":0.020451672538656512,
+      "zScore":1.0052,
+      "timeUTC":"2022-08-02T14:12:00Z"
+   },
+   {
+      "varienceMean":0.0004394026929411319,
+      "standardDeviation":0.02036419940695577,
+      "zScore":-0.6543,
+      "timeUTC":"2022-08-02T14:13:00Z"
+   },
+   {
+      "varienceMean":0.0005222995991094082,
+      "standardDeviation":0.02047406017013382,
+      "zScore":1.5221,
+      "timeUTC":"2022-08-02T14:14:00Z"
+   },
+   {
+      "varienceMean":0.0008686899107338224,
+      "standardDeviation":0.02056123404231867,
+      "zScore":1.085,
+      "timeUTC":"2022-08-02T14:15:00Z"
+   },
+   {
+      "varienceMean":0.0006195105558792877,
+      "standardDeviation":0.020431325928156514,
+      "zScore":-0.0807,
+      "timeUTC":"2022-08-02T14:16:00Z"
+   },
+   {
+      "varienceMean":0.0009903649072138128,
+      "standardDeviation":0.020393239918744026,
+      "zScore":0.7974,
+      "timeUTC":"2022-08-02T14:17:00Z"
+   },
+   {
+      "varienceMean":0.0015110293332872829,
+      "standardDeviation":0.02047499339093046,
+      "zScore":1.4155,
+      "timeUTC":"2022-08-02T14:18:00Z"
+   },
+   {
+      "varienceMean":0.0013327082472153328,
+      "standardDeviation":0.020682869286778108,
+      "zScore":-1.5867,
+      "timeUTC":"2022-08-02T14:19:00Z"
+   },
+   {
+      "varienceMean":0.0008707324146548245,
+      "standardDeviation":0.020779670572011553,
+      "zScore":-1.3095,
+      "timeUTC":"2022-08-02T14:20:00Z"
+   },
+   {
+      "varienceMean":0.0011879114956327365,
+      "standardDeviation":0.020438161442489347,
+      "zScore":-0.3175,
+      "timeUTC":"2022-08-02T14:21:00Z"
+   },
+   {
+      "varienceMean":0.0013868816184340056,
+      "standardDeviation":0.02049315646831222,
+      "zScore":0.7566,
+      "timeUTC":"2022-08-02T14:22:00Z"
+   },
+   {
+      "varienceMean":0.0015792750375998041,
+      "standardDeviation":0.020390705743393907,
+      "zScore":-0.0668,
+      "timeUTC":"2022-08-02T14:23:00Z"
+   },
+   {
+      "varienceMean":0.0016480184603298509,
+      "standardDeviation":0.020404395123815467,
+      "zScore":0.3658,
+      "timeUTC":"2022-08-02T14:24:00Z"
+   },
+   {
+      "varienceMean":0.0018751503377119477,
+      "standardDeviation":0.02029525305499253,
+      "zScore":0.0722,
+      "timeUTC":"2022-08-02T14:25:00Z"
+   },
+   {
+      "varienceMean":0.0016970178011180923,
+      "standardDeviation":0.020142151310435622,
+      "zScore":0.425,
+      "timeUTC":"2022-08-02T14:26:00Z"
+   },
+   {
+      "varienceMean":0.0014241264354055447,
+      "standardDeviation":0.020200444869989027,
+      "zScore":-0.882,
+      "timeUTC":"2022-08-02T14:27:00Z"
+   },
+   {
+      "varienceMean":0.0011976820665808112,
+      "standardDeviation":0.020390387080109887,
+      "zScore":-1.3846,
+      "timeUTC":"2022-08-02T14:28:00Z"
+   },
+   {
+      "varienceMean":0.0009986629684421852,
+      "standardDeviation":0.020416349637472145,
+      "zScore":-0.6129,
+      "timeUTC":"2022-08-02T14:29:00Z"
+   },
+   {
+      "varienceMean":0.0012285313201015032,
+      "standardDeviation":0.020449305976205593,
+      "zScore":0.6997,
+      "timeUTC":"2022-08-02T14:30:00Z"
+   },
+   {
+      "varienceMean":0.001843303551927783,
+      "standardDeviation":0.020907507988748644,
+      "zScore":2.1927,
+      "timeUTC":"2022-08-02T14:31:00Z"
+   },
+   {
+      "varienceMean":0.0020330084931224133,
+      "standardDeviation":0.02121758906684638,
+      "zScore":2.0652,
+      "timeUTC":"2022-08-02T14:32:00Z"
+   },
+   {
+      "varienceMean":0.0022236039250044647,
+      "standardDeviation":0.02114864392244115,
+      "zScore":0.0838,
+      "timeUTC":"2022-08-02T14:33:00Z"
+   },
+   {
+      "varienceMean":0.002616915134926353,
+      "standardDeviation":0.020966819503565336,
+      "zScore":0.4643,
+      "timeUTC":"2022-08-02T14:34:00Z"
+   },
+   {
+      "varienceMean":0.0025974028586675823,
+      "standardDeviation":0.02094814957383219,
+      "zScore":0.9111,
+      "timeUTC":"2022-08-02T14:35:00Z"
+   },
+   {
+      "varienceMean":0.002530802819995173,
+      "standardDeviation":0.02096054811437647,
+      "zScore":-0.3434,
+      "timeUTC":"2022-08-02T14:36:00Z"
+   },
+   {
+      "varienceMean":0.0028335087477200926,
+      "standardDeviation":0.020945983212979094,
+      "zScore":0.6672,
+      "timeUTC":"2022-08-02T14:37:00Z"
+   },
+   {
+      "varienceMean":0.003363645909186476,
+      "standardDeviation":0.02092730039530953,
+      "zScore":1.2187,
+      "timeUTC":"2022-08-02T14:38:00Z"
+   },
+   {
+      "varienceMean":0.003484351232509913,
+      "standardDeviation":0.020996561389687873,
+      "zScore":0.8574,
+      "timeUTC":"2022-08-02T14:39:00Z"
+   },
+   {
+      "varienceMean":0.0035513810518140437,
+      "standardDeviation":0.02096086584562393,
+      "zScore":-0.3747,
+      "timeUTC":"2022-08-02T14:40:00Z"
+   },
+   {
+      "varienceMean":0.003137808015920078,
+      "standardDeviation":0.021691880605450634,
+      "zScore":-2.6815,
+      "timeUTC":"2022-08-02T14:41:00Z"
+   },
+   {
+      "varienceMean":0.003842166343745917,
+      "standardDeviation":0.022727384379189485,
+      "zScore":2.9707,
+      "timeUTC":"2022-08-02T14:42:00Z"
+   },
+   {
+      "varienceMean":0.0032492983778985712,
+      "standardDeviation":0.023487871028584774,
+      "zScore":-2.5114,
+      "timeUTC":"2022-08-02T14:43:00Z"
+   },
+   {
+      "varienceMean":0.0030891909376144127,
+      "standardDeviation":0.023603681342512044,
+      "zScore":-1.0573,
+      "timeUTC":"2022-08-02T14:44:00Z"
+   },
+   {
+      "varienceMean":0.0030569563899941034,
+      "standardDeviation":0.023629516704044413,
+      "zScore":-0.8686,
+      "timeUTC":"2022-08-02T14:45:00Z"
+   },
+   {
+      "varienceMean":0.0032716309822290335,
+      "standardDeviation":0.023631707569403002,
+      "zScore":0.4599,
+      "timeUTC":"2022-08-02T14:46:00Z"
+   },
+   {
+      "varienceMean":0.003337328770012921,
+      "standardDeviation":0.023637390610132303,
+      "zScore":0.2241,
+      "timeUTC":"2022-08-02T14:47:00Z"
+   },
+   {
+      "varienceMean":0.0030901633185181025,
+      "standardDeviation":0.023645332817715147,
+      "zScore":-0.5496,
+      "timeUTC":"2022-08-02T14:48:00Z"
+   },
+   {
+      "varienceMean":0.0030829066693188667,
+      "standardDeviation":0.023643721650768203,
+      "zScore":0.2068,
+      "timeUTC":"2022-08-02T14:49:00Z"
+   },
+   {
+      "varienceMean":0.003039033684427144,
+      "standardDeviation":0.02365269076536881,
+      "zScore":-0.2962,
+      "timeUTC":"2022-08-02T14:50:00Z"
+   },
+   {
+      "varienceMean":0.0034234024608732648,
+      "standardDeviation":0.023668961542634974,
+      "zScore":0.8462,
+      "timeUTC":"2022-08-02T14:51:00Z"
+   },
+   {
+      "varienceMean":0.003219489843966262,
+      "standardDeviation":0.023737761968084053,
+      "zScore":-0.7621,
+      "timeUTC":"2022-08-02T14:52:00Z"
+   },
+   {
+      "varienceMean":0.00330404071995387,
+      "standardDeviation":0.02367312766272161,
+      "zScore":-0.5887,
+      "timeUTC":"2022-08-02T14:53:00Z"
+   },
+   {
+      "varienceMean":0.0032918522987513497,
+      "standardDeviation":0.023677434483260863,
+      "zScore":-0.3788,
+      "timeUTC":"2022-08-02T14:54:00Z"
+   },
+   {
+      "varienceMean":0.0035570893627534295,
+      "standardDeviation":0.023574521954938088,
+      "zScore":0.1681,
+      "timeUTC":"2022-08-02T14:55:00Z"
+   },
+   {
+      "varienceMean":0.0034251958479476706,
+      "standardDeviation":0.023625380896792968,
+      "zScore":-0.6615,
+      "timeUTC":"2022-08-02T14:56:00Z"
+   },
+   {
+      "varienceMean":0.0032176934974351935,
+      "standardDeviation":0.023594016090131013,
+      "zScore":-0.2841,
+      "timeUTC":"2022-08-02T14:57:00Z"
+   },
+   {
+      "varienceMean":0.0030569622808639617,
+      "standardDeviation":0.023495372602092043,
+      "zScore":0.2764,
+      "timeUTC":"2022-08-02T14:58:00Z"
+   },
+   {
+      "varienceMean":0.0033309477334480305,
+      "standardDeviation":0.023507214480708943,
+      "zScore":0.6202,
+      "timeUTC":"2022-08-02T14:59:00Z"
+   },
+   {
+      "varienceMean":0.0035984843705050094,
+      "standardDeviation":0.02349705367328116,
+      "zScore":0.5256,
+      "timeUTC":"2022-08-02T15:00:00Z"
+   },
+   {
+      "varienceMean":0.0037211510641826985,
+      "standardDeviation":0.023466520257006497,
+      "zScore":0.0097,
+      "timeUTC":"2022-08-02T15:01:00Z"
+   },
+   {
+      "varienceMean":0.0034433265419519577,
+      "standardDeviation":0.02344567258483297,
+      "zScore":-0.5115,
+      "timeUTC":"2022-08-02T15:02:00Z"
+   },
+   {
+      "varienceMean":0.0034633899550117362,
+      "standardDeviation":0.02343739115110268,
+      "zScore":-0.3705,
+      "timeUTC":"2022-08-02T15:03:00Z"
+   },
+   {
+      "varienceMean":0.003508500104324581,
+      "standardDeviation":0.02343069864562097,
+      "zScore":-0.0531,
+      "timeUTC":"2022-08-02T15:04:00Z"
+   },
+   {
+      "varienceMean":0.003404709994342947,
+      "standardDeviation":0.023423021221980974,
+      "zScore":-0.1454,
+      "timeUTC":"2022-08-02T15:05:00Z"
+   },
+   {
+      "varienceMean":0.0032715095190409154,
+      "standardDeviation":0.023495764595475106,
+      "zScore":-0.8259,
+      "timeUTC":"2022-08-02T15:06:00Z"
+   },
+   {
+      "varienceMean":0.0033632884363526384,
+      "standardDeviation":0.02355465087808765,
+      "zScore":0.8337,
+      "timeUTC":"2022-08-02T15:07:00Z"
+   },
+   {
+      "varienceMean":0.0033436355987123793,
+      "standardDeviation":0.023566769011875027,
+      "zScore":-0.6577,
+      "timeUTC":"2022-08-02T15:08:00Z"
+   },
+   {
+      "varienceMean":0.003285430444316595,
+      "standardDeviation":0.02360926628238222,
+      "zScore":-0.8515,
+      "timeUTC":"2022-08-02T15:09:00Z"
+   },
+   {
+      "varienceMean":0.002920296012550007,
+      "standardDeviation":0.02379298977265916,
+      "zScore":-1.2609,
+      "timeUTC":"2022-08-02T15:10:00Z"
+   },
+   {
+      "varienceMean":0.0036289927505388166,
+      "standardDeviation":0.023523008220406837,
+      "zScore":1.1082,
+      "timeUTC":"2022-08-02T15:11:00Z"
+   },
+   {
+      "varienceMean":0.0035981647402208183,
+      "standardDeviation":0.02353205793981518,
+      "zScore":-0.3583,
+      "timeUTC":"2022-08-02T15:12:00Z"
+   },
+   {
+      "varienceMean":0.003143494263586904,
+      "standardDeviation":0.02327264166214099,
+      "zScore":-0.3933,
+      "timeUTC":"2022-08-02T15:13:00Z"
+   },
+   {
+      "varienceMean":0.0026522469375649177,
+      "standardDeviation":0.022882326742252587,
+      "zScore":-0.2614,
+      "timeUTC":"2022-08-02T15:14:00Z"
+   },
+   {
+      "varienceMean":0.0015818128038578144,
+      "standardDeviation":0.02175440071258232,
+      "zScore":-1.3546,
+      "timeUTC":"2022-08-02T15:15:00Z"
+   },
+   {
+      "varienceMean":0.0008810159997870292,
+      "standardDeviation":0.021778730920254993,
+      "zScore":-1.6275,
+      "timeUTC":"2022-08-02T15:16:00Z"
+   },
+   {
+      "varienceMean":0.0011690850571801832,
+      "standardDeviation":0.021691617924794293,
+      "zScore":0.3544,
+      "timeUTC":"2022-08-02T15:17:00Z"
+   },
+   {
+      "varienceMean":0.0011283767800276965,
+      "standardDeviation":0.021680818495464382,
+      "zScore":0.1724,
+      "timeUTC":"2022-08-02T15:18:00Z"
+   },
+   {
+      "varienceMean":0.0011012081781604597,
+      "standardDeviation":0.02166944312224981,
+      "zScore":0.3567,
+      "timeUTC":"2022-08-02T15:19:00Z"
+   },
+   {
+      "varienceMean":0.0011423799774298807,
+      "standardDeviation":0.02167376221895208,
+      "zScore":0.1989,
+      "timeUTC":"2022-08-02T15:20:00Z"
+   },
+   {
+      "varienceMean":0.0013714299592174036,
+      "standardDeviation":0.0215663672284287,
+      "zScore":0.0557,
+      "timeUTC":"2022-08-02T15:21:00Z"
+   },
+   {
+      "varienceMean":0.0012275022715882052,
+      "standardDeviation":0.021473414124561902,
+      "zScore":0.3155,
+      "timeUTC":"2022-08-02T15:22:00Z"
+   },
+   {
+      "varienceMean":0.0012439238199248184,
+      "standardDeviation":0.021472525433434225,
+      "zScore":-0.0163,
+      "timeUTC":"2022-08-02T15:23:00Z"
+   },
+   {
+      "varienceMean":0.0010530393529659184,
+      "standardDeviation":0.021389946278287116,
+      "zScore":-0.0083,
+      "timeUTC":"2022-08-02T15:24:00Z"
+   },
+   {
+      "varienceMean":0.001084581461435452,
+      "standardDeviation":0.021408013868028257,
+      "zScore":0.6455,
+      "timeUTC":"2022-08-02T15:25:00Z"
+   },
+   {
+      "varienceMean":0.0012581247521095168,
+      "standardDeviation":0.021398258184448425,
+      "zScore":0.3452,
+      "timeUTC":"2022-08-02T15:26:00Z"
+   },
+   {
+      "varienceMean":0.0013345743492596469,
+      "standardDeviation":0.02141632600431053,
+      "zScore":0.4129,
+      "timeUTC":"2022-08-02T15:27:00Z"
+   },
+   {
+      "varienceMean":0.0012502215638008757,
+      "standardDeviation":0.021427415787256467,
+      "zScore":-0.3263,
+      "timeUTC":"2022-08-02T15:28:00Z"
+   },
+   {
+      "varienceMean":0.001151001597935255,
+      "standardDeviation":0.021427146891804943,
+      "zScore":-0.2265,
+      "timeUTC":"2022-08-02T15:29:00Z"
+   },
+   {
+      "varienceMean":0.001175786006805679,
+      "standardDeviation":0.02141543146717606,
+      "zScore":-0.4155,
+      "timeUTC":"2022-08-02T15:30:00Z"
+   },
+   {
+      "varienceMean":0.0015925465232115258,
+      "standardDeviation":0.02096974571247636,
+      "zScore":-0.097,
+      "timeUTC":"2022-08-02T15:31:00Z"
+   },
+   {
+      "varienceMean":0.001720957753198138,
+      "standardDeviation":0.02095286605229908,
+      "zScore":0.1719,
+      "timeUTC":"2022-08-02T15:32:00Z"
+   },
+   {
+      "varienceMean":0.0014949411464397699,
+      "standardDeviation":0.020991360464813643,
+      "zScore":-0.7031,
+      "timeUTC":"2022-08-02T15:33:00Z"
+   },
+   {
+      "varienceMean":0.001430413999054844,
+      "standardDeviation":0.020966781353001857,
+      "zScore":0.2288,
+      "timeUTC":"2022-08-02T15:34:00Z"
+   },
+   {
+      "varienceMean":0.0011052236035884546,
+      "standardDeviation":0.021144622143520666,
+      "zScore":-1.3059,
+      "timeUTC":"2022-08-02T15:35:00Z"
+   },
+   {
+      "varienceMean":0.00135038665312964,
+      "standardDeviation":0.02122934230601692,
+      "zScore":0.9165,
+      "timeUTC":"2022-08-02T15:36:00Z"
+   },
+   {
+      "varienceMean":0.0016979023025665715,
+      "standardDeviation":0.021143816073339285,
+      "zScore":0.567,
+      "timeUTC":"2022-08-02T15:37:00Z"
+   },
+   {
+      "varienceMean":0.001967794318393824,
+      "standardDeviation":0.021054695358759715,
+      "zScore":0.3036,
+      "timeUTC":"2022-08-02T15:38:00Z"
+   },
+   {
+      "varienceMean":0.002246132870294817,
+      "standardDeviation":0.020917783328006468,
+      "zScore":0.1652,
+      "timeUTC":"2022-08-02T15:39:00Z"
+   },
+   {
+      "varienceMean":0.0024452547049115493,
+      "standardDeviation":0.021191462879764988,
+      "zScore":1.8307,
+      "timeUTC":"2022-08-02T15:40:00Z"
+   },
+   {
+      "varienceMean":0.002366264284832367,
+      "standardDeviation":0.02130638488446547,
+      "zScore":-1.6345,
+      "timeUTC":"2022-08-02T15:41:00Z"
+   },
+   {
+      "varienceMean":0.0014211692908547152,
+      "standardDeviation":0.019925540831069982,
+      "zScore":-0.8362,
+      "timeUTC":"2022-08-02T15:42:00Z"
+   },
+   {
+      "varienceMean":0.0014784875889036892,
+      "standardDeviation":0.019911173673629438,
+      "zScore":-0.1083,
+      "timeUTC":"2022-08-02T15:43:00Z"
+   },
+   {
+      "varienceMean":0.0013259109499712141,
+      "standardDeviation":0.019869502851199705,
+      "zScore":-0.1067,
+      "timeUTC":"2022-08-02T15:44:00Z"
+   },
+   {
+      "varienceMean":0.001325756773168127,
+      "standardDeviation":0.019869602713817217,
+      "zScore":-0.6481,
+      "timeUTC":"2022-08-02T15:45:00Z"
+   },
+   {
+      "varienceMean":0.0014470597118507952,
+      "standardDeviation":0.01991991936332425,
+      "zScore":0.7157,
+      "timeUTC":"2022-08-02T15:46:00Z"
+   },
+   {
+      "varienceMean":0.0018129599331712465,
+      "standardDeviation":0.019777081063007462,
+      "zScore":0.524,
+      "timeUTC":"2022-08-02T15:47:00Z"
+   },
+   {
+      "varienceMean":0.0014787609909103347,
+      "standardDeviation":0.01979422917904087,
+      "zScore":-0.887,
+      "timeUTC":"2022-08-02T15:48:00Z"
+   },
+   {
+      "varienceMean":0.0013194808387300117,
+      "standardDeviation":0.019858211526513746,
+      "zScore":-0.7981,
+      "timeUTC":"2022-08-02T15:49:00Z"
+   },
+   {
+      "varienceMean":0.0011736998104102797,
+      "standardDeviation":0.019946485988807435,
+      "zScore":-0.966,
+      "timeUTC":"2022-08-02T15:50:00Z"
+   },
+   {
+      "varienceMean":0.0012286948992113118,
+      "standardDeviation":0.019901782844662156,
+      "zScore":-0.677,
+      "timeUTC":"2022-08-02T15:51:00Z"
+   },
+   {
+      "varienceMean":0.0011862380274928537,
+      "standardDeviation":0.01986426823443278,
+      "zScore":0.7786,
+      "timeUTC":"2022-08-02T15:52:00Z"
+   },
+   {
+      "varienceMean":0.0013451532368150493,
+      "standardDeviation":0.01981457035207292,
+      "zScore":0.0839,
+      "timeUTC":"2022-08-02T15:53:00Z"
+   },
+   {
+      "varienceMean":0.0012865761130237796,
+      "standardDeviation":0.019733278267635775,
+      "zScore":1.2437,
+      "timeUTC":"2022-08-02T15:54:00Z"
+   },
+   {
+      "varienceMean":0.001272084445581912,
+      "standardDeviation":0.019717721962521265,
+      "zScore":1.0375,
+      "timeUTC":"2022-08-02T15:55:00Z"
+   },
+   {
+      "varienceMean":0.0012074773476173993,
+      "standardDeviation":0.019735733055656894,
+      "zScore":-0.4407,
+      "timeUTC":"2022-08-02T15:56:00Z"
+   },
+   {
+      "varienceMean":0.0011367051691287971,
+      "standardDeviation":0.019690711019187346,
+      "zScore":0.459,
+      "timeUTC":"2022-08-02T15:57:00Z"
+   },
+   {
+      "varienceMean":0.0008710859922100143,
+      "standardDeviation":0.019470850327628287,
+      "zScore":0.1571,
+      "timeUTC":"2022-08-02T15:58:00Z"
+   },
+   {
+      "varienceMean":0.0017118888914665021,
+      "standardDeviation":0.019866901100713097,
+      "zScore":2.5613,
+      "timeUTC":"2022-08-02T15:59:00Z"
+   },
+   {
+      "varienceMean":0.0013106906610971883,
+      "standardDeviation":0.020811976861842597,
+      "zScore":-3.2564,
+      "timeUTC":"2022-08-02T16:00:00Z"
+   },
+   {
+      "varienceMean":0.0013751251675465169,
+      "standardDeviation":0.020801377432446883,
+      "zScore":-0.0112,
+      "timeUTC":"2022-08-02T16:01:00Z"
+   },
+   {
+      "varienceMean":0.001089444744948083,
+      "standardDeviation":0.020782467491183412,
+      "zScore":-0.6142,
+      "timeUTC":"2022-08-02T16:02:00Z"
+   },
+   {
+      "varienceMean":0.0010432430882944491,
+      "standardDeviation":0.020789489404286435,
+      "zScore":-0.262,
+      "timeUTC":"2022-08-02T16:03:00Z"
+   },
+   {
+      "varienceMean":0.0009015198790354132,
+      "standardDeviation":0.020782301689376892,
+      "zScore":-0.2868,
+      "timeUTC":"2022-08-02T16:04:00Z"
+   },
+   {
+      "varienceMean":0.0008119208229502607,
+      "standardDeviation":0.020790909824993063,
+      "zScore":-0.3094,
+      "timeUTC":"2022-08-02T16:05:00Z"
+   },
+   {
+      "varienceMean":0.0004969828620041953,
+      "standardDeviation":0.020883775140599796,
+      "zScore":-1.0407,
+      "timeUTC":"2022-08-02T16:06:00Z"
+   },
+   {
+      "varienceMean":0.0006451283468967596,
+      "standardDeviation":0.020815871639805437,
+      "zScore":-0.1068,
+      "timeUTC":"2022-08-02T16:07:00Z"
+   },
+   {
+      "varienceMean":0.0009718989602953925,
+      "standardDeviation":0.020634471659591935,
+      "zScore":0.2263,
+      "timeUTC":"2022-08-02T16:08:00Z"
+   },
+   {
+      "varienceMean":0.001085779039986823,
+      "standardDeviation":0.020596636263109088,
+      "zScore":-0.0589,
+      "timeUTC":"2022-08-02T16:09:00Z"
+   },
+   {
+      "varienceMean":0.0010121084626718354,
+      "standardDeviation":0.020557955893870175,
+      "zScore":0.3482,
+      "timeUTC":"2022-08-02T16:10:00Z"
+   },
+   {
+      "varienceMean":0.0005156861127183642,
+      "standardDeviation":0.020017146402394905,
+      "zScore":-0.1235,
+      "timeUTC":"2022-08-02T16:11:00Z"
+   },
+   {
+      "varienceMean":-3.530775742620043E-05,
+      "standardDeviation":0.01951366053792987,
+      "zScore":-0.4721,
+      "timeUTC":"2022-08-02T16:12:00Z"
+   },
+   {
+      "varienceMean":-3.116310889108964E-05,
+      "standardDeviation":0.019514560202199244,
+      "zScore":0.2276,
+      "timeUTC":"2022-08-02T16:13:00Z"
+   },
+   {
+      "varienceMean":8.34127699017452E-05,
+      "standardDeviation":0.019620272481021682,
+      "zScore":1.2092,
+      "timeUTC":"2022-08-02T16:14:00Z"
+   },
+   {
+      "varienceMean":-7.618132721515347E-05,
+      "standardDeviation":0.019508508488406125,
+      "zScore":0.2974,
+      "timeUTC":"2022-08-02T16:15:00Z"
+   },
+   {
+      "varienceMean":-0.00013516662302944397,
+      "standardDeviation":0.019531203607180476,
+      "zScore":-0.534,
+      "timeUTC":"2022-08-02T16:16:00Z"
+   },
+   {
+      "varienceMean":-8.804307475246478E-05,
+      "standardDeviation":0.01957765871338031,
+      "zScore":1.1038,
+      "timeUTC":"2022-08-02T16:17:00Z"
+   },
+   {
+      "varienceMean":-0.00019307240953099033,
+      "standardDeviation":0.019449792348123305,
+      "zScore":0.9541,
+      "timeUTC":"2022-08-02T16:18:00Z"
+   },
+   {
+      "varienceMean":-0.0002747202295289463,
+      "standardDeviation":0.019375605471767143,
+      "zScore":0.7018,
+      "timeUTC":"2022-08-02T16:19:00Z"
+   },
+   {
+      "varienceMean":-0.00011239076401845037,
+      "standardDeviation":0.019409151761161116,
+      "zScore":0.6205,
+      "timeUTC":"2022-08-02T16:20:00Z"
+   },
+   {
+      "varienceMean":0.0005082896206030545,
+      "standardDeviation":0.018619403108746834,
+      "zScore":0.3507,
+      "timeUTC":"2022-08-02T16:21:00Z"
+   },
+   {
+      "varienceMean":-0.0002338915146868028,
+      "standardDeviation":0.017205996607688675,
+      "zScore":-0.1526,
+      "timeUTC":"2022-08-02T16:22:00Z"
+   },
+   {
+      "varienceMean":0.00027478482720548464,
+      "standardDeviation":0.016284810957763587,
+      "zScore":-0.316,
+      "timeUTC":"2022-08-02T16:23:00Z"
+   },
+   {
+      "varienceMean":0.0005994386172820183,
+      "standardDeviation":0.01616330863756958,
+      "zScore":0.6186,
+      "timeUTC":"2022-08-02T16:24:00Z"
+   },
+   {
+      "varienceMean":0.0009266571067879562,
+      "standardDeviation":0.016125426808741544,
+      "zScore":0.8886,
+      "timeUTC":"2022-08-02T16:25:00Z"
+   },
+   {
+      "varienceMean":0.0008314324146010795,
+      "standardDeviation":0.016075160286667427,
+      "zScore":0.2355,
+      "timeUTC":"2022-08-02T16:26:00Z"
+   },
+   {
+      "varienceMean":0.0004812976218444212,
+      "standardDeviation":0.016281395645676006,
+      "zScore":-1.6498,
+      "timeUTC":"2022-08-02T16:27:00Z"
+   },
+   {
+      "varienceMean":0.0007208934889257444,
+      "standardDeviation":0.01630307983692825,
+      "zScore":0.8179,
+      "timeUTC":"2022-08-02T16:28:00Z"
+   },
+   {
+      "varienceMean":0.0005315844093737631,
+      "standardDeviation":0.01632765852159762,
+      "zScore":-0.7037,
+      "timeUTC":"2022-08-02T16:29:00Z"
+   },
+   {
+      "varienceMean":0.0005537663208905654,
+      "standardDeviation":0.01632303778752499,
+      "zScore":-0.1411,
+      "timeUTC":"2022-08-02T16:30:00Z"
+   },
+   {
+      "varienceMean":0.00032810434219840006,
+      "standardDeviation":0.016160098714788015,
+      "zScore":0.0345,
+      "timeUTC":"2022-08-02T16:31:00Z"
+   },
+   {
+      "varienceMean":0.0002226925601377562,
+      "standardDeviation":0.01629273848902886,
+      "zScore":-1.5734,
+      "timeUTC":"2022-08-02T16:32:00Z"
+   },
+   {
+      "varienceMean":0.0002550515288466534,
+      "standardDeviation":0.016274350612171033,
+      "zScore":-0.4701,
+      "timeUTC":"2022-08-02T16:33:00Z"
+   },
+   {
+      "varienceMean":0.00019750670937286003,
+      "standardDeviation":0.016305369043796026,
+      "zScore":-0.7132,
+      "timeUTC":"2022-08-02T16:34:00Z"
+   },
+   {
+      "varienceMean":8.498641676750983E-05,
+      "standardDeviation":0.016293273405808856,
+      "zScore":-0.2343,
+      "timeUTC":"2022-08-02T16:35:00Z"
+   },
+   {
+      "varienceMean":0.00024881005523254773,
+      "standardDeviation":0.01625119519414323,
+      "zScore":0.2418,
+      "timeUTC":"2022-08-02T16:36:00Z"
+   },
+   {
+      "varienceMean":0.0002462871269236271,
+      "standardDeviation":0.01625179422473513,
+      "zScore":-0.2451,
+      "timeUTC":"2022-08-02T16:37:00Z"
+   },
+   {
+      "varienceMean":0.000129626135880191,
+      "standardDeviation":0.016226438178719285,
+      "zScore":-0.1384,
+      "timeUTC":"2022-08-02T16:38:00Z"
+   },
+   {
+      "varienceMean":-0.00019508135176241526,
+      "standardDeviation":0.016192256857365646,
+      "zScore":-0.8873,
+      "timeUTC":"2022-08-02T16:39:00Z"
+   },
+   {
+      "varienceMean":-0.0003707518567782882,
+      "standardDeviation":0.016111246747420968,
+      "zScore":-0.0774,
+      "timeUTC":"2022-08-02T16:40:00Z"
+   },
+   {
+      "varienceMean":-0.0003217326081147069,
+      "standardDeviation":0.016131756957620917,
+      "zScore":0.5686,
+      "timeUTC":"2022-08-02T16:41:00Z"
+   },
+   {
+      "varienceMean":-0.00029299534169000615,
+      "standardDeviation":0.016119630552201256,
+      "zScore":-0.3339,
+      "timeUTC":"2022-08-02T16:42:00Z"
+   },
+   {
+      "varienceMean":-0.0002455177825780282,
+      "standardDeviation":0.01611204121648056,
+      "zScore":-0.014,
+      "timeUTC":"2022-08-02T16:43:00Z"
+   },
+   {
+      "varienceMean":-0.000549152876108985,
+      "standardDeviation":0.01634627376219881,
+      "zScore":-1.6854,
+      "timeUTC":"2022-08-02T16:44:00Z"
+   },
+   {
+      "varienceMean":-0.0002900424228846923,
+      "standardDeviation":0.016556930056022615,
+      "zScore":1.5825,
+      "timeUTC":"2022-08-02T16:45:00Z"
+   },
+   {
+      "varienceMean":-0.0001462659124055708,
+      "standardDeviation":0.01648097638401747,
+      "zScore":-0.0977,
+      "timeUTC":"2022-08-02T16:46:00Z"
+   },
+   {
+      "varienceMean":-0.0003279169827557536,
+      "standardDeviation":0.016324217567398873,
+      "zScore":0.3163,
+      "timeUTC":"2022-08-02T16:47:00Z"
+   },
+   {
+      "varienceMean":-0.00029859537393979755,
+      "standardDeviation":0.016305566618923295,
+      "zScore":-0.5474,
+      "timeUTC":"2022-08-02T16:48:00Z"
+   },
+   {
+      "varienceMean":-0.00010613857825642482,
+      "standardDeviation":0.016222819540476118,
+      "zScore":0.1562,
+      "timeUTC":"2022-08-02T16:49:00Z"
+   },
+   {
+      "varienceMean":0.00013478366404751243,
+      "standardDeviation":0.01599778824329468,
+      "zScore":-0.1952,
+      "timeUTC":"2022-08-02T16:50:00Z"
+   },
+   {
+      "varienceMean":-0.0001080339027012656,
+      "standardDeviation":0.01572926978488937,
+      "zScore":0.3511,
+      "timeUTC":"2022-08-02T16:51:00Z"
+   },
+   {
+      "varienceMean":-0.00010799816756982622,
+      "standardDeviation":0.015729259051021235,
+      "zScore":-0.3003,
+      "timeUTC":"2022-08-02T16:52:00Z"
+   },
+   {
+      "varienceMean":-0.00010058522412365877,
+      "standardDeviation":0.015726650120547685,
+      "zScore":-0.3286,
+      "timeUTC":"2022-08-02T16:53:00Z"
+   },
+   {
+      "varienceMean":-5.822531756672494E-06,
+      "standardDeviation":0.01573546187366869,
+      "zScore":0.3911,
+      "timeUTC":"2022-08-02T16:54:00Z"
+   },
+   {
+      "varienceMean":0.00019400433934512886,
+      "standardDeviation":0.01550531663274078,
+      "zScore":-0.5223,
+      "timeUTC":"2022-08-02T16:55:00Z"
+   },
+   {
+      "varienceMean":0.0006274841472944868,
+      "standardDeviation":0.015128897088937433,
+      "zScore":0.5391,
+      "timeUTC":"2022-08-02T16:56:00Z"
+   },
+   {
+      "varienceMean":0.00016118536844950552,
+      "standardDeviation":0.015579984501924896,
+      "zScore":-2.4349,
+      "timeUTC":"2022-08-02T16:57:00Z"
+   },
+   {
+      "varienceMean":2.680666492792843E-05,
+      "standardDeviation":0.01559676431910802,
+      "zScore":-0.5513,
+      "timeUTC":"2022-08-02T16:58:00Z"
+   },
+   {
+      "varienceMean":1.9759103654273317E-05,
+      "standardDeviation":0.015592942926654882,
+      "zScore":0.5199,
+      "timeUTC":"2022-08-02T16:59:00Z"
+   },
+   {
+      "varienceMean":-6.992438029562324E-05,
+      "standardDeviation":0.01558722061139751,
+      "zScore":-0.221,
+      "timeUTC":"2022-08-02T17:00:00Z"
+   },
+   {
+      "varienceMean":6.143169908232614E-05,
+      "standardDeviation":0.015664092623869842,
+      "zScore":0.9989,
+      "timeUTC":"2022-08-02T17:01:00Z"
+   },
+   {
+      "varienceMean":-0.00010686214238870343,
+      "standardDeviation":0.015668289299189363,
+      "zScore":-0.5566,
+      "timeUTC":"2022-08-02T17:02:00Z"
+   },
+   {
+      "varienceMean":9.002648388359204E-05,
+      "standardDeviation":0.015802766897397822,
+      "zScore":1.2968,
+      "timeUTC":"2022-08-02T17:03:00Z"
+   },
+   {
+      "varienceMean":-1.325495088438853E-05,
+      "standardDeviation":0.0158310198660295,
+      "zScore":-0.5962,
+      "timeUTC":"2022-08-02T17:04:00Z"
+   },
+   {
+      "varienceMean":3.345039288741743E-05,
+      "standardDeviation":0.015881767085828457,
+      "zScore":1.2304,
+      "timeUTC":"2022-08-02T17:05:00Z"
+   },
+   {
+      "varienceMean":-7.006152821292217E-05,
+      "standardDeviation":0.015859016834086036,
+      "zScore":-0.1031,
+      "timeUTC":"2022-08-02T17:06:00Z"
+   },
+   {
+      "varienceMean":-0.00013268069249286788,
+      "standardDeviation":0.01583076564005198,
+      "zScore":0.2558,
+      "timeUTC":"2022-08-02T17:07:00Z"
+   },
+   {
+      "varienceMean":-4.447909573263693E-05,
+      "standardDeviation":0.0158238392960461,
+      "zScore":0.1974,
+      "timeUTC":"2022-08-02T17:08:00Z"
+   },
+   {
+      "varienceMean":1.3442511417221387E-06,
+      "standardDeviation":0.015819814773614167,
+      "zScore":0.0555,
+      "timeUTC":"2022-08-02T17:09:00Z"
+   },
+   {
+      "varienceMean":0.00011817754404567206,
+      "standardDeviation":0.01580547215384244,
+      "zScore":0.2431,
+      "timeUTC":"2022-08-02T17:10:00Z"
+   },
+   {
+      "varienceMean":6.993969248133704E-05,
+      "standardDeviation":0.015814464421438565,
+      "zScore":-0.3373,
+      "timeUTC":"2022-08-02T17:11:00Z"
+   },
+   {
+      "varienceMean":0.0002125178896508066,
+      "standardDeviation":0.015925057449060694,
+      "zScore":1.2161,
+      "timeUTC":"2022-08-02T17:12:00Z"
+   },
+   {
+      "varienceMean":0.0002681833053749803,
+      "standardDeviation":0.015887535392951024,
+      "zScore":-0.5014,
+      "timeUTC":"2022-08-02T17:13:00Z"
+   },
+   {
+      "varienceMean":9.491187498535933E-05,
+      "standardDeviation":0.01591605805536445,
+      "zScore":-0.7034,
+      "timeUTC":"2022-08-02T17:14:00Z"
+   },
+   {
+      "varienceMean":0.0003765198717792194,
+      "standardDeviation":0.015690425799738263,
+      "zScore":0.0814,
+      "timeUTC":"2022-08-02T17:15:00Z"
+   },
+   {
+      "varienceMean":0.00026080835640917335,
+      "standardDeviation":0.015581617228191109,
+      "zScore":0.576,
+      "timeUTC":"2022-08-02T17:16:00Z"
+   },
+   {
+      "varienceMean":0.0001459383559245191,
+      "standardDeviation":0.015524460250335085,
+      "zScore":0.1322,
+      "timeUTC":"2022-08-02T17:17:00Z"
+   },
+   {
+      "varienceMean":0.00012834150426485345,
+      "standardDeviation":0.015516134437944256,
+      "zScore":0.4171,
+      "timeUTC":"2022-08-02T17:18:00Z"
+   },
+   {
+      "varienceMean":9.769599594977446E-06,
+      "standardDeviation":0.015518401508075952,
+      "zScore":-0.3973,
+      "timeUTC":"2022-08-02T17:19:00Z"
+   },
+   {
+      "varienceMean":-0.00044368634308717824,
+      "standardDeviation":0.014959453676814512,
+      "zScore":-0.2448,
+      "timeUTC":"2022-08-02T17:20:00Z"
+   },
+   {
+      "varienceMean":-0.0002570030973405596,
+      "standardDeviation":0.01467249825018771,
+      "zScore":-0.9224,
+      "timeUTC":"2022-08-02T17:21:00Z"
+   },
+   {
+      "varienceMean":-0.0001836963237291642,
+      "standardDeviation":0.014615660738814618,
+      "zScore":-0.5286,
+      "timeUTC":"2022-08-02T17:22:00Z"
+   },
+   {
+      "varienceMean":-0.000311004479141863,
+      "standardDeviation":0.014674728187897253,
+      "zScore":-0.8925,
+      "timeUTC":"2022-08-02T17:23:00Z"
+   },
+   {
+      "varienceMean":-0.00011594713257498657,
+      "standardDeviation":0.014796141233266455,
+      "zScore":1.2725,
+      "timeUTC":"2022-08-02T17:24:00Z"
+   },
+   {
+      "varienceMean":-0.0001061693058354754,
+      "standardDeviation":0.014788902161064607,
+      "zScore":-0.7078,
+      "timeUTC":"2022-08-02T17:25:00Z"
+   },
+   {
+      "varienceMean":-0.00011773808622143593,
+      "standardDeviation":0.014776977693386203,
+      "zScore":0.9924,
+      "timeUTC":"2022-08-02T17:26:00Z"
+   },
+   {
+      "varienceMean":-0.0004640485508571604,
+      "standardDeviation":0.014890160288505212,
+      "zScore":-1.4768,
+      "timeUTC":"2022-08-02T17:27:00Z"
+   },
+   {
+      "varienceMean":-0.0003915652196062644,
+      "standardDeviation":0.014831497244638038,
+      "zScore":-0.569,
+      "timeUTC":"2022-08-02T17:28:00Z"
+   },
+   {
+      "varienceMean":-0.0001689059289516063,
+      "standardDeviation":0.014784646722496048,
+      "zScore":0.5347,
+      "timeUTC":"2022-08-02T17:29:00Z"
+   },
+   {
+      "varienceMean":-0.00012268730272416836,
+      "standardDeviation":0.014735681958038732,
+      "zScore":-0.9059,
+      "timeUTC":"2022-08-02T17:30:00Z"
+   },
+   {
+      "varienceMean":0.00023412089186683525,
+      "standardDeviation":0.014869225952023288,
+      "zScore":1.5604,
+      "timeUTC":"2022-08-02T17:31:00Z"
+   },
+   {
+      "varienceMean":-4.291098911561678E-05,
+      "standardDeviation":0.014818725343183067,
+      "zScore":-0.7428,
+      "timeUTC":"2022-08-02T17:32:00Z"
+   },
+   {
+      "varienceMean":-0.00012123600259644891,
+      "standardDeviation":0.01482309660247268,
+      "zScore":-0.3174,
+      "timeUTC":"2022-08-02T17:33:00Z"
+   },
+   {
+      "varienceMean":-6.818603815390733E-05,
+      "standardDeviation":0.014925016234885298,
+      "zScore":2.0906,
+      "timeUTC":"2022-08-02T17:34:00Z"
+   },
+   {
+      "varienceMean":-7.607665618495683E-05,
+      "standardDeviation":0.01491369440576201,
+      "zScore":1.4092,
+      "timeUTC":"2022-08-02T17:35:00Z"
+   },
+   {
+      "varienceMean":-5.8594257462263804E-05,
+      "standardDeviation":0.014906016013346306,
+      "zScore":-0.3813,
+      "timeUTC":"2022-08-02T17:36:00Z"
+   },
+   {
+      "varienceMean":-0.0003442140569698946,
+      "standardDeviation":0.014980662895933822,
+      "zScore":-1.2045,
+      "timeUTC":"2022-08-02T17:37:00Z"
+   },
+   {
+      "varienceMean":-0.00027909465888245345,
+      "standardDeviation":0.01501322116068756,
+      "zScore":0.7141,
+      "timeUTC":"2022-08-02T17:38:00Z"
+   },
+   {
+      "varienceMean":-0.000880283771262296,
+      "standardDeviation":0.014057091800424446,
+      "zScore":-0.4725,
+      "timeUTC":"2022-08-02T17:39:00Z"
+   },
+   {
+      "varienceMean":-0.00034847362997256817,
+      "standardDeviation":0.012483924250784938,
+      "zScore":-1.0358,
+      "timeUTC":"2022-08-02T17:40:00Z"
+   },
+   {
+      "varienceMean":-0.00039087603763345794,
+      "standardDeviation":0.012485990871868753,
+      "zScore":-0.2168,
+      "timeUTC":"2022-08-02T17:41:00Z"
+   },
+   {
+      "varienceMean":-0.0001633504106569396,
+      "standardDeviation":0.01248558870690304,
+      "zScore":0.9003,
+      "timeUTC":"2022-08-02T17:42:00Z"
+   },
+   {
+      "varienceMean":-8.390721398898848E-05,
+      "standardDeviation":0.012483634625676449,
+      "zScore":0.2904,
+      "timeUTC":"2022-08-02T17:43:00Z"
+   },
+   {
+      "varienceMean":-1.9985796249706035E-05,
+      "standardDeviation":0.01247435517091082,
+      "zScore":0.1084,
+      "timeUTC":"2022-08-02T17:44:00Z"
+   },
+   {
+      "varienceMean":-0.00010097695305043206,
+      "standardDeviation":0.012536589781452437,
+      "zScore":-1.0863,
+      "timeUTC":"2022-08-02T17:45:00Z"
+   },
+   {
+      "varienceMean":-6.498378643254697E-05,
+      "standardDeviation":0.012480899554901899,
+      "zScore":-1.4079,
+      "timeUTC":"2022-08-02T17:46:00Z"
+   },
+   {
+      "varienceMean":-0.00040707492627309875,
+      "standardDeviation":0.012976666242606806,
+      "zScore":-2.7265,
+      "timeUTC":"2022-08-02T17:47:00Z"
+   },
+   {
+      "varienceMean":-0.0002863591233458363,
+      "standardDeviation":0.013088045566086918,
+      "zScore":1.3753,
+      "timeUTC":"2022-08-02T17:48:00Z"
+   },
+   {
+      "varienceMean":-3.5187377165712216E-05,
+      "standardDeviation":0.01332752434081581,
+      "zScore":1.8778,
+      "timeUTC":"2022-08-02T17:49:00Z"
+   },
+   {
+      "varienceMean":6.601724933370509E-05,
+      "standardDeviation":0.013427493775482227,
+      "zScore":1.3572,
+      "timeUTC":"2022-08-02T17:50:00Z"
+   },
+   {
+      "varienceMean":0.00024147929450520447,
+      "standardDeviation":0.01351428999312033,
+      "zScore":1.1358,
+      "timeUTC":"2022-08-02T17:51:00Z"
+   },
+   {
+      "varienceMean":0.0003383660531934537,
+      "standardDeviation":0.013480596402807488,
+      "zScore":0.0076,
+      "timeUTC":"2022-08-02T17:52:00Z"
+   },
+   {
+      "varienceMean":0.00017911871764659038,
+      "standardDeviation":0.013525544096979059,
+      "zScore":-0.8646,
+      "timeUTC":"2022-08-02T17:53:00Z"
+   },
+   {
+      "varienceMean":4.729266413512682E-05,
+      "standardDeviation":0.013357799737538168,
+      "zScore":0.7919,
+      "timeUTC":"2022-08-02T17:54:00Z"
+   },
+   {
+      "varienceMean":5.7922622349712535E-05,
+      "standardDeviation":0.013362735705867664,
+      "zScore":0.5036,
+      "timeUTC":"2022-08-02T17:55:00Z"
+   },
+   {
+      "varienceMean":0.00016057643341205313,
+      "standardDeviation":0.013320093983965525,
+      "zScore":-0.0346,
+      "timeUTC":"2022-08-02T17:56:00Z"
+   },
+   {
+      "varienceMean":5.233245985172899E-06,
+      "standardDeviation":0.01315968600126571,
+      "zScore":0.4546,
+      "timeUTC":"2022-08-02T17:57:00Z"
+   },
+   {
+      "varienceMean":0.00019619306528150172,
+      "standardDeviation":0.013557258657332158,
+      "zScore":2.7487,
+      "timeUTC":"2022-08-02T17:58:00Z"
+   },
+   {
+      "varienceMean":0.00029330294793518863,
+      "standardDeviation":0.013685110547081264,
+      "zScore":1.6617,
+      "timeUTC":"2022-08-02T17:59:00Z"
+   },
+   {
+      "varienceMean":0.0002981046500223871,
+      "standardDeviation":0.013689276445297008,
+      "zScore":0.8848,
+      "timeUTC":"2022-08-02T18:00:00Z"
+   },
+   {
+      "varienceMean":0.0005317254351649837,
+      "standardDeviation":0.013998175034596752,
+      "zScore":2.1338,
+      "timeUTC":"2022-08-02T18:01:00Z"
+   },
+   {
+      "varienceMean":0.0005621118612728591,
+      "standardDeviation":0.013994079139699417,
+      "zScore":-0.0273,
+      "timeUTC":"2022-08-02T18:02:00Z"
+   },
+   {
+      "varienceMean":0.0005033480626436989,
+      "standardDeviation":0.014029063738390947,
+      "zScore":-0.8019,
+      "timeUTC":"2022-08-02T18:03:00Z"
+   },
+   {
+      "varienceMean":0.0005302336180603517,
+      "standardDeviation":0.01405094252795967,
+      "zScore":0.9079,
+      "timeUTC":"2022-08-02T18:04:00Z"
+   },
+   {
+      "varienceMean":0.00037769445596381773,
+      "standardDeviation":0.01397284312762248,
+      "zScore":-0.027,
+      "timeUTC":"2022-08-02T18:05:00Z"
+   },
+   {
+      "varienceMean":0.00027400254204361146,
+      "standardDeviation":0.013979473870498181,
+      "zScore":-0.4311,
+      "timeUTC":"2022-08-02T18:06:00Z"
+   },
+   {
+      "varienceMean":0.0004891788496305541,
+      "standardDeviation":0.013730950496078316,
+      "zScore":-0.3897,
+      "timeUTC":"2022-08-02T18:07:00Z"
+   },
+   {
+      "varienceMean":0.00034428213637805296,
+      "standardDeviation":0.013663312696808073,
+      "zScore":-0.057,
+      "timeUTC":"2022-08-02T18:08:00Z"
+   },
+   {
+      "varienceMean":0.0003746677695176661,
+      "standardDeviation":0.013641506357703032,
+      "zScore":-0.608,
+      "timeUTC":"2022-08-02T18:09:00Z"
+   },
+   {
+      "varienceMean":0.000347689609152616,
+      "standardDeviation":0.013648345469846584,
+      "zScore":-0.3513,
+      "timeUTC":"2022-08-02T18:10:00Z"
+   },
+   {
+      "varienceMean":0.0004073861932970952,
+      "standardDeviation":0.01366361210204826,
+      "zScore":0.4719,
+      "timeUTC":"2022-08-02T18:11:00Z"
+   },
+   {
+      "varienceMean":0.0006062543996504002,
+      "standardDeviation":0.013429070343056973,
+      "zScore":-0.4566,
+      "timeUTC":"2022-08-02T18:12:00Z"
+   },
+   {
+      "varienceMean":0.0007376799156566642,
+      "standardDeviation":0.013414412314664158,
+      "zScore":0.3734,
+      "timeUTC":"2022-08-02T18:13:00Z"
+   },
+   {
+      "varienceMean":0.0007635772647619294,
+      "standardDeviation":0.013393376910376611,
+      "zScore":-0.7172,
+      "timeUTC":"2022-08-02T18:14:00Z"
+   },
+   {
+      "varienceMean":0.0008362489427930131,
+      "standardDeviation":0.013388498302668585,
+      "zScore":0.2015,
+      "timeUTC":"2022-08-02T18:15:00Z"
+   },
+   {
+      "varienceMean":0.000825438404011868,
+      "standardDeviation":0.01338623145800258,
+      "zScore":0.1697,
+      "timeUTC":"2022-08-02T18:16:00Z"
+   },
+   {
+      "varienceMean":0.0009209215514782149,
+      "standardDeviation":0.013387399152088477,
+      "zScore":0.3653,
+      "timeUTC":"2022-08-02T18:17:00Z"
+   },
+   {
+      "varienceMean":0.0009710106436101415,
+      "standardDeviation":0.013385314732166118,
+      "zScore":0.1436,
+      "timeUTC":"2022-08-02T18:18:00Z"
+   },
+   {
+      "varienceMean":0.0010955874967027216,
+      "standardDeviation":0.013297857685722711,
+      "zScore":-0.2406,
+      "timeUTC":"2022-08-02T18:19:00Z"
+   },
+   {
+      "varienceMean":0.001102937199262694,
+      "standardDeviation":0.01329655885310508,
+      "zScore":-0.1494,
+      "timeUTC":"2022-08-02T18:20:00Z"
+   },
+   {
+      "varienceMean":0.0008065532640206783,
+      "standardDeviation":0.013450006874506173,
+      "zScore":-1.6056,
+      "timeUTC":"2022-08-02T18:21:00Z"
+   },
+   {
+      "varienceMean":0.00134552705292698,
+      "standardDeviation":0.014236380944643108,
+      "zScore":3.2927,
+      "timeUTC":"2022-08-02T18:22:00Z"
+   },
+   {
+      "varienceMean":0.001567494594985861,
+      "standardDeviation":0.014378650310120594,
+      "zScore":1.4019,
+      "timeUTC":"2022-08-02T18:23:00Z"
+   },
+   {
+      "varienceMean":0.002081746446200533,
+      "standardDeviation":0.014227256311703178,
+      "zScore":1.4932,
+      "timeUTC":"2022-08-02T18:24:00Z"
+   },
+   {
+      "varienceMean":0.00165655273600482,
+      "standardDeviation":0.014143863177562738,
+      "zScore":-1.2914,
+      "timeUTC":"2022-08-02T18:25:00Z"
+   },
+   {
+      "varienceMean":0.001174838672986525,
+      "standardDeviation":0.015043580306089625,
+      "zScore":-3.3969,
+      "timeUTC":"2022-08-02T18:26:00Z"
+   },
+   {
+      "varienceMean":0.000940724815359366,
+      "standardDeviation":0.015166460472455973,
+      "zScore":-1.2868,
+      "timeUTC":"2022-08-02T18:27:00Z"
+   },
+   {
+      "varienceMean":0.0012163523221509548,
+      "standardDeviation":0.01522953763258462,
+      "zScore":1.1242,
+      "timeUTC":"2022-08-02T18:28:00Z"
+   },
+   {
+      "varienceMean":0.0011142264757691225,
+      "standardDeviation":0.015255292332233439,
+      "zScore":-0.5833,
+      "timeUTC":"2022-08-02T18:29:00Z"
+   },
+   {
+      "varienceMean":0.0013954667956754376,
+      "standardDeviation":0.015435266668915796,
+      "zScore":1.5381,
+      "timeUTC":"2022-08-02T18:30:00Z"
+   },
+   {
+      "varienceMean":0.0012617590923959853,
+      "standardDeviation":0.01545776324894064,
+      "zScore":-0.5963,
+      "timeUTC":"2022-08-02T18:31:00Z"
+   },
+   {
+      "varienceMean":0.0012835784818531646,
+      "standardDeviation":0.015450686134300036,
+      "zScore":-0.2545,
+      "timeUTC":"2022-08-02T18:32:00Z"
+   },
+   {
+      "varienceMean":0.0013730470667844472,
+      "standardDeviation":0.015438382804632219,
+      "zScore":0.1493,
+      "timeUTC":"2022-08-02T18:33:00Z"
+   },
+   {
+      "varienceMean":0.0012482089912232023,
+      "standardDeviation":0.015449738209742265,
+      "zScore":-0.4909,
+      "timeUTC":"2022-08-02T18:34:00Z"
+   },
+   {
+      "varienceMean":0.001340485642794827,
+      "standardDeviation":0.015422326405866197,
+      "zScore":-0.0012,
+      "timeUTC":"2022-08-02T18:35:00Z"
+   },
+   {
+      "varienceMean":0.001292340090740433,
+      "standardDeviation":0.015406521410349386,
+      "zScore":0.1738,
+      "timeUTC":"2022-08-02T18:36:00Z"
+   },
+   {
+      "varienceMean":0.001705381891975097,
+      "standardDeviation":0.014898941445507028,
+      "zScore":0.1225,
+      "timeUTC":"2022-08-02T18:37:00Z"
+   },
+   {
+      "varienceMean":0.0018839205409073084,
+      "standardDeviation":0.01488168540364966,
+      "zScore":0.4972,
+      "timeUTC":"2022-08-02T18:38:00Z"
+   },
+   {
+      "varienceMean":0.0016656068982387568,
+      "standardDeviation":0.014948482684064122,
+      "zScore":-1.0282,
+      "timeUTC":"2022-08-02T18:39:00Z"
+   },
+   {
+      "varienceMean":0.0016477157797571845,
+      "standardDeviation":0.014955740712003403,
+      "zScore":-0.4648,
+      "timeUTC":"2022-08-02T18:40:00Z"
+   },
+   {
+      "varienceMean":0.0014729373414901748,
+      "standardDeviation":0.014892398074708971,
+      "zScore":-0.2177,
+      "timeUTC":"2022-08-02T18:41:00Z"
+   },
+   {
+      "varienceMean":0.0014993444219398994,
+      "standardDeviation":0.01487644169411281,
+      "zScore":-0.5167,
+      "timeUTC":"2022-08-02T18:42:00Z"
+   },
+   {
+      "varienceMean":0.0012625796229511924,
+      "standardDeviation":0.014758768942411363,
+      "zScore":-0.2951,
+      "timeUTC":"2022-08-02T18:43:00Z"
+   },
+   {
+      "varienceMean":0.0013040662541049497,
+      "standardDeviation":0.014734401678108588,
+      "zScore":-0.4485,
+      "timeUTC":"2022-08-02T18:44:00Z"
+   },
+   {
+      "varienceMean":0.0011746141798714606,
+      "standardDeviation":0.014629814259458526,
+      "zScore":0.3728,
+      "timeUTC":"2022-08-02T18:45:00Z"
+   },
+   {
+      "varienceMean":0.0009971355939842727,
+      "standardDeviation":0.014770655747392985,
+      "zScore":-1.3846,
+      "timeUTC":"2022-08-02T18:46:00Z"
+   },
+   {
+      "varienceMean":0.0007941446976015614,
+      "standardDeviation":0.014868305057079466,
+      "zScore":-1.1553,
+      "timeUTC":"2022-08-02T18:47:00Z"
+   },
+   {
+      "varienceMean":0.0007942679033989853,
+      "standardDeviation":0.014868324037718728,
       "zScore":0.1545,
-      "timeUTC":"2022-07-29T18:51:00Z"
+      "timeUTC":"2022-08-02T18:48:00Z"
    },
    {
-      "varienceMean":-0.00013671868375324592,
-      "standardDeviation":0.009421897231490582,
-      "zScore":-0.0722,
-      "timeUTC":"2022-07-29T18:52:00Z"
+      "varienceMean":0.001028511796553147,
+      "standardDeviation":0.015051225281520843,
+      "zScore":1.5464,
+      "timeUTC":"2022-08-02T18:49:00Z"
    },
    {
-      "varienceMean":-4.0000269337864454E-05,
-      "standardDeviation":0.009418028249293229,
-      "zScore":0.4683,
-      "timeUTC":"2022-07-29T18:53:00Z"
+      "varienceMean":0.0011321597241330174,
+      "standardDeviation":0.015106643062783325,
+      "zScore":0.8733,
+      "timeUTC":"2022-08-02T18:50:00Z"
    },
    {
-      "varienceMean":-0.00012594213437596406,
-      "standardDeviation":0.009415987831803248,
-      "zScore":-0.4281,
-      "timeUTC":"2022-07-29T18:54:00Z"
+      "varienceMean":0.0015141475180004804,
+      "standardDeviation":0.015419756932070811,
+      "zScore":2.0376,
+      "timeUTC":"2022-08-02T18:51:00Z"
    },
    {
-      "varienceMean":-8.36589063080323E-05,
-      "standardDeviation":0.009390213239679016,
-      "zScore":-0.3875,
-      "timeUTC":"2022-07-29T18:55:00Z"
+      "varienceMean":0.0010705904876996061,
+      "standardDeviation":0.015531264534760227,
+      "zScore":-1.6642,
+      "timeUTC":"2022-08-02T18:52:00Z"
    },
    {
-      "varienceMean":-0.00034016526146276216,
-      "standardDeviation":0.009370002022219834,
-      "zScore":-1.2762,
-      "timeUTC":"2022-07-29T18:56:00Z"
+      "varienceMean":0.0011873567723851858,
+      "standardDeviation":0.015508777268897976,
+      "zScore":0.18,
+      "timeUTC":"2022-08-02T18:53:00Z"
    },
    {
-      "varienceMean":-0.00024174940582965106,
-      "standardDeviation":0.009342261392602195,
-      "zScore":0.2392,
-      "timeUTC":"2022-07-29T18:57:00Z"
+      "varienceMean":0.0013513994022950663,
+      "standardDeviation":0.015464639397056296,
+      "zScore":0.2556,
+      "timeUTC":"2022-08-02T18:54:00Z"
    },
    {
-      "varienceMean":-0.00022076550368774366,
-      "standardDeviation":0.009327520446044778,
-      "zScore":-0.5917,
-      "timeUTC":"2022-07-29T18:58:00Z"
+      "varienceMean":0.001241881814046375,
+      "standardDeviation":0.015500844583138003,
+      "zScore":-0.6799,
+      "timeUTC":"2022-08-02T18:55:00Z"
    },
    {
-      "varienceMean":-0.00025455274038907585,
-      "standardDeviation":0.009349008645664004,
-      "zScore":-0.8141,
-      "timeUTC":"2022-07-29T18:59:00Z"
+      "varienceMean":0.000959118964701362,
+      "standardDeviation":0.015609953582954543,
+      "zScore":-1.2812,
+      "timeUTC":"2022-08-02T18:56:00Z"
    },
    {
-      "varienceMean":-0.0001026782356833691,
-      "standardDeviation":0.009347667511878264,
-      "zScore":0.7954,
-      "timeUTC":"2022-07-29T19:00:00Z"
+      "varienceMean":0.0011494856992859013,
+      "standardDeviation":0.01573945137243758,
+      "zScore":1.2762,
+      "timeUTC":"2022-08-02T18:57:00Z"
    },
    {
-      "varienceMean":6.628150852178571E-05,
-      "standardDeviation":0.0093110730743072,
-      "zScore":0.6812,
-      "timeUTC":"2022-07-29T19:01:00Z"
+      "varienceMean":0.0011218185437148742,
+      "standardDeviation":0.015732275019473253,
+      "zScore":0.1724,
+      "timeUTC":"2022-08-02T18:58:00Z"
    },
    {
-      "varienceMean":-0.0001689022152735669,
-      "standardDeviation":0.009503733260960816,
-      "zScore":-2.0358,
-      "timeUTC":"2022-07-29T19:02:00Z"
+      "varienceMean":0.0011863825052820848,
+      "standardDeviation":0.015715513368667142,
+      "zScore":-0.0564,
+      "timeUTC":"2022-08-02T18:59:00Z"
    },
    {
-      "varienceMean":-0.00013172564365697263,
-      "standardDeviation":0.009529026841989575,
-      "zScore":0.8726,
-      "timeUTC":"2022-07-29T19:03:00Z"
+      "varienceMean":0.0011387727655721373,
+      "standardDeviation":0.01573866788520647,
+      "zScore":-0.6357,
+      "timeUTC":"2022-08-02T19:00:00Z"
    },
    {
-      "varienceMean":-9.762267816311232E-05,
-      "standardDeviation":0.009516555674947701,
-      "zScore":-0.1885,
-      "timeUTC":"2022-07-29T19:04:00Z"
+      "varienceMean":0.0015686880474201606,
+      "standardDeviation":0.015911228126802138,
+      "zScore":1.7367,
+      "timeUTC":"2022-08-02T19:01:00Z"
    },
    {
-      "varienceMean":-0.00016400492496599216,
-      "standardDeviation":0.009473772052620118,
-      "zScore":0.2991,
-      "timeUTC":"2022-07-29T19:05:00Z"
+      "varienceMean":0.001997011846394957,
+      "standardDeviation":0.016223769787520773,
+      "zScore":2.0295,
+      "timeUTC":"2022-08-02T19:02:00Z"
    },
    {
-      "varienceMean":-0.00011368137471556272,
-      "standardDeviation":0.009478704689819411,
-      "zScore":0.3608,
-      "timeUTC":"2022-07-29T19:06:00Z"
+      "varienceMean":0.00232585085406411,
+      "standardDeviation":0.016241450849856932,
+      "zScore":1.056,
+      "timeUTC":"2022-08-02T19:03:00Z"
    },
    {
-      "varienceMean":-0.0001681365731461484,
-      "standardDeviation":0.009564010045025287,
-      "zScore":-1.8414,
-      "timeUTC":"2022-07-29T19:07:00Z"
+      "varienceMean":0.002189589466086087,
+      "standardDeviation":0.01616036605073611,
+      "zScore":0.1792,
+      "timeUTC":"2022-08-02T19:04:00Z"
    },
    {
-      "varienceMean":4.2917993650338875E-06,
-      "standardDeviation":0.009664011074851885,
-      "zScore":1.4602,
-      "timeUTC":"2022-07-29T19:08:00Z"
+      "varienceMean":0.0022156245228138927,
+      "standardDeviation":0.016141869136805483,
+      "zScore":-0.631,
+      "timeUTC":"2022-08-02T19:05:00Z"
    },
    {
-      "varienceMean":0.00011385254484689042,
-      "standardDeviation":0.00961498871248126,
-      "zScore":0.1155,
-      "timeUTC":"2022-07-29T19:09:00Z"
+      "varienceMean":0.002441038105352578,
+      "standardDeviation":0.01646662078963853,
+      "zScore":2.1041,
+      "timeUTC":"2022-08-02T19:06:00Z"
    },
    {
-      "varienceMean":0.00015155206927294968,
-      "standardDeviation":0.009679185470689276,
-      "zScore":1.89,
-      "timeUTC":"2022-07-29T19:10:00Z"
+      "varienceMean":0.002852399390128354,
+      "standardDeviation":0.016352986491872865,
+      "zScore":0.968,
+      "timeUTC":"2022-08-02T19:07:00Z"
    },
    {
-      "varienceMean":0.00026865708206898437,
-      "standardDeviation":0.009832035836779707,
-      "zScore":1.8847,
-      "timeUTC":"2022-07-29T19:11:00Z"
+      "varienceMean":0.002965059021849953,
+      "standardDeviation":0.016310861548167258,
+      "zScore":-0.0325,
+      "timeUTC":"2022-08-02T19:08:00Z"
    },
    {
-      "varienceMean":9.174713242478285E-05,
-      "standardDeviation":0.00997113691558318,
-      "zScore":-1.659,
-      "timeUTC":"2022-07-29T19:12:00Z"
+      "varienceMean":0.002731659219687754,
+      "standardDeviation":0.016407613394694823,
+      "zScore":-1.1175,
+      "timeUTC":"2022-08-02T19:09:00Z"
    },
    {
-      "varienceMean":0.0002386894462096631,
-      "standardDeviation":0.010004029759823464,
-      "zScore":0.9506,
-      "timeUTC":"2022-07-29T19:13:00Z"
+      "varienceMean":0.0029845565371682775,
+      "standardDeviation":0.016350712210333383,
+      "zScore":0.5402,
+      "timeUTC":"2022-08-02T19:10:00Z"
    },
    {
-      "varienceMean":0.00010749851143234727,
-      "standardDeviation":0.009938438475271202,
-      "zScore":-0.1518,
-      "timeUTC":"2022-07-29T19:14:00Z"
+      "varienceMean":0.0025640530409517612,
+      "standardDeviation":0.016360049739677866,
+      "zScore":-1.2945,
+      "timeUTC":"2022-08-02T19:11:00Z"
    },
    {
-      "varienceMean":0.0001576769119046833,
-      "standardDeviation":0.009922857974863792,
-      "zScore":-0.0604,
-      "timeUTC":"2022-07-29T19:15:00Z"
+      "varienceMean":0.002652352790486825,
+      "standardDeviation":0.016310084930027117,
+      "zScore":-0.2987,
+      "timeUTC":"2022-08-02T19:12:00Z"
    },
    {
-      "varienceMean":0.00014230925830839968,
-      "standardDeviation":0.009915027844023644,
-      "zScore":0.433,
-      "timeUTC":"2022-07-29T19:16:00Z"
+      "varienceMean":0.002828971170733812,
+      "standardDeviation":0.016323775311978934,
+      "zScore":0.6131,
+      "timeUTC":"2022-08-02T19:13:00Z"
    },
    {
-      "varienceMean":0.00022420337406287683,
-      "standardDeviation":0.00980251644734065,
-      "zScore":-0.9682,
-      "timeUTC":"2022-07-29T19:17:00Z"
+      "varienceMean":0.0026105713712015655,
+      "standardDeviation":0.016088015280956103,
+      "zScore":0.4154,
+      "timeUTC":"2022-08-02T19:14:00Z"
    },
    {
-      "varienceMean":0.00031492608793221174,
-      "standardDeviation":0.00991747914551495,
-      "zScore":1.7127,
-      "timeUTC":"2022-07-29T19:18:00Z"
+      "varienceMean":0.002339041445306044,
+      "standardDeviation":0.016005286681423266,
+      "zScore":-0.5343,
+      "timeUTC":"2022-08-02T19:15:00Z"
    },
    {
-      "varienceMean":0.00046021472260699347,
-      "standardDeviation":0.010049833304261277,
-      "zScore":1.6206,
-      "timeUTC":"2022-07-29T19:19:00Z"
+      "varienceMean":0.0026173280789107715,
+      "standardDeviation":0.01610399213500124,
+      "zScore":1.209,
+      "timeUTC":"2022-08-02T19:16:00Z"
    },
    {
-      "varienceMean":0.0004416324008049845,
-      "standardDeviation":0.010017926415264639,
-      "zScore":1.628,
-      "timeUTC":"2022-07-29T19:20:00Z"
+      "varienceMean":0.0025888418468649047,
+      "standardDeviation":0.016143593594734967,
+      "zScore":-1.4758,
+      "timeUTC":"2022-08-02T19:17:00Z"
    },
    {
-      "varienceMean":0.00043748024508897946,
-      "standardDeviation":0.010013599252205947,
-      "zScore":1.0218,
-      "timeUTC":"2022-07-29T19:21:00Z"
+      "varienceMean":0.0023644659294700656,
+      "standardDeviation":0.01618874303210468,
+      "zScore":-0.887,
+      "timeUTC":"2022-08-02T19:18:00Z"
    },
    {
-      "varienceMean":-4.505395182935691E-05,
-      "standardDeviation":0.009597288534962313,
-      "zScore":-1.6073,
-      "timeUTC":"2022-07-29T19:22:00Z"
+      "varienceMean":0.002322183163624762,
+      "standardDeviation":0.016220002799689662,
+      "zScore":-0.8676,
+      "timeUTC":"2022-08-02T19:19:00Z"
    },
    {
-      "varienceMean":-0.0002819034804852413,
-      "standardDeviation":0.009582805733248483,
-      "zScore":-1.1623,
-      "timeUTC":"2022-07-29T19:23:00Z"
+      "varienceMean":0.002295184712833929,
+      "standardDeviation":0.01624817268238427,
+      "zScore":-1.1247,
+      "timeUTC":"2022-08-02T19:20:00Z"
    },
    {
-      "varienceMean":-0.0003059588112440095,
-      "standardDeviation":0.009564579488796394,
-      "zScore":0.6339,
-      "timeUTC":"2022-07-29T19:24:00Z"
+      "varienceMean":0.002233017190453323,
+      "standardDeviation":0.016280550629977953,
+      "zScore":-0.7093,
+      "timeUTC":"2022-08-02T19:21:00Z"
    },
    {
-      "varienceMean":-0.00030876530180171905,
-      "standardDeviation":0.009563800788957858,
-      "zScore":0.2629,
-      "timeUTC":"2022-07-29T19:25:00Z"
+      "varienceMean":0.0019736032849046008,
+      "standardDeviation":0.0163441131665471,
+      "zScore":-1.0302,
+      "timeUTC":"2022-08-02T19:22:00Z"
    },
    {
-      "varienceMean":-0.00028237823337781616,
-      "standardDeviation":0.009563490454151459,
-      "zScore":0.1248,
-      "timeUTC":"2022-07-29T19:26:00Z"
+      "varienceMean":0.0019071095337136008,
+      "standardDeviation":0.016351123888184643,
+      "zScore":-0.3067,
+      "timeUTC":"2022-08-02T19:23:00Z"
    },
    {
-      "varienceMean":-0.00033136539174960804,
-      "standardDeviation":0.009579693148330687,
-      "zScore":-0.5836,
-      "timeUTC":"2022-07-29T19:27:00Z"
+      "varienceMean":0.0017719550189628328,
+      "standardDeviation":0.01641106236696218,
+      "zScore":-0.8503,
+      "timeUTC":"2022-08-02T19:24:00Z"
    },
    {
-      "varienceMean":-0.00020365658724739693,
-      "standardDeviation":0.009556708255385443,
-      "zScore":0.4813,
-      "timeUTC":"2022-07-29T19:28:00Z"
+      "varienceMean":0.0019515578394622669,
+      "standardDeviation":0.01633866108977603,
+      "zScore":0.1401,
+      "timeUTC":"2022-08-02T19:25:00Z"
    },
    {
-      "varienceMean":-0.0001915335734738787,
-      "standardDeviation":0.009542910241216831,
-      "zScore":-1.0761,
-      "timeUTC":"2022-07-29T19:29:00Z"
+      "varienceMean":0.00220551459085957,
+      "standardDeviation":0.016229209940949705,
+      "zScore":0.3421,
+      "timeUTC":"2022-08-02T19:26:00Z"
    },
    {
-      "varienceMean":-0.00010671960143879751,
-      "standardDeviation":0.009487646577296454,
-      "zScore":-0.211,
-      "timeUTC":"2022-07-29T19:30:00Z"
+      "varienceMean":0.0025035574086630496,
+      "standardDeviation":0.01579665537646185,
+      "zScore":-0.5372,
+      "timeUTC":"2022-08-02T19:27:00Z"
    },
    {
-      "varienceMean":-7.15942948559766E-05,
-      "standardDeviation":0.009478271957353832,
-      "zScore":-0.0836,
-      "timeUTC":"2022-07-29T19:31:00Z"
+      "varienceMean":0.0025388162480478827,
+      "standardDeviation":0.015834454974977284,
+      "zScore":1.181,
+      "timeUTC":"2022-08-02T19:28:00Z"
    },
    {
-      "varienceMean":-2.4910246340733613E-06,
-      "standardDeviation":0.00939088679764327,
-      "zScore":-0.9062,
-      "timeUTC":"2022-07-29T19:32:00Z"
+      "varienceMean":0.0021525633090882213,
+      "standardDeviation":0.01575295758231069,
+      "zScore":-1.0022,
+      "timeUTC":"2022-08-02T19:29:00Z"
    },
    {
-      "varienceMean":-0.00018519157794476217,
-      "standardDeviation":0.009312626194273699,
-      "zScore":-0.541,
-      "timeUTC":"2022-07-29T19:33:00Z"
+      "varienceMean":0.0024708367418692866,
+      "standardDeviation":0.016384637117195146,
+      "zScore":2.908,
+      "timeUTC":"2022-08-02T19:30:00Z"
    },
    {
-      "varienceMean":-0.0002662435713362224,
-      "standardDeviation":0.009378136979946088,
-      "zScore":-1.2332,
-      "timeUTC":"2022-07-29T19:34:00Z"
+      "varienceMean":0.0022838831806862147,
+      "standardDeviation":0.016340471206667043,
+      "zScore":-0.3298,
+      "timeUTC":"2022-08-02T19:31:00Z"
    },
    {
-      "varienceMean":-0.00025136565773328123,
-      "standardDeviation":0.009372573939324183,
-      "zScore":-0.2954,
-      "timeUTC":"2022-07-29T19:35:00Z"
+      "varienceMean":0.002225343850905051,
+      "standardDeviation":0.01635744770891958,
+      "zScore":-0.467,
+      "timeUTC":"2022-08-02T19:32:00Z"
    },
    {
-      "varienceMean":-0.00017245006207214204,
-      "standardDeviation":0.009438551364824993,
-      "zScore":1.247,
-      "timeUTC":"2022-07-29T19:36:00Z"
+      "varienceMean":0.00230592407465283,
+      "standardDeviation":0.01630933902501439,
+      "zScore":-0.3533,
+      "timeUTC":"2022-08-02T19:33:00Z"
    },
    {
-      "varienceMean":-0.00019854029896136416,
-      "standardDeviation":0.009427919058553065,
-      "zScore":0.2708,
-      "timeUTC":"2022-07-29T19:37:00Z"
+      "varienceMean":0.0023192335792725054,
+      "standardDeviation":0.016316664750052032,
+      "zScore":0.5907,
+      "timeUTC":"2022-08-02T19:34:00Z"
    },
    {
-      "varienceMean":7.497081125190739E-05,
-      "standardDeviation":0.00907993667856873,
-      "zScore":0.1944,
-      "timeUTC":"2022-07-29T19:38:00Z"
+      "varienceMean":0.0022166391609277627,
+      "standardDeviation":0.016320498403854102,
+      "zScore":-0.3485,
+      "timeUTC":"2022-08-02T19:35:00Z"
    },
    {
-      "varienceMean":-0.00016464866628317968,
-      "standardDeviation":0.008815697738592221,
-      "zScore":-0.2262,
-      "timeUTC":"2022-07-29T19:39:00Z"
+      "varienceMean":0.0019617302693900798,
+      "standardDeviation":0.016555197657350664,
+      "zScore":-1.6764,
+      "timeUTC":"2022-08-02T19:36:00Z"
    },
    {
-      "varienceMean":-0.0001744792330634601,
-      "standardDeviation":0.00881643088935236,
-      "zScore":-0.1298,
-      "timeUTC":"2022-07-29T19:40:00Z"
+      "varienceMean":0.0022355565757612174,
+      "standardDeviation":0.016843464346710482,
+      "zScore":1.8485,
+      "timeUTC":"2022-08-02T19:37:00Z"
    },
    {
-      "varienceMean":-0.00023423289094663812,
-      "standardDeviation":0.00883345387805998,
-      "zScore":-0.6195,
-      "timeUTC":"2022-07-29T19:41:00Z"
+      "varienceMean":0.0017635334330743805,
+      "standardDeviation":0.016507754408193496,
+      "zScore":-0.697,
+      "timeUTC":"2022-08-02T19:38:00Z"
    },
    {
-      "varienceMean":-0.00012727514014871318,
-      "standardDeviation":0.008819056248890466,
-      "zScore":0.4656,
-      "timeUTC":"2022-07-29T19:42:00Z"
+      "varienceMean":0.0015929292428792574,
+      "standardDeviation":0.016374673929039896,
+      "zScore":0.2675,
+      "timeUTC":"2022-08-02T19:39:00Z"
    },
    {
-      "varienceMean":-4.0240228753113634E-05,
-      "standardDeviation":0.008836317029916533,
-      "zScore":0.6857,
-      "timeUTC":"2022-07-29T19:43:00Z"
+      "varienceMean":0.00153348861808591,
+      "standardDeviation":0.01634606099210653,
+      "zScore":0.3018,
+      "timeUTC":"2022-08-02T19:40:00Z"
    },
    {
-      "varienceMean":6.127942576004798E-05,
-      "standardDeviation":0.008744640113613058,
-      "zScore":-0.3331,
-      "timeUTC":"2022-07-29T19:44:00Z"
+      "varienceMean":0.001273303485231421,
+      "standardDeviation":0.016089566277192543,
+      "zScore":0.1932,
+      "timeUTC":"2022-08-02T19:41:00Z"
    },
    {
-      "varienceMean":0.00016265990385231838,
-      "standardDeviation":0.008725389722189194,
-      "zScore":0.385,
-      "timeUTC":"2022-07-29T19:45:00Z"
+      "varienceMean":0.0010809792560769063,
+      "standardDeviation":0.016215939277440902,
+      "zScore":-1.2416,
+      "timeUTC":"2022-08-02T19:42:00Z"
    },
    {
-      "varienceMean":0.00016240788860870777,
-      "standardDeviation":0.008725177461135597,
-      "zScore":0.8408,
-      "timeUTC":"2022-07-29T19:46:00Z"
+      "varienceMean":0.0013238877104105845,
+      "standardDeviation":0.01621887265582958,
+      "zScore":0.7534,
+      "timeUTC":"2022-08-02T19:43:00Z"
    },
    {
-      "varienceMean":0.0001289243886401964,
-      "standardDeviation":0.008749796617797971,
-      "zScore":-0.9237,
-      "timeUTC":"2022-07-29T19:47:00Z"
+      "varienceMean":0.0012643774952646669,
+      "standardDeviation":0.016185754340987613,
+      "zScore":0.3751,
+      "timeUTC":"2022-08-02T19:44:00Z"
    },
    {
-      "varienceMean":0.00011995356961100777,
-      "standardDeviation":0.008753095347900095,
-      "zScore":-0.4184,
-      "timeUTC":"2022-07-29T19:48:00Z"
+      "varienceMean":0.0011307350290696528,
+      "standardDeviation":0.016250676493316105,
+      "zScore":-0.8919,
+      "timeUTC":"2022-08-02T19:45:00Z"
    },
    {
-      "varienceMean":0.00017410173612042714,
-      "standardDeviation":0.008783906733492252,
-      "zScore":0.8732,
-      "timeUTC":"2022-07-29T19:49:00Z"
+      "varienceMean":0.0008920049957364712,
+      "standardDeviation":0.0165231097288146,
+      "zScore":-1.847,
+      "timeUTC":"2022-08-02T19:46:00Z"
    },
    {
-      "varienceMean":0.00025606373005573473,
-      "standardDeviation":0.00876116141707574,
-      "zScore":0.1852,
-      "timeUTC":"2022-07-29T19:50:00Z"
+      "varienceMean":0.001277225281621131,
+      "standardDeviation":0.016830659195484227,
+      "zScore":1.924,
+      "timeUTC":"2022-08-02T19:47:00Z"
    },
    {
-      "varienceMean":0.0003543637806169696,
-      "standardDeviation":0.008777273261957727,
-      "zScore":0.7181,
-      "timeUTC":"2022-07-29T19:51:00Z"
+      "varienceMean":0.0013791243270107967,
+      "standardDeviation":0.01685082327342497,
+      "zScore":0.4971,
+      "timeUTC":"2022-08-02T19:48:00Z"
    },
    {
-      "varienceMean":0.0005092848370007088,
-      "standardDeviation":0.00879509647081397,
-      "zScore":0.9868,
-      "timeUTC":"2022-07-29T19:52:00Z"
+      "varienceMean":0.0015647316787558607,
+      "standardDeviation":0.01684960614853629,
+      "zScore":0.5387,
+      "timeUTC":"2022-08-02T19:49:00Z"
    },
    {
-      "varienceMean":0.000572288828636059,
-      "standardDeviation":0.008772316292391948,
-      "zScore":-0.0065,
-      "timeUTC":"2022-07-29T19:53:00Z"
+      "varienceMean":0.0013903264615039363,
+      "standardDeviation":0.017000512073154703,
+      "zScore":-1.3692,
+      "timeUTC":"2022-08-02T19:50:00Z"
    },
    {
-      "varienceMean":0.00047490992231120704,
-      "standardDeviation":0.008842122808472993,
-      "zScore":-1.2592,
-      "timeUTC":"2022-07-29T19:54:00Z"
+      "varienceMean":0.001358592381422709,
+      "standardDeviation":0.016993242617472336,
+      "zScore":0.1367,
+      "timeUTC":"2022-08-02T19:51:00Z"
    },
    {
-      "varienceMean":0.0004456358113631183,
-      "standardDeviation":0.008829052064835911,
-      "zScore":0.2827,
-      "timeUTC":"2022-07-29T19:55:00Z"
+      "varienceMean":0.0014225869698649798,
+      "standardDeviation":0.016979239233488083,
+      "zScore":-0.0323,
+      "timeUTC":"2022-08-02T19:52:00Z"
    },
    {
-      "varienceMean":0.00020985859020953288,
-      "standardDeviation":0.00876908988093376,
-      "zScore":-1.0757,
-      "timeUTC":"2022-07-29T19:56:00Z"
+      "varienceMean":0.0014494103768094824,
+      "standardDeviation":0.01698816495367046,
+      "zScore":0.4108,
+      "timeUTC":"2022-08-02T19:53:00Z"
    },
    {
-      "varienceMean":0.00012573168626136,
-      "standardDeviation":0.008781007491723425,
-      "zScore":-0.6158,
-      "timeUTC":"2022-07-29T19:57:00Z"
+      "varienceMean":0.0014934069760973254,
+      "standardDeviation":0.016967139180105128,
+      "zScore":-0.3498,
+      "timeUTC":"2022-08-02T19:54:00Z"
    },
    {
-      "varienceMean":7.5013704277030436E-06,
-      "standardDeviation":0.008769861962658727,
-      "zScore":-0.573,
-      "timeUTC":"2022-07-29T19:58:00Z"
+      "varienceMean":0.0013447901453639882,
+      "standardDeviation":0.01701363363591821,
+      "zScore":-0.7448,
+      "timeUTC":"2022-08-02T19:55:00Z"
+   },
+   {
+      "varienceMean":0.0013204235163407202,
+      "standardDeviation":0.01701285085327247,
+      "zScore":-0.0388,
+      "timeUTC":"2022-08-02T19:56:00Z"
+   },
+   {
+      "varienceMean":0.0012311982678245704,
+      "standardDeviation":0.01701246287741927,
+      "zScore":-0.2553,
+      "timeUTC":"2022-08-02T19:57:00Z"
+   },
+   {
+      "varienceMean":0.0009845140962327125,
+      "standardDeviation":0.017164739769933844,
+      "zScore":-1.3259,
+      "timeUTC":"2022-08-02T19:58:00Z"
    }
 ]

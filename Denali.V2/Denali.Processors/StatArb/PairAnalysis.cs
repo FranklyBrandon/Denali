@@ -17,15 +17,11 @@ namespace Denali.Processors.StatArb
     public class PairAnalysis : StrategyProcessorBase
     {
         private readonly FileService _fileService;
-        private readonly SimpleMovingAverageDouble _spreadAverage;
-        private readonly StandardDeviation _std;
         private readonly PairSpreadCalculation _pairSpread;
 
         public PairAnalysis(AlpacaService alpacaService, FileService fileService, IMapper mapper) : base(alpacaService, mapper)
         {
             _fileService = fileService;
-            _spreadAverage = new SimpleMovingAverageDouble(100);
-            _std = new StandardDeviation();
             _pairSpread = new PairSpreadCalculation(100);
         }
 
@@ -34,7 +30,33 @@ namespace Denali.Processors.StatArb
             _alpacaService.InitializeTradingclient();
             _alpacaService.InitializeDataClient();
 
-            var backlogDays = await GetOpenBacklogDays(numberOfBacklogDays + 5, startDate);
+            var lastMarketDates = await GetOpenBacklogDays(numberOfBacklogDays + 3, startDate);
+            var backlogDays = lastMarketDates.Skip(1).Take(numberOfBacklogDays).Reverse().Select(x => x);
+
+            var backlogABars = new List<IBar>();
+            var backlogBBars = new List<IBar>();
+            foreach (var backlogDay in backlogDays)
+            {
+                var backlogA = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
+                    new HistoricalBarsRequest(tickerA, backlogDay.GetTradingOpenTimeUtc(), backlogDay.GetTradingCloseTimeUtc(), barTimeFrame));
+
+                backlogABars.AddRange(backlogA.Items);
+
+                var backlogB = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
+                    new HistoricalBarsRequest(tickerB, backlogDay.GetTradingOpenTimeUtc(), backlogDay.GetTradingCloseTimeUtc(), barTimeFrame));
+
+                backlogBBars.AddRange(backlogB.Items);
+
+                // TODO: In this scenario we should get historic quote price and hydrate the missing bars
+                //if (backlogA.Items.Count != backlogB.Items.Count)
+                //    throw new ArgumentOutOfRangeException("Historic pair timeframe data frames do not match");
+            }
+
+            var backlogAData = _mapper.Map<List<AggregateBar>>(backlogABars);
+            var backlogBData = _mapper.Map<List<AggregateBar>>(backlogBBars);
+
+            _pairSpread.Initialize(backlogAData, backlogBData);
+
             var marketDays = await GetOpenMarketDays(startDate, endDate);
             if (marketDays != null && marketDays.Any())
             {
@@ -50,7 +72,18 @@ namespace Denali.Processors.StatArb
                 var tickerAData = _mapper.Map<List<AggregateBar>>(tickerAbars.Items);
                 var tickerBData = _mapper.Map<List<AggregateBar>>(tickerBbars.Items);
 
-                _pairSpread.Initialize(tickerAData, tickerBData);
+                var length = tickerAData.Count() - 1;
+                // Start at the second bar because a change percentage is needed
+                for (int i = 1; i < length; i++)
+                {
+                    var origninalA = tickerAData.ElementAt(i - 1);
+                    var currentA = tickerAData.ElementAt(i);
+                    var origninalB = tickerBData.ElementAt(i - 1);
+                    var currentB = tickerBData.ElementAt(i);
+
+                    _pairSpread.AnalyzeStep(origninalA, currentA, origninalB, currentB);
+                }
+
                 var zscores = _pairSpread.PairSpreads.Select(x =>
                     new PairSpread(x.varienceMean, x.standardDeviation, x.zScore.RoundToFourPlaces(), x.timeUTC)
                 ).ToList();

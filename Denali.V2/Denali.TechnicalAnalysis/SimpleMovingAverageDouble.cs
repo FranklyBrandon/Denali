@@ -8,21 +8,22 @@ namespace Denali.TechnicalAnalysis
 {
     public class SimpleMovingAverageDouble
     {
+        public IList<double> RawValues { get; }
         private readonly int _backlog;
-        private readonly IList<double> _rawValues;
+
         public IList<double> MovingAverages { get; set; }
 
         public SimpleMovingAverageDouble(int backlog)
         {
             _backlog = backlog;
-            _rawValues = new List<double>();
+            RawValues = new List<double>();
             MovingAverages = new List<double>();
         }
 
         public void Analyze(double value)
         {
-            _rawValues.Add(value);
-            var length = _rawValues.Count() - 1;
+            RawValues.Add(value);
+            var length = RawValues.Count() - 1;
             if (length < _backlog - 1)
                 return;
 
@@ -35,7 +36,7 @@ namespace Denali.TechnicalAnalysis
             var sum = 0d;
             for (int i = length; i >= limit; i--)
             {
-                sum += _rawValues.ElementAt(i);
+                sum += RawValues.ElementAt(i);
             }
 
             return sum / _backlog;

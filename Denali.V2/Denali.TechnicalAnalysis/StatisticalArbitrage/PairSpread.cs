@@ -34,32 +34,54 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
             // Skip the first bar, because spread is calculated using the previous bar
             int start = 1;
 
-            List<double> spreadValues = new List<double>();
-
             for (int i = start; i < length; i++)
             {
                 var originalA = tickerAData.ElementAt(i - 1);
+                var currentA = tickerAData.ElementAt(i);
                 var originalB = tickerBData.ElementAt(i - 1);
-                var newA = tickerAData.ElementAt(i);
-                var newB = tickerBData.ElementAt(i);
+                var currentB = tickerBData.ElementAt(i);
 
-                var percentageChangeA = PercentageDifference(originalA.Close, newA.Close);
-                var percentageChangeB = PercentageDifference(originalB.Close, newB.Close);
+                // TODO: In this scenario we should get historic quote price
+                if (!originalA.TimeUtc.Equals(originalB.TimeUtc))
+                {
 
-                var spread = percentageChangeA - percentageChangeB;
-                spreadValues.Add(spread);
+                }
 
+                var spread = CaclulateSpread(originalA, currentA, originalB, currentB);
                 _spreadAverage.Analyze(spread);
 
-                if (spreadValues.Count < _backlog)
+                if (_spreadAverage.RawValues.Count < _backlog)
                     continue;
 
-                var mean = _spreadAverage.MovingAverages.Last();
-                var std = _std.CalculateStandardDeviation(spreadValues, mean, 100);
-                var zScore = (spread - mean) / std;
-
-                PairSpreads.Add(new PairSpread(mean, std, zScore, originalA.TimeUtc));
+                var zScore = CalculateZScore(originalA.TimeUtc);
+                PairSpreads.Add(zScore);
             }
+        }
+
+        public void AnalyzeStep(AggregateBar originalA, AggregateBar currentA, AggregateBar originalB, AggregateBar currentB)
+        {
+            var spread = CaclulateSpread(originalA, currentA, originalB, currentB);
+            _spreadAverage.Analyze(spread);
+
+            var zScore = CalculateZScore(originalA.TimeUtc);
+            PairSpreads.Add(zScore);
+        }
+
+        private double CaclulateSpread(AggregateBar originalA, AggregateBar currentA, AggregateBar originalB, AggregateBar currentB)
+        {
+            var percentageChangeA = PercentageDifference(originalA.Close, currentA.Close);
+            var percentageChangeB = PercentageDifference(originalB.Close, currentB.Close);
+
+            return percentageChangeA - percentageChangeB;
+        }
+
+        private PairSpread CalculateZScore(DateTime timeUTC)
+        {
+            var mean = _spreadAverage.MovingAverages.Last();
+            var std = _std.CalculateStandardDeviation(_spreadAverage.RawValues, mean, _backlog);
+            var zScore = (_spreadAverage.RawValues.Last() - mean) / std;
+
+            return new PairSpread(mean, std, zScore, timeUTC);
         }
 
         private double PercentageDifference(decimal originalValue, decimal newValue) =>
