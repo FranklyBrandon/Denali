@@ -69,11 +69,11 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 
         private double CaclulateSpread(AggregateBar originalA, AggregateBar currentA, AggregateBar originalB, AggregateBar currentB)
         {
-            //var percentageChangeA = PercentageDifference(originalA.Close, currentA.Close);
-            //var percentageChangeB = PercentageDifference(originalB.Close, currentB.Close);
+            var percentageChangeA = PercentageDifference(originalA.Close, currentA.Close);
+            var percentageChangeB = PercentageDifference(originalB.Close, currentB.Close);
 
-            //return percentageChangeA - percentageChangeB;
-            return (double)(currentA.Close - currentB.Close);
+            return percentageChangeA - percentageChangeB;
+            //return (double)(currentA.Close - currentB.Close);
         }
 
         private PairSpread CalculateZScore(DateTime timeUTC)
@@ -87,7 +87,7 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 
         // TODO: Why is Math.Abs here? Bug?
         private double PercentageDifference(decimal originalValue, decimal newValue) =>
-            (double)(Math.Abs(originalValue - newValue) / originalValue) * 100;
+            (double)((originalValue - newValue) / originalValue) * 100;
 
     }
 }

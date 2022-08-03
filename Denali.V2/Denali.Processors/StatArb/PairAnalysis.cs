@@ -142,5 +142,7 @@ namespace Denali.Processors.StatArb
 
         //https://www.reddit.com/r/algotrading/comments/obbb5d/kalman_filter_stat_arb/
         //https://algotrading101.com/learn/quantitative-trader-guide/#how-can-I-create-a-pairs-trading-strategy
+        //https://www.reddit.com/r/algotrading/comments/vqmv7u/my_basic_code_to_find_cointegration_in_crypto/
+        //hedge ratio: https://alpaca.markets/learn/statistically-significant-statarb-01/ , https://blog.quantinsti.com/statistical-arbitrage/
     }
 }
