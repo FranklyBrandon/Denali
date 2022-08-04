@@ -56,6 +56,7 @@ namespace Denali.Models
         public decimal Vwap { get; set; }
 
         public ulong TradeCount { get; set; }
+        public double Returns { get; set; }
 
         public void SetSymbol(string symbol) => Symbol = symbol;
 

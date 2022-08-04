@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 {
     public record PairSpread(double varienceMean, double standardDeviation, double zScore, double spread, DateTime timeUTC);
+    public record Returns(double returnsA, double returnsB);
 
     public class PairSpreadCalculation
     {
@@ -47,33 +48,29 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 
                 }
 
-                var spread = CaclulateSpread(originalA, currentA, originalB, currentB);
-                _spreadAverage.Analyze(spread);
+                currentA.Returns = Returns(originalA.Close, currentA.Close);
+                currentB.Returns = Returns(originalB.Close, currentB.Close);
 
-                if (_spreadAverage.RawValues.Count < _backlog)
-                    continue;
+                //var spread = CaclulateSpread(originalA, currentA, originalB, currentB);
+                //_spreadAverage.Analyze(spread);
 
-                var zScore = CalculateZScore(originalA.TimeUtc);
-                PairSpreads.Add(zScore);
+                //if (_spreadAverage.RawValues.Count < _backlog)
+                //    continue;
+
+                //var zScore = CalculateZScore(originalA.TimeUtc);
+                //PairSpreads.Add(zScore);
             }
         }
 
         public void AnalyzeStep(AggregateBar originalA, AggregateBar currentA, AggregateBar originalB, AggregateBar currentB)
         {
-            var spread = CaclulateSpread(originalA, currentA, originalB, currentB);
-            _spreadAverage.Analyze(spread);
+            //var spread = CaclulateSpread(originalA, currentA, originalB, currentB);
+            //_spreadAverage.Analyze(spread);
 
-            var zScore = CalculateZScore(originalA.TimeUtc);
-            PairSpreads.Add(zScore);
-        }
-
-        private double CaclulateSpread(AggregateBar originalA, AggregateBar currentA, AggregateBar originalB, AggregateBar currentB)
-        {
-            var percentageChangeA = PercentageDifference(originalA.Close, currentA.Close);
-            var percentageChangeB = PercentageDifference(originalB.Close, currentB.Close);
-
-            return percentageChangeA - percentageChangeB;
-            //return (double)(currentA.Close - currentB.Close);
+            //var zScore = CalculateZScore(originalA.TimeUtc);
+            //PairSpreads.Add(zScore);
+            currentA.Returns = Returns(originalA.Close, currentA.Close);
+            currentB.Returns = Returns(originalB.Close, currentB.Close);
         }
 
         private PairSpread CalculateZScore(DateTime timeUTC)
@@ -88,6 +85,9 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
         // TODO: Why is Math.Abs here? Bug?
         private double PercentageDifference(decimal originalValue, decimal newValue) =>
             (double)((originalValue - newValue) / originalValue) * 100;
+
+        private double Returns(decimal originalValue, decimal newValue) =>
+            (double)((originalValue / newValue) - 1) * 100;
 
     }
 }
