@@ -18,13 +18,10 @@ def ols_get():
     beta = result.params['value']
 
     spreads = np.log(x['value']) - beta * np.log(y['value'])
-    zscores = compute_zscore(spreads)
+    zscores = (spreads - spreads.mean()) / np.std(spreads)
 
     response = dict(beta = beta, spreads = spreads.values.tolist(), zscores = zscores.values.tolist())
     return jsonify(response)
-
-def compute_zscore(series):
-    return (series - series.mean()) / np.std(series)
 
 if __name__ == '__main__':
     app.run()
