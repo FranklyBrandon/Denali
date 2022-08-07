@@ -5,6 +5,7 @@ using Denali.Processors.ElephantStrategy;
 using Denali.Processors.StatArb;
 using Denali.Services;
 using Denali.Services.Aggregators;
+using Denali.Services.PythonInterop;
 using Denali.TechnicalAnalysis.ElephantBars;
 using InteractiveBrokers.API;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +38,10 @@ namespace Denali.Worker.Configuration
 
             services.AddScoped<IBService>();
             services.AddScoped<IBClient>();
+
+            services.AddHttpClient<IPythonInteropClient, PythonInteropClient>();
+            services.AddOptions<PythonInteropClientSettings>()
+                .Bind(configuration.GetSection(PythonInteropClientSettings.Settings));
 
 
             // Register a service provider so we can create scopes and resolve instances dynamically

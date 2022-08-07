@@ -18,22 +18,17 @@ namespace Denali.Processors.StatArb
     public class PairAnalysis : StrategyProcessorBase
     {
         private readonly FileService _fileService;
-        private readonly PairSpreadCalculation _pairSpread;
+        private readonly PairReturnsCalculation _pairReturns;
         private readonly ILogger<PairAnalysis> _logger;
-
-        private decimal _tickerAPrice;
-        private decimal _tickerBPrice;
-        private bool _tradeOpen = false;
-        private bool _tickerALong = false;
 
         public PairAnalysis(AlpacaService alpacaService, FileService fileService, ILogger<PairAnalysis> logger, IMapper mapper) : base(alpacaService, mapper)
         {
             _fileService = fileService;
-            _pairSpread = new PairSpreadCalculation(100);
+            _pairReturns = new PairReturnsCalculation(100);
             _logger = logger;
         }
 
-        public async Task Process(string tickerA, string tickerB, DateTime startDate, DateTime endDate, BarTimeFrame barTimeFrame, int numberOfBacklogDays, CancellationToken stoppingToken)
+        public async Task Process(string tickerX, string tickerY, DateTime startDate, DateTime endDate, BarTimeFrame barTimeFrame, int numberOfBacklogDays, CancellationToken stoppingToken)
         {
             _alpacaService.InitializeTradingclient();
             _alpacaService.InitializeDataClient();
@@ -41,102 +36,57 @@ namespace Denali.Processors.StatArb
             var lastMarketDates = await GetOpenBacklogDays(numberOfBacklogDays + 3, startDate);
             var backlogDays = lastMarketDates.Skip(1).Take(numberOfBacklogDays).Reverse().Select(x => x);
 
-            var backlogABars = new List<IBar>();
-            var backlogBBars = new List<IBar>();
+            var backlogXBars = new List<IBar>();
+            var backlogYBars = new List<IBar>();
             foreach (var backlogDay in backlogDays)
             {
-                var backlogA = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-                    new HistoricalBarsRequest(tickerA, backlogDay.GetTradingOpenTimeUtc(), backlogDay.GetTradingCloseTimeUtc(), barTimeFrame));
+                var backlogX = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
+                    new HistoricalBarsRequest(tickerX, backlogDay.GetTradingOpenTimeUtc(), backlogDay.GetTradingCloseTimeUtc(), barTimeFrame));
 
-                backlogABars.AddRange(backlogA.Items);
+                backlogXBars.AddRange(backlogX.Items);
 
-                var backlogB = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-                    new HistoricalBarsRequest(tickerB, backlogDay.GetTradingOpenTimeUtc(), backlogDay.GetTradingCloseTimeUtc(), barTimeFrame));
+                var backlogY = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
+                    new HistoricalBarsRequest(tickerY, backlogDay.GetTradingOpenTimeUtc(), backlogDay.GetTradingCloseTimeUtc(), barTimeFrame));
 
-                backlogBBars.AddRange(backlogB.Items);
+                backlogYBars.AddRange(backlogY.Items);
 
                 // TODO: In this scenario we should get historic quote price and hydrate the missing bars
                 //if (backlogA.Items.Count != backlogB.Items.Count)
                 //    throw new ArgumentOutOfRangeException("Historic pair timeframe data frames do not match");
             }
 
-            var backlogAData = _mapper.Map<List<AggregateBar>>(backlogABars);
-            var backlogBData = _mapper.Map<List<AggregateBar>>(backlogBBars);
+            var backlogXData = _mapper.Map<List<AggregateBar>>(backlogXBars);
+            var backlogYData = _mapper.Map<List<AggregateBar>>(backlogYBars);
 
-            _pairSpread.Initialize(backlogAData, backlogBData);
+            _pairReturns.Initialize(backlogXData, backlogYData);
 
             var marketDays = await GetOpenMarketDays(startDate, endDate);
             if (marketDays != null && marketDays.Any())
             {
-                var tickerAbars = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-                    new HistoricalBarsRequest(tickerA, marketDays.First().GetTradingOpenTimeUtc(), marketDays.Last().GetTradingCloseTimeUtc(), barTimeFrame));
+                var tickerXbars = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
+                    new HistoricalBarsRequest(tickerX, marketDays.First().GetTradingOpenTimeUtc(), marketDays.Last().GetTradingCloseTimeUtc(), barTimeFrame));
 
-                var tickerBbars = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-                    new HistoricalBarsRequest(tickerB, marketDays.First().GetTradingOpenTimeUtc(), marketDays.Last().GetTradingCloseTimeUtc(), barTimeFrame));
+                var tickerYbars = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
+                    new HistoricalBarsRequest(tickerY, marketDays.First().GetTradingOpenTimeUtc(), marketDays.Last().GetTradingCloseTimeUtc(), barTimeFrame));
 
-                if (tickerAbars.Items.Count != tickerBbars.Items.Count)
+                if (tickerXbars.Items.Count != tickerYbars.Items.Count)
                     throw new ArgumentOutOfRangeException("Historic pair timeframe data frames do not match");
 
-                var tickerAData = _mapper.Map<List<AggregateBar>>(tickerAbars.Items);
-                var tickerBData = _mapper.Map<List<AggregateBar>>(tickerBbars.Items);
+                var tickerXData = _mapper.Map<List<AggregateBar>>(tickerXbars.Items);
+                var tickerYData = _mapper.Map<List<AggregateBar>>(tickerYbars.Items);
 
-                var length = tickerAData.Count() - 1;
+                var length = tickerXData.Count() - 1;
                 // Start at the second bar because a change percentage is needed
                 for (int i = 1; i < length; i++)
                 {
-                    var origninalA = tickerAData.ElementAt(i - 1);
-                    var currentA = tickerAData.ElementAt(i);
-                    var origninalB = tickerBData.ElementAt(i - 1);
-                    var currentB = tickerBData.ElementAt(i);
+                    var origninalX = tickerXData.ElementAt(i - 1);
+                    var currentX = tickerXData.ElementAt(i);
+                    var origninalY = tickerYData.ElementAt(i - 1);
+                    var currentY = tickerYData.ElementAt(i);
 
-                    _pairSpread.AnalyzeStep(origninalA, currentA, origninalB, currentB);
-                    //_logger.LogInformation($"Z score {_pairSpread.PairSpreads.Last().zScore}, Spread: {_pairSpread.PairSpreads.Last().spread}");
-
-                    //A - B is negative -> Long A short B
-                    //A - B is positive -> Short A long B
-                    //https://alpaca.markets/learn/pairs-trading/#example5 (use beta to weigh hedge ratio?)
-
-                    if(_tradeOpen)
-                    {
-                        if(Math.Abs(_pairSpread.PairSpreads.Last().zScore) <= 0.5)
-                        {
-                            decimal profit = 0m;
-                            if (_tickerALong)
-                            {
-                                profit += currentA.Close - _tickerAPrice;
-                                profit += _tickerBPrice - currentB.Close;
-                            }
-                            else
-                            {
-                                profit += _tickerAPrice - currentA.Close;
-                                profit += currentB.Close - _tickerBPrice;
-                            }
-
-                            _logger.LogInformation($"Trade Closed: {currentA.TimeUtc}, Profit: {profit}, Spread: {_pairSpread.PairSpreads.Last().spread}");
-                            _tradeOpen = false;
-                        }    
-                    }
-                    else if (Math.Abs(_pairSpread.PairSpreads.Last().zScore) >= 2)
-                    {
-                        _tradeOpen = true;
-                        _tickerAPrice = currentA.Close;
-                        _tickerBPrice = currentB.Close;
-                        if (_pairSpread.PairSpreads.Last().spread > 0)
-                            _tickerALong = false;
-                        else
-                            _tickerALong = true;
-
-                        _logger.LogInformation($"Trade Opened: {currentA.TimeUtc}, Spread: {_pairSpread.PairSpreads.Last().spread}");
-                    }
+                    _pairReturns.AnalyzeStep(origninalX, currentX, origninalY, currentY);
+                    //_pairReturns.CalculateStats()
                 }
-
-                var zscores = _pairSpread.PairSpreads.Select(x =>
-                    new PairSpread(x.varienceMean, x.standardDeviation, x.zScore.RoundToFourPlaces(), x.spread, x.timeUTC)
-                ).ToList();
-
-                var json = JsonSerializer.Serialize(zscores);
-
-
             }
         }
 

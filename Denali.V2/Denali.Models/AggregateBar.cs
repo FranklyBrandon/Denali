@@ -54,9 +54,9 @@ namespace Denali.Models
         public DateTime TimeUtc { get; set; }
 
         public decimal Vwap { get; set; }
+        public double Returns { get; set; }
 
         public ulong TradeCount { get; set; }
-        public double Returns { get; set; }
 
         public void SetSymbol(string symbol) => Symbol = symbol;
 

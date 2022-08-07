@@ -1,4 +1,5 @@
 ﻿using Denali.Models;
+using Denali.Services.PythonInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,28 +8,20 @@ using System.Threading.Tasks;
 
 namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 {
-    public record PairSpread(double varienceMean, double standardDeviation, double zScore, double spread, DateTime timeUTC);
-    public record Returns(double returnsA, double returnsB);
-
-    public class PairSpreadCalculation
+    public class PairReturnsCalculation
     {
-        public IList<PairSpread> PairSpreads { get; }
-
+        private readonly IPythonInteropClient _pythonInteropClient;
         private readonly int _backlog;
-        private readonly SimpleMovingAverageDouble _spreadAverage;
-        private readonly StandardDeviation _std;
 
-        public PairSpreadCalculation(int backlog)
+        public PairReturnsCalculation(int backlog, IPythonInteropClient pythonInteropClient)
         {
+            _pythonInteropClient = pythonInteropClient;
             _backlog = backlog;
-            _spreadAverage = new SimpleMovingAverageDouble(backlog);
-            _std = new StandardDeviation();
-            PairSpreads = new List<PairSpread>();
         }
 
-        public void Initialize(IEnumerable<AggregateBar> tickerAData, IEnumerable<AggregateBar> tickerBData)
+        public void Initialize(IEnumerable<AggregateBar> tickerXData, IEnumerable<AggregateBar> tickerYData)
         {
-            var length = tickerAData.Count() - 1;
+            var length = tickerXData.Count() - 1;
             if (length < _backlog - 1)
                 return;
 
@@ -37,10 +30,10 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 
             for (int i = start; i < length; i++)
             {
-                var originalA = tickerAData.ElementAt(i - 1);
-                var currentA = tickerAData.ElementAt(i);
-                var originalB = tickerBData.ElementAt(i - 1);
-                var currentB = tickerBData.ElementAt(i);
+                var originalA = tickerXData.ElementAt(i - 1);
+                var currentA = tickerXData.ElementAt(i);
+                var originalB = tickerYData.ElementAt(i - 1);
+                var currentB = tickerYData.ElementAt(i);
 
                 // TODO: In this scenario we should get historic quote price
                 if (!originalA.TimeUtc.Equals(originalB.TimeUtc))
@@ -50,41 +43,19 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 
                 currentA.Returns = Returns(originalA.Close, currentA.Close);
                 currentB.Returns = Returns(originalB.Close, currentB.Close);
-
-                //var spread = CaclulateSpread(originalA, currentA, originalB, currentB);
-                //_spreadAverage.Analyze(spread);
-
-                //if (_spreadAverage.RawValues.Count < _backlog)
-                //    continue;
-
-                //var zScore = CalculateZScore(originalA.TimeUtc);
-                //PairSpreads.Add(zScore);
             }
         }
 
         public void AnalyzeStep(AggregateBar originalA, AggregateBar currentA, AggregateBar originalB, AggregateBar currentB)
         {
-            //var spread = CaclulateSpread(originalA, currentA, originalB, currentB);
-            //_spreadAverage.Analyze(spread);
-
-            //var zScore = CalculateZScore(originalA.TimeUtc);
-            //PairSpreads.Add(zScore);
             currentA.Returns = Returns(originalA.Close, currentA.Close);
             currentB.Returns = Returns(originalB.Close, currentB.Close);
         }
 
-        private PairSpread CalculateZScore(DateTime timeUTC)
+        public void CalculateStats(IEnumerable<AggregateBar> tickerXData, IEnumerable<AggregateBar> tickerYData)
         {
-            var mean = _spreadAverage.MovingAverages.Last();
-            var std = _std.CalculateStandardDeviation(_spreadAverage.RawValues, mean, _backlog);
-            var zScore = (_spreadAverage.RawValues.Last() - mean) / std;
-
-            return new PairSpread(mean, std, zScore, _spreadAverage.RawValues.Last(), timeUTC);
+            var result = _pythonInteropClient.GetOLSCalculation(tickerXData.Select(x => x.Returns), tickerYData.Select(x => x.Returns));
         }
-
-        // TODO: Why is Math.Abs here? Bug?
-        private double PercentageDifference(decimal originalValue, decimal newValue) =>
-            (double)((originalValue - newValue) / originalValue) * 100;
 
         private double Returns(decimal originalValue, decimal newValue) =>
             (double)((originalValue / newValue) - 1) * 100;
