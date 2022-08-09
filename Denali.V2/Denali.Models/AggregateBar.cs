@@ -24,6 +24,7 @@ namespace Denali.Models
         public DateTime TimeUtc { get; set; }
 
         public decimal Vwap { get; set; }
+        public double Returns { get; set; }
 
         public ulong TradeCount { get; set; }
 

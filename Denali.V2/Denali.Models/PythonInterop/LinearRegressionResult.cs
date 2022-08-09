@@ -12,10 +12,19 @@ namespace Denali.Models.PythonInterop
         [JsonPropertyName("beta")]
         public double Beta { get; set; }
 
-        [JsonPropertyName("spreads")]
-        public List<double> Spreads { get; set; }
+        [JsonPropertyName("results")]
+        public List<OLSResult> Results { get; set; }
+    }
 
-        [JsonPropertyName("zscores")]
-        public List<double> ZScores { get; set; }
+    public class OLSResult
+    {
+        [JsonPropertyName("spread")]
+        public double Spread { get; set; }
+
+        [JsonPropertyName("timeUTC")]
+        public DateTime TimeUTC { get; set; }
+
+        [JsonPropertyName("zscore")]
+        public double ZScore { get; set; }
     }
 }

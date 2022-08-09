@@ -2,16 +2,9 @@
 using AutoMapper;
 using Denali.Models;
 using Denali.Services;
-using Denali.Shared.Extensions;
-using Denali.TechnicalAnalysis;
+using Denali.Services.PythonInterop;
 using Denali.TechnicalAnalysis.StatisticalArbitrage;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Denali.Processors.StatArb
 {
@@ -19,12 +12,15 @@ namespace Denali.Processors.StatArb
     {
         private readonly FileService _fileService;
         private readonly PairReturnsCalculation _pairReturns;
+        private readonly IPythonInteropClient _pythonInteropClient;
         private readonly ILogger<PairAnalysis> _logger;
+        private readonly int _backlog = 100;
 
-        public PairAnalysis(AlpacaService alpacaService, FileService fileService, ILogger<PairAnalysis> logger, IMapper mapper) : base(alpacaService, mapper)
+        public PairAnalysis(AlpacaService alpacaService, FileService fileService, IPythonInteropClient pythonInteropClient, ILogger<PairAnalysis> logger, IMapper mapper) : base(alpacaService, mapper)
         {
             _fileService = fileService;
-            _pairReturns = new PairReturnsCalculation(100);
+            _pairReturns = new PairReturnsCalculation(_backlog);
+            _pythonInteropClient = pythonInteropClient;
             _logger = logger;
         }
 
@@ -59,6 +55,8 @@ namespace Denali.Processors.StatArb
             var backlogYData = _mapper.Map<List<AggregateBar>>(backlogYBars);
 
             _pairReturns.Initialize(backlogXData, backlogYData);
+            var movingXBars = backlogXData;
+            var movingYBars = backlogYData;
 
             var marketDays = await GetOpenMarketDays(startDate, endDate);
             if (marketDays != null && marketDays.Any())
@@ -76,6 +74,10 @@ namespace Denali.Processors.StatArb
                 var tickerYData = _mapper.Map<List<AggregateBar>>(tickerYbars.Items);
 
                 var length = tickerXData.Count() - 1;
+                // Add first bar as a starting point
+                movingXBars.Add(tickerXData.First());
+                movingYBars.Add(tickerYData.First());
+
                 // Start at the second bar because a change percentage is needed
                 for (int i = 1; i < length; i++)
                 {
@@ -85,7 +87,11 @@ namespace Denali.Processors.StatArb
                     var currentY = tickerYData.ElementAt(i);
 
                     _pairReturns.AnalyzeStep(origninalX, currentX, origninalY, currentY);
-                    //_pairReturns.CalculateStats()
+
+                    movingXBars.Add(currentX);
+                    movingYBars.Add(currentY);
+
+                    var olsResults = await _pythonInteropClient.GetOLSCalculation(movingXBars, movingYBars, _backlog);
                 }
             }
         }

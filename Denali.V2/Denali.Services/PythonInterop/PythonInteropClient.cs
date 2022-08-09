@@ -1,4 +1,5 @@
-﻿using Denali.Models.PythonInterop;
+﻿using Denali.Models;
+using Denali.Models.PythonInterop;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Denali.Services.PythonInterop
 {
     public interface IPythonInteropClient
     {
-        Task<LinearRegressionResult> GetOLSCalculation(IEnumerable<double> seriesX, IEnumerable<double> seriesY);
+        Task<LinearRegressionResult> GetOLSCalculation(IEnumerable<IAggregateBar> seriesX, IEnumerable<IAggregateBar> seriesY, int backlog);
     }
 
     public class PythonInteropClient : IPythonInteropClient
@@ -27,13 +28,13 @@ namespace Denali.Services.PythonInterop
             _httpClient.BaseAddress = new Uri(_settings.BaseAddress);
         }
 
-        public async Task<LinearRegressionResult> GetOLSCalculation(IEnumerable<double> seriesX, IEnumerable<double> seriesY)
+        public async Task<LinearRegressionResult> GetOLSCalculation(IEnumerable<IAggregateBar> seriesX, IEnumerable<IAggregateBar> seriesY, int backlog)
         {
-            var json = JsonSerializer.Serialize(new
-            {
-                x = seriesX,
-                y = seriesY
-            });
+            var movingXReturns = seriesX.Skip(seriesX.Count() - backlog).Select(x => new { value = x.Returns, timeUTC = x.TimeUtc });
+            var movingYReturns = seriesY.Skip(seriesY.Count() - backlog).Select(x => new { value = x.Returns, timeUTC = x.TimeUtc });
+            var olsRequestBody = new { x = movingXReturns, y = movingYReturns };
+
+            var json = JsonSerializer.Serialize(olsRequestBody);
 
             var request = new HttpRequestMessage
             {

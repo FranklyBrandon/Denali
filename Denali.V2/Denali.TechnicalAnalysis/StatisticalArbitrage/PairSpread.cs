@@ -10,12 +10,11 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 {
     public class PairReturnsCalculation
     {
-        private readonly IPythonInteropClient _pythonInteropClient;
+
         private readonly int _backlog;
 
-        public PairReturnsCalculation(int backlog, IPythonInteropClient pythonInteropClient)
+        public PairReturnsCalculation(int backlog)
         {
-            _pythonInteropClient = pythonInteropClient;
             _backlog = backlog;
         }
 
@@ -50,11 +49,6 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
         {
             currentA.Returns = Returns(originalA.Close, currentA.Close);
             currentB.Returns = Returns(originalB.Close, currentB.Close);
-        }
-
-        public void CalculateStats(IEnumerable<AggregateBar> tickerXData, IEnumerable<AggregateBar> tickerYData)
-        {
-            var result = _pythonInteropClient.GetOLSCalculation(tickerXData.Select(x => x.Returns), tickerYData.Select(x => x.Returns));
         }
 
         private double Returns(decimal originalValue, decimal newValue) =>
