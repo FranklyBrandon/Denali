@@ -30,8 +30,8 @@ namespace Denali.Services.PythonInterop
 
         public async Task<LinearRegressionResult> GetOLSCalculation(IEnumerable<IAggregateBar> seriesX, IEnumerable<IAggregateBar> seriesY, int backlog)
         {
-            var movingXReturns = seriesX.Skip(seriesX.Count() - backlog).Select(x => new { value = x.Returns, timeUTC = x.TimeUtc });
-            var movingYReturns = seriesY.Skip(seriesY.Count() - backlog).Select(x => new { value = x.Returns, timeUTC = x.TimeUtc });
+            var movingXReturns = seriesX.Skip(seriesX.Count() - backlog).Select(x => new { value = x.Close, timeUTC = x.TimeUtc });
+            var movingYReturns = seriesY.Skip(seriesY.Count() - backlog).Select(x => new { value = x.Close, timeUTC = x.TimeUtc });
             var olsRequestBody = new { x = movingXReturns, y = movingYReturns };
 
             var json = JsonSerializer.Serialize(olsRequestBody);
@@ -39,7 +39,7 @@ namespace Denali.Services.PythonInterop
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri(_settings.OLSPath),
+                RequestUri = new Uri(_settings.OLSPath, UriKind.Relative),
                 Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json),
             };
 

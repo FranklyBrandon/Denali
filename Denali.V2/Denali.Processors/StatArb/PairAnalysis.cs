@@ -54,7 +54,7 @@ namespace Denali.Processors.StatArb
             var backlogXData = _mapper.Map<List<AggregateBar>>(backlogXBars);
             var backlogYData = _mapper.Map<List<AggregateBar>>(backlogYBars);
 
-            _pairReturns.Initialize(backlogXData, backlogYData);
+            // _pairReturns.Initialize(backlogXData, backlogYData);
             var movingXBars = backlogXData;
             var movingYBars = backlogYData;
 
@@ -86,7 +86,7 @@ namespace Denali.Processors.StatArb
                     var origninalY = tickerYData.ElementAt(i - 1);
                     var currentY = tickerYData.ElementAt(i);
 
-                    _pairReturns.AnalyzeStep(origninalX, currentX, origninalY, currentY);
+                    //_pairReturns.AnalyzeStep(origninalX, currentX, origninalY, currentY);
 
                     movingXBars.Add(currentX);
                     movingYBars.Add(currentY);

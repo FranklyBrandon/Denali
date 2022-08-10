@@ -10,5 +10,10 @@ namespace Denali.Shared.Extensions
     {
         public static double RoundToFourPlaces(this double value) =>
             Math.Round(value, 4, MidpointRounding.AwayFromZero);
+        public static double Round(this double value, int places) =>
+            Math.Round(value, places, MidpointRounding.AwayFromZero);
+
+
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Denali.Models;
 using Denali.Services.PythonInterop;
+using Denali.Shared.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,17 +41,18 @@ namespace Denali.TechnicalAnalysis.StatisticalArbitrage
 
                 }
 
-                currentA.Returns = Returns(originalA.Close, currentA.Close);
-                currentB.Returns = Returns(originalB.Close, currentB.Close);
+                currentA.Returns = Returns(originalA.Close, currentA.Close).Round(8);
+                currentB.Returns = Returns(originalB.Close, currentB.Close).Round(8);
             }
         }
 
         public void AnalyzeStep(AggregateBar originalA, AggregateBar currentA, AggregateBar originalB, AggregateBar currentB)
         {
-            currentA.Returns = Returns(originalA.Close, currentA.Close);
-            currentB.Returns = Returns(originalB.Close, currentB.Close);
+            currentA.Returns = Returns(originalA.Close, currentA.Close).Round(8);
+            currentB.Returns = Returns(originalB.Close, currentB.Close).Round(8);
         }
 
+        // https://quant.stackexchange.com/questions/54062/correct-calculation-of-returns-from-a-pairs-trade
         private double Returns(decimal originalValue, decimal newValue) =>
             (double)((originalValue / newValue) - 1) * 100;
 
