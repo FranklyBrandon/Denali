@@ -40,7 +40,7 @@ function addSpreadData(chart) {
         series.push(
             { 
                 time: (Date.parse(point.timeUTC) / 1000),
-                value: point.zScore
+                value: point.zscore
             }
         )
     }

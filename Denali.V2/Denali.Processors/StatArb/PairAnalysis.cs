@@ -5,6 +5,7 @@ using Denali.Services;
 using Denali.Services.PythonInterop;
 using Denali.TechnicalAnalysis.StatisticalArbitrage;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace Denali.Processors.StatArb
 {
@@ -92,6 +93,7 @@ namespace Denali.Processors.StatArb
                     movingYBars.Add(currentY);
 
                     var olsResults = await _pythonInteropClient.GetOLSCalculation(movingXBars, movingYBars, _backlog);
+                    var la = JsonSerializer.Serialize(olsResults.Results);
                 }
             }
         }
