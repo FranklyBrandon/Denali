@@ -7,42 +7,51 @@ import pandas as pd
 app = Flask(__name__)
 
 # Accepts JSON data that contains an 'x' and 'y' parameter 
-# that represent two series of returns for two correlated stocks.
+# that represent two series of prices for two correlated stocks.
 @app.route('/ols', methods=['GET'])
 def ols_get():
     data = request.get_json(force=True)
     x = data['x']
     y = data['y']
-    pdx = pd.DataFrame(data['x'], columns=['value'])
-    pdy = pd.DataFrame(data['y'], columns=['value'])
-
-    constY = sm.add_constant(pdy['value'])
-    result = sm.OLS(pdx['value'], constY).fit()
-    beta = result.params['value']
-
-    spreads = []
-    rawSpreads = []
-    for i in range(len(x)):
-        xData = x[i]
-        yData = y[i]
-        spread = math.log(xData['value']) - beta * math.log(yData['value'])
-        rawSpreads.append(spread)
-        spreads.append(dict(spread = spread, timeUTC = xData['timeUTC']))
+    backlog = data['backlog']
 
     results = []
-    spreadMean = np.mean(rawSpreads)
-    spreadStd = np.std(rawSpreads)
-    for _, spread in enumerate(spreads):
-        zscore = (spread['spread'] - spreadMean) / spreadStd
-        results.append(dict(spread = spread['spread'], zscore = zscore, timeUTC = spread['timeUTC']))
+    for i in range(backlog - 1, len(x)):
+        frameStart = i - backlog - 1
+        frameEnd = i
+        #Lists can be sliced by their indices using myList[start:stop:skip].
+        xDataInFrame = x[frameStart:frameEnd]
+        yDataInFrame = y[frameStart:frameEnd]
+        pdx = pd.DataFrame(xDataInFrame, columns=['value'])
+        pdy = pd.DataFrame(yDataInFrame, columns=['value'])
 
-    #spreads = np.log(x['value']) - beta * np.log(y['value'])
-    #zscores = (spreads - spreads.mean()) / np.std(spreads)
+        beta = calculateBeta(pdx, pdy)
 
+        spreads = []
+        rawSpreads = []
+        for i in range(backlog - 1):
+            xData = xDataInFrame[i]
+            yData = yDataInFrame[i]
 
+            spread = math.log(xData['value']) - beta * math.log(yData['value'])
+
+            rawSpreads.append(spread)
+            spreads.append(dict(spread = spread, timeUTC = xData['timeUTC']))
+
+        spreadMean = np.mean(rawSpreads)
+        spreadStd = np.std(rawSpreads)
+        lastSpread = spreads[-1]
+        zscore = (lastSpread - spreadMean) / spreadStd
+
+        results.append(dict(lastSpread['spread'], zscore = zscore, beta = beta, timeUTC = lastSpread['timeUTC']))
 
     response = dict(results = results, beta = beta)
     return jsonify(response)
+
+def calculateBeta(pdx: pd.DataFrame, pdy: pd.Dataframe):
+    constY = sm.add_constant(pdy['value'])
+    result = sm.OLS(pdx['value'], constY).fit()
+    return result.params['value']
 
 if __name__ == '__main__':
     app.run()
