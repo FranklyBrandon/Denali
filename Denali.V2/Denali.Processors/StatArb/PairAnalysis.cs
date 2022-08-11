@@ -80,7 +80,7 @@ namespace Denali.Processors.StatArb
             var aggregateXData = _mapper.Map<List<AggregateBar>>(tickerXBars);
             var aggregateYData = _mapper.Map<List<AggregateBar>>(tickerYBars);
 
-            var statsResult = _pythonInteropClient.GetOLSCalculation(aggregateXData, aggregateYData, _backlog);
+            var statsResult = await _pythonInteropClient.GetOLSCalculation(aggregateXData, aggregateYData, _backlog);
 
 
             //if (marketDays != null && marketDays.Any())

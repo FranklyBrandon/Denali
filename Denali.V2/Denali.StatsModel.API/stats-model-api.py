@@ -17,7 +17,7 @@ def ols_get():
 
     results = []
     for i in range(backlog - 1, len(x)):
-        frameStart = i - backlog - 1
+        frameStart = i - (backlog - 1)
         frameEnd = i
         #Lists can be sliced by their indices using myList[start:stop:skip].
         xDataInFrame = x[frameStart:frameEnd]
@@ -48,7 +48,7 @@ def ols_get():
     response = dict(results = results, beta = beta)
     return jsonify(response)
 
-def calculateBeta(pdx: pd.DataFrame, pdy: pd.Dataframe):
+def calculateBeta(pdx, pdy):
     constY = sm.add_constant(pdy['value'])
     result = sm.OLS(pdx['value'], constY).fit()
     return result.params['value']
