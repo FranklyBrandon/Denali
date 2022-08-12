@@ -18,7 +18,7 @@ def ols_get():
     results = []
     for i in range(backlog - 1, len(x)):
         frameStart = i - (backlog - 1)
-        frameEnd = i
+        frameEnd = i + 1
         #Lists can be sliced by their indices using myList[start:stop:skip].
         xDataInFrame = x[frameStart:frameEnd]
         yDataInFrame = y[frameStart:frameEnd]
@@ -29,7 +29,7 @@ def ols_get():
 
         spreads = []
         rawSpreads = []
-        for i in range(backlog - 1):
+        for i in range(backlog):
             xData = xDataInFrame[i]
             yData = yDataInFrame[i]
 
@@ -41,9 +41,9 @@ def ols_get():
         spreadMean = np.mean(rawSpreads)
         spreadStd = np.std(rawSpreads)
         lastSpread = spreads[-1]
-        zscore = (lastSpread - spreadMean) / spreadStd
+        zscore = (lastSpread['spread'] - spreadMean) / spreadStd
 
-        results.append(dict(lastSpread['spread'], zscore = zscore, beta = beta, timeUTC = lastSpread['timeUTC']))
+        results.append(dict(zscore = zscore, beta = beta, timeUTC = lastSpread['timeUTC'], spread = lastSpread['spread']))
 
     response = dict(results = results, beta = beta)
     return jsonify(response)

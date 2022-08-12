@@ -15,7 +15,7 @@ namespace Denali.Processors.StatArb
         private readonly PairReturnsCalculation _pairReturns;
         private readonly IPythonInteropClient _pythonInteropClient;
         private readonly ILogger<PairAnalysis> _logger;
-        private readonly int _backlog = 100;
+        private readonly int _backlog = 30;
 
         public PairAnalysis(AlpacaService alpacaService, FileService fileService, IPythonInteropClient pythonInteropClient, ILogger<PairAnalysis> logger, IMapper mapper) : base(alpacaService, mapper)
         {
