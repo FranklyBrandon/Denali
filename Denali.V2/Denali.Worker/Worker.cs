@@ -24,8 +24,8 @@ namespace Denali.Worker
                 using (var scope = _provider.CreateScope())
                 {
                     var processor = scope.ServiceProvider.GetService<PairAnalysis>();
-                    var startTime = new DateTime(2022, 8, 2);
-                    var endTime = new DateTime(2022, 8, 2);
+                    var startTime = new DateTime(2022, 8, 10);
+                    var endTime = new DateTime(2022, 8, 11);
                     var barTimeFrame = new Alpaca.Markets.BarTimeFrame(1, Alpaca.Markets.BarTimeFrameUnit.Minute);
 
                     await processor.Process("VTI", "VOO", startTime, endTime, barTimeFrame, stoppingToken);

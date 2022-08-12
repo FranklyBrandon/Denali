@@ -29,7 +29,7 @@ namespace Denali.Processors
         protected async Task<IEnumerable<IIntervalCalendar>> GetOpenMarketDays(DateTime from, DateTime into)
         {
             var calenders = await _alpacaService.AlpacaTradingClient.ListIntervalCalendarAsync(new CalendarRequest().WithInterval(new Interval<DateTime>(from, into)));
-            return calenders.OrderByDescending(x => x.GetTradingDate());
+            return calenders.OrderBy(x => x.GetTradingDate());
         }
     }
 }
