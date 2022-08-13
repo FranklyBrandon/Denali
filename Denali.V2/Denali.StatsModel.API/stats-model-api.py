@@ -45,7 +45,7 @@ def ols_get():
 
         results.append(dict(zscore = zscore, beta = beta, timeUTC = lastSpread['timeUTC'], spread = lastSpread['spread']))
 
-    response = dict(results = results, beta = beta)
+    response = dict(results = results)
     return jsonify(response)
 
 def calculateBeta(pdx, pdy):

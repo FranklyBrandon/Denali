@@ -9,9 +9,6 @@ namespace Denali.Models.PythonInterop
 {
     public class LinearRegressionResult
     {
-        [JsonPropertyName("beta")]
-        public double Beta { get; set; }
-
         [JsonPropertyName("results")]
         public List<OLSResult> Results { get; set; }
     }
@@ -26,5 +23,8 @@ namespace Denali.Models.PythonInterop
 
         [JsonPropertyName("zscore")]
         public double ZScore { get; set; }
+
+        [JsonPropertyName("beta")]
+        public double Beta { get; set; }
     }
 }
