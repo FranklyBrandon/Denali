@@ -67,7 +67,7 @@ namespace Denali.Processors.StatArb
                 var barx = aggregateXData.First(x => x.TimeUtc.Equals(result.TimeUTC));
                 var bary = aggregateYData.First(y => y.TimeUtc.Equals(result.TimeUTC));
 
-                if (Math.Abs(result.ZScore) >= 3 && tradeOpen == false)
+                if (Math.Abs(result.ZScore) >= 2 && tradeOpen == false)
                 {
                     // Short scenario
                     if (result.ZScore < 0 && tradeOpen == false)
@@ -104,7 +104,7 @@ namespace Denali.Processors.StatArb
                         profit += (barx.Close - xPrice) * xMultiplier;
                     }
 
-                    if (profit >= 0.10m)
+                    if (profit >= 0.20m)
                     {
                         totalProfit += profit;
 
