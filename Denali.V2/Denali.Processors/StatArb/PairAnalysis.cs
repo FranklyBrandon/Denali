@@ -55,68 +55,51 @@ namespace Denali.Processors.StatArb
             var json = JsonSerializer.Serialize(statsResult.Results);
 
             bool tradeOpen = false;
-            bool? shortX = null;
+            bool? positive = null;
             decimal xPrice = 0;
             decimal yPrice = 0;
-            decimal xMultiplier = 0;
-            decimal yMultiplier = 0;
             double beta = 0;
-            decimal totalProfit = 0;
             foreach (var result in statsResult.Results)
             {
                 var barx = aggregateXData.First(x => x.TimeUtc.Equals(result.TimeUTC));
                 var bary = aggregateYData.First(y => y.TimeUtc.Equals(result.TimeUTC));
 
-                if (Math.Abs(result.ZScore) >= 2 && tradeOpen == false)
+                if (tradeOpen == true && xPrice != 0 && yPrice != 0)
                 {
-                    // Short scenario
-                    if (result.ZScore < 0 && tradeOpen == false)
+                    decimal profit = 0m;
+                    if (positive.Value)
                     {
-                        shortX = true;
-                    }
-                    // Long sceanrio
-                    else if(result.ZScore > 0 && tradeOpen == false)
+                        profit = (yPrice - bary.Close);
+                        //_logger.LogInformation($"Y: (Entry Price - Current Price) ({yPrice} - {bary.Close})");
+                        profit += (barx.Close - xPrice) * (decimal)beta;
+                        //_logger.LogInformation($"X: (Current Price - EntryPrice) * beta ({barx.Close} - {xPrice} * {beta}");
+                    } else
                     {
-                        shortX = false;
+                        profit = (bary.Close - yPrice);
+                        profit += (xPrice - barx.Close) * (decimal)beta;
                     }
-
-                    _logger.LogInformation($"Open at {result.TimeUTC.Date} {result.TimeUTC.TimeOfDay}: Short {shortX}, VTI {barx.Close}, VOO {bary.Close}, Beta {result.Beta}");
-                    xPrice = barx.Close;
-                    yPrice = bary.Close;
-                    xMultiplier = 1000 / barx.Close;
-                    yMultiplier = 1000 / bary.Close;
-                    beta = result.Beta;
-                    tradeOpen = true;
+                    _logger.LogInformation($"Running Profit at {barx.TimeUtc.TimeOfDay}: {profit}, Spread: {result.Spread}");
                 }
 
-                if (tradeOpen == true)
+                if (Math.Abs(result.ZScore) >= 2)
                 {
-                    decimal profit;
-                    if (shortX.Value)
-                    {
-                        profit = (xPrice - barx.Close) * xMultiplier;
-                        profit += (bary.Close - yPrice) * yMultiplier;
-
-                    }
+                    _logger.LogInformation($"New Trade Opened at {barx.TimeUtc.Date.ToShortDateString()} {barx.TimeUtc.TimeOfDay}, Spread: {result.Spread}");
+                    if (result.ZScore >= 2)
+                        // Short Y, Long X
+                        positive = true;
+                    else if (result.ZScore <= -2)
+                        // Long Y, Short X
+                        positive = false;
                     else
-                    {
-                        profit = (yPrice - bary.Close) * yMultiplier;
-                        profit += (barx.Close - xPrice) * xMultiplier;
-                    }
+                        throw new Exception("What?");
 
-                    if (profit >= 0.20m)
-                    {
-                        totalProfit += profit;
-
-                        _logger.LogInformation($"Closed at {result.TimeUTC.Date} {result.TimeUTC.TimeOfDay}: VTI {barx.Close}, VOO {bary.Close}");
-                        _logger.LogInformation($"Profit: {profit}");
-                        tradeOpen = false;
-                    }
-
+                    tradeOpen = true;
+                    xPrice = barx.Close;
+                    yPrice = bary.Close;
+                    beta = result.Beta;
                 }
             }
 
-            _logger.LogInformation($"Total Profit: {totalProfit}");
         }
 
         //https://www.reddit.com/r/algotrading/comments/obbb5d/kalman_filter_stat_arb/

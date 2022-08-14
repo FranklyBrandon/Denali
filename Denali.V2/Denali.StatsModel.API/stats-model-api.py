@@ -33,7 +33,7 @@ def ols_get():
             xData = xDataInFrame[i]
             yData = yDataInFrame[i]
 
-            spread = math.log(xData['value']) - beta * math.log(yData['value'])
+            spread = yData['value'] - beta * xData['value']
 
             rawSpreads.append(spread)
             spreads.append(dict(spread = spread, timeUTC = xData['timeUTC']))
@@ -49,9 +49,9 @@ def ols_get():
     return jsonify(response)
 
 def calculateBeta(pdx, pdy):
-    constY = sm.add_constant(pdy['value'])
-    result = sm.OLS(pdx['value'], constY).fit()
-    return result.params['value']
+    #constX = sm.add_constant(pdx['value'])
+    result = sm.OLS(pdy['value'], pdx['value']).fit()
+    return result.params[0]
 
 if __name__ == '__main__':
     app.run()
