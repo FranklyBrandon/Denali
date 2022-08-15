@@ -18,8 +18,13 @@ namespace Denali.Processors.StatArb
         private readonly AlpacaService _alpacaService;
         private readonly ILogger<PairTradeStrategy> _logger;
 
+        private string tickerX;
+        private string tickerY;
         private BarTimeFrame _barTimeFrame;
         private int _lookback;
+
+        private static readonly object _intervalLock = new ();
+        private static bool _intervalReceived = false;
 
         public PairTradeStrategy(AlpacaService alpacaService, ILogger<PairTradeStrategy> logger)
         {
@@ -65,6 +70,17 @@ namespace Denali.Processors.StatArb
         public void OnIntervalBar(IAggregateBar bar)
         {
             _logger.LogInformation($"{bar.Symbol} received: OHLC: ({bar.Open},{bar.High},{bar.Low},{bar.Close}), Time: {bar.TimeUtc}");
+
+            lock(_intervalLock)
+            {
+                if (_intervalReceived)
+                {
+                    _logger.LogInformation($"Both tickers received for time period: {bar.TimeUtc}");
+                    _intervalReceived = false;
+                }
+                else
+                    _intervalReceived = true;
+            }
         }
     }
 }
