@@ -43,6 +43,7 @@ namespace Denali.Services.Aggregators
                 TimeUtc = timeUtc
             };
 
+            aggregatBar.SetSymbol(_intervalBars.First().Symbol);
             OnBar.Invoke(aggregatBar);
         }
     }

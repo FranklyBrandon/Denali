@@ -43,6 +43,8 @@ namespace Denali.Worker.Configuration
             services.AddOptions<PythonInteropClientSettings>()
                 .Bind(configuration.GetSection(PythonInteropClientSettings.Settings));
 
+            services.AddScoped<PairTradeStrategy>();
+
 
             // Register a service provider so we can create scopes and resolve instances dynamically
             services.AddSingleton((context) =>

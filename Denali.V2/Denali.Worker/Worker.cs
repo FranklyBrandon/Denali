@@ -19,19 +19,15 @@ namespace Denali.Worker
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
+            using (var scope = _provider.CreateScope())
             {
-                using (var scope = _provider.CreateScope())
-                {
-                    var processor = scope.ServiceProvider.GetService<PairAnalysis>();
-                    var startTime = new DateTime(2022, 7, 25);
-                    var endTime = new DateTime(2022, 8, 12);
-                    var barTimeFrame = new Alpaca.Markets.BarTimeFrame(5, Alpaca.Markets.BarTimeFrameUnit.Minute);
+                var processor = scope.ServiceProvider.GetService<PairTradeStrategy>();
+                var barTimeFrame = new Alpaca.Markets.BarTimeFrame(5, Alpaca.Markets.BarTimeFrameUnit.Minute);
 
-                    await processor.Process("VTI", "VOO", startTime, endTime, barTimeFrame, stoppingToken);
-                }
-                await Task.Delay(1000, stoppingToken);
+                await processor.Initialize("VTI", "VUG", DateTime.Now, barTimeFrame, 20, stoppingToken);
             }
+
+            stoppingToken.WaitHandle.WaitOne();         
         }
     }
 }
