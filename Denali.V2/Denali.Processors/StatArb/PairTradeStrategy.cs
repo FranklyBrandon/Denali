@@ -2,12 +2,9 @@
 using Denali.Models;
 using Denali.Services;
 using Denali.Services.Aggregators;
+using Denali.Services.AlphaAdvantage;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Denali.Processors.StatArb
 {
@@ -17,18 +14,22 @@ namespace Denali.Processors.StatArb
 
         private readonly AlpacaService _alpacaService;
         private readonly ILogger<PairTradeStrategy> _logger;
+        private readonly IAlphaAdvanatgeClient _alphaAdvantageClient;
 
-        private string tickerX;
-        private string tickerY;
+        private System.Threading.Timer _timer;
+
+        private string _tickerX;
+        private string _tickerY;
         private BarTimeFrame _barTimeFrame;
         private int _lookback;
 
         private static readonly object _intervalLock = new ();
         private static bool _intervalReceived = false;
 
-        public PairTradeStrategy(AlpacaService alpacaService, ILogger<PairTradeStrategy> logger)
+        public PairTradeStrategy(AlpacaService alpacaService, IAlphaAdvanatgeClient alphaAdvantageClient, ILogger<PairTradeStrategy> logger)
         {
             _alpacaService = alpacaService;
+            _alphaAdvantageClient = alphaAdvantageClient;
             _logger = logger;
             _aggregatorMap = new();
         }
@@ -37,50 +38,49 @@ namespace Denali.Processors.StatArb
         {
             _barTimeFrame = timeFrame;
             _lookback = lookback;
+            _tickerX = tickerX;
+            _tickerY = tickerY;
 
-            _aggregatorMap[tickerX] = new BarAggregator();
-            _aggregatorMap[tickerY] = new BarAggregator();
-            _aggregatorMap[tickerX].SetMinuteInterval(_barTimeFrame.Value);
-            _aggregatorMap[tickerY].SetMinuteInterval(_barTimeFrame.Value);
+            StartTimer();
 
-            await _alpacaService.InitializeDataStreamingClient();
-
-            var tickerXBarSubscription = _alpacaService.AlpacaDataStreamingClient.GetMinuteBarSubscription(tickerX);
-            tickerXBarSubscription.Received += OnMinuteBar;
-
-            var tickerYBarSubscription = _alpacaService.AlpacaDataStreamingClient.GetMinuteBarSubscription(tickerY);
-            tickerYBarSubscription.Received += OnMinuteBar;
-
-            var lastUpdate = (int)_aggregatorMap[tickerX].Round(DateTime.UtcNow.Minute);
-            _aggregatorMap[tickerX].SetLastUpdateMinute(lastUpdate);
-            _aggregatorMap[tickerY].SetLastUpdateMinute(lastUpdate);
-
-            _aggregatorMap[tickerX].OnBar += OnIntervalBar;
-            _aggregatorMap[tickerY].OnBar += OnIntervalBar;
-
-            await _alpacaService.AlpacaDataStreamingClient.SubscribeAsync(tickerXBarSubscription);
-            await _alpacaService.AlpacaDataStreamingClient.SubscribeAsync(tickerYBarSubscription);
         }
 
-        public void OnMinuteBar(IBar bar)
+        
+        public void StartTimer()
         {
-            _aggregatorMap[bar.Symbol].OnMinuteBar(bar);
+            var la = DateTime.UtcNow;
+            ScheduleTimer(new DateTime(2022, 8, 15, 2, 48, 0, DateTimeKind.Utc));
         }
 
-        public void OnIntervalBar(IAggregateBar bar)
+        private void ScheduleTimer(DateTime alertTime)
         {
-            _logger.LogInformation($"{bar.Symbol} received: OHLC: ({bar.Open},{bar.High},{bar.Low},{bar.Close}), Time: {bar.TimeUtc}");
-
-            lock(_intervalLock)
+            DateTime current = DateTime.UtcNow;
+            TimeSpan timeToGo = alertTime.TimeOfDay - current.TimeOfDay;
+            if (timeToGo < TimeSpan.Zero)
             {
-                if (_intervalReceived)
-                {
-                    _logger.LogInformation($"Both tickers received for time period: {bar.TimeUtc}");
-                    _intervalReceived = false;
-                }
-                else
-                    _intervalReceived = true;
+                return;//time already passed
             }
+            this._timer = new System.Threading.Timer(x =>
+            {
+                this.MinuteQuote(alertTime);
+            }, null, timeToGo, Timeout.InfiniteTimeSpan);
         }
+
+        private async void MinuteQuote(DateTime alertTime)
+        {
+            var xTask = _alphaAdvantageClient.GetQuote(_tickerX);
+            var yTask = _alphaAdvantageClient.GetQuote(_tickerY);
+            Task[] tasks = new Task[2] { xTask, yTask };
+
+            _logger.LogInformation("Time evented");
+
+            var allTasks = Task.WhenAll(tasks);
+            await allTasks;
+
+            _logger.LogInformation($"{xTask.Result.Quote.Symbol}: {xTask.Result.Quote.Price}");
+            _logger.LogInformation($"{yTask.Result.Quote.Symbol}: {yTask.Result.Quote.Price}");
+
+            ScheduleTimer(alertTime.AddMinutes(1));
+        }     
     }
 }

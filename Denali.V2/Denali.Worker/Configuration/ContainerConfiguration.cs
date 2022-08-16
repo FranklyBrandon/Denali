@@ -5,6 +5,7 @@ using Denali.Processors.ElephantStrategy;
 using Denali.Processors.StatArb;
 using Denali.Services;
 using Denali.Services.Aggregators;
+using Denali.Services.AlphaAdvantage;
 using Denali.Services.PythonInterop;
 using Denali.TechnicalAnalysis.ElephantBars;
 using InteractiveBrokers.API;
@@ -42,6 +43,10 @@ namespace Denali.Worker.Configuration
             services.AddHttpClient<IPythonInteropClient, PythonInteropClient>();
             services.AddOptions<PythonInteropClientSettings>()
                 .Bind(configuration.GetSection(PythonInteropClientSettings.Settings));
+
+            services.AddHttpClient<IAlphaAdvanatgeClient, AlphaAdvanatgeClient>();
+            services.AddOptions<AlphaAdvantageClientSettings>()
+                .Bind(configuration.GetSection(AlphaAdvantageClientSettings.Settings));
 
             services.AddScoped<PairTradeStrategy>();
 
