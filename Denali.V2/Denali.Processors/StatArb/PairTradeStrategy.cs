@@ -46,9 +46,6 @@ namespace Denali.Processors.StatArb
         
         public async void StartTimer()
         {
-            var la = DateTime.UtcNow;
-            var laa = await _yahooFinanceService.GetQuotes("VTI", "1m", "1d");
-            MinuteQuote(la);
             ScheduleTimer(new DateTime(2022, 8, 16, 16, 08, 0, DateTimeKind.Utc));
         }
 
