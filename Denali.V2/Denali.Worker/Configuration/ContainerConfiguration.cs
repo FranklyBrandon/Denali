@@ -5,8 +5,8 @@ using Denali.Processors.ElephantStrategy;
 using Denali.Processors.StatArb;
 using Denali.Services;
 using Denali.Services.Aggregators;
-using Denali.Services.AlphaAdvantage;
 using Denali.Services.PythonInterop;
+using Denali.Services.YahooFinanceService;
 using Denali.TechnicalAnalysis.ElephantBars;
 using InteractiveBrokers.API;
 using Microsoft.Extensions.Hosting;
@@ -44,9 +44,11 @@ namespace Denali.Worker.Configuration
             services.AddOptions<PythonInteropClientSettings>()
                 .Bind(configuration.GetSection(PythonInteropClientSettings.Settings));
 
-            services.AddHttpClient<IAlphaAdvanatgeClient, AlphaAdvanatgeClient>();
-            services.AddOptions<AlphaAdvantageClientSettings>()
-                .Bind(configuration.GetSection(AlphaAdvantageClientSettings.Settings));
+            services.AddHttpClient<IYahooFinanceClient, YahooFinanceClient>();
+            services.AddOptions<YahooFinanceClientSettings>()
+                .Bind(configuration.GetSection(YahooFinanceClientSettings.Settings));
+
+            services.AddScoped<IYahooFinanceService, YahooFinanceService>();
 
             services.AddScoped<PairTradeStrategy>();
 

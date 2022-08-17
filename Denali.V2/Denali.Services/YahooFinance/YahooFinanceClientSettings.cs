@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Denali.Services.AlphaAdvantage
+namespace Denali.Services.YahooFinanceService
 {
-    public class AlphaAdvantageClientSettings
+    public class YahooFinanceClientSettings
     {
-        public static string Settings = "AlphaAdvantageClientSettings";
+        public static string Settings = "YahooFinanceClientSettings";
 
         public string BasePath { get; set; }
         public string QuotePath { get; set; }
-        public string APIKey { get; set; }
     }
 }

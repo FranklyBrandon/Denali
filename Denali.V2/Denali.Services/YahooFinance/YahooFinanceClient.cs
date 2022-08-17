@@ -6,31 +6,36 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Denali.Services.AlphaAdvantage
+namespace Denali.Services.YahooFinanceService
 {
-    public interface IAlphaAdvanatgeClient
+    public interface IYahooFinanceClient
     {
-        Task<QuotesResponse> GetQuote(string symbol);
+        Task<QuotesResponse> GetLatestQuote(string symbol);
+        Task<QuotesResponse> GetQuotes(string symbol, string interval, string range);
     }
 
-    public class AlphaAdvanatgeClient : IAlphaAdvanatgeClient
+    public class YahooFinanceClient : IYahooFinanceClient
     {
         private readonly HttpClient _httpClient;
-        private readonly AlphaAdvantageClientSettings _settings;
+        private readonly YahooFinanceClientSettings _settings;
 
-        public AlphaAdvanatgeClient(HttpClient httpClient, IOptions<AlphaAdvantageClientSettings> settings)
+        public YahooFinanceClient(HttpClient httpClient, IOptions<YahooFinanceClientSettings> settings)
         {
             _httpClient = httpClient;
             _settings = settings.Value;
             _httpClient.BaseAddress = new Uri(_settings.BasePath);
         }
 
-        public async Task<QuotesResponse> GetQuote(string symbol)
+        public async Task<QuotesResponse> GetLatestQuote(string symbol) =>
+            await GetQuotes(symbol, "1m", "1d");
+        
+
+        public async Task<QuotesResponse> GetQuotes(string symbol, string interval, string range)
         {
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri(string.Format(_settings.QuotePath, symbol, _settings.APIKey), UriKind.Relative)
+                RequestUri = new Uri(string.Format(_settings.QuotePath, symbol, interval, range), UriKind.Relative)
             };
 
             HttpResponseMessage response;
@@ -41,7 +46,7 @@ namespace Denali.Services.AlphaAdvantage
                 if (response.IsSuccessStatusCode)
                     return JsonSerializer.Deserialize<QuotesResponse>(await response.Content.ReadAsStringAsync());
 
-                throw new HttpRequestException($"Bad response from Algo Advantage: {response.StatusCode}, {await response.Content.ReadAsStringAsync()}");
+                throw new HttpRequestException($"Bad response from Yahoo Finance: {response.StatusCode}, {await response.Content.ReadAsStringAsync()}");
             }
             catch (Exception)
             {
