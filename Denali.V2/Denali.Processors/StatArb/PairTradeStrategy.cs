@@ -65,7 +65,8 @@ namespace Denali.Processors.StatArb
         
         public void StartTimer()
         {
-            ScheduleTimer(new DateTime(2022, 8, 16, 16, 08, 0, DateTimeKind.Utc));
+            var today = DateTime.UtcNow;
+            ScheduleTimer(new DateTime(today.Year, today.Month, today.Day, 13, 30, 0, DateTimeKind.Utc));
         }
 
         private void ScheduleTimer(DateTime alertTime)
