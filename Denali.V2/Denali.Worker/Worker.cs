@@ -24,7 +24,7 @@ namespace Denali.Worker
                 var processor = scope.ServiceProvider.GetService<PairTradeStrategy>();
                 var barTimeFrame = new Alpaca.Markets.BarTimeFrame(5, Alpaca.Markets.BarTimeFrameUnit.Minute);
 
-                await processor.Initialize("VTI", "VUG", DateTime.Now, barTimeFrame, 20, stoppingToken);
+                await processor.Initialize("VTI", "VUG", DateTime.Now, "5m", 20, stoppingToken);
             }
 
             stoppingToken.WaitHandle.WaitOne();         

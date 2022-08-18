@@ -1,10 +1,13 @@
 ﻿using Alpaca.Markets;
 using Denali.Models;
+using Denali.Models.PythonInterop;
 using Denali.Services;
 using Denali.Services.Aggregators;
+using Denali.Services.PythonInterop;
 using Denali.Services.YahooFinanceService;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using Denali.Shared.Extensions;
 
 namespace Denali.Processors.StatArb
 {
@@ -13,38 +16,54 @@ namespace Denali.Processors.StatArb
         private readonly Dictionary<string, BarAggregator> _aggregatorMap;
 
         private readonly IYahooFinanceService _yahooFinanceService;
+        private readonly IPythonInteropClient _pythonInteropClient;
         private readonly ILogger<PairTradeStrategy> _logger;
 
         private System.Threading.Timer _timer;
 
         private string _tickerX;
         private string _tickerY;
-        private BarTimeFrame _barTimeFrame;
+        private List<IAggregateBar> _tickerXBars;
+        private List<IAggregateBar> _tickerYBars;
+        private string _barTimeFrame;
         private int _lookback;
 
-        private static readonly object _intervalLock = new ();
-        private static bool _intervalReceived = false;
+        private List<LinearRegressionResult> _regressionResults;
 
         public PairTradeStrategy(IYahooFinanceService yahooFinanceService, ILogger<PairTradeStrategy> logger)
         {
             _yahooFinanceService = yahooFinanceService;
             _logger = logger;
             _aggregatorMap = new();
+            _regressionResults = new();
         }
 
-        public async Task Initialize(string tickerX, string tickerY, DateTime startDate, BarTimeFrame timeFrame, int lookback, CancellationToken cancellationToken)
+        public async Task Initialize(string tickerX, string tickerY, DateTime startDate, string timeFrame, int lookback, CancellationToken cancellationToken)
         {
             _barTimeFrame = timeFrame;
             _lookback = lookback;
             _tickerX = tickerX;
             _tickerY = tickerY;
 
-            StartTimer();
+            var existingXSeries = await _yahooFinanceService.GetQuotes(tickerX, _barTimeFrame, "2d");
+            var existingYSeries = await _yahooFinanceService.GetQuotes(tickerY, _barTimeFrame, "2d");
+            await InitializeTickers(existingXSeries, existingYSeries);
 
+            StartTimer();
+        }
+
+        public async Task InitializeTickers(List<IAggregateBar> xSeries, List<IAggregateBar> ySeries)
+        {
+            _tickerXBars = xSeries;
+            _tickerYBars = ySeries;
+            var regressionResults = await _pythonInteropClient.GetOLSCalculation(xSeries.TakeLast(_lookback), ySeries.TakeLast(_lookback), _lookback);
+            _regressionResults.Add(regressionResults);
+
+            StartTimer();
         }
 
         
-        public async void StartTimer()
+        public void StartTimer()
         {
             ScheduleTimer(new DateTime(2022, 8, 16, 16, 08, 0, DateTimeKind.Utc));
         }
@@ -59,11 +78,11 @@ namespace Denali.Processors.StatArb
             }
             this._timer = new System.Threading.Timer(x =>
             {
-                this.MinuteQuote(alertTime);
+                this.IntervalQuote(alertTime);
             }, null, timeToGo, Timeout.InfiniteTimeSpan);
         }
 
-        private async void MinuteQuote(DateTime alertTime)
+        public async void IntervalQuote(DateTime alertTime)
         {
             var xTask = _yahooFinanceService.GetLatestQuote(_tickerX);
             var yTask = _yahooFinanceService.GetLatestQuote(_tickerY);
@@ -75,10 +94,16 @@ namespace Denali.Processors.StatArb
             var xResult = xTask.Result;
             var yResult = yTask.Result;
 
+            _tickerXBars.Add(xResult);
+            _tickerYBars.Add(yResult);
+
+            var results = await _pythonInteropClient.GetOLSCalculation(_tickerXBars.TakeLast(_lookback), _tickerYBars.TakeLast(_lookback), _lookback);
+            _regressionResults.Add(results);
+
             _logger.LogInformation($"{xResult.Symbol}: {xResult.Close} {xResult.TimeUtc}");
             _logger.LogInformation($"{yResult.Symbol}: {yResult.Close} {yResult.TimeUtc}");
 
-            ScheduleTimer(alertTime.AddMinutes(1));
+            ScheduleTimer(alertTime.AddMinutes(5));
         }     
     }
 }
