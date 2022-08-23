@@ -72,18 +72,31 @@ namespace Denali.Processors.StatArb
                         profit = (yPrice - bary.Close);
                         //_logger.LogInformation($"Y: (Entry Price - Current Price) ({yPrice} - {bary.Close})");
                         profit += (barx.Close - xPrice) * (decimal)beta;
+
                         //_logger.LogInformation($"X: (Current Price - EntryPrice) * beta ({barx.Close} - {xPrice} * {beta}");
+
+                        if (result.ZScore <= 0|| profit >= 0.20m || profit <= - 0.40m)
+                        {
+                            _logger.LogInformation($"Trade Closed at {barx.TimeUtc.Date.ToShortDateString()} {barx.TimeUtc.TimeOfDay}, Profit: {profit}, Zscore: {result.ZScore}");
+                            tradeOpen = false;
+                        }
                     } else
                     {
                         profit = (bary.Close - yPrice);
                         profit += (xPrice - barx.Close) * (decimal)beta;
-                    }
-                    _logger.LogInformation($"Running Profit at {barx.TimeUtc.TimeOfDay}: {profit}, Spread: {result.Spread}");
-                }
 
-                if (Math.Abs(result.ZScore) >= 2)
+                        if (result.ZScore >= 0 || profit >= 0.20m || profit <= -0.40m)
+                        {
+                            _logger.LogInformation($"Trade Closed at {barx.TimeUtc.Date.ToShortDateString()} {barx.TimeUtc.TimeOfDay}, Profit: {profit}, Zscore: {result.ZScore}");
+                            tradeOpen = false;
+                        }
+                    }
+                    //_logger.LogInformation($"Running Profit at {barx.TimeUtc.TimeOfDay}: {profit}, Spread: {result.Spread}");
+
+                }
+                else if (tradeOpen == false && Math.Abs(result.ZScore) >= 2)
                 {
-                    _logger.LogInformation($"New Trade Opened at {barx.TimeUtc.Date.ToShortDateString()} {barx.TimeUtc.TimeOfDay}, Spread: {result.Spread}");
+                    _logger.LogInformation($"New Trade Opened at {barx.TimeUtc.Date.ToShortDateString()} {barx.TimeUtc.TimeOfDay}, Zscore: {result.ZScore}");
                     if (result.ZScore >= 2)
                         // Short Y, Long X
                         positive = true;
@@ -99,7 +112,6 @@ namespace Denali.Processors.StatArb
                     beta = result.Beta;
                 }
             }
-
         }
 
         //https://www.reddit.com/r/algotrading/comments/obbb5d/kalman_filter_stat_arb/

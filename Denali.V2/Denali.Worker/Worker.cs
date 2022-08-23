@@ -1,5 +1,6 @@
 
 
+using Alpaca.Markets;
 using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
 using Denali.Processors.StatArb;
@@ -21,10 +22,10 @@ namespace Denali.Worker
         {
             using (var scope = _provider.CreateScope())
             {
-                var processor = scope.ServiceProvider.GetService<PairTradeStrategy>();
-                var barTimeFrame = new Alpaca.Markets.BarTimeFrame(5, Alpaca.Markets.BarTimeFrameUnit.Minute);
+                var processor = scope.ServiceProvider.GetService<PairAnalysis>();
+                var barTimeFrame = new BarTimeFrame(5, BarTimeFrameUnit.Minute);
 
-                await processor.Initialize("VTI", "VUG", DateTime.Now, "5m", 20, stoppingToken);
+                await processor.Process("VTI", "VUG", new DateTime(2022, 8, 8), new DateTime(2022, 8, 12), new BarTimeFrame(5, BarTimeFrameUnit.Minute), stoppingToken);
             }
 
             stoppingToken.WaitHandle.WaitOne();         
