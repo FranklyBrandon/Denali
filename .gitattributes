@@ -64,5 +64,5 @@
 
 ###############################################################################
 # GitHub Language Definition
-* linguist-vendored
-*.cs linguist-vendored=false
+Denali.V2/Denali.Dashboard/lightweight-charts.standalone.production.js * linguist-vendored
+# *.cs linguist-vendored=false
