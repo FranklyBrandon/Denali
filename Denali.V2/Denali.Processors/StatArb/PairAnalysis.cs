@@ -55,61 +55,54 @@ namespace Denali.Processors.StatArb
             var json = JsonSerializer.Serialize(statsResult.Results);
 
             bool tradeOpen = false;
-            bool? positive = null;
-            decimal xPrice = 0;
-            decimal yPrice = 0;
-            double beta = 0;
+            var xPrice = 0m;
+            var yPrice = 0m;
+            var zscore = 0d;
+            // profit += (barx.Close - xPrice) * (decimal)beta;
             foreach (var result in statsResult.Results)
             {
                 var barx = aggregateXData.First(x => x.TimeUtc.Equals(result.TimeUTC));
                 var bary = aggregateYData.First(y => y.TimeUtc.Equals(result.TimeUTC));
 
-                if (tradeOpen == true && xPrice != 0 && yPrice != 0)
+                if (tradeOpen)
                 {
-                    decimal profit = 0m;
-                    if (positive.Value)
+                    var totalProfit = 0m;
+                    // Short X, Long Y
+                    if (zscore > 0)
                     {
-                        profit = (yPrice - bary.Close);
-                        //_logger.LogInformation($"Y: (Entry Price - Current Price) ({yPrice} - {bary.Close})");
-                        profit += (barx.Close - xPrice) * (decimal)beta;
+                        var xProfit = xPrice - barx.Close;
+                        var yProfit = bary.Close - yPrice;
+                        var xMult = 5000 / xPrice;
+                        var yMult = 5000 / yPrice;
 
-                        //_logger.LogInformation($"X: (Current Price - EntryPrice) * beta ({barx.Close} - {xPrice} * {beta}");
-
-                        if (result.ZScore <= 0|| profit >= 0.20m || profit <= - 0.40m)
-                        {
-                            _logger.LogInformation($"Trade Closed at {barx.TimeUtc.Date.ToShortDateString()} {barx.TimeUtc.TimeOfDay}, Profit: {profit}, Zscore: {result.ZScore}");
-                            tradeOpen = false;
-                        }
-                    } else
-                    {
-                        profit = (bary.Close - yPrice);
-                        profit += (xPrice - barx.Close) * (decimal)beta;
-
-                        if (result.ZScore >= 0 || profit >= 0.20m || profit <= -0.40m)
-                        {
-                            _logger.LogInformation($"Trade Closed at {barx.TimeUtc.Date.ToShortDateString()} {barx.TimeUtc.TimeOfDay}, Profit: {profit}, Zscore: {result.ZScore}");
-                            tradeOpen = false;
-                        }
+                        totalProfit = (xProfit * xMult) + (yProfit * yMult);
+                        _logger.LogInformation($"Profit: {totalProfit}");
                     }
-                    //_logger.LogInformation($"Running Profit at {barx.TimeUtc.TimeOfDay}: {profit}, Spread: {result.Spread}");
-
-                }
-                else if (tradeOpen == false && Math.Abs(result.ZScore) >= 2)
-                {
-                    _logger.LogInformation($"New Trade Opened at {barx.TimeUtc.Date.ToShortDateString()} {barx.TimeUtc.TimeOfDay}, Zscore: {result.ZScore}");
-                    if (result.ZScore >= 2)
-                        // Short Y, Long X
-                        positive = true;
-                    else if (result.ZScore <= -2)
-                        // Long Y, Short X
-                        positive = false;
+                    // Long X, Short Y
                     else
-                        throw new Exception("What?");
+                    {
+                        var xProfit = barx.Close - xPrice;
+                        var yProfit = yPrice - bary.Close;
+                        var xMult = 5000 / xPrice;
+                        var yMult = 5000 / yPrice;
 
-                    tradeOpen = true;
+                        totalProfit = (xProfit * xMult) + (yProfit * yMult);
+                        _logger.LogInformation($"Profit: {totalProfit}");
+                    }
+
+                    if (Math.Sign(zscore) != Math.Sign(result.ZScore))
+                    {
+                        _logger.LogInformation($"Trade Closed: {result.TimeUTC.Day} {result.TimeUTC.TimeOfDay}, X:{barx.Close}, Y:{bary.Close}");
+                        tradeOpen = false;
+                    }
+                }
+                else if (Math.Abs(result.ZScore) >= 2.50)
+                {
+                    _logger.LogInformation($"Trade Opened: {result.TimeUTC.Day} {result.TimeUTC.TimeOfDay}, X:{barx.Close}, Y:{bary.Close}");
                     xPrice = barx.Close;
                     yPrice = bary.Close;
-                    beta = result.Beta;
+                    zscore = result.ZScore;
+                    tradeOpen = true;
                 }
             }
         }

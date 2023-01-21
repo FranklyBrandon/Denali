@@ -25,7 +25,7 @@ namespace Denali.Worker
                 var processor = scope.ServiceProvider.GetService<PairAnalysis>();
                 var barTimeFrame = new BarTimeFrame(5, BarTimeFrameUnit.Minute);
 
-                await processor.Process("VTI", "VUG", new DateTime(2022, 8, 8), new DateTime(2022, 8, 12), new BarTimeFrame(5, BarTimeFrameUnit.Minute), stoppingToken);
+                await processor.Process("AAPL", "MSFT", new DateTime(2022, 8, 15), new DateTime(2022, 8, 19), new BarTimeFrame(5, BarTimeFrameUnit.Minute), stoppingToken);
             }
 
             stoppingToken.WaitHandle.WaitOne();         
