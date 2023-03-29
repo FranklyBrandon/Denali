@@ -1,6 +1,7 @@
 ﻿using Alpaca.Markets;
 using Denali.Processors.ElephantStrategy;
 using Denali.Services;
+using Denali.Shared;
 using Denali.TechnicalAnalysis.ElephantBars;
 using InteractiveBrokers.API;
 using Microsoft.Extensions.Logging;
@@ -15,21 +16,46 @@ namespace Denali.Processors
     public class LiveTradingProcessor
     {
         private readonly AlpacaService _alpacaService;
-        private readonly ElephantRideStrategy _elephantRideStrategy;
-        private readonly IBService _ibService;
         private readonly ILogger _logger;
-        public LiveTradingProcessor(IBService ibService, ElephantRideStrategy strategy, ILogger<LiveTradingProcessor> logger)
+
+        private DateTime _marketOpen;
+        public LiveTradingProcessor(AlpacaService alpacaService, ILogger<LiveTradingProcessor> logger)
         {
-            _ibService = ibService;
-            _elephantRideStrategy = strategy;
+            _alpacaService = alpacaService;
             _logger = logger;
         }
 
-        public async Task Process(CancellationToken stoppingToken, DateTime date)
+        public async Task Process(CancellationToken stoppingToken, string symbol)
         {
-            await _elephantRideStrategy.Setup(date);
+            _logger.LogInformation("== Iniatializing Alpaca clients ==");
+            await _alpacaService.InitializeDataStreamingClient();
+            _alpacaService.InitializeTradingclient();
 
-            stoppingToken.WaitHandle.WaitOne();
+            _logger.LogInformation("== Fetching current calender day ==");
+            var calendars = await _alpacaService.AlpacaTradingClient.ListIntervalCalendarAsync(
+                CalendarRequest.GetForSingleDay(
+                    DateOnly.FromDateTime(
+                        TimeUtils.GetNewYorkTime(DateTime.UtcNow)
+                    )
+                )
+            ).ConfigureAwait(false);
+
+            var calenderDay = calendars.Single();
+            _marketOpen = calenderDay.GetTradingOpenTimeUtc();
+
+            _logger.LogInformation("== Subscribing to data feeds ==");
+            var tradeSubscription = _alpacaService.AlpacaDataStreamingClient.GetTradeSubscription(symbol);
+            tradeSubscription.Received += OnTradeReceived;
+
+            await _alpacaService.AlpacaDataStreamingClient.SubscribeAsync(tradeSubscription);          
+        }
+
+        public void OnTradeReceived(ITrade trade)
+        {
+            if (trade.TimestampUtc < _marketOpen)
+                _logger.LogInformation($"Pre Market Trade: {trade.Price}");
+            else
+                _logger.LogInformation($"Trade: {trade.Price}");
         }
     }
 }
