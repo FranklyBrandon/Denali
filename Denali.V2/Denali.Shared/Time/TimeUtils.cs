@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Denali.Shared
+namespace Denali.Shared.Time
 {
     public static class TimeUtils
     {

@@ -1,15 +1,7 @@
 ﻿using Alpaca.Markets;
-using Denali.Processors.ElephantStrategy;
 using Denali.Services;
-using Denali.Shared;
-using Denali.TechnicalAnalysis.ElephantBars;
-using InteractiveBrokers.API;
+using Denali.Shared.Time;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denali.Processors
 {
@@ -34,9 +26,7 @@ namespace Denali.Processors
             _logger.LogInformation("== Fetching current calender day ==");
             var calendars = await _alpacaService.AlpacaTradingClient.ListIntervalCalendarAsync(
                 CalendarRequest.GetForSingleDay(
-                    DateOnly.FromDateTime(
-                        TimeUtils.GetNewYorkTime(DateTime.UtcNow)
-                    )
+                    DateOnly.FromDateTime(DateTime.UtcNow)
                 )
             ).ConfigureAwait(false);
 

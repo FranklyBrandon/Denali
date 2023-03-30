@@ -1,5 +1,5 @@
 ﻿using Denali.Models;
-using Denali.Shared;
+using Denali.Shared.Time;
 using System;
 using System.Collections;
 using System.Collections.Generic;
