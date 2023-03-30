@@ -22,10 +22,10 @@ namespace Denali.Worker
         {
             using (var scope = _provider.CreateScope())
             {
-                var processor = scope.ServiceProvider.GetService<PairAnalysis>();
+                var processor = scope.ServiceProvider.GetService<LiveTradingProcessor>();
                 var barTimeFrame = new BarTimeFrame(5, BarTimeFrameUnit.Minute);
 
-                await processor.Process("AAPL", "MSFT", new DateTime(2022, 8, 15), new DateTime(2022, 8, 19), new BarTimeFrame(5, BarTimeFrameUnit.Minute), stoppingToken);
+                await processor.Process(stoppingToken, "SPY");
             }
 
             stoppingToken.WaitHandle.WaitOne();         
