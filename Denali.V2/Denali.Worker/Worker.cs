@@ -23,9 +23,9 @@ namespace Denali.Worker
         {
             using (var scope = _provider.CreateScope())
             {
-                var processor = scope.ServiceProvider.GetService<GapMomentumProcessor>();
+                var processor = scope.ServiceProvider.GetService<GapMomentumAnalysis>();
 
-                await processor.Process("SPY", "VTI", stoppingToken);
+                await processor.Process("VTI", DateTime.Parse("3/24/2023"), DateTime.Parse("3/31/2023"), stoppingToken);
             }
 
             stoppingToken.WaitHandle.WaitOne();         

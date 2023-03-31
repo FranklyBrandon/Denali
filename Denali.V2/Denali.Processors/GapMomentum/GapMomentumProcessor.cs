@@ -36,7 +36,7 @@ namespace Denali.Processors.GapMomentum
         }
 
         private async Task<IEnumerable<IIntervalCalendar>> InitializeProcessor()
-         {
+        {
             _logger.LogInformation("====> Initializing Alpaca clients");
             await _alpacaService.InitializeDataStreamingClient();
             _alpacaService.InitializeTradingclient();
@@ -44,16 +44,16 @@ namespace Denali.Processors.GapMomentum
             _logger.LogInformation("====> Alpaca Initializing Complete");
 
             _logger.LogInformation("====> Fetching current market day");
-            var today = DateTime.UtcNow;
+            var today = TimeUtils.GetNewYorkTime(DateTime.UtcNow);
             var calendars = await GetPastMarketDays(BACKLOG_MARKET_DAYS, today).ConfigureAwait(false);
 
-             if (calendars?.LastOrDefault()?.GetSessionOpenTimeUtc().Day != today.Day)
+            if (calendars?.LastOrDefault()?.GetSessionOpenTimeUtc().Day != today.Day)
             {
                 _logger.LogInformation($"No trading window detected for day {today.Day}");
                 throw new NoTradingWindowException();
             }
 
-            return calendars.Take(calendars.Count() - 1);
+            return calendars;
         }
 
         private async Task<IBar> GetPreviousTradingDayAggregate(IEnumerable<IIntervalCalendar> backlogMarketDays)
@@ -77,10 +77,18 @@ namespace Denali.Processors.GapMomentum
 
         private void ScheduleBeforeMarketOpensTask(DateTime utcMarketOpen, IBar previousDayAggregate)
         {
-            _scheduledTask = new ScheduledTask(utcMarketOpen, (alertTime) =>
+            _scheduledTask = new ScheduledTask(utcMarketOpen.AddMinutes(-1), async (alertTime) =>
             {
                 _logger.LogInformation("====> Pre Market Checks");
-                // Get last trade
+                _logger.LogInformation("====> Fetching Latest Quote");
+
+                // TODO: Is this delayed in free data plan? Why is this value wrong!?
+                var latestTrade = await _alpacaService.AlpacaDataClient.
+                    GetLatestTradeAsync(new LatestMarketDataRequest(_preMarketSymbol))
+                    .ConfigureAwait(false);
+
+                _logger.LogInformation($"Latest Trade: {latestTrade.Price}");
+
                 // Determine if Gap
                 // Place trades if necessary
             });

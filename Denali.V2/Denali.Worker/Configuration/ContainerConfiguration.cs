@@ -38,6 +38,7 @@ namespace Denali.Worker.Configuration
             services.AddScoped<TradeAggregator>();
             services.AddScoped<PairAnalysis>();
             services.AddScoped<GapMomentumProcessor>();
+            services.AddScoped<GapMomentumAnalysis>();
 
             services.AddScoped<IBService>();
             services.AddScoped<IBClient>();
