@@ -68,7 +68,7 @@ namespace Denali.Processors.ElephantStrategy
             _alpacaService.InitializeTradingclient();
             _alpacaService.InitializeDataClient();
 
-            var marketDays = await _alpacaService.GeOpenMarketDays(BACKLOG_MARKET_DAYS, date);
+            IEnumerable<IIntervalCalendar> marketDays = null;//await _alpacaService.GeOpenMarketDays(BACKLOG_MARKET_DAYS, date);
 
             // Get backlog market days plus the current date
             var daysThatNeedData = marketDays.Skip(1).Take(BACKLOG_DAYS).Reverse();

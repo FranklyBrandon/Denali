@@ -2,6 +2,7 @@
 using Denali.Models.Mapping;
 using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
+using Denali.Processors.GapMomentum;
 using Denali.Processors.StatArb;
 using Denali.Services;
 using Denali.Services.Aggregators;
@@ -36,6 +37,7 @@ namespace Denali.Worker.Configuration
             services.AddScoped<BarAggregator>();
             services.AddScoped<TradeAggregator>();
             services.AddScoped<PairAnalysis>();
+            services.AddScoped<GapMomentumProcessor>();
 
             services.AddScoped<IBService>();
             services.AddScoped<IBClient>();

@@ -1,11 +1,6 @@
 ﻿using Alpaca.Markets;
 using AutoMapper;
 using Denali.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denali.Processors
 {
@@ -20,15 +15,16 @@ namespace Denali.Processors
             _mapper = mapper;
         }
 
-        protected async Task<IEnumerable<IIntervalCalendar>> GetOpenBacklogDays(int pastDays, DateTime day)
-        {
-            var calenders = await _alpacaService.AlpacaTradingClient.ListIntervalCalendarAsync(new CalendarRequest().WithInterval(new Interval<DateTime>(day.AddDays(-pastDays), day)));
-            return calenders.OrderByDescending(x => x.GetTradingDate());
-        }
+        protected async Task<IEnumerable<IIntervalCalendar>> GetPastMarketDays(int pastDays, DateTime day) =>
+            await GetOpenMarketDays(day.AddDays(-pastDays), day);
 
         protected async Task<IEnumerable<IIntervalCalendar>> GetOpenMarketDays(DateTime from, DateTime into)
         {
-            var calenders = await _alpacaService.AlpacaTradingClient.ListIntervalCalendarAsync(new CalendarRequest().WithInterval(new Interval<DateTime>(from, into)));
+            var calenders = await _alpacaService.AlpacaTradingClient.ListIntervalCalendarAsync(
+                new CalendarRequest().WithInterval(
+                    new Interval<DateTime>(from, into)
+                )
+            );
             return calenders.OrderBy(x => x.GetTradingDate());
         }
     }

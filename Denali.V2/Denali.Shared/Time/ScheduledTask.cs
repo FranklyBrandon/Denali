@@ -2,6 +2,7 @@
 {
     public class ScheduledTask
     {
+        private Timer _timer;
         public ScheduledTask(DateTime utcAlertTime, Action<DateTime> alertAction)
         {
             DateTime current = DateTime.UtcNow;
@@ -10,7 +11,7 @@
             if (timeToGo < TimeSpan.Zero)
                 return; // Time has already passed
 
-            new Timer(x =>
+            _timer = new Timer(x =>
             {
                 alertAction.Invoke(utcAlertTime);
             }, null, timeToGo, Timeout.InfiniteTimeSpan);         

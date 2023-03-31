@@ -24,6 +24,7 @@ namespace Denali.Services
         {
             _hostEnvironment = hostEnvironment;
             _logger = logger;
+            // Best to keep these in 'User Secrets' on local and not any plain text readable configurations
             _secretKey = new SecretKey(configuration["Alpaca:API-Key"], configuration["Alpaca:API-Secret"]);
         }
 
@@ -44,12 +45,6 @@ namespace Denali.Services
         public void InitializeDataClient() => _alpacaDataClient = BuildDataclient();
 
         public void InitializeTradingclient() => _alpacaTradingClient = BuildTradingClient();
-
-        public async Task<IEnumerable<IIntervalCalendar>> GeOpenMarketDays(int pastDays, DateTime day)
-        {
-            var calenders = await _alpacaTradingClient.ListIntervalCalendarAsync(new CalendarRequest().SetInclusiveTimeInterval(day.AddDays(-pastDays), day));
-            return calenders.OrderByDescending(x => x.GetTradingDate());
-        }
 
         private IAlpacaStreamingClient BuildStreamingclient() => _hostEnvironment.IsProduction()
             ? Alpaca.Markets.Environments.Live.GetAlpacaStreamingClient(_secretKey) 
