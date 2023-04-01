@@ -45,21 +45,80 @@ namespace Denali.Processors.GapMomentum
             const bool FULL_GAP = false;
             var gap = new Gap(FULL_GAP);
 
+            marketDays = marketDays.Skip(1).Take(marketDays.Count() - 1);
             for (int i = 1; i < aggregateBars.Items.Count(); i++)
             {
+                var marketDay = marketDays.ElementAt(i);
                 var currentBar = _mapper.Map<AggregateBar>(aggregateBars.Items[i]);
                 var previousBar = _mapper.Map<AggregateBar>(aggregateBars.Items[i - 1]);
 
                 if (gap.IsGapUp(currentBar, previousBar))
                 {
                     _logger.LogInformation(
-                        $"Gap Up detected on {TimeUtils.GetNewYorkTime(currentBar.TimeUtc).ToString("MM-dd-yyyy")}");
+                        $"====> Gap Up detected on {TimeUtils.GetNewYorkTime(currentBar.TimeUtc).ToString("MM-dd-yyyy")}");
+                    _logger.LogInformation($"Long Entry at: {currentBar.Open}");
+                    await ProcessGap(gapUp: true, ticker, currentBar.Open, currentBar, marketDay);
                 }
 
                 if (gap.IsGapDown(currentBar, previousBar))
                 {
                     _logger.LogInformation(
-                        $"Gap Down detected on {TimeUtils.GetNewYorkTime(currentBar.TimeUtc).ToString("MM-dd-yyyy")}");
+                        $"=====> Gap Down detected on {TimeUtils.GetNewYorkTime(currentBar.TimeUtc).ToString("MM-dd-yyyy")}");
+                    _logger.LogInformation($"Short Entry at: {currentBar.Open}");
+                    await ProcessGap(gapUp: false, ticker, currentBar.Open, currentBar, marketDay);
+                }
+            }
+        }
+
+        private async Task ProcessGap(bool gapUp, string ticker, decimal entryPrice, AggregateBar currentBar, IIntervalCalendar marketDay)
+        {
+            var multiplier = gapUp ? 1 : -1;
+            var highWaterMark = 0.30m;
+            var stopOutProfit = highWaterMark / 2;
+
+            var aggregateMinutes = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
+               new HistoricalBarsRequest(
+                   ticker,
+                   marketDay.GetTradingOpenTimeUtc(),
+                   marketDay.GetTradingCloseTimeUtc(),
+                   BarTimeFrame.Minute
+               )
+           ).ConfigureAwait(false); 
+
+            bool highWaterMet = false;
+            foreach (var bar in aggregateMinutes.Items)
+            {
+                if (!highWaterMet)
+                {
+                    if (gapUp && (bar.High >= entryPrice + highWaterMark))
+                    {
+                        highWaterMet = true;
+                        _logger.LogInformation($"High Watermark met at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
+                        if (bar.Low <= entryPrice + stopOutProfit)
+                            _logger.LogWarning("High water and stop out in same minute!");
+                    }
+
+                    if (!gapUp && (bar.Low <= entryPrice - highWaterMark))
+                    {
+                        highWaterMet = true;
+                        _logger.LogInformation($"High Watermark met at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
+                        if (bar.High >= entryPrice - stopOutProfit)
+                            _logger.LogWarning("High water and stop out in same minute!");
+                    }
+                }  
+                else
+                {
+                    if (gapUp && bar.Low <= entryPrice + stopOutProfit)
+                    {
+                        _logger.LogInformation($"Stop Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
+                        break;
+                    }
+
+                    if (!gapUp && bar.High >= entryPrice - stopOutProfit)
+                    {
+                        _logger.LogInformation($"Stop Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
+                        break;
+                    }
                 }
             }
         }
