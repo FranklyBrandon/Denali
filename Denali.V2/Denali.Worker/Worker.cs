@@ -1,5 +1,3 @@
-
-
 using Alpaca.Markets;
 using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
@@ -23,9 +21,12 @@ namespace Denali.Worker
         {
             using (var scope = _provider.CreateScope())
             {
-                var processor = scope.ServiceProvider.GetService<GapMomentumAnalysis>();
+                //var processor = scope.ServiceProvider.GetService<GapMomentumAnalysis>();
 
-                await processor.Process("VTI", DateTime.Parse("3/24/2023"), DateTime.Parse("3/31/2023"), stoppingToken);
+                //await processor.Process("VTI", DateTime.Parse("3/24/2023"), DateTime.Parse("3/31/2023"), stoppingToken);
+
+                var processor = scope.ServiceProvider.GetService<LiveTradingProcessor>();
+                await processor.Process(stoppingToken, "VTI");
             }
 
             stoppingToken.WaitHandle.WaitOne();         

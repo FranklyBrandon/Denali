@@ -91,7 +91,6 @@ namespace Denali.Processors.GapMomentum
                 if (!highWaterMet)
                 {
                     if (gapUp && (bar.High >= entryPrice + highWaterMark))
-                    {
                         highWaterMet = true;
                         _logger.LogInformation($"High Watermark met at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
                         if (bar.Low <= entryPrice + stopOutProfit)
