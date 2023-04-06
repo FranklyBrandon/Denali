@@ -72,9 +72,9 @@ namespace Denali.Processors.GapMomentum
 
         private async Task ProcessGap(bool gapUp, string ticker, decimal entryPrice, AggregateBar currentBar, IIntervalCalendar marketDay)
         {
-            var multiplier = gapUp ? 1 : -1;
             var highWaterMark = 0.30m;
-            var stopOutProfit = highWaterMark / 2;
+            var stopProfit = highWaterMark / 2;
+            var stopLoss = 0.60m;
 
             var aggregateMinutes = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
                new HistoricalBarsRequest(
@@ -88,35 +88,58 @@ namespace Denali.Processors.GapMomentum
             bool highWaterMet = false;
             foreach (var bar in aggregateMinutes.Items)
             {
-                if (!highWaterMet)
+                if (gapUp)
                 {
-                    if (gapUp && (bar.High >= entryPrice + highWaterMark))
-                        highWaterMet = true;
-                        _logger.LogInformation($"High Watermark met at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                        if (bar.Low <= entryPrice + stopOutProfit)
-                            _logger.LogWarning("High water and stop out in same minute!");
-                    }
-
-                    if (!gapUp && (bar.Low <= entryPrice - highWaterMark))
+                    // Stop Loss scenario
+                    if (bar.Low <= bar.Open - stopLoss)
                     {
-                        highWaterMet = true;
-                        _logger.LogInformation($"High Watermark met at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                        if (bar.High >= entryPrice - stopOutProfit)
-                            _logger.LogWarning("High water and stop out in same minute!");
+                        _logger.LogWarning($"Stop loss at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
                     }
-                }  
+                    
+                    // Stop profit scenario
+                    if (!highWaterMet)
+                    {
+                        if (bar.High >= entryPrice + highWaterMark)
+                        {
+                            highWaterMet = true;
+                            _logger.LogInformation($"High Watermark met at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
+                            if (bar.Low <= entryPrice + stopProfit)
+                                _logger.LogWarning("High water and stop out in same minute!");
+                        }
+                    }
+                    else
+                    {
+                        if (bar.Low <= entryPrice + stopProfit)
+                        {
+                            _logger.LogInformation($"Stop Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
+                            break;
+                        }
+                    }
+                }
                 else
                 {
-                    if (gapUp && bar.Low <= entryPrice + stopOutProfit)
+                    if (bar.High >= bar.Open + stopLoss)
                     {
-                        _logger.LogInformation($"Stop Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                        break;
+                        _logger.LogWarning($"Stop loss at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
                     }
 
-                    if (!gapUp && bar.High >= entryPrice - stopOutProfit)
+                    if (!highWaterMet)
                     {
-                        _logger.LogInformation($"Stop Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                        break;
+                        if (bar.Low <= entryPrice - highWaterMark)
+                        {
+                            highWaterMet = true;
+                            _logger.LogInformation($"High Watermark met at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
+                            if (bar.High >= entryPrice - stopProfit)
+                                _logger.LogWarning("High water and stop out in same minute!");
+                        }
+                    }
+                    else
+                    {
+                        if (bar.High >= entryPrice - stopProfit)
+                        {
+                            _logger.LogInformation($"Stop Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
+                            break;
+                        }
                     }
                 }
             }

@@ -3,6 +3,7 @@ using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
 using Denali.Processors.GapMomentum;
 using Denali.Processors.StatArb;
+using Denali.TradingView;
 
 namespace Denali.Worker
 {
@@ -23,10 +24,13 @@ namespace Denali.Worker
             {
                 //var processor = scope.ServiceProvider.GetService<GapMomentumAnalysis>();
 
-                //await processor.Process("VTI", DateTime.Parse("3/24/2023"), DateTime.Parse("3/31/2023"), stoppingToken);
+                //await processor.Process("VTI", DateTime.Parse("12/09/2022"), DateTime.Parse("12/16/2022"), stoppingToken);
 
-                var processor = scope.ServiceProvider.GetService<LiveTradingProcessor>();
-                await processor.Process(stoppingToken, "VTI");
+                //var processor = scope.ServiceProvider.GetService<LiveTradingProcessor>();
+                //await processor.Process(stoppingToken, "SPY");
+
+                var client = new TradingViewWebSocket(new Uri("wss://data.tradingview.com/socket.io/websocket?from=chart/&date=2023_04_05-11_11&type=chart"), 256);
+                await client.Connect(stoppingToken);
             }
 
             stoppingToken.WaitHandle.WaitOne();         
