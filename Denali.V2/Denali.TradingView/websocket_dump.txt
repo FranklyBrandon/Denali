@@ -1,0 +1,17 @@
+~m~54~m~{"m":"set_auth_token","p":["unauthorized_user_token"]}
+~m~34~m~{"m":"set_locale","p":["en","US"]}
+~m~55~m~{"m":"chart_create_session","p":["cs_8GbsfnVy1YdF",""]}
+~m~69~m~{"m":"request_studies_metadata","p":["cs_8GbsfnVy1YdF","metadata_1"]}
+~m~83~m~{"m":"quote_create_session","p":["qs_snapshoter_basic-symbol-quotes_aCclykeI8dfp"]}
+~m~345~m~{"m":"quote_set_fields","p":["qs_snapshoter_basic-symbol-quotes_aCclykeI8dfp","pro_name","base_name","short_name","description","type","exchange","typespecs","listed_exchange","country_code","provider_id","symbol-primaryname","logoid","base-currency-logoid","currency-logoid","update_mode","source","source2","pricescale","minmov","fractional"]}
+~m~359~m~{"m":"quote_add_symbols","p":["qs_snapshoter_basic-symbol-quotes_aCclykeI8dfp","###Indices","SP:SPX","TVC:NDX","TVC:DJI","CBOE:VIX","TVC:DXY","###Stocks","NASDAQ:AAPL","NASDAQ:TSLA","NASDAQ:NFLX","###Futures","TVC:USOIL","TVC:GOLD","TVC:SILVER","###Forex","FX:EURUSD","FX:GBPUSD","FX:USDJPY","###Crypto","BITSTAMP:BTCUSD","BINANCE:BTCUSDT","BITSTAMP:ETHUSD"]}
+~m~57~m~{"m":"switch_timezone","p":["cs_8GbsfnVy1YdF","Etc/UTC"]}
+~m~52~m~{"m":"quote_create_session","p":["qs_6n5CrAxtgiGX"]}
+~m~104~m~{"m":"quote_add_symbols","p":["qs_6n5CrAxtgiGX","={\"adjustment\":\"splits\",\"symbol\":\"AMEX:SPY\"}"]}
+~m~113~m~{"m":"resolve_symbol","p":["cs_8GbsfnVy1YdF","sds_sym_1","={\"adjustment\":\"splits\",\"symbol\":\"AMEX:SPY\"}"]}
+~m~82~m~{"m":"create_series","p":["cs_8GbsfnVy1YdF","sds_1","s1","sds_sym_1","1D",300,""]}
+~m~52~m~{"m":"quote_create_session","p":["qs_XrVa6SWhyYlY"]}
+~m~432~m~{"m":"quote_set_fields","p":["qs_XrVa6SWhyYlY","base-currency-logoid","ch","chp","currency-logoid","currency_code","currency_id","base_currency_id","current_session","description","exchange","format","fractional","is_tradable","language","local_description","listed_exchange","logoid","lp","lp_time","minmov","minmove2","original_name","pricescale","pro_name","short_name","type","typespecs","update_mode","volume","value_unit_id"]}
+~m~60~m~{"m":"quote_add_symbols","p":["qs_XrVa6SWhyYlY","AMEX:SPY"]}
+~m~65~m~{"m":"request_more_tickmarks","p":["cs_8GbsfnVy1YdF","sds_1",10]}
+~m~140~m~{"m":"quote_fast_symbols","p":["qs_6n5CrAxtgiGX","={\"adjustment\":\"splits\",\"currency-id\":\"USD\",\"symbol\":\"BATS:SPY\"}","AMEX:SPY"]}

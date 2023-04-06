@@ -28,9 +28,10 @@ namespace Denali.Worker
 
                 //var processor = scope.ServiceProvider.GetService<LiveTradingProcessor>();
                 //await processor.Process(stoppingToken, "SPY");
+                var laa = TradingViewMessages.ChartResolveSymbol("SESSIONID", "AMEX", "SPY");
 
-                var client = new TradingViewWebSocket(new Uri("wss://data.tradingview.com/socket.io/websocket?from=chart/&date=2023_04_05-11_11&type=chart"), 256);
-                await client.Connect(stoppingToken);
+                var la = new TradingViewService(new TradingViewSettings());
+                await la.ConnectToTradingView();
             }
 
             stoppingToken.WaitHandle.WaitOne();         

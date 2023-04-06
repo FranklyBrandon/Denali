@@ -3,22 +3,20 @@ using System.Text;
 
 namespace Denali.TradingView
 {
-    public class TradingViewWebSocket : IDisposable
+    public class TextWebSocket : IDisposable
     {
         private ClientWebSocket _clientSocket;
         private readonly int _bufferSize;
-        private readonly Uri _url;
         private readonly StringBuilder _message;
 
         public event Action<string> OnMessage;
 
-        public TradingViewWebSocket(Uri url, int bufferSize = 256)
+        public TextWebSocket(int bufferSize = 256)
         {
-            _url = url;
             _bufferSize = bufferSize;
             _message = new StringBuilder();
         }
-        public async Task Connect(IDictionary<string, string> headers = null, CancellationToken cancellationToken = default)
+        public async Task Connect(Uri url, IDictionary<string, string> headers = null, CancellationToken cancellationToken = default)
         {
             if (_clientSocket is null)
                 _clientSocket = new ClientWebSocket();
@@ -29,11 +27,11 @@ namespace Denali.TradingView
                     _clientSocket.Options.SetRequestHeader(header.Key, header.Value);
             }
 
-            await _clientSocket.ConnectAsync(_url, cancellationToken);
-            await Task.Run(() => BeginReceive(cancellationToken), cancellationToken);
+            await _clientSocket.ConnectAsync(url, cancellationToken);
+            Task.Run(() => BeginReceive(cancellationToken), cancellationToken);
         }
 
-        public async Task BeginReceive(CancellationToken cancellationToken = default)
+        private async Task BeginReceive(CancellationToken cancellationToken = default)
         {
             byte[] buffer = new byte[_bufferSize];
             while (_clientSocket.State == WebSocketState.Open)
@@ -54,9 +52,19 @@ namespace Denali.TradingView
                 OnEndOfMessage();
         }
 
+        public async Task SendAsync(string message, CancellationToken cancellationToken = default)
+        {
+            var encoded = Encoding.UTF8.GetBytes(message);
+            var buffer = new ArraySegment<Byte>(encoded, 0, encoded.Length);
+            await _clientSocket.SendAsync(buffer, WebSocketMessageType.Text, true, cancellationToken);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Sent:");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(message);
+        }
+
         private void OnEndOfMessage()
         {
-            // TODO: Automatically send acknowledgment messages
             OnMessage.Invoke(_message.ToString());
             _message.Clear();
         }
