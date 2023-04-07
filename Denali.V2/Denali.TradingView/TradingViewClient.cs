@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Denali.TradingView
 {
-    public class TradingViewService
+    public class TradingViewClient
     {
         private readonly TextWebSocket _websocket;
         private readonly TradingViewSettings _settings;
@@ -15,7 +15,7 @@ namespace Denali.TradingView
         private readonly string _quoteSessionId;
         private readonly Regex _heartbeatRegex;
 
-        public TradingViewService(TradingViewSettings settings = default)
+        public TradingViewClient(TradingViewSettings settings = default)  
         {
             _settings = settings ??= new TradingViewSettings();
             _websocket = new TextWebSocket(_settings.MessageBufferSize);
@@ -35,10 +35,11 @@ namespace Denali.TradingView
             await _websocket.SendAsync(TradingViewMessages.ChartSwitchTimeZones(_chartSessionId));
             await _websocket.SendAsync(TradingViewMessages.QuoteCreateSession(_quoteSessionId));
             await _websocket.SendAsync(TradingViewMessages.QuoteSetFields(_quoteSessionId));
-            await _websocket.SendAsync(TradingViewMessages.QuoteAddSymbols(_quoteSessionId, "AMEX", "SPY"));
-            await _websocket.SendAsync(TradingViewMessages.QuoteFastSymbols(_quoteSessionId, "AMEX", "SPY"));
-            await _websocket.SendAsync(TradingViewMessages.ChartResolveSymbol(_chartSessionId, "AMEX", "SPY"));
-            //await _websocket.SendAsync(TradingViewMessages.ChartCreateSeries(_chartSessionId));
+            await _websocket.SendAsync(TradingViewMessages.QuoteAddSymbols(_quoteSessionId, "AMEX", "VTI"));
+            await _websocket.SendAsync(TradingViewMessages.ChartResolveSymbol(_chartSessionId, "AMEX", "VTI"));
+            await _websocket.SendAsync(TradingViewMessages.ChartCreateSeries(_chartSessionId));
+            await _websocket.SendAsync(TradingViewMessages.QuoteFastSymbols(_quoteSessionId, "AMEX", "VTI"));
+
         }
 
         private async void OnMessage(string message)
@@ -51,7 +52,7 @@ namespace Denali.TradingView
             if (_heartbeatRegex.IsMatch(message))
                 await _websocket.SendAsync(message);
         }
-        private string GenerateSessionId(string prefix) =>
+        private string GenerateSessionId(string prefix) => 
             $"{prefix}_{GenerateRandomTwelveChars()}";
 
         private string GenerateRandomTwelveChars() =>

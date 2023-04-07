@@ -40,8 +40,5 @@ namespace Denali.TradingView
 
         public static string ChartCreateSeries(string chartSessionId, string timeframe = "1D", int length = 300) =>
             AddHeader($"{{\"m\":\"create_series\",\"p\":[\"{chartSessionId}\",\"sds_1\",\"s1\",\"sds_sym_1\",\"{timeframe}\",{length},\"\"]}}");
-
-        //public static string QuoteAddsymbols(string quoteSessionId, string exchange, string symbol) =>
-        //    AddHeader($"{{\"m\":\"quote_add_symbols\",\"p\":[\"{quoteSessionId}\",\" ={{\\\"adjustment\\\":\\\"splits\\\",\\\"symbol\\\":\\\"{exchange}:{symbol}\\\"}}\"]}}");
     }
 }

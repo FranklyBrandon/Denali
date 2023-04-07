@@ -3,6 +3,7 @@ using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
 using Denali.Processors.GapMomentum;
 using Denali.Processors.StatArb;
+using Denali.Services;
 using Denali.TradingView;
 
 namespace Denali.Worker
@@ -16,7 +17,7 @@ namespace Denali.Worker
         {
             _logger = logger;
             _provider = provider;
-        }
+        } 
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -27,10 +28,9 @@ namespace Denali.Worker
                 //await processor.Process("VTI", DateTime.Parse("12/09/2022"), DateTime.Parse("12/16/2022"), stoppingToken);
 
                 //var processor = scope.ServiceProvider.GetService<LiveTradingProcessor>();
-                //await processor.Process(stoppingToken, "SPY");
-                var laa = TradingViewMessages.ChartResolveSymbol("SESSIONID", "AMEX", "SPY");
+                //await processor.Process(stoppingToken, "SPY") ;
 
-                var la = new TradingViewService(new TradingViewSettings());
+                var la = new TradingViewClient(new TradingViewSettings());
                 await la.ConnectToTradingView();
             }
 
