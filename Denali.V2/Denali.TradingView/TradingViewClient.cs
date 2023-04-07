@@ -36,8 +36,8 @@ namespace Denali.TradingView
             await _websocket.SendAsync(TradingViewMessages.QuoteCreateSession(_quoteSessionId));
             await _websocket.SendAsync(TradingViewMessages.QuoteSetFields(_quoteSessionId));
             await _websocket.SendAsync(TradingViewMessages.QuoteAddSymbols(_quoteSessionId, "AMEX", "VTI"));
-            await _websocket.SendAsync(TradingViewMessages.ChartResolveSymbol(_chartSessionId, "AMEX", "VTI"));
-            await _websocket.SendAsync(TradingViewMessages.ChartCreateSeries(_chartSessionId));
+            await _websocket.SendAsync(TradingViewMessages.ChartResolveSymbolExtended(_chartSessionId, "AMEX", "VTI"));
+            await _websocket.SendAsync(TradingViewMessages.ChartCreateSeries(_chartSessionId, "1", 300));
             await _websocket.SendAsync(TradingViewMessages.QuoteFastSymbols(_quoteSessionId, "AMEX", "VTI"));
 
         }

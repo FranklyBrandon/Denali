@@ -38,7 +38,10 @@ namespace Denali.TradingView
         public static string ChartResolveSymbol(string chartSessionId, string exchange, string symbol) =>
             AddHeader($"{{\"m\":\"resolve_symbol\",\"p\":[\"{chartSessionId}\",\"sds_sym_1\",\"={{\\\"adjustment\\\":\\\"splits\\\",\\\"symbol\\\":\\\"{exchange}:{symbol}\\\"}}\"]}}");
 
-        public static string ChartCreateSeries(string chartSessionId, string timeframe = "1D", int length = 300) =>
+        public static string ChartResolveSymbolExtended(string chartSessionId, string exchange, string symbol) =>
+            AddHeader($"{{\"m\":\"resolve_symbol\",\"p\":[\"{chartSessionId}\",\"sds_sym_1\",\"={{\\\"adjustment\\\":\\\"splits\\\",\\\"currency-id\\\":\\\"USD\\\",\\\"session\\\":\\\"extended\\\",\\\"settlement-as-close\\\":false,\\\"symbol\\\":\\\"{exchange}:{symbol}\\\"}}\"]}}");
+
+        public static string ChartCreateSeries(string chartSessionId, string timeframe = "1", int length = 300) =>
             AddHeader($"{{\"m\":\"create_series\",\"p\":[\"{chartSessionId}\",\"sds_1\",\"s1\",\"sds_sym_1\",\"{timeframe}\",{length},\"\"]}}");
     }
 }
