@@ -25,11 +25,10 @@ namespace Denali.Processors.GapMomentum
             _alpacaService.InitializeTradingclient();
             _alpacaService.InitializeDataClient();
 
-            var today = TimeUtils.GetNewYorkTime(DateTime.UtcNow);
             var marketDays = await GetOpenMarketDays(startDate, endDate);
             if (marketDays?.FirstOrDefault()?.GetTradingDate().Day != startDate.Day)
             {
-                _logger.LogInformation($"No trading window detected for day {today.Day}");
+                _logger.LogInformation($"No trading window detected for day {startDate.Day}");
                 throw new NoTradingWindowException();
             }
 
