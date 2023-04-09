@@ -12,6 +12,8 @@ namespace Denali.Processors.GapMomentum
     public class GapMomentumAnalysis : StrategyProcessorBase
     {
         private readonly ILogger _logger;
+        private readonly GapMomentumSettings _settings;
+        private readonly Gap _gap;
 
         public GapMomentumAnalysis(AlpacaService alpacaService,
             IMapper mapper, 
@@ -19,6 +21,8 @@ namespace Denali.Processors.GapMomentum
         ) : base(alpacaService, mapper)
         {
             _logger = logger;
+            _settings = new GapMomentumSettings();
+            _gap = new Gap(_settings.FullGap);
         }
         public async Task Process(string ticker, DateTime startDate, DateTime endDate, CancellationToken stoppingToken)
         {
@@ -41,9 +45,6 @@ namespace Denali.Processors.GapMomentum
                 )
             ).ConfigureAwait(false);
 
-            const bool FULL_GAP = false;
-            var gap = new Gap(FULL_GAP);
-
             marketDays = marketDays.Skip(1).Take(marketDays.Count() - 1);
             for (int i = 1; i < aggregateBars.Items.Count(); i++)
             {
@@ -51,97 +52,96 @@ namespace Denali.Processors.GapMomentum
                 var currentBar = _mapper.Map<AggregateBar>(aggregateBars.Items[i]);
                 var previousBar = _mapper.Map<AggregateBar>(aggregateBars.Items[i - 1]);
 
-                if (gap.IsGapUp(currentBar, previousBar))
+                if (_gap.IsGapUp(currentBar, previousBar))
                 {
-                    _logger.LogInformation(
-                        $"====> Gap Up detected on {TimeUtils.GetNewYorkTime(currentBar.TimeUtc).ToString("MM-dd-yyyy")}");
-                    _logger.LogInformation($"Long Entry at: {currentBar.Open}");
-                    await ProcessGap(gapUp: true, ticker, currentBar.Open, currentBar, marketDay);
-                }
+                    var gapTrade = new GapMomentumTrade(ticker, true, previousBar, currentBar, marketDay);
+                    await ProcessGap(gapTrade);
+                } 
 
-                if (gap.IsGapDown(currentBar, previousBar))
+                if (_gap.IsGapDown(currentBar, previousBar))
                 {
-                    _logger.LogInformation(
-                        $"=====> Gap Down detected on {TimeUtils.GetNewYorkTime(currentBar.TimeUtc).ToString("MM-dd-yyyy")}");
-                    _logger.LogInformation($"Short Entry at: {currentBar.Open}");
-                    await ProcessGap(gapUp: false, ticker, currentBar.Open, currentBar, marketDay);
+                    var gapTrade = new GapMomentumTrade(ticker, false, previousBar, currentBar, marketDay);
+                    await ProcessGap(gapTrade);
                 }
             }
         }
 
-        private async Task ProcessGap(bool gapUp, string ticker, decimal entryPrice, AggregateBar currentBar, IIntervalCalendar marketDay)
+        private async Task ProcessGap(GapMomentumTrade gapTrade)
         {
-            var highWaterMark = 0.30m;
-            var stopProfit = highWaterMark / 2;
-            var stopLoss = 0.60m;
-
-            var aggregateMinutes = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
+            var agregateResponse = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
                new HistoricalBarsRequest(
-                   ticker,
-                   marketDay.GetTradingOpenTimeUtc(),
-                   marketDay.GetTradingCloseTimeUtc(),
+                   gapTrade.Symbol,
+                   gapTrade.MarketDay.GetTradingOpenTimeUtc(),
+                   gapTrade.MarketDay.GetTradingCloseTimeUtc(),
                    BarTimeFrame.Minute
                )
-           ).ConfigureAwait(false); 
+           ).ConfigureAwait(false);
 
-            bool highWaterMet = false;
-            foreach (var bar in aggregateMinutes.Items)
+            IEnumerable<AggregateBar> aggregateMinuteBars = _mapper.Map<List<AggregateBar>>(agregateResponse);
+            gapTrade.AggregateMinuteBars = aggregateMinuteBars;
+
+            gapTrade.Shares = (int)Math.Floor(_settings.InitialCapitol / gapTrade.TradeBar.Open);
+
+            _logger.LogInformation(
+                $"====> Gap {(gapTrade.Up ? "UP" : "DOWN")} detected on {TimeUtils.GetNewYorkTime(gapTrade.TradeBar.TimeUtc).ToString("MM-dd-yyyy")}");
+            _logger.LogInformation($"{(gapTrade.Up ? "LONG" : "SHORT")} Entry at: {gapTrade.TradeBar.Open}");
+
+            if (gapTrade.Up)
+                ProcessGapUp(gapTrade);
+            else
+                ProcessGapDown(gapTrade);
+        }
+
+        private void ProcessGapUp(GapMomentumTrade gapTrade)
+        {
+            var highWaterMet = false;
+            var totalCount = gapTrade.AggregateMinuteBars.Count();
+            for (int i = 0; i < totalCount; i ++)
             {
-                if (gapUp)
-                {
-                    // Stop Loss scenario
-                    if (bar.Low <= bar.Open - stopLoss)
-                    {
-                        _logger.LogWarning($"Stop loss at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                    }
-                    
-                    // Stop profit scenario
-                    if (!highWaterMet)
-                    {
-                        if (bar.High >= entryPrice + highWaterMark)
-                        {
-                            highWaterMet = true;
-                            _logger.LogInformation($"High Watermark met at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                            if (bar.Low <= entryPrice + stopProfit)
-                                _logger.LogWarning("High water and stop out in same minute!");
-                        }
-                    }
-                    else
-                    {
-                        if (bar.Low <= entryPrice + stopProfit)
-                        {
-                            _logger.LogInformation($"Stop Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    if (bar.High >= bar.Open + stopLoss)
-                    {
-                        _logger.LogWarning($"Stop loss at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                    }
+                var bar = gapTrade.AggregateMinuteBars.ElementAt(i);
+                var stopLoss = false;
+                var highWaterTakeProfit = false;
 
-                    if (!highWaterMet)
-                    {
-                        if (bar.Low <= entryPrice - highWaterMark)
-                        {
-                            highWaterMet = true;
-                            _logger.LogInformation($"High Watermark met at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                            if (bar.High >= entryPrice - stopProfit)
-                                _logger.LogWarning("High water and stop out in same minute!");
-                        }
-                    }
-                    else
-                    {
-                        if (bar.High >= entryPrice - stopProfit)
-                        {
-                            _logger.LogInformation($"Stop Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                            break;
-                        }
-                    }
+                if (bar.Low <= bar.Open - _settings.StopLossMark)
+                    stopLoss = true;
+
+                if (bar.High >= gapTrade.TradeBar.Open + _settings.HighWaterMark)
+                    highWaterMet = true;
+                
+                if (highWaterMet && bar.Low <= gapTrade.TradeBar.Open + _settings.HighWaterTakeProfit)
+                    highWaterTakeProfit = true;
+
+                if (stopLoss)
+                {
+                    if (highWaterMet)
+                        _logger.LogWarning("High water and stop out in same minute!");
+
+                    gapTrade.profit -= gapTrade.Shares * _settings.StopLossMark;
+                    _logger.LogInformation($"Profit: {gapTrade.profit}");
+                    break;
+                }
+
+                if (highWaterTakeProfit)
+                {
+                    _logger.LogInformation($"Stop Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
+                    gapTrade.profit += gapTrade.Shares * _settings.HighWaterTakeProfit;
+                    _logger.LogInformation($"Profit: {gapTrade.profit}");
+                    break;
+                }
+
+                if ((i + 1) == totalCount)
+                {
+                    _logger.LogInformation($"Take Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
+                    gapTrade.profit += gapTrade.Shares * bar.Close - gapTrade.TradeBar.Open;
+                    _logger.LogInformation($"Profit: {gapTrade.profit}");
+                    break;
                 }
             }
+        }
+
+        private void ProcessGapDown(GapMomentumTrade gapTrade)
+        {
+
         }
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+  
 namespace Denali.Processors.GapMomentum
-{
+{ 
     public class GapMomentumSettings
     {
         public bool FullGap { get; set; } = false;
@@ -16,5 +16,10 @@ namespace Denali.Processors.GapMomentum
             { 1.00m, 0.60m },
             { 1.30m, 1.00m }
         };
+
+        public decimal HighWaterMark = 0.30m;
+        public decimal HighWaterTakeProfit = 0.15m;
+        public decimal StopLossMark = 0.60m;
+        public decimal InitialCapitol = 25000m;
     }
 }
