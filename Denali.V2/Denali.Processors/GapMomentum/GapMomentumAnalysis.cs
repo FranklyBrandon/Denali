@@ -116,6 +116,10 @@ namespace Denali.Processors.GapMomentum
                     if (highWaterMet)
                         _logger.LogWarning("High water and stop out in same minute!");
 
+                    if (highWaterTakeProfit)
+                        _logger.LogWarning("High water take profit and stop out in same minute!");
+
+                    _logger.LogInformation($"Stop Loss at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
                     gapTrade.profit -= gapTrade.Shares * _settings.StopLossMark;
                     _logger.LogInformation($"Profit: {gapTrade.profit}");
                     break;
