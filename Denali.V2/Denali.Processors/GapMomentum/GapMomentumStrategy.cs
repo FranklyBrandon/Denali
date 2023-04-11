@@ -1,10 +1,5 @@
 ﻿using Denali.Models;
 using Denali.TechnicalAnalysis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denali.Processors.GapMomentum
 {
@@ -14,9 +9,7 @@ namespace Denali.Processors.GapMomentum
         private readonly Gap _gap;
         private IAggregateBar _previousDailyBar;
         private decimal _latestPreMarketPrice;
-        private BrokerAction _entry;
-        private short _direction = 0;
-        private bool _highWater = false;
+        public GapMomentumTrade Trade;
 
         public GapMomentumStrategy(GapMomentumSettings settings)
         {
@@ -30,41 +23,41 @@ namespace Denali.Processors.GapMomentum
         public void OnPremarketTick(decimal price) =>
             _latestPreMarketPrice = price;
 
-        public BrokerAction EvaluateTrade()
+        public GapMomentumTrade EvaluateTrade()
         {
             var bar = new AggregateBar(_latestPreMarketPrice);
-            if (_gap.IsGapUp(bar, _previousDailyBar))
-            {
-                _direction = 1;
-                return new BrokerAction(MarketAction.Trade, MarketSide.Buy, OrderType.Market);
 
-            }
+            if (_gap.IsGapUp(bar, _previousDailyBar))
+                return Trade = new GapMomentumTrade(MarketAction.Trade, direction: 1);          
 
             if (_gap.IsGapDown(bar, _previousDailyBar))
-            {
-                _direction = -1;
-                return new BrokerAction(MarketAction.Trade, MarketSide.Sell, OrderType.Market);
-            }
+                return Trade = new GapMomentumTrade(MarketAction.Trade, direction: -1);
 
-            return new BrokerAction(MarketAction.None);
+            return new GapMomentumTrade(MarketAction.None);
         }
-
-        public void SetEntry(BrokerAction entry) =>
-            _entry = entry;
 
         public BrokerAction OnTick(decimal price)
         {
-            if (!_highWater && ((price + _settings.HighWaterMark) * _direction >= (_entry.price + _settings.HighWaterMark) * _direction))
+            if (!Trade.HighWaterMet && OverPriceLimit(price, Trade.EntryPrice, _settings.HighWaterMark, Trade.direction))
             {
-                _highWater = true;
-                var stopLimitPrice = _entry.price + (_settings.HighWaterTakeProfit * _direction);
-                return new BrokerAction(MarketAction.Trade, _entry.Close(), orderType: OrderType.StopLimit, price: stopLimitPrice);
+                Trade.HighWaterMet = true;
+                var stopLimitPrice = Trade.EntryPrice + (_settings.HighWaterTakeProfit * Trade.direction);
+                return new BrokerAction(MarketAction.Trade, Trade.direction > 0 ? MarketSide.Sell : MarketSide.Buy, orderType: OrderType.StopLimit, price: stopLimitPrice);
             }
 
-            if (price <= _entry.price + (_settings.StopLossMark * Math.Sign(_direction) * -1))
-                return new BrokerAction(MarketAction.Trade, _entry.Close(), OrderType.Market);
+            if (PastStop(price, Trade.EntryPrice, _settings.StopLossMark, Trade.direction))
+                return new BrokerAction(MarketAction.Trade, Trade.direction > 0 ? MarketSide.Sell : MarketSide.Buy, OrderType.Market);
 
             return new BrokerAction(MarketAction.None);
         }
+
+        public bool OverPriceLimit(decimal price, decimal entryPrice, decimal priceDifference, int direction) =>
+            price * direction >= (entryPrice + (priceDifference * direction)) * direction;
+
+        public bool UnderPriceLimit(decimal price, decimal entryPrice, decimal priceDifference, int direction) =>
+            price * direction <= (entryPrice + (priceDifference * direction)) * direction;
+
+        public bool PastStop(decimal price, decimal entryPrice, decimal priceDifference, int direction) =>
+            price * direction * -1 >= (entryPrice - (priceDifference * direction)) * direction * -1;
     }
 }

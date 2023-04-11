@@ -23,15 +23,15 @@ namespace Denali.Worker
         {
             using (var scope = _provider.CreateScope())
             {
-                //var processor = scope.ServiceProvider.GetService<GapMomentumAnalysis>();
+                var processor = scope.ServiceProvider.GetService<GapMomentumAnalysis>();
 
-                //await processor.Process("VTI", DateTime.Parse("12/09/2022"), DateTime.Parse("12/16/2022"), stoppingToken);
+                await processor.Process("VTI", DateTime.Parse("04/03/2023"), DateTime.Parse("04/10/2023"), stoppingToken);
 
                 //var processor = scope.ServiceProvider.GetService<LiveTradingProcessor>();
                 //await processor.Process(stoppingToken, "SPY") ;
 
-                var la = new TradingViewClient(new TradingViewSettings());
-                await la.ConnectToTradingView();
+                //var la = new TradingViewClient(new TradingViewSettings());
+                //await la.ConnectToTradingView();
             }
 
             stoppingToken.WaitHandle.WaitOne();         

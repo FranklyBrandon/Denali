@@ -57,10 +57,10 @@ namespace Denali.TradingView
             var encoded = Encoding.UTF8.GetBytes(message);
             var buffer = new ArraySegment<Byte>(encoded, 0, encoded.Length);
             await _clientSocket.SendAsync(buffer, WebSocketMessageType.Text, true, cancellationToken);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Sent:");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(message);
+            //Console.ForegroundColor = ConsoleColor.Red;
+            //Console.WriteLine("Sent:");
+            //Console.ForegroundColor = ConsoleColor.White;
+            //Console.WriteLine(message);
         }
 
         private void OnEndOfMessage()

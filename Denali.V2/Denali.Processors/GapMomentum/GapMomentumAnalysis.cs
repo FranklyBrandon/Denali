@@ -4,7 +4,6 @@ using Denali.Models;
 using Denali.Processors.Exceptions;
 using Denali.Services;
 using Denali.Shared.Time;
-using Denali.TechnicalAnalysis;
 using Microsoft.Extensions.Logging;
 
 namespace Denali.Processors.GapMomentum
@@ -13,7 +12,6 @@ namespace Denali.Processors.GapMomentum
     {
         private readonly ILogger _logger;
         private readonly GapMomentumSettings _settings;
-        private readonly Gap _gap;
 
         public GapMomentumAnalysis(AlpacaService alpacaService,
             IMapper mapper, 
@@ -22,9 +20,8 @@ namespace Denali.Processors.GapMomentum
         {
             _logger = logger;
             _settings = new GapMomentumSettings();
-            _gap = new Gap(_settings.FullGap);
         }
-        public async Task Process(string ticker, DateTime startDate, DateTime endDate, CancellationToken stoppingToken)
+        public async Task Process(string symbol, DateTime startDate, DateTime endDate, CancellationToken stoppingToken)
         {
             _alpacaService.InitializeTradingclient();
             _alpacaService.InitializeDataClient();
@@ -38,7 +35,7 @@ namespace Denali.Processors.GapMomentum
 
             var aggregateBars = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
                 new HistoricalBarsRequest(
-                    ticker,
+                    symbol,
                     marketDays.First().GetTradingOpenTimeUtc(),
                     marketDays.Last().GetTradingCloseTimeUtc(),
                     BarTimeFrame.Day
@@ -49,103 +46,80 @@ namespace Denali.Processors.GapMomentum
             for (int i = 1; i < aggregateBars.Items.Count(); i++)
             {
                 var marketDay = marketDays.ElementAt(i);
-                var currentBar = _mapper.Map<AggregateBar>(aggregateBars.Items[i]);
                 var previousBar = _mapper.Map<AggregateBar>(aggregateBars.Items[i - 1]);
+                var currentBar = _mapper.Map<AggregateBar>(aggregateBars.Items[i]);
 
-                if (_gap.IsGapUp(currentBar, previousBar))
-                {
-                    var gapTrade = new GapMomentumTrade(ticker, true, previousBar, currentBar, marketDay);
-                    await ProcessGap(gapTrade);
-                } 
+                var strategy = new GapMomentumStrategy(_settings);
+                strategy.SetPreviousDailyBar(previousBar);
+                strategy.OnPremarketTick(currentBar.Open);
+                var trade = strategy.EvaluateTrade();
 
-                if (_gap.IsGapDown(currentBar, previousBar))
+                if (trade.action == MarketAction.Trade)
                 {
-                    var gapTrade = new GapMomentumTrade(ticker, false, previousBar, currentBar, marketDay);
-                    await ProcessGap(gapTrade);
-                }
+                    strategy.Trade.EntryPrice = currentBar.Open;
+                    Console.WriteLine($"Processing Gap on {currentBar.TimeUtc.Date}");
+                    await ProcessGap(symbol, marketDay, strategy);
+                }                   
             }
         }
 
-        private async Task ProcessGap(GapMomentumTrade gapTrade)
+        private async Task ProcessGap(string symbol, IIntervalCalendar marketDay, GapMomentumStrategy strategy)
         {
-            var agregateResponse = await _alpacaService.AlpacaDataClient.ListHistoricalBarsAsync(
-               new HistoricalBarsRequest(
-                   gapTrade.Symbol,
-                   gapTrade.MarketDay.GetTradingOpenTimeUtc(),
-                   gapTrade.MarketDay.GetTradingCloseTimeUtc(),
-                   BarTimeFrame.Minute
-               )
-           ).ConfigureAwait(false);
+            var ticks = await GetTickDataForDay(symbol, marketDay);
+            var limitOrderOpen = false;
 
-            IEnumerable<AggregateBar> aggregateMinuteBars = _mapper.Map<List<AggregateBar>>(agregateResponse);
-            gapTrade.AggregateMinuteBars = aggregateMinuteBars;
-
-            gapTrade.Shares = (int)Math.Floor(_settings.InitialCapitol / gapTrade.TradeBar.Open);
-
-            _logger.LogInformation(
-                $"====> Gap {(gapTrade.Up ? "UP" : "DOWN")} detected on {TimeUtils.GetNewYorkTime(gapTrade.TradeBar.TimeUtc).ToString("MM-dd-yyyy")}");
-            _logger.LogInformation($"{(gapTrade.Up ? "LONG" : "SHORT")} Entry at: {gapTrade.TradeBar.Open}");
-
-            if (gapTrade.Up)
-                ProcessGapUp(gapTrade);
-            else
-                ProcessGapDown(gapTrade);
-        }
-
-        private void ProcessGapUp(GapMomentumTrade gapTrade)
-        {
-            var highWaterMet = false;
-            var totalCount = gapTrade.AggregateMinuteBars.Count();
-            for (int i = 0; i < totalCount; i ++)
+            foreach (var tick in ticks)
             {
-                var bar = gapTrade.AggregateMinuteBars.ElementAt(i);
-                var stopLoss = false;
-                var highWaterTakeProfit = false;
+                Console.WriteLine($"Price: {tick.Price}");
+                var result = strategy.OnTick(tick.Price);
 
-                if (bar.Low <= bar.Open - _settings.StopLossMark)
-                    stopLoss = true;
-
-                if (bar.High >= gapTrade.TradeBar.Open + _settings.HighWaterMark)
-                    highWaterMet = true;
-                
-                if (highWaterMet && bar.Low <= gapTrade.TradeBar.Open + _settings.HighWaterTakeProfit)
-                    highWaterTakeProfit = true;
-
-                if (stopLoss)
+                // Limit order fulfilled
+                if (limitOrderOpen && strategy.UnderPriceLimit(tick.Price, strategy.Trade.EntryPrice, _settings.HighWaterTakeProfit, strategy.Trade.direction))
                 {
-                    if (highWaterMet)
-                        _logger.LogWarning("High water and stop out in same minute!");
-
-                    if (highWaterTakeProfit)
-                        _logger.LogWarning("High water take profit and stop out in same minute!");
-
-                    _logger.LogInformation($"Stop Loss at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                    gapTrade.profit -= gapTrade.Shares * _settings.StopLossMark;
-                    _logger.LogInformation($"Profit: {gapTrade.profit}");
-                    break;
+                    Console.WriteLine($"Stop Limit fulfilled at {TimeUtils.GetNewYorkTime(tick.TimestampUtc).TimeOfDay}");
+                    return;
                 }
 
-                if (highWaterTakeProfit)
+                if (result.action == MarketAction.Trade)
                 {
-                    _logger.LogInformation($"Stop Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                    gapTrade.profit += gapTrade.Shares * _settings.HighWaterTakeProfit;
-                    _logger.LogInformation($"Profit: {gapTrade.profit}");
-                    break;
-                }
+                    if (result.orderType == Models.OrderType.StopLimit)
+                    {
+                        limitOrderOpen = true;
+                        Console.WriteLine($"Stop Limit order opened at {TimeUtils.GetNewYorkTime(tick.TimestampUtc).TimeOfDay}");
+                    }
 
-                if ((i + 1) == totalCount)
-                {
-                    _logger.LogInformation($"Take Profit at: {TimeUtils.GetNewYorkTime(bar.TimeUtc).TimeOfDay}");
-                    gapTrade.profit += gapTrade.Shares * bar.Close - gapTrade.TradeBar.Open;
-                    _logger.LogInformation($"Profit: {gapTrade.profit}");
-                    break;
+                    if (result.orderType == Models.OrderType.Market)
+                    {
+                        Console.WriteLine($"Stopped Out at {TimeUtils.GetNewYorkTime(tick.TimestampUtc).TimeOfDay}");
+                        return;
+                    }
                 }
             }
         }
 
-        private void ProcessGapDown(GapMomentumTrade gapTrade)
+        private async Task<List<ITrade>> GetTickDataForDay(string symbol, IIntervalCalendar marketDay)
         {
+            string? pageToken = default;
+            List<ITrade> trades = new List<ITrade>();
 
+            do
+            {
+                var request = new HistoricalTradesRequest(
+                        symbol,
+                        marketDay.GetTradingOpenTimeUtc(),
+                        marketDay.GetTradingCloseTimeUtc()
+                    ).WithPageSize(10000);
+
+                if (!string.IsNullOrWhiteSpace(pageToken))
+                    request.WithPageToken(pageToken);
+
+                var response = await _alpacaService.AlpacaDataClient.GetHistoricalTradesAsync(request).ConfigureAwait(false);
+                pageToken = response.NextPageToken;
+                trades.AddRange(response.Items[symbol]);
+
+            } while (!string.IsNullOrWhiteSpace(pageToken));
+
+            return trades;
         }
     }
 }

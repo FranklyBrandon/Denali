@@ -23,7 +23,7 @@ namespace Denali.TradingView
             _websocket = new TextWebSocket(_settings.MessageBufferSize);
             _settings = settings;
             _heartbeatRegex = new Regex(@"[~][h][~]\d*", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            _lastPriceRegex = new Regex(@"(?<=""lp"":)[^,]+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            _lastPriceRegex = new Regex(@"(?<=""lp"":)[^,|}]+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             _secondUpdate = new Regex(@"(?<=""v"":\[)[^\]]+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             _chartSessionId = GenerateSessionId("cs");
             _quoteSessionId = GenerateSessionId("qs");
@@ -41,7 +41,7 @@ namespace Denali.TradingView
             await _websocket.SendAsync(TradingViewMessages.QuoteSetFields(_quoteSessionId));
             await _websocket.SendAsync(TradingViewMessages.QuoteAddSymbols(_quoteSessionId, "AMEX", "SPY"));
             await _websocket.SendAsync(TradingViewMessages.ChartResolveSymbolExtended(_chartSessionId, "AMEX", "SPY"));
-            await _websocket.SendAsync(TradingViewMessages.ChartCreateSeries(_chartSessionId, "1", 300)); // TODO why is this '1'? Shouldn't it be '1D'?
+            await _websocket.SendAsync(TradingViewMessages.ChartCreateSeries(_chartSessionId, "1D", 300)); // TODO why is this '1'? Shouldn't it be '1D'?
             await _websocket.SendAsync(TradingViewMessages.QuoteFastSymbols(_quoteSessionId, "AMEX", "SPY"));
 
         }
@@ -55,25 +55,24 @@ namespace Denali.TradingView
 
             var lastPriceMatches = _lastPriceRegex.Matches(message).ToList();
             foreach (var lastPrice in lastPriceMatches)
-                OnPrice(decimal.Parse(lastPrice.Value));
+                OnPrice(decimal.Parse(lastPrice.Value), "qsd");
 
             var secondUpdateMatches = _secondUpdate.Matches(message).ToList();
             foreach (var secondPrice in secondUpdateMatches)
             {
                 var values = secondPrice.Value.Split(",");
-                OnPrice(decimal.Parse(values[4]));
+                OnPrice(decimal.Parse(values[4]), "du");
             }
 
             if (_heartbeatRegex.IsMatch(message))
                 await _websocket.SendAsync(message);
         }
 
-        private void OnPrice(decimal price)
+        private void OnPrice(decimal price, string messageType)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Received Pirce:");
+            Console.WriteLine($"{messageType} price: {price}");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(price);
         }
 
         private string GenerateSessionId(string prefix) => 
