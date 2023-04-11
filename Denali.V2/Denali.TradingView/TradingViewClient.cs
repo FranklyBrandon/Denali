@@ -48,14 +48,34 @@ namespace Denali.TradingView
 
         private async void OnMessage(string message)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Received:");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(message);
+            //Console.ForegroundColor = ConsoleColor.Green;
+            //Console.WriteLine("Received:");
+            //Console.ForegroundColor = ConsoleColor.White;
+            //Console.WriteLine(message);
+
+            var lastPriceMatches = _lastPriceRegex.Matches(message).ToList();
+            foreach (var lastPrice in lastPriceMatches)
+                OnPrice(decimal.Parse(lastPrice.Value));
+
+            var secondUpdateMatches = _secondUpdate.Matches(message).ToList();
+            foreach (var secondPrice in secondUpdateMatches)
+            {
+                var values = secondPrice.Value.Split(",");
+                OnPrice(decimal.Parse(values[4]));
+            }
 
             if (_heartbeatRegex.IsMatch(message))
                 await _websocket.SendAsync(message);
         }
+
+        private void OnPrice(decimal price)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Received Pirce:");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(price);
+        }
+
         private string GenerateSessionId(string prefix) => 
             $"{prefix}_{GenerateRandomTwelveChars()}";
 
