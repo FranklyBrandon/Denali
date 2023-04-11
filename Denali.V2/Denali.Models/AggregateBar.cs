@@ -67,5 +67,14 @@ namespace Denali.Models
 
         public decimal PercentageChange() => (Close - Open) / Open * 100;
         public bool Green() => (Close > Open);
+
+        public AggregateBar() { }
+        public AggregateBar(decimal price)
+        {
+            Open = price;
+            Close = price;
+            High = price;
+            Low = price;
+        }
     }
 }

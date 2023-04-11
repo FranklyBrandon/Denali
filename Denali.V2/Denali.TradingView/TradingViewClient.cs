@@ -14,6 +14,8 @@ namespace Denali.TradingView
         private readonly string _chartSessionId;
         private readonly string _quoteSessionId;
         private readonly Regex _heartbeatRegex;
+        private readonly Regex _lastPriceRegex;
+        private readonly Regex _secondUpdate;
 
         public TradingViewClient(TradingViewSettings settings = default)  
         {
@@ -21,6 +23,8 @@ namespace Denali.TradingView
             _websocket = new TextWebSocket(_settings.MessageBufferSize);
             _settings = settings;
             _heartbeatRegex = new Regex(@"[~][h][~]\d*", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            _lastPriceRegex = new Regex(@"(?<=""lp"":)[^,]+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            _secondUpdate = new Regex(@"(?<=""v"":\[)[^\]]+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             _chartSessionId = GenerateSessionId("cs");
             _quoteSessionId = GenerateSessionId("qs");
         }
@@ -37,7 +41,7 @@ namespace Denali.TradingView
             await _websocket.SendAsync(TradingViewMessages.QuoteSetFields(_quoteSessionId));
             await _websocket.SendAsync(TradingViewMessages.QuoteAddSymbols(_quoteSessionId, "AMEX", "SPY"));
             await _websocket.SendAsync(TradingViewMessages.ChartResolveSymbolExtended(_chartSessionId, "AMEX", "SPY"));
-            await _websocket.SendAsync(TradingViewMessages.ChartCreateSeries(_chartSessionId, "1", 300));
+            await _websocket.SendAsync(TradingViewMessages.ChartCreateSeries(_chartSessionId, "1", 300)); // TODO why is this '1'? Shouldn't it be '1D'?
             await _websocket.SendAsync(TradingViewMessages.QuoteFastSymbols(_quoteSessionId, "AMEX", "SPY"));
 
         }
