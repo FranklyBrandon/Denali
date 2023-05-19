@@ -3,6 +3,7 @@ using Denali.Models.Mapping;
 using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
 using Denali.Processors.GapMomentum;
+using Denali.Processors.MartingaleBasis;
 using Denali.Processors.StatArb;
 using Denali.Services;
 using Denali.Services.Aggregators;
@@ -39,6 +40,7 @@ namespace Denali.Worker.Configuration
             services.AddScoped<PairAnalysis>();
             services.AddScoped<GapMomentumProcessor>();
             services.AddScoped<GapMomentumAnalysis>();
+            services.AddScoped<MartingaleBasisAnalysisProcessor>();
 
             services.AddScoped<IBService>();
             services.AddScoped<IBClient>();
@@ -54,6 +56,7 @@ namespace Denali.Worker.Configuration
             services.AddScoped<IYahooFinanceService, YahooFinanceService>();
 
             services.AddScoped<PairTradeStrategy>();
+            services.AddScoped<PressureProcessorAnalysis>();
 
 
             // Register a service provider so we can create scopes and resolve instances dynamically

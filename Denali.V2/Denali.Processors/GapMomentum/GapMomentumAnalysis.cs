@@ -58,6 +58,7 @@ namespace Denali.Processors.GapMomentum
                 {
                     strategy.Trade.EntryPrice = currentBar.Open;
                     Console.WriteLine($"Processing Gap on {currentBar.TimeUtc.Date}");
+                    Console.WriteLine($"Price: {currentBar.Open}");
                     await ProcessGap(symbol, marketDay, strategy);
                 }                   
             }
@@ -66,17 +67,20 @@ namespace Denali.Processors.GapMomentum
         private async Task ProcessGap(string symbol, IIntervalCalendar marketDay, GapMomentumStrategy strategy)
         {
             var ticks = await GetTickDataForDay(symbol, marketDay);
+            var sanitizeService = new DataSanitizerService();
+            ticks = sanitizeService.SanitizeTrades(ticks).ToList();
             var limitOrderOpen = false;
 
             foreach (var tick in ticks)
             {
-                Console.WriteLine($"Price: {tick.Price}");
+                //Console.WriteLine($"Price: {tick.Price}");
                 var result = strategy.OnTick(tick.Price);
 
                 // Limit order fulfilled
                 if (limitOrderOpen && strategy.UnderPriceLimit(tick.Price, strategy.Trade.EntryPrice, _settings.HighWaterTakeProfit, strategy.Trade.direction))
                 {
                     Console.WriteLine($"Stop Limit fulfilled at {TimeUtils.GetNewYorkTime(tick.TimestampUtc).TimeOfDay}");
+                    Console.WriteLine($"Price: {tick.Price}");
                     return;
                 }
 
@@ -86,11 +90,13 @@ namespace Denali.Processors.GapMomentum
                     {
                         limitOrderOpen = true;
                         Console.WriteLine($"Stop Limit order opened at {TimeUtils.GetNewYorkTime(tick.TimestampUtc).TimeOfDay}");
+                        Console.WriteLine($"Price: {tick.Price}");
                     }
 
                     if (result.orderType == Models.OrderType.Market)
                     {
                         Console.WriteLine($"Stopped Out at {TimeUtils.GetNewYorkTime(tick.TimestampUtc).TimeOfDay}");
+                        Console.WriteLine($"Price: {tick.Price}");
                         return;
                     }
                 }

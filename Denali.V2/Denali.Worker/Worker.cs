@@ -2,6 +2,7 @@ using Alpaca.Markets;
 using Denali.Processors;
 using Denali.Processors.ElephantStrategy;
 using Denali.Processors.GapMomentum;
+using Denali.Processors.MartingaleBasis;
 using Denali.Processors.StatArb;
 using Denali.Services;
 using Denali.TradingView;
@@ -23,15 +24,9 @@ namespace Denali.Worker
         {
             using (var scope = _provider.CreateScope())
             {
-                var processor = scope.ServiceProvider.GetService<GapMomentumAnalysis>();
+                var processor = scope.ServiceProvider.GetService<MartingaleBasisAnalysisProcessor>();
 
-                await processor.Process("VTI", DateTime.Parse("04/03/2023"), DateTime.Parse("04/10/2023"), stoppingToken);
-
-                //var processor = scope.ServiceProvider.GetService<LiveTradingProcessor>();
-                //await processor.Process(stoppingToken, "SPY") ;
-
-                //var la = new TradingViewClient(new TradingViewSettings());
-                //await la.ConnectToTradingView();
+                await processor.Process("VTI", DateTime.Parse("05/18/2018"), DateTime.Parse("05/18/2019"), stoppingToken);
             }
 
             stoppingToken.WaitHandle.WaitOne();         

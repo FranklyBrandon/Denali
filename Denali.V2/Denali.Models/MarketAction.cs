@@ -8,6 +8,7 @@ namespace Denali.Models
 {
     public enum MarketSide
     {
+        // TODO: Remove none type
         None,
         Buy,
         Sell

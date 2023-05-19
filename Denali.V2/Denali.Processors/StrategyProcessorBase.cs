@@ -27,5 +27,59 @@ namespace Denali.Processors
             );
             return calenders.OrderBy(x => x.GetTradingDate());
         }
+
+        protected async Task<List<ITrade>> GetTickData(string symbol, IIntervalCalendar marketDay) =>
+            await GetTickData(symbol, marketDay.GetTradingOpenTimeUtc(), marketDay.GetTradingCloseTimeUtc());
+
+        protected async Task<List<ITrade>> GetTickData(string symbol, DateTime startTime, DateTime endTime)
+        {
+            string? pageToken = default;
+            List<ITrade> trades = new List<ITrade>();
+
+            do
+            {
+                var request = new HistoricalTradesRequest(
+                        symbol,
+                        startTime,
+                        endTime
+                    ).WithPageSize(10000);
+
+                if (!string.IsNullOrWhiteSpace(pageToken))
+                    request.WithPageToken(pageToken);
+
+                var response = await _alpacaService.AlpacaDataClient.GetHistoricalTradesAsync(request).ConfigureAwait(false);
+                pageToken = response.NextPageToken;
+                trades.AddRange(response.Items[symbol]);
+
+            } while (!string.IsNullOrWhiteSpace(pageToken));
+
+            return trades;
+        }
+
+        protected async Task<List<IBar>> GetAggregateData(string symbol, DateTime startTime, DateTime endTime, BarTimeFrame timeFrame)
+        {
+            string? pageToken = default;
+            List<IBar> bars = new List<IBar>();
+
+            do
+            {
+                var request = new HistoricalBarsRequest(
+                        symbol,
+                        startTime,
+                        endTime,
+                        timeFrame
+                ).WithPageSize(10000);
+
+                if (!string.IsNullOrWhiteSpace(pageToken))
+                    request.WithPageToken(pageToken);
+
+                var response = await _alpacaService.AlpacaDataClient.GetHistoricalBarsAsync(request).ConfigureAwait(false);
+                pageToken = response.NextPageToken;
+                bars.AddRange(response.Items[symbol]);
+
+            } while (!string.IsNullOrWhiteSpace(pageToken));
+
+            return bars;
+        }
     }
 }
