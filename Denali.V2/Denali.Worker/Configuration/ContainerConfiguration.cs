@@ -41,6 +41,7 @@ namespace Denali.Worker.Configuration
             services.AddScoped<GapMomentumProcessor>();
             services.AddScoped<GapMomentumAnalysis>();
             services.AddScoped<MartingaleBasisAnalysisProcessor>();
+            services.AddScoped<MartingaleAverageAnalysisProcessor>();
 
             services.AddScoped<IBService>();
             services.AddScoped<IBClient>();

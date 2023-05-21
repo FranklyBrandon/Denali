@@ -5,7 +5,7 @@ using Denali.Services;
 using Microsoft.Extensions.Logging;
 using Denali.Shared.Extensions;
 using Denali.Shared.Time;
-
+ 
 namespace Denali.Processors.MartingaleBasis
 {
     public class MartingaleBasisAnalysisProcessor : StrategyProcessorBase
@@ -33,34 +33,32 @@ namespace Denali.Processors.MartingaleBasis
                 marketDays.First().GetTradingOpenTimeUtc(), 
                 marketDays.Last().GetTradingCloseTimeUtc(),
                 BarTimeFrame.Day
-            );
+            ); 
 
             const decimal initialCapitol = 25000.00m;
             decimal runningCapitol = initialCapitol;
             int sizing = 2;
-            int multiplier = 1;
+            var percentTarget = 7m;
             List<Position> openPositions = new List<Position>();
 
             foreach (var aggregateBar in aggregateBars)
             {
                 _logger.LogInformation($"====== {TimeUtils.GetNewYorkTime(aggregateBar.TimeUtc).ToShortDateString()} =====");
-                bool tradeEntered = false;
 
-                if (runningCapitol >= (aggregateBar.Open * sizing * multiplier))
+                if (runningCapitol >= (aggregateBar.Open * sizing))
                 {
-                    runningCapitol -= aggregateBar.Open * sizing * multiplier;
-                    openPositions.Add(new Position(symbol, MarketSide.Buy, aggregateBar.TimeUtc, aggregateBar.Open, sizing * multiplier));
-                    _logger.LogInformation($"Enter Trade ({sizing * multiplier}x)");
-                    tradeEntered = true;
+                    runningCapitol -= aggregateBar.Open * sizing;
+                    openPositions.Add(new Position(symbol, MarketSide.Buy, aggregateBar.TimeUtc, aggregateBar.Open, sizing));
+                    _logger.LogInformation($"Enter Trade ({sizing}x)");
                 }
                 else
                 {
-                    var lastSize = (int)(runningCapitol / (aggregateBar.Open * sizing * multiplier)).Round(0);
+                    var lastSize = (int)(runningCapitol / (aggregateBar.Open * sizing)).Round(0);
                     if (lastSize > 0)
                     {
-                        runningCapitol -= aggregateBar.Open * sizing * multiplier;
+                        runningCapitol -= aggregateBar.Open * sizing;
                         openPositions.Add(new Position(symbol, MarketSide.Buy, aggregateBar.TimeUtc, aggregateBar.Open, lastSize));
-                        _logger.LogInformation($"Enter Trade ({lastSize}x)");
+                        _logger.LogInformation($"Enter Last Size Trade ({lastSize}x)");
                     }
                     else
                     {
@@ -69,20 +67,16 @@ namespace Denali.Processors.MartingaleBasis
                 }
 
                 var currentProfit = openPositions.Sum(x => x.Net(aggregateBar.Close));
-                if (currentProfit > 0m)
+                var percentGain = (currentProfit / initialCapitol) * 100;
+                if (percentGain >= percentTarget)
                 {
                     runningCapitol += StockValue(openPositions, aggregateBar.Close);
                     openPositions.Clear();
                     _logger.LogInformation($"Closed all positions");
-                    multiplier = 1;
                 }
                 else
                 {
                     _logger.LogInformation("Held exisitng position");
-                    if (tradeEntered)
-                    {
-                        multiplier *= 2;
-                    } 
                 }
 
                 _logger.LogInformation($"Liquid Cash: {runningCapitol}");
