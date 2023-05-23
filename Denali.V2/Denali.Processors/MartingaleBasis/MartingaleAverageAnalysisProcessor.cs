@@ -38,7 +38,7 @@ namespace Denali.Processors.MartingaleBasis
                 symbol,
                 marketDays.First().GetTradingOpenTimeUtc(),
                 marketDays.Last().GetTradingCloseTimeUtc(),
-                BarTimeFrame.Day
+                new BarTimeFrame(15, BarTimeFrameUnit.Minute)
             );
 
             var aggregateBars = _mapper.Map<List<AggregateBar>>(aggregateBarData);

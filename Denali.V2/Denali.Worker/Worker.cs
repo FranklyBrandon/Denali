@@ -26,7 +26,7 @@ namespace Denali.Worker
             {
                 var processor = scope.ServiceProvider.GetService<MartingaleAverageAnalysisProcessor>();
 
-                await processor.Process("VTI", DateTime.Parse("05/18/2018"), DateTime.Parse("05/18/2023"), stoppingToken);
+                await processor.Process("VTI", DateTime.Parse("05/18/2022"), DateTime.Parse("05/18/2023"), stoppingToken);
             }
 
             stoppingToken.WaitHandle.WaitOne();         
