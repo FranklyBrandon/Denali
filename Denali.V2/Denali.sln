@@ -15,11 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.TechnicalAnalysis", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Shared", "Denali.Shared\Denali.Shared.csproj", "{8849C483-23ED-4A41-86C4-21332730B0C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpAPI", "..\..\TWS API\source\CSharpClient\client\CSharpAPI.csproj", "{290E4653-402F-4EC8-967F-FE8E42926104}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.TradingView", "Denali.TradingView\Denali.TradingView.csproj", "{0BE8247C-206B-494D-8C6E-8AD6CEF6DACD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InteractiveBrokers.API", "InteractiveBrokers.API\InteractiveBrokers.API.csproj", "{A229C23B-F35A-406C-89B4-7BC6B47B5200}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.TradingView", "Denali.TradingView\Denali.TradingView.csproj", "{0BE8247C-206B-494D-8C6E-8AD6CEF6DACD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.WebAPI", "Denali.WebAPI\Denali.WebAPI.csproj", "{A327498C-A3CF-45F8-A26C-D9D1F3EB2CFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,18 +49,14 @@ Global
 		{8849C483-23ED-4A41-86C4-21332730B0C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8849C483-23ED-4A41-86C4-21332730B0C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8849C483-23ED-4A41-86C4-21332730B0C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{290E4653-402F-4EC8-967F-FE8E42926104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{290E4653-402F-4EC8-967F-FE8E42926104}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{290E4653-402F-4EC8-967F-FE8E42926104}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{290E4653-402F-4EC8-967F-FE8E42926104}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A229C23B-F35A-406C-89B4-7BC6B47B5200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A229C23B-F35A-406C-89B4-7BC6B47B5200}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A229C23B-F35A-406C-89B4-7BC6B47B5200}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A229C23B-F35A-406C-89B4-7BC6B47B5200}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0BE8247C-206B-494D-8C6E-8AD6CEF6DACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0BE8247C-206B-494D-8C6E-8AD6CEF6DACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BE8247C-206B-494D-8C6E-8AD6CEF6DACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BE8247C-206B-494D-8C6E-8AD6CEF6DACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A327498C-A3CF-45F8-A26C-D9D1F3EB2CFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A327498C-A3CF-45F8-A26C-D9D1F3EB2CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A327498C-A3CF-45F8-A26C-D9D1F3EB2CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A327498C-A3CF-45F8-A26C-D9D1F3EB2CFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

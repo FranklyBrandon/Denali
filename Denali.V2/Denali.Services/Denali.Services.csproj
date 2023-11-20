@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TWS API\source\CSharpClient\client\CSharpAPI.csproj" />
     <ProjectReference Include="..\Denali.Models\Denali.Models.csproj" />
     <ProjectReference Include="..\Denali.Shared\Denali.Shared.csproj" />
   </ItemGroup>

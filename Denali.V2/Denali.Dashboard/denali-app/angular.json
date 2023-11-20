@@ -97,7 +97,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/lightweight-charts.standalone.production.js"
+            ]
           }
         }
       }

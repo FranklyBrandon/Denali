@@ -10,8 +10,6 @@ using Denali.Services.Aggregators;
 using Denali.Services.PythonInterop;
 using Denali.Services.YahooFinanceService;
 using Denali.TechnicalAnalysis.ElephantBars;
-using InteractiveBrokers.API;
-using Microsoft.Extensions.Hosting;
 
 namespace Denali.Worker.Configuration
 {
@@ -34,7 +32,6 @@ namespace Denali.Worker.Configuration
             services.AddScoped<ElephantRideStrategyAnalysis>();
             services.AddScoped<ElephantRideStrategy>();
             services.AddAutoMapper(typeof(DenaliMapper));
-            services.AddScoped<ElephantRestStrategyAnalysis>();
             services.AddScoped<BarAggregator>();
             services.AddScoped<TradeAggregator>();
             services.AddScoped<PairAnalysis>();
@@ -42,9 +39,6 @@ namespace Denali.Worker.Configuration
             services.AddScoped<GapMomentumAnalysis>();
             services.AddScoped<MartingaleBasisAnalysisProcessor>();
             services.AddScoped<MartingaleAverageAnalysisProcessor>();
-
-            services.AddScoped<IBService>();
-            services.AddScoped<IBClient>();
 
             services.AddHttpClient<IPythonInteropClient, PythonInteropClient>();
             services.AddOptions<PythonInteropClientSettings>()
