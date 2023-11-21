@@ -1,11 +1,6 @@
 ﻿using Alpaca.Markets;
 using AutoMapper;
 using Denali.Models.Alpaca;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denali.Models.Mapping
 {
@@ -21,6 +16,19 @@ namespace Denali.Models.Mapping
                     dest.ForEach(x => x.SetSymbol(src.Symbol));
                 })
                 .ConvertUsing((x, y, c) => c.Mapper.Map<List<AggregateBar>>(x));
+
+            CreateMap<AggregateTimeFrame, BarTimeFrame>().ConvertUsing((value, destination) =>
+            {
+                switch (value)
+                {
+                    case AggregateTimeFrame.Minute:
+                        return BarTimeFrame.Minute;
+                    case AggregateTimeFrame.Minute15:
+                        return new BarTimeFrame(15, BarTimeFrameUnit.Minute);
+                    default:
+                        return BarTimeFrame.Minute;
+                }
+            });
         }
     }
 }

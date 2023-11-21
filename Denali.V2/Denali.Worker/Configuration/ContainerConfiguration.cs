@@ -40,13 +40,13 @@ namespace Denali.Worker.Configuration
             services.AddScoped<MartingaleBasisAnalysisProcessor>();
             services.AddScoped<MartingaleAverageAnalysisProcessor>();
 
-            services.AddHttpClient<IPythonInteropClient, PythonInteropClient>();
-            services.AddOptions<PythonInteropClientSettings>()
-                .Bind(configuration.GetSection(PythonInteropClientSettings.Settings));
+            //services.AddHttpClient<IPythonInteropClient, PythonInteropClient>();
+            //services.AddOptions<PythonInteropClientSettings>()
+            //    .Bind(configuration.GetSection(PythonInteropClientSettings.Settings));
 
-            services.AddHttpClient<IYahooFinanceClient, YahooFinanceClient>();
-            services.AddOptions<YahooFinanceClientSettings>()
-                .Bind(configuration.GetSection(YahooFinanceClientSettings.Settings));
+            //services.AddHttpClient<IYahooFinanceClient, YahooFinanceClient>();
+            //services.AddOptions<YahooFinanceClientSettings>()
+            //    .Bind(configuration.GetSection(YahooFinanceClientSettings.Settings));
 
             services.AddScoped<IYahooFinanceService, YahooFinanceService>();
 

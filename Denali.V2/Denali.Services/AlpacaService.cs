@@ -26,6 +26,7 @@ namespace Denali.Services
             _logger = logger;
             // Best to keep these in 'User Secrets' on local and not any plain text readable configurations
             _secretKey = new SecretKey(configuration["Alpaca:API-Key"], configuration["Alpaca:API-Secret"]);
+            InitializeDataClient();
         }
 
         public async Task InitializeStreamingClient()
@@ -45,6 +46,33 @@ namespace Denali.Services
         public void InitializeDataClient() => _alpacaDataClient = BuildDataclient();
 
         public void InitializeTradingclient() => _alpacaTradingClient = BuildTradingClient();
+
+        public async Task<List<IBar>> GetAggregateData(string symbol, DateTime startTime, DateTime endTime, BarTimeFrame timeFrame, uint pageSize = 10000)
+        {
+            string? pageToken = default;
+            List<IBar> bars = new List<IBar>();
+
+            do
+            {
+                var request = new HistoricalBarsRequest(
+                        symbol,
+                        startTime,
+
+                        endTime,
+                        timeFrame
+                ).WithPageSize(pageSize);
+
+                if (!string.IsNullOrWhiteSpace(pageToken))
+                    request.WithPageToken(pageToken);
+
+                var response = await _alpacaDataClient.GetHistoricalBarsAsync(request).ConfigureAwait(false);
+                pageToken = response.NextPageToken;
+                bars.AddRange(response.Items[symbol]);
+
+            } while (!string.IsNullOrWhiteSpace(pageToken));
+
+            return bars;
+        }
 
         private IAlpacaStreamingClient BuildStreamingclient() => _hostEnvironment.IsProduction()
             ? Alpaca.Markets.Environments.Live.GetAlpacaStreamingClient(_secretKey) 

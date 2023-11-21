@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StockDataService } from './stock-data.service';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-stock-chart',
@@ -13,7 +15,15 @@ export class StockChartComponent {
 
   public StockSearchInput: string = '';
 
-  public SearchStock() {
+  constructor(private stockDataService: StockDataService) {}
 
+  public SearchStock() {
+    console.log('Fetching stock')
+    this.stockDataService.getStockAggregateData("VTI")
+      .subscribe({
+        next: (v) => console.log(v),
+        error: (e) => console.error(e),
+        complete: () => console.info('complete') 
+      })
   }
 }
