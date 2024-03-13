@@ -1,11 +1,5 @@
-using Alpaca.Markets;
 using Denali.Processors;
-using Denali.Processors.ElephantStrategy;
-using Denali.Processors.GapMomentum;
-using Denali.Processors.MartingaleBasis;
-using Denali.Processors.StatArb;
-using Denali.Services;
-using Denali.TradingView;
+using Denali.Processors.VolatileUniverse;
 
 namespace Denali.Worker
 {
@@ -24,9 +18,9 @@ namespace Denali.Worker
         {
             using (var scope = _provider.CreateScope())
             {
-                var processor = scope.ServiceProvider.GetService<MartingaleAverageAnalysisProcessor>();
+                var processor = scope.ServiceProvider.GetService<VolatileUniverseAnalysisProcessor>();
 
-                await processor.Process("VTI", DateTime.Parse("05/18/2022"), DateTime.Parse("05/18/2023"), stoppingToken);
+                await processor.Process(DateTime.Parse("03/11/2024"), stoppingToken);
             }
 
             stoppingToken.WaitHandle.WaitOne();         

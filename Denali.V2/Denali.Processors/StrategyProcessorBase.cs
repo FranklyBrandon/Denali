@@ -81,5 +81,43 @@ namespace Denali.Processors
 
             return bars;
         }
+
+        protected async Task<Dictionary<string, List<IBar>>> GetAggregateDataMulti(IEnumerable<string> symbols, DateTime startTime, DateTime endTime, BarTimeFrame timeFrame)
+        {
+            string? pageToken = default;
+            Dictionary<string, List<IBar>> bars = new Dictionary<string, List<IBar>>();
+
+            do
+            {
+                var request = new HistoricalBarsRequest(
+                        symbols,
+                        startTime,
+                        endTime,
+                        timeFrame
+                ).WithPageSize(10000);
+
+                if (!string.IsNullOrWhiteSpace(pageToken))
+                    request.WithPageToken(pageToken);
+
+                var response = await _alpacaService.AlpacaDataClient.GetHistoricalBarsAsync(request).ConfigureAwait(false);
+                pageToken = response.NextPageToken;
+                foreach (var symbolData in response.Items)
+                {
+                    if (bars.ContainsKey(symbolData.Key))
+                    {
+                        var newData = bars[symbolData.Key];
+                        newData.AddRange(symbolData.Value);
+                        bars[symbolData.Key] = newData;              
+                    }
+                    else
+                        bars[symbolData.Key] = symbolData.Value.ToList();
+                }
+
+            } while (!string.IsNullOrWhiteSpace(pageToken));
+
+            return bars;
+        }
+
+
     }
 }

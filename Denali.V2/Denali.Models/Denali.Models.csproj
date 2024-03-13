@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Alpaca.Markets" Version="7.0.0" />
-    <PackageReference Include="Alpaca.Markets.Extensions" Version="6.0.3" />
+    <PackageReference Include="Alpaca.Markets" Version="7.0.2" />
+    <PackageReference Include="Alpaca.Markets.Extensions" Version="7.0.0" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />
   </ItemGroup>
 
