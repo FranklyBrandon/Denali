@@ -24,5 +24,12 @@ namespace Denali.WebAPI.Controllers
         {
             return await _alpacaService.GetAggregateData(ticker, startDateTime, endDateTime, _mapper.Map<BarTimeFrame>(timeFrame));
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<int>>> GetTest()
+        {
+            return new List<int> { 1, 2, 3 };
+            //return Ok(new object());
+        }
     }
 }

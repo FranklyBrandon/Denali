@@ -26,6 +26,10 @@ namespace Denali.Worker.Configuration
             services.AddScoped<VolatileUniverseAnalysisProcessor>();
             services.AddOptions<NASDAQ100Settings>()
                 .Bind(configuration.GetSection(NASDAQ100Settings.Settings));
+            services.AddScoped<TimingAnalysisProcessor>();
+            services.AddScoped<EdgeAnalysisProcessor>();
+            services.AddScoped<AllMinuteDataProcessor>();
+            services.AddScoped<GapUpAnalysisProcessor>();
 
 
             // Register a service provider so we can create scopes and resolve instances dynamically

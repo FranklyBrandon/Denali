@@ -45,7 +45,7 @@ namespace Denali.Processors.GapMomentum
 
             _logger.LogInformation("====> Fetching current market day");
             var today = TimeUtils.GetNewYorkTime(DateTime.UtcNow);
-            var calendars = await GetPastMarketDays(BACKLOG_MARKET_DAYS, today).ConfigureAwait(false);
+            var calendars = await GetPastMarketDays(today, BACKLOG_MARKET_DAYS).ConfigureAwait(false);
 
             if (calendars?.LastOrDefault()?.GetSessionOpenTimeUtc().Day != today.Day)
             {

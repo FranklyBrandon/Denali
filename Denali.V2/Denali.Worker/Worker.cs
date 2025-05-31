@@ -18,9 +18,9 @@ namespace Denali.Worker
         {
             using (var scope = _provider.CreateScope())
             {
-                var processor = scope.ServiceProvider.GetService<VolatileUniverseAnalysisProcessor>();
+                var processor = scope.ServiceProvider.GetService<GapUpAnalysisProcessor>();
 
-                await processor.Process(DateTime.Parse("03/11/2024"), stoppingToken);
+                await processor.Process(stoppingToken);
             }
 
             stoppingToken.WaitHandle.WaitOne();         

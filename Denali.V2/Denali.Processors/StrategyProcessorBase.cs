@@ -1,5 +1,6 @@
 ﻿using Alpaca.Markets;
 using AutoMapper;
+using Denali.Models.Alpaca;
 using Denali.Services;
 
 namespace Denali.Processors
@@ -15,7 +16,7 @@ namespace Denali.Processors
             _mapper = mapper;
         }
 
-        protected async Task<IEnumerable<IIntervalCalendar>> GetPastMarketDays(int pastDays, DateTime day) =>
+        protected async Task<IEnumerable<IIntervalCalendar>> GetPastMarketDays(DateTime day, int pastDays = 0) =>
             await GetOpenMarketDays(day.AddDays(-pastDays), day);
 
         protected async Task<IEnumerable<IIntervalCalendar>> GetOpenMarketDays(DateTime from, DateTime into)
@@ -118,6 +119,29 @@ namespace Denali.Processors
             return bars;
         }
 
+        protected async Task<List<IQuote>> GetHistoricQuotes(string symbol, IIntervalCalendar marketDay)
+        {
+            string? pageToken = default;
+            List<IQuote> quotes = new List<IQuote>();
 
+            do
+            {
+                var request = new HistoricalQuotesRequest(
+                    symbol,
+                    marketDay.GetTradingOpenTimeUtc(),
+                    marketDay.GetTradingCloseTimeUtc()
+                ).WithPageSize(10000);
+
+                if (!string.IsNullOrWhiteSpace(pageToken))
+                    request.WithPageToken(pageToken);
+
+                var response = await _alpacaService.AlpacaDataClient.GetHistoricalQuotesAsync(request).ConfigureAwait(false);
+                pageToken = response.NextPageToken;
+                quotes.AddRange(response.Items[symbol]);
+
+            } while (!string.IsNullOrWhiteSpace(pageToken));
+
+            return quotes;
+        }
     }
 }
