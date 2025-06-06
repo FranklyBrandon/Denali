@@ -1,0 +1,2 @@
+cd C:\Repos\Denali\Denali.V2\InteractiveBrokers.Services
+docker build -f gateway.dockerfile -t ib-gateway .

@@ -1,0 +1,12 @@
+﻿version: '3.8'
+services:
+  web:
+    build: .
+    image: ib-gateway
+    container_name: ib-gateway-container
+    environment:
+      IBKR_ACCOUNT_ID: "U1234567"
+    ports:
+      - "5055:5055"
+    volumes:
+      - ./webapp:/app/webapp
