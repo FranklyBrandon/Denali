@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.WebAPI", "Denali.Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveBrokers.Services", "InteractiveBrokers.Services\InteractiveBrokers.Services.csproj", "{FDAB82FE-F2CB-4137-ADEA-F948F048DDE4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveBrokers.Models", "InteractiveBrokers.Models\InteractiveBrokers.Models.csproj", "{A00F271E-78AA-4661-80D6-D4C2C725134C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{FDAB82FE-F2CB-4137-ADEA-F948F048DDE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDAB82FE-F2CB-4137-ADEA-F948F048DDE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDAB82FE-F2CB-4137-ADEA-F948F048DDE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A00F271E-78AA-4661-80D6-D4C2C725134C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00F271E-78AA-4661-80D6-D4C2C725134C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A00F271E-78AA-4661-80D6-D4C2C725134C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A00F271E-78AA-4661-80D6-D4C2C725134C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

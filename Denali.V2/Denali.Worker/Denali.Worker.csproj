@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-Denali.Worker-96D451E2-5368-44C4-8F07-4AEC44CD267B</UserSecretsId>
@@ -21,5 +21,7 @@
     <ProjectReference Include="..\Denali.Processors\Denali.Processors.csproj" />
     <ProjectReference Include="..\Denali.Services\Denali.Services.csproj" />
     <ProjectReference Include="..\Denali.TradingView\Denali.TradingView.csproj" />
+    <ProjectReference Include="..\InteractiveBrokers.Models\InteractiveBrokers.Models.csproj" />
+    <ProjectReference Include="..\InteractiveBrokers.Services\InteractiveBrokers.Services.csproj" />
   </ItemGroup>
 </Project>

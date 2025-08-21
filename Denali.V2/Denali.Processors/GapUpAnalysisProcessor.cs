@@ -30,7 +30,7 @@ namespace Denali.Processors
             _alpacaService.InitializeTradingclient();
             _alpacaService.InitializeDataClient();
 
-            DateTime startTime = new(2025, 6, 6);
+            DateTime startTime = new(2025, 7, 25);
             _logger.LogInformation($"=== Processing day {startTime.ToShortDateString()} ===");
 
             var allAssets = await GetAssetUniverse(); // All tickers to scan
@@ -66,7 +66,7 @@ namespace Denali.Processors
             foreach (var change in orderedChanges)
             {
                 var bars = aggregateData[change.Key];
-                _logger.LogInformation($"Asset: {change.Key.PadRight(4)}, Change: {change.Value.Round(2)}, Price: {bars.Last().Close}, Bar Count: {bars.Count()}");
+                _logger.LogInformation($"Asset: {change.Key.PadRight(4)}, Change: {change.Value.Round(2)}, Price: {bars.Last().Close}, Bar Count: {bars.Count()}, Volume: {bars.Sum(x => x.Volume)}");
             }
         }
 

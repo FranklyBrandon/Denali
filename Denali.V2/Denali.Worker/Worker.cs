@@ -1,5 +1,6 @@
 using Denali.Processors;
 using Denali.Processors.VolatileUniverse;
+using InteractiveBrokers.Services;
 
 namespace Denali.Worker
 {
@@ -18,9 +19,15 @@ namespace Denali.Worker
         {
             using (var scope = _provider.CreateScope())
             {
-                var processor = scope.ServiceProvider.GetService<GapUpAnalysisProcessor>();
+                /*
+                var processor = scope.ServiceProvider.GetService<DenaliClimbProcessor>();
 
-                await processor.Process(stoppingToken);
+                await processor.Process(new(2025, 8, 20), stoppingToken);
+                processor.StartTimeScheduledTask.InvokeManual();
+                */
+
+                var ibService = scope.ServiceProvider.GetService<IInteractiveBrokersService>();
+                await ibService.PingServer();
             }
 
             stoppingToken.WaitHandle.WaitOne();         

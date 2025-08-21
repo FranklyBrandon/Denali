@@ -4,9 +4,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get upgrade -y
 
 # Install JDK and any needed utilities
-RUN apt-get install -y openjdk-17-jre-headless \
-                       unzip curl procps vim net-tools \
-                       python3 python3-pip python3.11-venv
+RUN apt-get install -y openjdk-17-jre-headless unzip curl
 
 # We will put everything in the /app directory
 WORKDIR /app
@@ -29,7 +27,7 @@ COPY start.sh /app
 # RUN cp cacert.pem webapp/cacert.pem
 
 # Expose the port so we can connect
-EXPOSE 5055 5056
+EXPOSE 5055
 
 # Run the gateway
 CMD sh ./start.sh

@@ -43,9 +43,9 @@ namespace Denali.Services
             _logger.LogInformation($"Data Streaming Client Auth Status: {authStatus}");
         }
 
-        public void InitializeDataClient() => _alpacaDataClient = BuildDataclient();
+        public void InitializeDataClient() => _alpacaDataClient ??= BuildDataclient();
 
-        public void InitializeTradingclient() => _alpacaTradingClient = BuildTradingClient();
+        public void InitializeTradingclient() => _alpacaTradingClient ??= BuildTradingClient();
 
         public async Task<List<IBar>> GetAggregateData(string symbol, DateTime startTime, DateTime endTime, BarTimeFrame timeFrame, uint pageSize = 10000)
         {

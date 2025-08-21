@@ -1,15 +1,10 @@
-﻿using Alpaca.Markets;
-using Denali.Models.Mapping;
+﻿using Denali.Models.Mapping;
 using Denali.Processors;
-using Denali.Processors.GapMomentum;
-using Denali.Processors.MartingaleBasis;
-using Denali.Processors.StatArb;
 using Denali.Processors.VolatileUniverse;
 using Denali.Services;
-using Denali.Services.Aggregators;
-using Denali.Services.PythonInterop;
-using Denali.Services.YahooFinanceService;
-using Denali.TechnicalAnalysis.ElephantBars;
+using InteractiveBrokers.Models.Configuration;
+using InteractiveBrokers.Services;
+
 
 namespace Denali.Worker.Configuration
 {
@@ -22,14 +17,13 @@ namespace Denali.Worker.Configuration
 
             services.AddScoped<AlpacaService>();
             services.AddAutoMapper(typeof(DenaliMapper));
-            services.AddScoped<ScalpingAnalysicProcessor>();
-            services.AddScoped<VolatileUniverseAnalysisProcessor>();
-            services.AddOptions<NASDAQ100Settings>()
-                .Bind(configuration.GetSection(NASDAQ100Settings.Settings));
-            services.AddScoped<TimingAnalysisProcessor>();
-            services.AddScoped<EdgeAnalysisProcessor>();
-            services.AddScoped<AllMinuteDataProcessor>();
-            services.AddScoped<GapUpAnalysisProcessor>();
+
+            services.AddOptions<InteractiveBrokersSettings>()
+                .Bind(configuration.GetSection(InteractiveBrokersSettings.Settings));
+            services.AddScoped<IInteractiveBrokersClient, InteractiveBrokersClient>();
+            services.AddScoped<IInteractiveBrokersService, InteractiveBrokersService>();
+
+            services.AddScoped<DenaliClimbProcessor>();
 
 
             // Register a service provider so we can create scopes and resolve instances dynamically
