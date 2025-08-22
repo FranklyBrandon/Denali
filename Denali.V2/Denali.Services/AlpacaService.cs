@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace Denali.Services
 {
@@ -46,6 +47,16 @@ namespace Denali.Services
         public void InitializeDataClient() => _alpacaDataClient ??= BuildDataclient();
 
         public void InitializeTradingclient() => _alpacaTradingClient ??= BuildTradingClient();
+
+        public async Task InittializeTradingClientAuth()
+        {
+            _logger.LogInformation("=== Initializing Alpaca Trading Client ===");
+            _logger.LogInformation("Initializing trading client auth...");
+            InitializeTradingclient();
+            var response = await _alpacaTradingClient.GetAccountConfigurationAsync();
+            _logger.LogInformation($"Trading client HTTP connected: {response != null}");
+            _logger.LogInformation("=== Completed Alpaca client initialization ===");
+        }
 
         public async Task<List<IBar>> GetAggregateData(string symbol, DateTime startTime, DateTime endTime, BarTimeFrame timeFrame, uint pageSize = 10000)
         {

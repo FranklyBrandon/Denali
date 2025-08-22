@@ -26,8 +26,8 @@ namespace Denali.Worker
                 processor.StartTimeScheduledTask.InvokeManual();
                 */
 
-                var ibService = scope.ServiceProvider.GetService<IInteractiveBrokersService>();
-                await ibService.PingServer();
+                var ibService = scope.ServiceProvider.GetService<DenaliClimbIBProcessor>();
+                await ibService.Process(new(2025, 8, 20), stoppingToken);
             }
 
             stoppingToken.WaitHandle.WaitOne();         

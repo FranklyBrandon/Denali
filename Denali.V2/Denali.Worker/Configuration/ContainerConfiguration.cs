@@ -24,6 +24,7 @@ namespace Denali.Worker.Configuration
             services.AddScoped<IInteractiveBrokersService, InteractiveBrokersService>();
 
             services.AddScoped<DenaliClimbProcessor>();
+            services.AddScoped<DenaliClimbIBProcessor>();
 
 
             // Register a service provider so we can create scopes and resolve instances dynamically

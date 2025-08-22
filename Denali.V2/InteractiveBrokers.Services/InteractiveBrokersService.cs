@@ -1,4 +1,5 @@
 ﻿using InteractiveBrokers.Models.Configuration;
+using InteractiveBrokers.Models.Response;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,9 @@ namespace InteractiveBrokers.Services
     public interface IInteractiveBrokersService
     {
         Task PingServer();
+        Task InitializeHttpAuth();
+        Task<HistoricAggregateResponse> GetHistoricAggregates(int conId, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false);
+        Task<List<Contract>> GetContractsByExchanges(params string[] exchanges);
     }
 
     public class InteractiveBrokersService : IInteractiveBrokersService
@@ -24,6 +28,35 @@ namespace InteractiveBrokers.Services
             _logger = logger;
         }
 
+        public async Task InitializeHttpAuth()
+        {
+            _logger.LogInformation("=== Initializing IB gateway HTTP authentication ===");
+            _logger.LogInformation("Initializng brokerage auth...");
+            await _httpClient.BrokerageInit();
+            _logger.LogInformation("Initializng HMDS bridge...");
+            await _httpClient.HMDSInit();
+            _logger.LogInformation("Pinging gateway for auth status...");
+            var ping = await _httpClient.Ping();
+            _logger.LogInformation($"Session Id: {ping.session}");
+            _logger.LogInformation($"IsServer Status: [authenticated: {ping.iserver.authStatus.authenticated}, connected: {ping.iserver.authStatus.connected}]");
+            _logger.LogInformation($"HMDS Bridge Status: [authenticated: {ping.hmds.authStatus.authenticated}, connected: {ping.hmds.authStatus.connected}]");
+            _logger.LogInformation("=== Completed IB gateway HTTP authentication ===");
+        }
+
+        public async Task<HistoricAggregateResponse> GetHistoricAggregates(int conId, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false)
+            => await _httpClient.GetHistoricAggregates(conId, startDateTime, period = "1d", bar = "mins", barType = "Last", outsideRth = false);
+
+        public async Task<List<Contract>> GetContractsByExchanges(params string[] exchanges)
+        {
+            List<Contract> contracts = new();
+            foreach (var ex in exchanges)
+            {
+                var cons = await _httpClient.GetAllContractsByExchange(ex);
+                contracts.AddRange(cons);
+            }
+
+           return contracts.DistinctBy( x => new {x.conid, x.ticker}).ToList();
+        }
         public async Task PingServer()
         {
             await _httpClient.Ping();
