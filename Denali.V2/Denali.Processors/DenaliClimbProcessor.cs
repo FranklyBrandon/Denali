@@ -58,7 +58,7 @@ namespace Denali.Processors
             // Schedule time for market open + buffer minutes
             StartTimeScheduledTask = new ScheduledTask(
                 _currentMarketCalenderDay.GetSessionOpenTimeUtc().AddMinutes(CONSTANTS.AFTER_OPEN_BUFFER_MINUTES), 
-                OnStartTime
+                () => OnStartTime(_currentMarketCalenderDay.GetSessionOpenTimeUtc().AddMinutes(CONSTANTS.AFTER_OPEN_BUFFER_MINUTES))
             );
         }
 

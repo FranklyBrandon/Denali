@@ -77,21 +77,21 @@ namespace Denali.Processors.GapMomentum
 
         private void ScheduleBeforeMarketOpensTask(DateTime utcMarketOpen, IBar previousDayAggregate)
         {
-            _scheduledTask = new ScheduledTask(utcMarketOpen.AddMinutes(-1), async (alertTime) =>
-            {
-                _logger.LogInformation("====> Pre Market Checks");
-                _logger.LogInformation("====> Fetching Latest Quote");
+            //_scheduledTask = new ScheduledTask(utcMarketOpen.AddMinutes(-1), async (alertTime) =>
+            //{
+            //    _logger.LogInformation("====> Pre Market Checks");
+            //    _logger.LogInformation("====> Fetching Latest Quote");
 
-                // TODO: Is this delayed in free data plan? Why is this value wrong!?
-                var latestTrade = await _alpacaService.AlpacaDataClient.
-                    GetLatestTradeAsync(new LatestMarketDataRequest(_preMarketSymbol))
-                    .ConfigureAwait(false);
+            //    // TODO: Is this delayed in free data plan? Why is this value wrong!?
+            //    var latestTrade = await _alpacaService.AlpacaDataClient.
+            //        GetLatestTradeAsync(new LatestMarketDataRequest(_preMarketSymbol))
+            //        .ConfigureAwait(false);
 
-                _logger.LogInformation($"Latest Trade: {latestTrade.Price}");
+            //    _logger.LogInformation($"Latest Trade: {latestTrade.Price}");
 
-                // Determine if Gap
-                // Place trades if necessary
-            });
+            //    // Determine if Gap
+            //    // Place trades if necessary
+            //});
         }
         private async Task SubscribeToTrades(string symbol)
         {

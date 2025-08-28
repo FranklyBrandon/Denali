@@ -50,11 +50,17 @@ namespace Denali.Services
 
         public async Task InittializeTradingClientAuth()
         {
-            _logger.LogInformation("=== Initializing Alpaca Trading Client ===");
-            _logger.LogInformation("Initializing trading client auth...");
+            _logger.LogInformation("=== Initializing Alpaca Clients ===");
+            _logger.LogInformation("Initializing trading client...");
             InitializeTradingclient();
             var response = await _alpacaTradingClient.GetAccountConfigurationAsync();
             _logger.LogInformation($"Trading client HTTP connected: {response != null}");
+            _logger.LogInformation("Initializing data client...");
+            InitializeDataClient();
+            var response2 = await _alpacaDataClient.ListExchangesAsync();
+            _logger.LogInformation($"Data client HTTP connected: {response2 != null}");
+            _logger.LogInformation("Initializing data streaming client...");
+            await InitializeDataStreamingClient();
             _logger.LogInformation("=== Completed Alpaca client initialization ===");
         }
 
@@ -79,6 +85,42 @@ namespace Denali.Services
                 var response = await _alpacaDataClient.GetHistoricalBarsAsync(request).ConfigureAwait(false);
                 pageToken = response.NextPageToken;
                 bars.AddRange(response.Items[symbol]);
+
+            } while (!string.IsNullOrWhiteSpace(pageToken));
+
+            return bars;
+        }
+
+        public async Task<Dictionary<string, List<IBar>>> GetAggregateDataMulti(IEnumerable<string> symbols, DateTime startTime, DateTime endTime, BarTimeFrame timeFrame)
+        {
+            string? pageToken = default;
+            Dictionary<string, List<IBar>> bars = new Dictionary<string, List<IBar>>();
+
+            do
+            {
+                var request = new HistoricalBarsRequest(
+                        symbols,
+                        startTime,
+                        endTime,
+                        timeFrame
+                ).WithPageSize(10000);
+
+                if (!string.IsNullOrWhiteSpace(pageToken))
+                    request.WithPageToken(pageToken);
+
+                var response = await _alpacaDataClient.GetHistoricalBarsAsync(request).ConfigureAwait(false);
+                pageToken = response.NextPageToken;
+                foreach (var symbolData in response.Items)
+                {
+                    if (bars.ContainsKey(symbolData.Key))
+                    {
+                        var newData = bars[symbolData.Key];
+                        newData.AddRange(symbolData.Value);
+                        bars[symbolData.Key] = newData;
+                    }
+                    else
+                        bars[symbolData.Key] = symbolData.Value.ToList();
+                }
 
             } while (!string.IsNullOrWhiteSpace(pageToken));
 

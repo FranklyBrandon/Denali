@@ -83,7 +83,7 @@ namespace Denali.Processors
             return bars;
         }
 
-        protected async Task<Dictionary<string, List<IBar>>> GetAggregateDataMulti(IEnumerable<string> symbols, DateTime startTime, DateTime endTime, BarTimeFrame timeFrame)
+        public async Task<Dictionary<string, List<IBar>>> GetAggregateDataMulti(IEnumerable<string> symbols, DateTime startTime, DateTime endTime, BarTimeFrame timeFrame)
         {
             string? pageToken = default;
             Dictionary<string, List<IBar>> bars = new Dictionary<string, List<IBar>>();
@@ -108,7 +108,7 @@ namespace Denali.Processors
                     {
                         var newData = bars[symbolData.Key];
                         newData.AddRange(symbolData.Value);
-                        bars[symbolData.Key] = newData;              
+                        bars[symbolData.Key] = newData;
                     }
                     else
                         bars[symbolData.Key] = symbolData.Value.ToList();

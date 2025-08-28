@@ -1,6 +1,7 @@
 using Denali.Processors;
 using Denali.Processors.VolatileUniverse;
 using InteractiveBrokers.Services;
+using System.Diagnostics;
 
 namespace Denali.Worker
 {
@@ -25,9 +26,12 @@ namespace Denali.Worker
                 await processor.Process(new(2025, 8, 20), stoppingToken);
                 processor.StartTimeScheduledTask.InvokeManual();
                 */
+                
 
                 var ibService = scope.ServiceProvider.GetService<DenaliClimbIBProcessor>();
                 await ibService.Process(new(2025, 8, 20), stoppingToken);
+                await ibService.StartTimeScheduledTask.InvokeManual();
+                
             }
 
             stoppingToken.WaitHandle.WaitOne();         
