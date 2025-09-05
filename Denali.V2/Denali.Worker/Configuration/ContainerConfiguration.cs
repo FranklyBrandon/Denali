@@ -1,5 +1,5 @@
 ﻿using Denali.Models.Mapping;
-using Denali.Processors;
+using Denali.Processors.DenaliClimbStrategy;
 using Denali.Processors.VolatileUniverse;
 using Denali.Services;
 using InteractiveBrokers.Models.Configuration;
@@ -14,16 +14,20 @@ namespace Denali.Worker.Configuration
         {
             services.AddHostedService<Worker>();
             services.AddScoped<FileService>();
+            services.AddScoped<IDateTimeService, DateTimeService>();
 
-            services.AddScoped<AlpacaService>();
+            services.AddSingleton<AlpacaService>();
             services.AddAutoMapper(typeof(DenaliMapper));
 
             services.AddOptions<InteractiveBrokersSettings>()
                 .Bind(configuration.GetSection(InteractiveBrokersSettings.Settings));
-            services.AddScoped<IInteractiveBrokersClient, InteractiveBrokersClient>();
-            services.AddScoped<IInteractiveBrokersService, InteractiveBrokersService>();
+            services.AddSingleton<IInteractiveBrokersClient, InteractiveBrokersClient>();
+            services.AddSingleton<IInteractiveBrokersService, InteractiveBrokersService>();
 
-            services.AddScoped<DenaliClimbProcessor>();
+            services.AddSingleton<DataLayerComponent>();
+
+            services.AddOptions<DenaliClimbStrategySettings>()
+                .Bind(configuration.GetSection(DenaliClimbStrategySettings.Settings));
             services.AddScoped<DenaliClimbIBProcessor>();
 
 

@@ -1,14 +1,9 @@
 ﻿using InteractiveBrokers.Models.Configuration;
 using InteractiveBrokers.Models.Response;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+
 
 namespace InteractiveBrokers.Services
 {
@@ -17,7 +12,8 @@ namespace InteractiveBrokers.Services
         Task<Ping> Ping();
         Task<AuthStatus> BrokerageInit();
         Task<AuthStatus> HMDSInit();
-        Task<HistoricAggregateResponse> GetHistoricAggregates(int conId, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false);
+        Task<HistoricAggregateResponse> GetHistoricAggregates(Contract contract, DateTime startDateTime);
+        Task<HistoricAggregateResponse> GetHistoricAggregatesBeta(int conId, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false);
         Task<List<Contract>> GetAllContractsByExchange(string exchange);
     }
 
@@ -25,10 +21,12 @@ namespace InteractiveBrokers.Services
     {
         private readonly InteractiveBrokersSettings _settings;
         private readonly HttpClient _httpClient;
+        private readonly ILogger _logger;
 
-        public InteractiveBrokersClient(IOptions<InteractiveBrokersSettings> settings)
+        public InteractiveBrokersClient(IOptions<InteractiveBrokersSettings> settings, ILogger<InteractiveBrokersClient> logger)
         {
             _settings = settings.Value;
+            _logger = logger;
             var httpHandler = new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback = (message, cert, chain, error) =>
@@ -49,11 +47,43 @@ namespace InteractiveBrokers.Services
         public async Task<Ping> Ping() => await Get<Ping>(_settings.PingGateway);
         public async Task<AuthStatus> BrokerageInit() => await Get<AuthStatus>(_settings.BrokerageInit);
         public async Task<AuthStatus> HMDSInit() => await Get<AuthStatus>(_settings.HMDSInit);
-        public async Task<HistoricAggregateResponse> GetHistoricAggregates(int conId, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false)
+
+        public async Task<HistoricAggregateResponse> GetHistoricAggregates(Contract contract, DateTime startDateTime)
+        {
+            // conid=265598&exchange=AMEX&period=1d&bar=1min&outsideRth=false&direction=1&startTime=20250819-09:30:00
+            var startTimeString = startDateTime.ToString("yyyMMdd-HH:mm:ss");
+            var url = $"{_settings.HistoricAggregate}?conid={contract.conid}&exchange={contract.exchange}&startTime={startTimeString}&period=1d&bar=1min&outsideRth=false&direction=1";
+            return await Get<HistoricAggregateResponse>(url);
+        }
+        public async Task<HistoricAggregateResponse> GetHistoricAggregatesBeta(int conId, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false)
         {
             var startTimeString = startDateTime.ToString("yyyMMdd-HH:mm:ss");
-            var url = $"{_settings.HistoricAggregate}?conid={conId}&startTime={startTimeString}&period={period}&bar={bar}&barType={barType}&outsideRth={outsideRth}";
-            return await Get<HistoricAggregateResponse>(url);
+            var url = $"{_settings.HistoricAggregateBeta}?conid={conId}&startTime={startTimeString}&period={period}&bar={bar}&barType={barType}&outsideRth={outsideRth}";
+
+            int attempt = 1;
+            int maxRetries = 3;
+
+            while (attempt < maxRetries)
+            {
+                try
+                {
+                    var response = await Get<HistoricAggregateResponse>(url);
+
+                    if (response?.data == null || response.data.Count == 0)
+                        throw new Exception();
+
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation($"Failure fetching data on attempt {attempt}, retrying...");
+                }
+
+                attempt++;
+                await Task.Delay(TimeSpan.FromSeconds(1 * attempt));
+            }
+
+            throw new HttpRequestException();
         }
 
         public async Task<List<Contract>> GetAllContractsByExchange(string exchange)

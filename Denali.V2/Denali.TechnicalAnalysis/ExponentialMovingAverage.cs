@@ -1,4 +1,5 @@
-﻿using Denali.Models;
+﻿using Alpaca.Markets;
+using Denali.Models;
 using Denali.Shared.Extensions;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Denali.TechnicalAnalysis
             this._smoothingConstant = (2m / (_backlog + 1m));
         }
 
-        public void Analyze(IEnumerable<IAggregateBar> data)
+        public void Analyze(IEnumerable<IBar> data)
         {
             //Calculate initial EMA 
             if (!MovingAverages.Any())

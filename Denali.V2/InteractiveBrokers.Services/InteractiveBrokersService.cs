@@ -1,11 +1,5 @@
-﻿using InteractiveBrokers.Models.Configuration;
-using InteractiveBrokers.Models.Response;
+﻿using InteractiveBrokers.Models.Response;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InteractiveBrokers.Services
 {
@@ -13,7 +7,8 @@ namespace InteractiveBrokers.Services
     {
         Task PingServer();
         Task InitializeHttpAuth();
-        Task<HistoricAggregateResponse> GetHistoricAggregates(int conId, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false);
+        Task<HistoricAggregateResponse> GetHistoricAggregates(Contract contract, DateTime startDateTime);
+        Task<HistoricAggregateResponse> GetHistoricAggregatesBeta(Contract contract, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false);
         Task<List<Contract>> GetContractsByExchanges(params string[] exchanges);
     }
 
@@ -30,7 +25,7 @@ namespace InteractiveBrokers.Services
 
         public async Task InitializeHttpAuth()
         {
-            _logger.LogInformation("=== Initializing IB gateway HTTP authentication ===");
+            _logger.LogInformation("Initializing IB gateway HTTP authentication");
             _logger.LogInformation("Initializng brokerage auth...");
             await _httpClient.BrokerageInit();
             _logger.LogInformation("Initializng HMDS bridge...");
@@ -40,11 +35,20 @@ namespace InteractiveBrokers.Services
             _logger.LogInformation($"Session Id: {ping.session}");
             _logger.LogInformation($"IsServer Status: [authenticated: {ping.iserver.authStatus.authenticated}, connected: {ping.iserver.authStatus.connected}]");
             _logger.LogInformation($"HMDS Bridge Status: [authenticated: {ping.hmds.authStatus.authenticated}, connected: {ping.hmds.authStatus.connected}]");
-            _logger.LogInformation("=== Completed IB gateway HTTP authentication ===");
+            _logger.LogInformation("Completed IB gateway HTTP authentication");
         }
 
-        public async Task<HistoricAggregateResponse> GetHistoricAggregates(int conId, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false)
-            => await _httpClient.GetHistoricAggregates(conId, startDateTime, period = "1d", bar = "mins", barType = "Last", outsideRth = false);
+        public async Task<HistoricAggregateResponse> GetHistoricAggregates(Contract contract, DateTime startDateTime)
+        {
+            return await _httpClient.GetHistoricAggregates(contract, startDateTime);
+        }
+
+        public async Task<HistoricAggregateResponse> GetHistoricAggregatesBeta(Contract contract, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false)
+        {
+            var result = await _httpClient.GetHistoricAggregatesBeta(contract.conid, startDateTime, period = "1d", bar = "mins", barType = "Last", outsideRth = false);
+            result.ticker = contract.ticker;
+            return result;
+        }
 
         public async Task<List<Contract>> GetContractsByExchanges(params string[] exchanges)
         {

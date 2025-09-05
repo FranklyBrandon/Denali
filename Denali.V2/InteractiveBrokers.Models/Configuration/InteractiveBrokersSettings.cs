@@ -15,6 +15,7 @@ namespace InteractiveBrokers.Models.Configuration
         public string HMDSInit { get; set; }
         public string BrokerageInit { get; set; }
         public string HistoricAggregate { get; set; }
+        public string HistoricAggregateBeta { get; set; }
         public string ContractIdsByExchange { get; set; }
     }
 }

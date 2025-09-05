@@ -21,7 +21,7 @@ namespace Denali.TechnicalAnalysis
             MovingAverages = new List<decimal>();
         }
 
-        public void Analyze(IEnumerable<IAggregateBar> data)
+        public void Analyze(IEnumerable<IBar> data)
         {
             var length = data.Count() - 1;
             if (length < _backlog - 1)
@@ -32,21 +32,7 @@ namespace Denali.TechnicalAnalysis
             MovingAverages.Add(GetMovingAverageValue(data, length, limit));
         }
 
-        public void ProvisionalChange(ITrade trade, IEnumerable<IAggregateBar> data)
-        {
-            var provisionalClose = new AggregateBar { Close = trade.Price };
-            data.Append(provisionalClose);
-
-            var length = data.Count() - 1;
-            if (length < _backlog - 1)
-                return;
-
-            var limit = length - (_backlog - 1);
-
-            ProvisionalValue = GetMovingAverageValue(data, length, limit);
-        }
-
-        private decimal GetMovingAverageValue(IEnumerable<IAggregateBar> data, int length, int limit)
+        private decimal GetMovingAverageValue(IEnumerable<IBar> data, int length, int limit)
         {
             var sum = 0M;
             for (int i = length; i >= limit; i--)

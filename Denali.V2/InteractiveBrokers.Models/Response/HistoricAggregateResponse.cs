@@ -18,6 +18,7 @@ namespace InteractiveBrokers.Models.Response
 
     public class HistoricAggregateResponse
     {
+        public string ticker { get; set; }
         public string startTime { get; set; }
         public long startTimeVal { get; set; }
         public string endTime { get; set; }

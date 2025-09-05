@@ -27,7 +27,6 @@ namespace Denali.Services
             _logger = logger;
             // Best to keep these in 'User Secrets' on local and not any plain text readable configurations
             _secretKey = new SecretKey(configuration["Alpaca:API-Key"], configuration["Alpaca:API-Secret"]);
-            InitializeDataClient();
         }
 
         public async Task InitializeStreamingClient()
@@ -50,7 +49,7 @@ namespace Denali.Services
 
         public async Task InittializeTradingClientAuth()
         {
-            _logger.LogInformation("=== Initializing Alpaca Clients ===");
+            _logger.LogInformation("Initializing Alpaca Clients");
             _logger.LogInformation("Initializing trading client...");
             InitializeTradingclient();
             var response = await _alpacaTradingClient.GetAccountConfigurationAsync();

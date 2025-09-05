@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Denali.Models\Denali.Models.csproj" />
     <ProjectReference Include="..\Denali.Shared\Denali.Shared.csproj" />
+    <ProjectReference Include="..\InteractiveBrokers.Services\InteractiveBrokers.Services.csproj" />
   </ItemGroup>
 
 </Project>
