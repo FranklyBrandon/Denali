@@ -2,11 +2,14 @@
 {
     public class ScheduledTask
     {
+        public bool IsScheduled => _timer != null;
+
         private Timer _timer;
         private Func<Task> _alertAction;
         public ScheduledTask(DateTime utcAlertTime, Func<Task> alertAction)
         {
             _alertAction = alertAction;
+
             DateTime current = DateTime.UtcNow;
             TimeSpan timeToGo = utcAlertTime.TimeOfDay - current.TimeOfDay;
 

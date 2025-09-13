@@ -30,34 +30,6 @@ namespace Denali.Services
             _logger.LogInformation("=== COMPLETED DATA LAYER INITIALIZA?TION ===");
         }
 
-        public async Task<List<Contract>> GetAllTradableContracts()
-        {
-            var mergedContracts = new List<Contract>();
-            var ibContracts = await _interactiveBrokersService.GetContractsByExchanges("NYSE", "NASDAQ");
-
-            var NyseAssetRequest = new AssetsRequest
-            {
-                Exchange = Exchange.Nyse,
-                AssetClass = AssetClass.UsEquity,
-                AssetStatus = AssetStatus.Active,  
-            };
-            var NasdaqAssetRequest = new AssetsRequest
-            {
-                Exchange = Exchange.Nasdaq,
-                AssetClass = AssetClass.UsEquity,
-                AssetStatus = AssetStatus.Active
-            };
-
-            var nyseAssets = await _alpacaService.AlpacaTradingClient.ListAssetsAsync(NyseAssetRequest);
-            var nasdaqAssets = await _alpacaService.AlpacaTradingClient.ListAssetsAsync(NasdaqAssetRequest);
-            var allAlpacaContracts = nyseAssets.Select(x => x.Symbol)
-                .Concat(nasdaqAssets.Select(x => x.Symbol))
-                .Distinct()
-                .ToList();
-
-            return ibContracts.Join(allAlpacaContracts, ib => ib.ticker, a => a, (ib, a) => ib).ToList();
-        }
-
         public async Task<List<IAsset>> GetAllTradableAssets()
         {
             var NyseAssetRequest = new AssetsRequest

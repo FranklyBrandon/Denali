@@ -1,10 +1,9 @@
 ﻿using Alpaca.Markets;
 using Denali.Services;
 using Denali.TechnicalAnalysis;
-using InteractiveBrokers.Models.Response;
 using Microsoft.Extensions.Logging;
 using Denali.Shared.Extensions;
-using Denali.Models;
+using Microsoft.Extensions.Options;
 
 namespace Denali.Processors.DenaliClimbStrategy
 {
@@ -14,10 +13,10 @@ namespace Denali.Processors.DenaliClimbStrategy
         private readonly DenaliClimbStrategySettings _settings;
         private readonly ILogger _logger;
 
-        public GapUpScreener(DataLayerComponent dataLayer, DenaliClimbStrategySettings settings, ILogger logger)
+        public GapUpScreener(DataLayerComponent dataLayer, IOptions<DenaliClimbStrategySettings> settings, ILogger<GapUpScreener> logger)
         {
             _dataLayer = dataLayer;
-            _settings = settings;
+            _settings = settings.Value;
             _logger = logger;
         }
 
@@ -42,7 +41,7 @@ namespace Denali.Processors.DenaliClimbStrategy
                 aggregateData = aggregateData.Concat(data).ToDictionary();
             }
 
-            _logger.LogInformation($"Data found for {aggregateData.Count} tickers out of {assets.Count} contracts");
+            _logger.LogInformation($"Data found for {aggregateData.Count} tickers out of {assets.Count} assets");
 
             _logger.LogInformation($"Analyzing price movements...");
             // Filter out tickers by minimum price

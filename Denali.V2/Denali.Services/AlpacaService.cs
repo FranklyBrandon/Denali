@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace Denali.Services
 {
@@ -17,7 +16,9 @@ namespace Denali.Services
         private IAlpacaDataStreamingClient _alpacaDataStreamingClient;
         private IAlpacaDataClient _alpacaDataClient;
         private IAlpacaTradingClient _alpacaTradingClient;
-        private SecretKey _secretKey;
+
+        private SecretKey _paperSecretKey;
+        private SecretKey _liveSecretKey;
         private IHostEnvironment _hostEnvironment;
 
         private ILogger _logger;
@@ -26,7 +27,8 @@ namespace Denali.Services
             _hostEnvironment = hostEnvironment;
             _logger = logger;
             // Best to keep these in 'User Secrets' on local and not any plain text readable configurations
-            _secretKey = new SecretKey(configuration["Alpaca:API-Key"], configuration["Alpaca:API-Secret"]);
+            _paperSecretKey = new SecretKey(configuration["Alpaca:Paper:API-Key"], configuration["Alpaca:Paper:API-Secret"]);
+            _liveSecretKey = new SecretKey(configuration["Alpaca:Live:API-Key"], configuration["Alpaca:Live:API-Secret"]);
         }
 
         public async Task InitializeStreamingClient()
@@ -50,96 +52,36 @@ namespace Denali.Services
         public async Task InittializeTradingClientAuth()
         {
             _logger.LogInformation("Initializing Alpaca Clients");
+
             _logger.LogInformation("Initializing trading client...");
             InitializeTradingclient();
             var response = await _alpacaTradingClient.GetAccountConfigurationAsync();
             _logger.LogInformation($"Trading client HTTP connected: {response != null}");
+           
             _logger.LogInformation("Initializing data client...");
             InitializeDataClient();
             var response2 = await _alpacaDataClient.ListExchangesAsync();
             _logger.LogInformation($"Data client HTTP connected: {response2 != null}");
+
             _logger.LogInformation("Initializing data streaming client...");
             await InitializeDataStreamingClient();
-            _logger.LogInformation("=== Completed Alpaca client initialization ===");
-        }
 
-        public async Task<List<IBar>> GetAggregateData(string symbol, DateTime startTime, DateTime endTime, BarTimeFrame timeFrame, uint pageSize = 10000)
-        {
-            string? pageToken = default;
-            List<IBar> bars = new List<IBar>();
-
-            do
-            {
-                var request = new HistoricalBarsRequest(
-                        symbol,
-                        startTime,
-
-                        endTime,
-                        timeFrame
-                ).WithPageSize(pageSize);
-
-                if (!string.IsNullOrWhiteSpace(pageToken))
-                    request.WithPageToken(pageToken);
-
-                var response = await _alpacaDataClient.GetHistoricalBarsAsync(request).ConfigureAwait(false);
-                pageToken = response.NextPageToken;
-                bars.AddRange(response.Items[symbol]);
-
-            } while (!string.IsNullOrWhiteSpace(pageToken));
-
-            return bars;
-        }
-
-        public async Task<Dictionary<string, List<IBar>>> GetAggregateDataMulti(IEnumerable<string> symbols, DateTime startTime, DateTime endTime, BarTimeFrame timeFrame)
-        {
-            string? pageToken = default;
-            Dictionary<string, List<IBar>> bars = new Dictionary<string, List<IBar>>();
-
-            do
-            {
-                var request = new HistoricalBarsRequest(
-                        symbols,
-                        startTime,
-                        endTime,
-                        timeFrame
-                ).WithPageSize(10000);
-
-                if (!string.IsNullOrWhiteSpace(pageToken))
-                    request.WithPageToken(pageToken);
-
-                var response = await _alpacaDataClient.GetHistoricalBarsAsync(request).ConfigureAwait(false);
-                pageToken = response.NextPageToken;
-                foreach (var symbolData in response.Items)
-                {
-                    if (bars.ContainsKey(symbolData.Key))
-                    {
-                        var newData = bars[symbolData.Key];
-                        newData.AddRange(symbolData.Value);
-                        bars[symbolData.Key] = newData;
-                    }
-                    else
-                        bars[symbolData.Key] = symbolData.Value.ToList();
-                }
-
-            } while (!string.IsNullOrWhiteSpace(pageToken));
-
-            return bars;
+            _logger.LogInformation("Initializing trading streaming client...");
+            await InitializeStreamingClient();
         }
 
         private IAlpacaStreamingClient BuildStreamingclient() => _hostEnvironment.IsProduction()
-            ? Alpaca.Markets.Environments.Live.GetAlpacaStreamingClient(_secretKey) 
-            : Alpaca.Markets.Environments.Paper.GetAlpacaStreamingClient(_secretKey);
+            ? Alpaca.Markets.Environments.Live.GetAlpacaStreamingClient(_paperSecretKey) 
+            : Alpaca.Markets.Environments.Paper.GetAlpacaStreamingClient(_paperSecretKey);
 
-        private IAlpacaDataStreamingClient BuildDataStreamingClient() => _hostEnvironment.IsProduction()
-            ? Alpaca.Markets.Environments.Live.GetAlpacaDataStreamingClient(_secretKey)
-            : Alpaca.Markets.Environments.Paper.GetAlpacaDataStreamingClient(_secretKey);
+        private IAlpacaDataStreamingClient BuildDataStreamingClient() => 
+            Alpaca.Markets.Environments.Live.GetAlpacaDataStreamingClient(_liveSecretKey); // Always use live key for data sub
 
-        private IAlpacaDataClient BuildDataclient() => _hostEnvironment.IsProduction()
-            ? Alpaca.Markets.Environments.Live.GetAlpacaDataClient(_secretKey)
-            : Alpaca.Markets.Environments.Paper.GetAlpacaDataClient(_secretKey);
+        private IAlpacaDataClient BuildDataclient() =>
+            Alpaca.Markets.Environments.Live.GetAlpacaDataClient(_liveSecretKey); // Always use live key for data sub
 
         private IAlpacaTradingClient BuildTradingClient() => _hostEnvironment.IsProduction()
-            ? Alpaca.Markets.Environments.Live.GetAlpacaTradingClient(_secretKey)
-            : Alpaca.Markets.Environments.Paper.GetAlpacaTradingClient(_secretKey);
+            ? Alpaca.Markets.Environments.Live.GetAlpacaTradingClient(_paperSecretKey)
+            : Alpaca.Markets.Environments.Paper.GetAlpacaTradingClient(_paperSecretKey);
     }
 }

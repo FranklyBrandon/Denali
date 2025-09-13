@@ -3,9 +3,12 @@ using Denali.Services;
 using Denali.Shared.Extensions;
 using Denali.TechnicalAnalysis;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Denali.Processors.DenaliClimbStrategy
 {
+    public record EntrySignal(decimal StopLoss, decimal TakeProfit, IBar Bar);
+
     public class GapUpStreamer
     {
         public Dictionary<string, List<IBar>> StreamedData;
@@ -13,17 +16,21 @@ namespace Denali.Processors.DenaliClimbStrategy
         public Dictionary<string, ExponentialMovingAverage> FastEMA;
         public Dictionary<string, decimal> High;
 
+        public delegate Task OnEntry(EntrySignal entrySignal);
+        public OnEntry OnEntryAction { get; set; }
+
+        private readonly HashSet<string> _entrySignals;
         private readonly DataLayerComponent _dataLayer;
-        private readonly IDateTimeService _dateTimeService;
         private readonly DenaliClimbStrategySettings _settings;
         private readonly ILogger _logger;
 
-        public GapUpStreamer(DataLayerComponent dataLayer, DenaliClimbStrategySettings settings, IDateTimeService dateTimeService, ILogger logger)
+        public GapUpStreamer(DataLayerComponent dataLayer, IOptions<DenaliClimbStrategySettings> settings, ILogger<GapUpStreamer> logger)
         {
             _dataLayer = dataLayer;
-            _dateTimeService = dateTimeService;
-            _settings = settings;
+            _settings = settings.Value;
             _logger = logger;
+
+            _entrySignals = new();
         }
 
         public async Task SubscribeToTickerStream(List<IAsset> assets, DateTime startTime, DateTime marketOpenTime)
@@ -54,9 +61,10 @@ namespace Denali.Processors.DenaliClimbStrategy
             _logger.LogInformation("Successfully subscribed to streams");
         }
 
-        private void OnStreamedData(IBar bar)
+        public async void OnStreamedData(IBar bar)
         {
-            StreamedData[bar.Symbol].Append(bar);
+
+            StreamedData[bar.Symbol] = StreamedData[bar.Symbol].Append(bar).ToList();
 
             var aggregates = StreamedData[bar.Symbol];
             SlowEMA[bar.Symbol].Analyze(aggregates);
@@ -66,17 +74,21 @@ namespace Denali.Processors.DenaliClimbStrategy
             var slowEmas = SlowEMA[bar.Symbol].MovingAverages;
             var high = High[bar.Symbol];
 
-            var stackedEmas = fastEmas.Count > 2 && slowEmas.Count > 2 &&
-                fastEmas.GetHistoricValue(0) > slowEmas.GetHistoricValue(0) &&
-                fastEmas.GetHistoricValue(1) > slowEmas.GetHistoricValue(1);
+            var stackedEmas = fastEmas.Count >= 1 && slowEmas.Count >= 1 &&
+                fastEmas.GetHistoricValue(0) > slowEmas.GetHistoricValue(0);
 
-            var priceAction = aggregates.GetHistoricValue(0).Close > aggregates.GetHistoricValue(1).Close;
+            var priceAction = slowEmas.Count >= 1 && aggregates.GetHistoricValue(0).Close > slowEmas.GetHistoricValue(0);
 
             var breakout = bar.Close > high;
 
-            if (stackedEmas && priceAction && breakout)
+            if (stackedEmas && priceAction && breakout && _entrySignals.Add(bar.Symbol))
             {
-                _logger.LogInformation($"Entry signal for {bar.Symbol} at {bar.TimeUtc}");
+                // local low is min of last three lows or the first 30 minute high
+                var localLows = aggregates.TakeLast(3).Select(x => x.Low).ToList();
+                localLows.Add(high);
+                var localMin = bar.Low - (bar.Low * 0.02m);
+
+                await OnEntryAction(new EntrySignal(localMin, bar.Close + (bar.Close * 0.01m), bar));
             }
         }
     }

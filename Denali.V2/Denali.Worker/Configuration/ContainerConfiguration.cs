@@ -1,6 +1,5 @@
 ﻿using Denali.Models.Mapping;
 using Denali.Processors.DenaliClimbStrategy;
-using Denali.Processors.VolatileUniverse;
 using Denali.Services;
 using InteractiveBrokers.Models.Configuration;
 using InteractiveBrokers.Services;
@@ -25,10 +24,16 @@ namespace Denali.Worker.Configuration
             services.AddSingleton<IInteractiveBrokersService, InteractiveBrokersService>();
 
             services.AddSingleton<DataLayerComponent>();
+            services.AddSingleton<BrokerageLayerComponent>();
+
+            services.AddScoped<GapUpScreener>();
+            services.AddScoped<GapUpStreamer>();
+            services.AddScoped<TradeManager>();
 
             services.AddOptions<DenaliClimbStrategySettings>()
                 .Bind(configuration.GetSection(DenaliClimbStrategySettings.Settings));
-            services.AddScoped<DenaliClimbIBProcessor>();
+            services.AddScoped<DenaliClimbProcessor>();
+            services.AddScoped<DenaliClimbHistoricProcessor>();
 
 
             // Register a service provider so we can create scopes and resolve instances dynamically
