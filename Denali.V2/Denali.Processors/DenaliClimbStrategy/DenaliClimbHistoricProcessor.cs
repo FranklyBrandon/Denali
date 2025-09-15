@@ -32,10 +32,20 @@ namespace Denali.Processors.DenaliClimbStrategy
             _streamer.OnEntryAction = OnEntry; // Override real processors OnEntry
         }
 
+        public async Task ProcessRange(DateTime startDate, DateTime endDate, CancellationToken stoppingToken)
+        {
+            _logger.LogInformation($"HISTORIC RUN from {startDate.ToShortDateString()} to {endDate.ToShortDateString()}");
+            await _processor.Initialize();
+
+            var daySpan = (endDate - startDate).Days;
+            for (int i = 0; i <= daySpan; i++)
+            {
+                await ProcessDate(startDate.AddDays(i), stoppingToken);
+            }
+
+        }
         public async Task ProcessDate(DateTime date, CancellationToken stoppingToken)
         {
-            _logger.LogInformation("HISTORIC RUN");
-            await _processor.Initialize();
             await _processor.Process(date, stoppingToken);
             await _processor.StartTimeScheduledTask.InvokeManual();
 

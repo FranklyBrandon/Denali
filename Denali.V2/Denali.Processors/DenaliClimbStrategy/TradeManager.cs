@@ -18,21 +18,20 @@ namespace Denali.Processors.DenaliClimbStrategy
             _logger = logger;
         }
 
-        public async Task ProcessEntry(decimal localLow, decimal latestClose, string symbol)
+        public async Task ProcessEntry(EntrySignal entrySignal)
         {
             await _lock.WaitAsync();
             try
             {
-                var takeProfit = latestClose + (latestClose * 0.5m);
-                _logger.LogInformation($"Submitting order for {symbol} with latest close {latestClose}. Stop loss at {localLow} and take profit at {takeProfit}");
+                _logger.LogInformation($"Submitting order for {entrySignal.Bar.Symbol} with latest close {entrySignal.Bar.Close}. Stop loss at {entrySignal.StopLoss} and take profit at {entrySignal.TakeProfit}");
                 if (!_traded)
                 {
                     _traded = true;
-                    var order = new NewOrderRequest(symbol, OrderQuantity.Notional(1000), OrderSide.Buy, OrderType.Market, TimeInForce.Day)
+                    var order = new NewOrderRequest(entrySignal.Bar.Symbol, OrderQuantity.Notional(1000), OrderSide.Buy, OrderType.Market, TimeInForce.Day)
                     {
                         OrderClass = OrderClass.Bracket,
-                        TakeProfitLimitPrice = latestClose + (latestClose * 0.5m),
-                        StopLossStopPrice = localLow
+                        TakeProfitLimitPrice = entrySignal.TakeProfit,
+                        StopLossStopPrice = entrySignal.StopLoss             
                     };
 
                     await _brokerageLayer.SubmitOrder(order);

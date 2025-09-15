@@ -15,11 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.TechnicalAnalysis", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.Shared", "Denali.Shared\Denali.Shared.csproj", "{8849C483-23ED-4A41-86C4-21332730B0C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Denali.TradingView", "Denali.TradingView\Denali.TradingView.csproj", "{0BE8247C-206B-494D-8C6E-8AD6CEF6DACD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveBrokers.Services", "InteractiveBrokers.Services\InteractiveBrokers.Services.csproj", "{FDAB82FE-F2CB-4137-ADEA-F948F048DDE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveBrokers.Models", "InteractiveBrokers.Models\InteractiveBrokers.Models.csproj", "{A00F271E-78AA-4661-80D6-D4C2C725134C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denali.Dashboard", "Denali.Dashboard\Denali.Dashboard.csproj", "{777A2FED-853F-498A-87F7-ACEF009F879F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +51,6 @@ Global
 		{8849C483-23ED-4A41-86C4-21332730B0C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8849C483-23ED-4A41-86C4-21332730B0C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8849C483-23ED-4A41-86C4-21332730B0C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0BE8247C-206B-494D-8C6E-8AD6CEF6DACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BE8247C-206B-494D-8C6E-8AD6CEF6DACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0BE8247C-206B-494D-8C6E-8AD6CEF6DACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0BE8247C-206B-494D-8C6E-8AD6CEF6DACD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FDAB82FE-F2CB-4137-ADEA-F948F048DDE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FDAB82FE-F2CB-4137-ADEA-F948F048DDE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDAB82FE-F2CB-4137-ADEA-F948F048DDE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -63,6 +59,10 @@ Global
 		{A00F271E-78AA-4661-80D6-D4C2C725134C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A00F271E-78AA-4661-80D6-D4C2C725134C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A00F271E-78AA-4661-80D6-D4C2C725134C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{777A2FED-853F-498A-87F7-ACEF009F879F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{777A2FED-853F-498A-87F7-ACEF009F879F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{777A2FED-853F-498A-87F7-ACEF009F879F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{777A2FED-853F-498A-87F7-ACEF009F879F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

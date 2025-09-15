@@ -20,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Denali.Processors\Denali.Processors.csproj" />
     <ProjectReference Include="..\Denali.Services\Denali.Services.csproj" />
-    <ProjectReference Include="..\Denali.TradingView\Denali.TradingView.csproj" />
     <ProjectReference Include="..\InteractiveBrokers.Models\InteractiveBrokers.Models.csproj" />
     <ProjectReference Include="..\InteractiveBrokers.Services\InteractiveBrokers.Services.csproj" />
   </ItemGroup>

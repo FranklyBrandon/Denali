@@ -3,10 +3,12 @@
     public class DenaliClimbStrategySettings
     {
         public const string Settings = "DenaliClimbStrategySettings";
-        public int AfterMarketOpenBufferMinutes { get; set; } = 30;
-        public int PreMarketBufferMinutes { get; set; } = 9;
-        public decimal MinimumStockPrice { get; set; } = 10m;
-        public int SlowEMABacklog { get; set; }  = 8;
-        public int FastEMABacklog { get; set; }  = 3;
+        public int AfterMarketOpenBufferMinutes { get; set; }
+        public int PreMarketBufferMinutes { get; set; }
+        public decimal MinimumStockPrice { get; set; }
+        public int SlowEMABacklog { get; set; } 
+        public int FastEMABacklog { get; set; }
+        public decimal StopLossPercentage { get; set; }
+        public decimal TakeProfitPercentage { get; set; }
     }
 }

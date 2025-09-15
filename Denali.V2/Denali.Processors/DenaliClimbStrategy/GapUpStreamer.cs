@@ -83,12 +83,10 @@ namespace Denali.Processors.DenaliClimbStrategy
 
             if (stackedEmas && priceAction && breakout && _entrySignals.Add(bar.Symbol))
             {
-                // local low is min of last three lows or the first 30 minute high
-                var localLows = aggregates.TakeLast(3).Select(x => x.Low).ToList();
-                localLows.Add(high);
-                var localMin = bar.Low - (bar.Low * 0.02m);
+                var stopLoss = bar.Close - (bar.Close * _settings.StopLossPercentage);
+                var takeProfit = bar.Close + (bar.Close * _settings.TakeProfitPercentage);
 
-                await OnEntryAction(new EntrySignal(localMin, bar.Close + (bar.Close * 0.01m), bar));
+                await OnEntryAction(new EntrySignal(stopLoss, takeProfit, bar));
             }
         }
     }

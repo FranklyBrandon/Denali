@@ -2,7 +2,6 @@
 using Alpaca.Markets.Extensions;
 using Denali.Shared.Extensions;
 using InteractiveBrokers.Models.Response;
-using InteractiveBrokers.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Denali.Services
@@ -10,13 +9,11 @@ namespace Denali.Services
     public class DataLayerComponent
     {
         private readonly AlpacaService _alpacaService;
-        private readonly IInteractiveBrokersService _interactiveBrokersService;
         private readonly ILogger _logger;
 
-        public DataLayerComponent(AlpacaService alpacaService, IInteractiveBrokersService interactiveBrokersService, ILogger<DataLayerComponent> logger)
+        public DataLayerComponent(AlpacaService alpacaService, ILogger<DataLayerComponent> logger)
         {
             _alpacaService = alpacaService;
-            _interactiveBrokersService = interactiveBrokersService;
             _logger = logger;
         }
 
@@ -29,6 +26,8 @@ namespace Denali.Services
             _logger.NewLine();
             _logger.LogInformation("=== COMPLETED DATA LAYER INITIALIZA?TION ===");
         }
+
+        public void InitializeDataClient() => _alpacaService.InitializeDataClient();
 
         public async Task<List<IAsset>> GetAllTradableAssets()
         {
@@ -99,9 +98,6 @@ namespace Denali.Services
 
             return bars;
         }
-
-        public async Task<HistoricAggregateResponse> GetHistoricAggregatesBeta(Contract contract, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false) =>
-            await _interactiveBrokersService.GetHistoricAggregatesBeta(contract, startDateTime, period, bar, barType, outsideRth);
 
         public async Task<IDisposableAlpacaDataSubscription<IBar>> SubscribeMinuteBar(IEnumerable<string> symbols) =>
             await _alpacaService.AlpacaDataStreamingClient.SubscribeMinuteBarAsync(symbols);
