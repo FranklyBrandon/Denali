@@ -4,7 +4,7 @@ using Denali.Services;
 using Denali.TechnicalAnalysis;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Denali.Dashboard.Controllers
+namespace Denali.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -26,9 +26,9 @@ namespace Denali.Dashboard.Controllers
             var toDate = new DateTime(date.Year, date.Month, date.Day, 20, 0, 0, DateTimeKind.Utc);
             var request = new HistoricalBarsRequest(symbol, fromDate, toDate, BarTimeFrame.Minute);
             var stockData = await _dataLayerComponent.GetAggregateDataMulti(new List<string> { symbol }, fromDate, toDate, BarTimeFrame.Minute);
-            var fastEma = new ExponentialMovingAverage(3);
+            var fastEma = new ExponentialMovingAverage(8);
             fastEma.AnalyzeAll(stockData.First().Value);
-            var slowEma = new ExponentialMovingAverage(8);
+            var slowEma = new ExponentialMovingAverage(21);
             slowEma.AnalyzeAll(stockData.First().Value);
             return new StockDataResponse(stockData, fastEma.MovingAverages, slowEma.MovingAverages);
         }

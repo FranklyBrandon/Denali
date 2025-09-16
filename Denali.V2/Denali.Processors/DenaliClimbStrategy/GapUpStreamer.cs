@@ -15,6 +15,7 @@ namespace Denali.Processors.DenaliClimbStrategy
         public Dictionary<string, ExponentialMovingAverage> SlowEMA;
         public Dictionary<string, ExponentialMovingAverage> FastEMA;
         public Dictionary<string, decimal> High;
+        public HashSet<string> PastHigh;
 
         public delegate Task OnEntry(EntrySignal entrySignal);
         public OnEntry OnEntryAction { get; set; }
@@ -39,6 +40,7 @@ namespace Denali.Processors.DenaliClimbStrategy
             SlowEMA = new();
             FastEMA = new();
             High = new();
+            PastHigh = new();
 
             _logger.LogInformation("Fetching historic data...");
             StreamedData = await _dataLayer.GetAggregateDataMulti(assets.Select(x => x.Symbol), marketOpenTime, startTime, BarTimeFrame.Minute);
@@ -63,7 +65,6 @@ namespace Denali.Processors.DenaliClimbStrategy
 
         public async void OnStreamedData(IBar bar)
         {
-
             StreamedData[bar.Symbol] = StreamedData[bar.Symbol].Append(bar).ToList();
 
             var aggregates = StreamedData[bar.Symbol];
@@ -74,19 +75,9 @@ namespace Denali.Processors.DenaliClimbStrategy
             var slowEmas = SlowEMA[bar.Symbol].MovingAverages;
             var high = High[bar.Symbol];
 
-            var stackedEmas = fastEmas.Count >= 1 && slowEmas.Count >= 1 &&
-                fastEmas.GetHistoricValue(0).Value > slowEmas.GetHistoricValue(0).Value;
-
-            var priceAction = slowEmas.Count >= 1 && aggregates.GetHistoricValue(0).Close > slowEmas.GetHistoricValue(0).Value;
-
-            var breakout = bar.Close > high;
-
-            if (stackedEmas && priceAction && breakout && _entrySignals.Add(bar.Symbol))
+            if (bar.Close >= high && PastHigh.Add(bar.Symbol))
             {
-                var stopLoss = bar.Close - (bar.Close * _settings.StopLossPercentage);
-                var takeProfit = bar.Close + (bar.Close * _settings.TakeProfitPercentage);
-
-                await OnEntryAction(new EntrySignal(stopLoss, takeProfit, bar));
+                _logger.LogInformation($"{bar.Symbol} broke high at {bar.TimeUtc.ToString("HH:mm")}");
             }
         }
     }

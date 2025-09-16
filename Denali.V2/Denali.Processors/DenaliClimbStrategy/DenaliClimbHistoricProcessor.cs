@@ -54,7 +54,7 @@ namespace Denali.Processors.DenaliClimbStrategy
 
             var streamData = await _dataLayer.GetAggregateDataMulti(
                 _processor.ScreenedAssets.Select(x => x.Symbol),
-                dataStartTime,
+                dataStartTime.AddMinutes(1), // historic run, so the first bar was already included in the pre-start bars
                 dataEndTime,
                 BarTimeFrame.Minute
             );
@@ -72,6 +72,7 @@ namespace Denali.Processors.DenaliClimbStrategy
                 }
             }
 
+            /*
             var orderedEntries = _entrySignals.OrderBy(x => x.Bar.TimeUtc);
             foreach (var entry in orderedEntries)
             {
@@ -114,6 +115,7 @@ namespace Denali.Processors.DenaliClimbStrategy
                     _logger.LogInformation($"Entry Signal {symbol} at {timeStr} {details}: TAKEPROFIT at {profitBar.TimeUtc:HH:mm}");
                 }
             }
+            */
         }
 
         public async Task OnEntry(EntrySignal entrySignal)

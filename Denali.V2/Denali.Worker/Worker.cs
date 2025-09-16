@@ -25,7 +25,7 @@ namespace Denali.Worker
                 */
 
                 var historicService = scope.ServiceProvider.GetService<DenaliClimbHistoricProcessor>();
-                await historicService.ProcessRange(new(2025, 9, 15), new(2025, 9, 15), stoppingToken);
+                await historicService.ProcessRange(new(2025, 9, 9), new(2025, 9, 9), stoppingToken);
                 
             }
 

@@ -1,4 +1,11 @@
+let chart;
+let candleSeries;
+let slowEMASeries;
+let fastEMASeries;
 
+document.addEventListener("DOMContentLoaded", () => {
+    BuildChart();
+});
 
 function OnSubmit() {
     const symbol = document.getElementById('symbolInput').value;
@@ -6,13 +13,13 @@ function OnSubmit() {
     fetch(`https://localhost:7166/api/stockdata/${symbol}?date=${date}`)
         .then(resp => resp.json())
         .then(data => {
-            console.log(symbol, data);
-            BuildChart(symbol, data);
+            SetData(symbol, data);
         });
 }
 
-function BuildChart(symbol, data) {
-    const chart = LightweightCharts.createChart(document.getElementById('chartContainer'),
+function BuildChart() {
+    // Main chart
+    chart = LightweightCharts.createChart(document.getElementById('chartContainer'),
     { 
         width: window.innerWidth - 100,
         height: window.innerHeight - 150,
@@ -31,8 +38,9 @@ function BuildChart(symbol, data) {
             mode: LightweightCharts.CrosshairMode.Normal,
         }
     });
-    
-    const candlestickSeries = chart.addSeries(LightweightCharts.CandlestickSeries, 
+
+    // Candlestick series
+    candleSeries = chart.addSeries(LightweightCharts.CandlestickSeries, 
     { 
         priceLineVisible: false, // historic chart
         upColor: '#26a69a', 
@@ -42,6 +50,31 @@ function BuildChart(symbol, data) {
         wickDownColor: '#ef5350' 
     });
 
+    // Slow EMA series
+    slowEMASeries = chart.addSeries(LightweightCharts.LineSeries, 
+    { 
+        color: '#ff8c00',
+        lineWidth: 1,
+        priceLineVisible: false, // historic chart,
+        crosshairMarkerVisible: false // remove dot on current data point
+    });
+
+    // Fast EMA series
+    fastEMASeries = chart.addSeries(LightweightCharts.LineSeries, 
+    { 
+        color: '#6fff00',
+        lineWidth: 1,
+        priceLineVisible: false, // historic chart
+        crosshairMarkerVisible: false // remove dot on current data point
+    });
+}
+
+function SetData(symbol, data) {
+    chart.priceScale('right').applyOptions({
+        autoScale: true,
+    });
+    
+    // Candle data
     let bars = data.stockData[symbol];
     let candles = []
     for (const bar of bars) {
@@ -55,16 +88,9 @@ function BuildChart(symbol, data) {
             }
         )
     }
-    candlestickSeries.setData(candles);
+    candleSeries.setData(candles);
 
-    const slowEmaSeries = chart.addSeries(LightweightCharts.LineSeries, 
-    { 
-        color: '#ff8c00',
-        lineWidth: 1,
-        priceLineVisible: false, // historic chart,
-        crosshairMarkerVisible: false // remove dot on current data point
-    });
-
+    // Slow EMA data
     let slowEmas = data.slowEmas;
     let slowEmaValues = []
     for (const slowEma of slowEmas) {
@@ -75,16 +101,9 @@ function BuildChart(symbol, data) {
             }
         )
     }
-    slowEmaSeries.setData(slowEmaValues);
+    slowEMASeries.setData(slowEmaValues);
 
-    const fastEmaSeries = chart.addSeries(LightweightCharts.LineSeries, 
-    { 
-        color: '#6fff00',
-        lineWidth: 1,
-        priceLineVisible: false, // historic chart
-        crosshairMarkerVisible: false // remove dot on current data point
-    });
-    
+    // Fast EMA data
     let fastEmas = data.fastEmas;
     let fastEmaValues = []
     for (const fastEma of fastEmas) {
@@ -95,7 +114,7 @@ function BuildChart(symbol, data) {
             }
         )
     }
-    fastEmaSeries.setData(fastEmaValues);
+    fastEMASeries.setData(fastEmaValues);
 
     chart.timeScale().fitContent();
 }
