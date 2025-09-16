@@ -75,9 +75,9 @@ namespace Denali.Processors.DenaliClimbStrategy
             var high = High[bar.Symbol];
 
             var stackedEmas = fastEmas.Count >= 1 && slowEmas.Count >= 1 &&
-                fastEmas.GetHistoricValue(0) > slowEmas.GetHistoricValue(0);
+                fastEmas.GetHistoricValue(0).Value > slowEmas.GetHistoricValue(0).Value;
 
-            var priceAction = slowEmas.Count >= 1 && aggregates.GetHistoricValue(0).Close > slowEmas.GetHistoricValue(0);
+            var priceAction = slowEmas.Count >= 1 && aggregates.GetHistoricValue(0).Close > slowEmas.GetHistoricValue(0).Value;
 
             var breakout = bar.Close > high;
 
