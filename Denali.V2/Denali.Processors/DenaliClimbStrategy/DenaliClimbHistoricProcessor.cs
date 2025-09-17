@@ -121,7 +121,7 @@ namespace Denali.Processors.DenaliClimbStrategy
         public async Task OnEntry(EntrySignal entrySignal)
         {
             _entrySignals.Add(entrySignal);
-            //_logger.LogInformation($"Entry Signal for {entrySignal.Bar.Symbol}");
+            _logger.LogInformation($"{entrySignal.SignalBar.Symbol} broke high at {entrySignal.BrokeHighTime.ToString("HH:mm")}, under EMA at {entrySignal.PullbackDateTime.ToString("HH:mm")}, entry signal at {entrySignal.SignalBar.TimeUtc.ToString("HH:mm")}");
         }
     }
 }

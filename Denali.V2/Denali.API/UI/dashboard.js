@@ -3,8 +3,15 @@ let candleSeries;
 let slowEMASeries;
 let fastEMASeries;
 
+let candleDataLabel;
+let slowEMADataLabel;
+let fastEMADataLabel;
+
 document.addEventListener("DOMContentLoaded", () => {
     BuildChart();
+    candleDataLabel = document.getElementById('price-value');
+    slowEMADataLabel = document.getElementById('slow-value');
+    fastEMADataLabel = document.getElementById('fast-value');
 });
 
 function OnSubmit() {
@@ -67,6 +74,8 @@ function BuildChart() {
         priceLineVisible: false, // historic chart
         crosshairMarkerVisible: false // remove dot on current data point
     });
+
+    chart.subscribeCrosshairMove(myCrosshairMoveHandler);
 }
 
 function SetData(symbol, data) {
@@ -117,4 +126,23 @@ function SetData(symbol, data) {
     fastEMASeries.setData(fastEmaValues);
 
     chart.timeScale().fitContent();
+}
+
+function myCrosshairMoveHandler(param) {
+    if (!param.point) {
+        return;
+    }
+
+    //const yPrice = candleSeries.coordinateToPrice(param.point.y);
+    //console.log(`The cursor position in price is ${yPrice}.`);
+    const candleData = param.seriesData.get(candleSeries);
+    candleDataLabel.innerHTML = `Open: ${candleData.open}, High: ${candleData.high}, Low: ${candleData.low}, Close: ${candleData.close}`;
+
+    const slowEmaData = param.seriesData.get(slowEMASeries);
+    slowEMADataLabel.innerHTML = `Slow EMA: ${slowEmaData.value}`
+
+    const fastEmaData = param.seriesData.get(fastEMASeries);
+    fastEMADataLabel.innerHTML = `Fast EMA: ${fastEmaData.value}`
+
+    console.log(`The price for the datapoint is ${dataPoint.close}.`);
 }

@@ -90,8 +90,7 @@ namespace Denali.Processors.DenaliClimbStrategy
 
         public async Task OnEntry(EntrySignal entrySignal)
         {
-            _logger.LogInformation($"Entry signal for {entrySignal.Bar.Symbol} at {entrySignal.Bar.TimeUtc}");
-            await _tradeManager.ProcessEntry(entrySignal);
+
         }
     }
 }

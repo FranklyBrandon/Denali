@@ -5,6 +5,7 @@
     <title></title>
     <script src="lightweight-charts.standalone.production.js"></script>
     <script src="dashboard.js"></script>
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
     <div>
@@ -15,6 +16,11 @@
         <input type="date" id="dateInput" />
 
         <button onClick="OnSubmit()">Submit</button>
+    </div>
+    <div class="values-header">
+        <span id="price-value">Price: </span>
+        <span id="slow-value">Slow EMA: </span>
+        <span id="fast-value">Fast EMA: </span>
     </div>
     <div id="chartContainer">
 

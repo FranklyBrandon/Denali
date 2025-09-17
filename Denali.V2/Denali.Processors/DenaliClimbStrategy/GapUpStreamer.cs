@@ -1,5 +1,6 @@
 ﻿using Alpaca.Markets;
 using Denali.Services;
+using Denali.Services.Extensions;
 using Denali.Shared.Extensions;
 using Denali.TechnicalAnalysis;
 using Microsoft.Extensions.Logging;
@@ -7,15 +8,24 @@ using Microsoft.Extensions.Options;
 
 namespace Denali.Processors.DenaliClimbStrategy
 {
-    public record EntrySignal(decimal StopLoss, decimal TakeProfit, IBar Bar);
-
+    public record EntrySignal
+    {
+        public decimal StopLoss { get; set; }
+        public decimal TakeProfit { get; set; }
+        public bool BrokeHigh { get; set; } = false;
+        public DateTime BrokeHighTime { get; set; }
+        public bool Pullback { get; set; } = false;
+        public DateTime PullbackDateTime { get; set; }
+        public bool Signal { get; set; } = false;
+        public IBar SignalBar { get; set; }
+    }
     public class GapUpStreamer
     {
         public Dictionary<string, List<IBar>> StreamedData;
         public Dictionary<string, ExponentialMovingAverage> SlowEMA;
         public Dictionary<string, ExponentialMovingAverage> FastEMA;
         public Dictionary<string, decimal> High;
-        public HashSet<string> PastHigh;
+        public Dictionary<string, EntrySignal> EntryProps;
 
         public delegate Task OnEntry(EntrySignal entrySignal);
         public OnEntry OnEntryAction { get; set; }
@@ -40,7 +50,7 @@ namespace Denali.Processors.DenaliClimbStrategy
             SlowEMA = new();
             FastEMA = new();
             High = new();
-            PastHigh = new();
+            EntryProps = new();
 
             _logger.LogInformation("Fetching historic data...");
             StreamedData = await _dataLayer.GetAggregateDataMulti(assets.Select(x => x.Symbol), marketOpenTime, startTime, BarTimeFrame.Minute);
@@ -53,8 +63,9 @@ namespace Denali.Processors.DenaliClimbStrategy
                 SlowEMA[asset.Symbol].Analyze(StreamedData[asset.Symbol]);
                 FastEMA[asset.Symbol].Analyze(StreamedData[asset.Symbol]);
                 High[asset.Symbol] = StreamedData[asset.Symbol].Max(x => x.High);
+                EntryProps[asset.Symbol] = new();
             }
-            
+
             _logger.LogInformation("Finished loading data");
 
             _logger.LogInformation("Subscribing to streams");
@@ -73,11 +84,36 @@ namespace Denali.Processors.DenaliClimbStrategy
 
             var fastEmas = FastEMA[bar.Symbol].MovingAverages;
             var slowEmas = SlowEMA[bar.Symbol].MovingAverages;
-            var high = High[bar.Symbol];
 
-            if (bar.Close >= high && PastHigh.Add(bar.Symbol))
+            if (fastEmas.Count < 2 || slowEmas.Count < 2)
+                return;
+
+            if (!EntryProps[bar.Symbol].BrokeHigh && bar.Close >= High[bar.Symbol])
             {
-                _logger.LogInformation($"{bar.Symbol} broke high at {bar.TimeUtc.ToString("HH:mm")}");
+                EntryProps[bar.Symbol].BrokeHigh = true;
+                EntryProps[bar.Symbol].BrokeHighTime = bar.TimeUtc;
+                return;
+            }
+
+            if (!EntryProps[bar.Symbol].Pullback && EntryProps[bar.Symbol].BrokeHigh && 
+                fastEmas.Last().Value < slowEmas.Last().Value)
+            {
+                EntryProps[bar.Symbol].Pullback = true;
+                EntryProps[bar.Symbol].PullbackDateTime = bar.TimeUtc;
+                return;
+            }
+
+            if (!EntryProps[bar.Symbol].Signal &&
+                EntryProps[bar.Symbol].BrokeHigh &&
+                EntryProps[bar.Symbol].Pullback &&
+                fastEmas.GetHistoricValue(0).Value > slowEmas.GetHistoricValue(0).Value && // Most recent fast EMA should be above slow ema
+                fastEmas.GetHistoricValue(1).Value >= slowEmas.GetHistoricValue(1).Value && // Penultimate can be equal to or greater
+                aggregates.GetHistoricValue(0).IsGreen() && aggregates.GetHistoricValue(1).IsGreen()
+                )
+            {
+                EntryProps[bar.Symbol].Signal = true;
+                EntryProps[bar.Symbol].SignalBar = bar;
+                await OnEntryAction(EntryProps[bar.Symbol]);
             }
         }
     }

@@ -23,11 +23,11 @@ namespace Denali.Processors.DenaliClimbStrategy
             await _lock.WaitAsync();
             try
             {
-                _logger.LogInformation($"Submitting order for {entrySignal.Bar.Symbol} with latest close {entrySignal.Bar.Close}. Stop loss at {entrySignal.StopLoss} and take profit at {entrySignal.TakeProfit}");
+                _logger.LogInformation($"Submitting order for {entrySignal.SignalBar.Symbol} with latest close {entrySignal.SignalBar.Close}. Stop loss at {entrySignal.StopLoss} and take profit at {entrySignal.TakeProfit}");
                 if (!_traded)
                 {
                     _traded = true;
-                    var order = new NewOrderRequest(entrySignal.Bar.Symbol, OrderQuantity.Notional(1000), OrderSide.Buy, OrderType.Market, TimeInForce.Day)
+                    var order = new NewOrderRequest(entrySignal.SignalBar.Symbol, OrderQuantity.Notional(1000), OrderSide.Buy, OrderType.Market, TimeInForce.Day)
                     {
                         OrderClass = OrderClass.Bracket,
                         TakeProfitLimitPrice = entrySignal.TakeProfit,

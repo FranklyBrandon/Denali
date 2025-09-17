@@ -64,7 +64,7 @@ namespace Denali.Processors.DenaliClimbStrategy
             foreach (var change in orderedChanges)
             {
                 var data = aggregateData[change.Key];
-                _logger.LogInformation($"Asset: {change.Key.PadRight(4)}, Change: {change.Value.Round(2)}, Price: {data.Last().Close}, Bar Count: {data.Count()}, Volume: {data.Sum(x => x.Volume)}");
+                //_logger.LogInformation($"Asset: {change.Key.PadRight(4)}, Change: {change.Value.Round(2)}, Price: {data.Last().Close}, Bar Count: {data.Count()}, Volume: {data.Sum(x => x.Volume)}");
             }
 
             var orderedChangesTickers = orderedChanges.Select(x => x.Key).ToList();
