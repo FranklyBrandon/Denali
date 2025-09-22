@@ -1,4 +1,7 @@
+using Denali.Processors.DenaliClimbStrategy;
 using Denali.Services;
+using Meta.Numerics.Statistics;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<AlpacaService>();
 builder.Services.AddSingleton<DataLayerComponent>();
+builder.Services.AddScoped<GapUpStreamer>();
+builder.Services.AddOptions<DenaliClimbStrategySettings>()
+    .Bind(builder.Configuration.GetSection(DenaliClimbStrategySettings.Settings));
 
 builder.Services.AddCors(options =>
 {

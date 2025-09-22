@@ -12,10 +12,17 @@ namespace Denali.Processors.DenaliClimbStrategy
     {
         public decimal StopLoss { get; set; }
         public decimal TakeProfit { get; set; }
-        public bool BrokeHigh { get; set; } = false;
-        public DateTime BrokeHighTime { get; set; }
-        public bool Pullback { get; set; } = false;
-        public DateTime PullbackDateTime { get; set; }
+
+        public bool FirstPullback { get; set; }
+        public DateTime FirstPullbackTime { get; set; }
+
+        public decimal OpeningRangeHigh { get; set; }
+        public bool BrokeOpeningRangeHigh { get; set; } = false;
+        public DateTime BrokeOpeningRangeHighTime { get; set; }
+
+        public bool ConfirmationPullback { get; set; } = false;
+        public DateTime ConfirmationPullbackTime { get; set; }
+
         public bool Signal { get; set; } = false;
         public IBar SignalBar { get; set; }
     }
@@ -46,6 +53,16 @@ namespace Denali.Processors.DenaliClimbStrategy
 
         public async Task SubscribeToTickerStream(List<IAsset> assets, DateTime startTime, DateTime marketOpenTime)
         {
+            await InitializeMetrics(assets.Select(x => x.Symbol).ToList(), startTime, marketOpenTime);
+
+            _logger.LogInformation("Subscribing to streams");
+            var subscription = await _dataLayer.SubscribeMinuteBar(assets.Select(x => x.Symbol));
+            subscription.Received += OnStreamedData;
+            _logger.LogInformation("Successfully subscribed to streams");
+        }
+
+        public async Task InitializeMetrics(List<string> assets, DateTime startTime, DateTime marketOpenTime)
+        {
             StreamedData = new();
             SlowEMA = new();
             FastEMA = new();
@@ -53,25 +70,20 @@ namespace Denali.Processors.DenaliClimbStrategy
             EntryProps = new();
 
             _logger.LogInformation("Fetching historic data...");
-            StreamedData = await _dataLayer.GetAggregateDataMulti(assets.Select(x => x.Symbol), marketOpenTime, startTime, BarTimeFrame.Minute);
+            StreamedData = await _dataLayer.GetAggregateDataMulti(assets, marketOpenTime, startTime, BarTimeFrame.Minute);
 
             foreach (var asset in assets)
             {
-                SlowEMA[asset.Symbol] = new ExponentialMovingAverage(_settings.SlowEMABacklog);
-                FastEMA[asset.Symbol] = new ExponentialMovingAverage(_settings.FastEMABacklog);
+                SlowEMA[asset] = new ExponentialMovingAverage(_settings.SlowEMABacklog);
+                FastEMA[asset] = new ExponentialMovingAverage(_settings.FastEMABacklog);
 
-                SlowEMA[asset.Symbol].Analyze(StreamedData[asset.Symbol]);
-                FastEMA[asset.Symbol].Analyze(StreamedData[asset.Symbol]);
-                High[asset.Symbol] = StreamedData[asset.Symbol].Max(x => x.High);
-                EntryProps[asset.Symbol] = new();
+                SlowEMA[asset].AnalyzeAll(StreamedData[asset]);
+                FastEMA[asset].AnalyzeAll(StreamedData[asset]);
+                High[asset] = StreamedData[asset].Max(x => x.High);
+                EntryProps[asset] = new();
             }
 
             _logger.LogInformation("Finished loading data");
-
-            _logger.LogInformation("Subscribing to streams");
-            var subscription = await _dataLayer.SubscribeMinuteBar(assets.Select(x => x.Symbol));
-            subscription.Received += OnStreamedData;
-            _logger.LogInformation("Successfully subscribed to streams");
         }
 
         public async void OnStreamedData(IBar bar)
@@ -88,32 +100,56 @@ namespace Denali.Processors.DenaliClimbStrategy
             if (fastEmas.Count < 2 || slowEmas.Count < 2)
                 return;
 
-            if (!EntryProps[bar.Symbol].BrokeHigh && bar.Close >= High[bar.Symbol])
+            var entryProps = EntryProps[bar.Symbol];
+
+            // Entry Signal
+            if (!entryProps.Signal && entryProps.FirstPullback && entryProps.BrokeOpeningRangeHigh && entryProps.ConfirmationPullback)
             {
-                EntryProps[bar.Symbol].BrokeHigh = true;
-                EntryProps[bar.Symbol].BrokeHighTime = bar.TimeUtc;
-                return;
+                if (
+                    fastEmas.GetHistoricValue(0).Value > slowEmas.GetHistoricValue(0).Value && // Most recent fast EMA should be above slow ema
+                    fastEmas.GetHistoricValue(1).Value >= slowEmas.GetHistoricValue(1).Value && // Penultimate can be equal to or greater
+                    aggregates.GetHistoricValue(0).IsGreen() && aggregates.GetHistoricValue(1).IsGreen()
+                    )
+                {
+                    EntryProps[bar.Symbol].Signal = true;
+                    EntryProps[bar.Symbol].SignalBar = bar;
+                    await OnEntryAction(EntryProps[bar.Symbol]);
+                    return;
+                }
             }
 
-            if (!EntryProps[bar.Symbol].Pullback && EntryProps[bar.Symbol].BrokeHigh && 
-                fastEmas.Last().Value < slowEmas.Last().Value)
+            // Confirmation pullback
+            if (!entryProps.ConfirmationPullback && entryProps.FirstPullback && entryProps.BrokeOpeningRangeHigh)
             {
-                EntryProps[bar.Symbol].Pullback = true;
-                EntryProps[bar.Symbol].PullbackDateTime = bar.TimeUtc;
-                return;
+                if (fastEmas.Last().Value < slowEmas.Last().Value)
+                {
+                    entryProps.ConfirmationPullback = true;
+                    entryProps.ConfirmationPullbackTime = bar.TimeUtc;
+                    return;
+                }
             }
 
-            if (!EntryProps[bar.Symbol].Signal &&
-                EntryProps[bar.Symbol].BrokeHigh &&
-                EntryProps[bar.Symbol].Pullback &&
-                fastEmas.GetHistoricValue(0).Value > slowEmas.GetHistoricValue(0).Value && // Most recent fast EMA should be above slow ema
-                fastEmas.GetHistoricValue(1).Value >= slowEmas.GetHistoricValue(1).Value && // Penultimate can be equal to or greater
-                aggregates.GetHistoricValue(0).IsGreen() && aggregates.GetHistoricValue(1).IsGreen()
-                )
+            // Opening range break
+            if (!entryProps.BrokeOpeningRangeHigh && entryProps.FirstPullback)
             {
-                EntryProps[bar.Symbol].Signal = true;
-                EntryProps[bar.Symbol].SignalBar = bar;
-                await OnEntryAction(EntryProps[bar.Symbol]);
+                if (bar.Close >= entryProps.OpeningRangeHigh)
+                {
+                    entryProps.BrokeOpeningRangeHigh = true;
+                    entryProps.BrokeOpeningRangeHighTime = bar.TimeUtc;
+                    return;
+                }
+            }
+
+            // First pullback
+            if (!entryProps.FirstPullback)
+            {
+                if (fastEmas.Last().Value < slowEmas.Last().Value)
+                {
+                    entryProps.FirstPullback = true;
+                    entryProps.FirstPullbackTime = bar.TimeUtc;
+                    entryProps.OpeningRangeHigh = aggregates.Max(x => x.High);
+                    return;
+                }
             }
         }
     }
