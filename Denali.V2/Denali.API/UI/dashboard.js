@@ -89,7 +89,7 @@ function SetData(symbol, data) {
     for (const bar of bars) {
         candles.push(
             { 
-                time: Math.floor(new Date(bar.timeUtc).getTime() / 1000),
+                time: getGraphTime(bar.timeUtc),
                 open: bar.open,
                 high: bar.high,
                 low: bar.low,
@@ -100,12 +100,12 @@ function SetData(symbol, data) {
     candleSeries.setData(candles);
 
     // Slow EMA data
-    let slowEmas = data.slowEmas;
+    let slowEmas = data.slowEmas[symbol];
     let slowEmaValues = []
     for (const slowEma of slowEmas) {
         slowEmaValues.push(
             {
-               time: Math.floor(new Date(slowEma.timeUtc).getTime() / 1000), 
+               time: getGraphTime(slowEma.timeUtc), 
                value: slowEma.value
             }
         )
@@ -113,17 +113,60 @@ function SetData(symbol, data) {
     slowEMASeries.setData(slowEmaValues);
 
     // Fast EMA data
-    let fastEmas = data.fastEmas;
+    let fastEmas = data.fastEmas[symbol];
     let fastEmaValues = []
     for (const fastEma of fastEmas) {
         fastEmaValues.push(
             {
-                time: Math.floor(new Date(fastEma.timeUtc).getTime() / 1000), 
+                time: getGraphTime(fastEma.timeUtc), 
                 value: fastEma.value
             }
         )
     }
     fastEMASeries.setData(fastEmaValues);
+
+    // Signals
+    let entrySignals = data.entrySignals;
+    const markers = [];
+    for (const signal of entrySignals) {
+        console.log(signal.signalBar.timeUtc);
+        console.log(signal.openingRangeBreakoutTime);
+        console.log(signal.firstPullbackTime);
+        console.log(signal.confirmationPullbackTime);
+
+        markers.push(
+            {
+                time: getGraphTime(signal.signalBar.timeUtc),
+                position: 'aboveBar',
+                color: '#2cc900',
+                shape: 'arrowUp',
+                text: 'Entry',
+            },
+            {
+                time: getGraphTime(signal.openingRangeBreakoutTime),
+                position: 'aboveBar',
+                color: '#343aeb',
+                shape: 'arrowUp',
+                text: 'ORB',
+            },
+            {
+                time: getGraphTime(signal.firstPullbackTime),
+                position: 'belowBar',
+                color: '#eb4034',
+                shape: 'arrowDown',
+                text: '1st Pullback',
+            },
+            {
+                time: getGraphTime(signal.confirmationPullbackTime),
+                position: 'belowBar',
+                color: '#eb4034',
+                shape: 'arrowDown',
+                text: '2nd Pullback',
+            }
+        )
+    }
+
+    LightweightCharts.createSeriesMarkers(candleSeries, markers)
 
     chart.timeScale().fitContent();
 }
@@ -145,4 +188,8 @@ function myCrosshairMoveHandler(param) {
     fastEMADataLabel.innerHTML = `Fast EMA: ${fastEmaData.value}`
 
     console.log(`The price for the datapoint is ${dataPoint.close}.`);
+}
+
+function getGraphTime(date) {
+    return Math.floor(new Date(date).getTime() / 1000)
 }

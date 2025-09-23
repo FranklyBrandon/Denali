@@ -1,4 +1,5 @@
 ﻿using Alpaca.Markets;
+using Denali.Models;
 using Denali.Services;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,7 +19,7 @@ namespace Denali.Processors.DenaliClimbStrategy
             _logger = logger;
         }
 
-        public async Task ProcessEntry(EntrySignal entrySignal)
+        public async Task ProcessEntry(DenaliClimbEntrySignal entrySignal)
         {
             await _lock.WaitAsync();
             try

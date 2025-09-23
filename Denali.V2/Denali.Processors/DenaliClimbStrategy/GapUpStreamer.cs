@@ -1,4 +1,5 @@
 ﻿using Alpaca.Markets;
+using Denali.Models;
 using Denali.Services;
 using Denali.Services.Extensions;
 using Denali.Shared.Extensions;
@@ -8,33 +9,15 @@ using Microsoft.Extensions.Options;
 
 namespace Denali.Processors.DenaliClimbStrategy
 {
-    public record EntrySignal
-    {
-        public decimal StopLoss { get; set; }
-        public decimal TakeProfit { get; set; }
-
-        public bool FirstPullback { get; set; }
-        public DateTime FirstPullbackTime { get; set; }
-
-        public decimal OpeningRangeHigh { get; set; }
-        public bool BrokeOpeningRangeHigh { get; set; } = false;
-        public DateTime BrokeOpeningRangeHighTime { get; set; }
-
-        public bool ConfirmationPullback { get; set; } = false;
-        public DateTime ConfirmationPullbackTime { get; set; }
-
-        public bool Signal { get; set; } = false;
-        public IBar SignalBar { get; set; }
-    }
     public class GapUpStreamer
     {
         public Dictionary<string, List<IBar>> StreamedData;
         public Dictionary<string, ExponentialMovingAverage> SlowEMA;
         public Dictionary<string, ExponentialMovingAverage> FastEMA;
         public Dictionary<string, decimal> High;
-        public Dictionary<string, EntrySignal> EntryProps;
+        public Dictionary<string, DenaliClimbEntrySignal> EntryProps;
 
-        public delegate Task OnEntry(EntrySignal entrySignal);
+        public delegate Task OnEntry(DenaliClimbEntrySignal entrySignal);
         public OnEntry OnEntryAction { get; set; }
 
         private readonly HashSet<string> _entrySignals;
@@ -103,7 +86,7 @@ namespace Denali.Processors.DenaliClimbStrategy
             var entryProps = EntryProps[bar.Symbol];
 
             // Entry Signal
-            if (!entryProps.Signal && entryProps.FirstPullback && entryProps.BrokeOpeningRangeHigh && entryProps.ConfirmationPullback)
+            if (!entryProps.Signal && entryProps.FirstPullback && entryProps.OpeningRangeBreakout && entryProps.ConfirmationPullback)
             {
                 if (
                     fastEmas.GetHistoricValue(0).Value > slowEmas.GetHistoricValue(0).Value && // Most recent fast EMA should be above slow ema
@@ -119,7 +102,7 @@ namespace Denali.Processors.DenaliClimbStrategy
             }
 
             // Confirmation pullback
-            if (!entryProps.ConfirmationPullback && entryProps.FirstPullback && entryProps.BrokeOpeningRangeHigh)
+            if (!entryProps.ConfirmationPullback && entryProps.FirstPullback && entryProps.OpeningRangeBreakout)
             {
                 if (fastEmas.Last().Value < slowEmas.Last().Value)
                 {
@@ -130,12 +113,12 @@ namespace Denali.Processors.DenaliClimbStrategy
             }
 
             // Opening range break
-            if (!entryProps.BrokeOpeningRangeHigh && entryProps.FirstPullback)
+            if (!entryProps.OpeningRangeBreakout && entryProps.FirstPullback)
             {
                 if (bar.Close >= entryProps.OpeningRangeHigh)
                 {
-                    entryProps.BrokeOpeningRangeHigh = true;
-                    entryProps.BrokeOpeningRangeHighTime = bar.TimeUtc;
+                    entryProps.OpeningRangeBreakout = true;
+                    entryProps.OpeningRangeBreakoutTime = bar.TimeUtc;
                     return;
                 }
             }

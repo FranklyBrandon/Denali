@@ -1,4 +1,5 @@
 ﻿using Alpaca.Markets;
+using Denali.Models;
 using Denali.Models.API;
 using Denali.Processors.DenaliClimbStrategy;
 using Denali.Services;
@@ -35,8 +36,8 @@ namespace Denali.API.Controllers
             var request = new HistoricalBarsRequest(symbol, startTime, toDate, BarTimeFrame.Minute);
             var streamData = await _dataLayerComponent.GetAggregateDataMulti(new List<string> { symbol }, fromDate, toDate, BarTimeFrame.Minute);
 
-            var entrySignals = new List<EntrySignal>();
-            _streamer.OnEntryAction = async (EntrySignal entrySignal) => { entrySignals.Add(entrySignal); };
+            var entrySignals = new List<DenaliClimbEntrySignal>();
+            _streamer.OnEntryAction = async (DenaliClimbEntrySignal entrySignal) => { entrySignals.Add(entrySignal); };
 
             var totalMinutes = (toDate - startTime).TotalMinutes;
             for (int i = 0; i < totalMinutes; i++)
@@ -50,15 +51,10 @@ namespace Denali.API.Controllers
                 }
             }
 
-
-
-            /*
-            var fastEma = new ExponentialMovingAverage(8);
-            fastEma.AnalyzeAll(streamData.First().Value);
-            var slowEma = new ExponentialMovingAverage(21);
-            slowEma.AnalyzeAll(streamData.First().Value);
-            */
-            return new StockDataResponse(_streamer.StreamedData, _streamer.FastEMA[symbol].MovingAverages, _streamer.SlowEMA[symbol].MovingAverages);
+            return new StockDataResponse(
+                _streamer.StreamedData, _streamer.FastEMA.ToDictionary(x => x.Key, x => x.Value.MovingAverages), 
+                _streamer.SlowEMA.ToDictionary(x => x.Key, x => x.Value.MovingAverages), 
+                entrySignals);
         }
     }
 }

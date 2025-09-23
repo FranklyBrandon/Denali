@@ -1,4 +1,5 @@
 ﻿using Alpaca.Markets;
+using Denali.Models;
 using Denali.Services;
 using Denali.Shared.Extensions;
 using Denali.Shared.Time;
@@ -88,7 +89,7 @@ namespace Denali.Processors.DenaliClimbStrategy
             await _streamer.SubscribeToTickerStream(ScreenedAssets, startTime, currentMarketDay.GetTradingOpenTimeUtc());
         }
 
-        public async Task OnEntry(EntrySignal entrySignal)
+        public async Task OnEntry(DenaliClimbEntrySignal entrySignal)
         {
 
         }

@@ -1,13 +1,5 @@
 ﻿using Alpaca.Markets;
-using Denali.Models;
-using Denali.Shared.Extensions;
 using Denali.Shared.Time;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denali.Services
 {
@@ -40,29 +32,6 @@ namespace Denali.Services
             }
 
             return result;
-        }
-
-        public List<Quote> GetUniqueQuotesBySeconds(List<Quote> quotes)
-        {
-            List<Quote> sanitizedQuotes = new List<Quote>();
-            quotes[0].RoundToSeconds();
-            sanitizedQuotes.Add(quotes[0]);
-
-            for (int i = 1; i < quotes.Count - 1; i++)
-            {
-                var previous = quotes[i - 1];
-                var current = quotes[i];
-                current.RoundToSeconds();
-
-                if (previous.TimeStampUTC == current.TimeStampUTC)
-                {
-                    continue;
-                }
-
-                sanitizedQuotes.Add(current);
-            }
-
-            return sanitizedQuotes;
         }
     }
 }

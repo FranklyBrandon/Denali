@@ -1,4 +1,5 @@
 ﻿using Alpaca.Markets;
+using Denali.Models;
 using Denali.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,7 +14,7 @@ namespace Denali.Processors.DenaliClimbStrategy
         private readonly DenaliClimbStrategySettings _settings;
         private readonly ILogger _logger;
 
-        private List<EntrySignal> _entrySignals;
+        private List<DenaliClimbEntrySignal> _entrySignals;
 
         public DenaliClimbHistoricProcessor(
             DataLayerComponent dataLayer,
@@ -59,7 +60,7 @@ namespace Denali.Processors.DenaliClimbStrategy
                 BarTimeFrame.Minute
             );
 
-            _entrySignals = new List<EntrySignal>();
+            _entrySignals = new List<DenaliClimbEntrySignal>();
             var totalMinutes = (dataEndTime - dataStartTime).TotalMinutes;
             for (int i = 0; i < totalMinutes; i++)
             {
@@ -118,10 +119,10 @@ namespace Denali.Processors.DenaliClimbStrategy
             */
         }
 
-        public async Task OnEntry(EntrySignal entrySignal)
+        public async Task OnEntry(DenaliClimbEntrySignal entrySignal)
         {
             _entrySignals.Add(entrySignal);
-            _logger.LogInformation($"{entrySignal.SignalBar.Symbol}: First pullback at {entrySignal.FirstPullbackTime.ToString("HH:mm")}. Opening range high {entrySignal.OpeningRangeHigh}. Broke high at {entrySignal.BrokeOpeningRangeHighTime.ToString("HH:mm")}. Confirmation pullback at {entrySignal.ConfirmationPullbackTime.ToString("HH:mm")}. Entry signal at {entrySignal.SignalBar.TimeUtc.ToString("HH:mm")}");
+            _logger.LogInformation($"{entrySignal.SignalBar.Symbol}: First pullback at {entrySignal.FirstPullbackTime.ToString("HH:mm")}. Opening range high {entrySignal.OpeningRangeHigh}. Broke high at {entrySignal.OpeningRangeBreakoutTime.ToString("HH:mm")}. Confirmation pullback at {entrySignal.ConfirmationPullbackTime.ToString("HH:mm")}. Entry signal at {entrySignal.SignalBar.TimeUtc.ToString("HH:mm")}");
         }
     }
 }

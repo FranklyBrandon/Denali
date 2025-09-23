@@ -11,7 +11,6 @@ namespace Denali.Models.Mapping
         public DenaliMapper()
         {
             CreateMap<IBar, AggregateBar>();
-            CreateMap<IQuote, Quote>();
 
             CreateMap<HistoricalBarsResponse, List<AggregateBar>>()
                 .AfterMap((src, dest) =>
