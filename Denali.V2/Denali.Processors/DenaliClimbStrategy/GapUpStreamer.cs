@@ -57,8 +57,8 @@ namespace Denali.Processors.DenaliClimbStrategy
 
             foreach (var asset in assets)
             {
-                SlowEMA[asset] = new ExponentialMovingAverage(_settings.SlowEMABacklog);
-                FastEMA[asset] = new ExponentialMovingAverage(_settings.FastEMABacklog);
+                //SlowEMA[asset] = new ExponentialMovingAverage(_settings.SlowEMABacklog);
+                //FastEMA[asset] = new ExponentialMovingAverage(_settings.FastEMABacklog);
 
                 SlowEMA[asset].AnalyzeAll(StreamedData[asset]);
                 FastEMA[asset].AnalyzeAll(StreamedData[asset]);
@@ -85,55 +85,30 @@ namespace Denali.Processors.DenaliClimbStrategy
 
             var entryProps = EntryProps[bar.Symbol];
 
-            // Entry Signal
-            if (!entryProps.Signal && entryProps.FirstPullback && entryProps.OpeningRangeBreakout && entryProps.ConfirmationPullback)
+           
+        }
+
+        private static decimal GetStopLoss(IList<EMA> fastEmas, IList<EMA> slowEmas, List<IBar> aggregates)
+        {
+            EMA downTrendEnd = null;
+
+            for (int i = 0; i < slowEmas.Count; i++)
             {
-                if (
-                    fastEmas.GetHistoricValue(0).Value > slowEmas.GetHistoricValue(0).Value && // Most recent fast EMA should be above slow ema
-                    fastEmas.GetHistoricValue(1).Value >= slowEmas.GetHistoricValue(1).Value && // Penultimate can be equal to or greater
-                    aggregates.GetHistoricValue(0).IsGreen() && aggregates.GetHistoricValue(1).IsGreen()
-                    )
+                var fastEma = fastEmas.GetHistoricValue(i);
+                var slowEma = slowEmas.GetHistoricValue(i);
+
+                if (downTrendEnd is null && fastEma.Value < slowEma.Value)
                 {
-                    EntryProps[bar.Symbol].Signal = true;
-                    EntryProps[bar.Symbol].SignalBar = bar;
-                    await OnEntryAction(EntryProps[bar.Symbol]);
-                    return;
+                    downTrendEnd = slowEma;
+                }
+
+                if (downTrendEnd is not null && fastEma.Value > slowEma.Value)
+                {
+                    return aggregates.Where(x => x.TimeUtc >= slowEma.TimeUtc && x.TimeUtc <= downTrendEnd.TimeUtc).Min(x => x.Low);
                 }
             }
 
-            // Confirmation pullback
-            if (!entryProps.ConfirmationPullback && entryProps.FirstPullback && entryProps.OpeningRangeBreakout)
-            {
-                if (fastEmas.Last().Value < slowEmas.Last().Value)
-                {
-                    entryProps.ConfirmationPullback = true;
-                    entryProps.ConfirmationPullbackTime = bar.TimeUtc;
-                    return;
-                }
-            }
-
-            // Opening range break
-            if (!entryProps.OpeningRangeBreakout && entryProps.FirstPullback)
-            {
-                if (bar.Close >= entryProps.OpeningRangeHigh)
-                {
-                    entryProps.OpeningRangeBreakout = true;
-                    entryProps.OpeningRangeBreakoutTime = bar.TimeUtc;
-                    return;
-                }
-            }
-
-            // First pullback
-            if (!entryProps.FirstPullback)
-            {
-                if (fastEmas.Last().Value < slowEmas.Last().Value)
-                {
-                    entryProps.FirstPullback = true;
-                    entryProps.FirstPullbackTime = bar.TimeUtc;
-                    entryProps.OpeningRangeHigh = aggregates.Max(x => x.High);
-                    return;
-                }
-            }
+            throw new ArithmeticException("No stoploss calclated");
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Alpaca.Markets;
 using Alpaca.Markets.Extensions;
-using Denali.Shared.Extensions;
-using InteractiveBrokers.Models.Response;
+using Denali.Models.Alpaca;
 using Microsoft.Extensions.Logging;
 
 namespace Denali.Services
@@ -20,14 +19,9 @@ namespace Denali.Services
         public async Task Initialize()
         {
             _logger.LogInformation("=== INITIALIZING DATA LAYER COMPONENTS ===");
-            //await _interactiveBrokersService.InitializeHttpAuth();
-            //_logger.NewLine();
             await _alpacaService.InittializeTradingClientAuth();
-            _logger.NewLine();
-            _logger.LogInformation("=== COMPLETED DATA LAYER INITIALIZA?TION ===");
+            _logger.LogInformation("=== COMPLETED DATA LAYER INITIALIZATION ===");
         }
-
-        public void InitializeDataClient() => _alpacaService.InitializeDataClient();
 
         public async Task<List<IAsset>> GetAllTradableAssets()
         {
@@ -51,6 +45,52 @@ namespace Denali.Services
                 .Where(x => x.IsTradable)
                 .Distinct()
                 .ToList();
+        }
+
+        public async Task<IEnumerable<IIntervalCalendar>> GetMarketDays(DateTime from, DateTime into)
+        {
+            var calenders = await _alpacaService.AlpacaTradingClient.ListIntervalCalendarAsync(
+                new CalendarRequest().WithInterval(
+                    new Interval<DateTime>(from, into)
+                )
+            );
+            return calenders.OrderBy(x => x.GetTradingDate());
+        }
+
+        public async Task<Dictionary<string, List<IQuote>>> GetQuotes(IEnumerable<string> symbols, DateTime from, DateTime into)
+        {
+            string? pageToken = default;
+            Dictionary<string, List<IQuote>> quotes = new Dictionary<string, List<IQuote>>();
+
+            do
+            {
+                var request = new HistoricalQuotesRequest(
+                    symbols, 
+                    from, 
+                    into
+                ).WithPageSize(10000);
+
+                if (!string.IsNullOrWhiteSpace(pageToken))
+                    request.WithPageToken(pageToken);
+
+                var response = await _alpacaService.AlpacaDataClient.GetHistoricalQuotesAsync(request).ConfigureAwait(false);
+                pageToken = response.NextPageToken;
+
+                foreach (var symbolData in response.Items)
+                {
+                    if (quotes.ContainsKey(symbolData.Key))
+                    {
+                        var newData = quotes[symbolData.Key];
+                        newData.AddRange(symbolData.Value);
+                        quotes[symbolData.Key] = newData;
+                    }
+                    else
+                        quotes[symbolData.Key] = symbolData.Value.ToList();
+                }
+
+            } while (!string.IsNullOrWhiteSpace(pageToken));
+
+            return quotes;
         }
 
         public async Task<IEnumerable<IIntervalCalendar>> GetPastMarketDays(DateTime day, int pastDays = 0)
@@ -97,6 +137,35 @@ namespace Denali.Services
             } while (!string.IsNullOrWhiteSpace(pageToken));
 
             return bars;
+        }
+
+        public async Task<Dictionary<string, List<ITrade>>> GetTrades(IEnumerable<string> symbols, DateTime startTime, DateTime endTime)
+        {
+            string? pageToken = default;
+            Dictionary<string, List<ITrade>> trades = new Dictionary<string, List<ITrade>>();
+
+            do
+            {
+                var request = new HistoricalTradesRequest(symbols, startTime, endTime).WithPageSize(10000);
+
+                if (!string.IsNullOrWhiteSpace(pageToken))
+                    request.WithPageToken(pageToken);
+
+                var response = await _alpacaService.AlpacaDataClient.GetHistoricalTradesAsync(request).ConfigureAwait(false);
+                pageToken = response.NextPageToken;
+                foreach (var item in response.Items)
+                {
+                    if (trades.ContainsKey(item.Key))
+                    {
+                        var newData = trades[item.Key];
+                        newData.AddRange(item.Value);
+                        trades[item.Key] = newData;
+                    }
+                    else
+                        trades[item.Key] = item.Value.ToList();
+                }
+            } while (!string.IsNullOrWhiteSpace(pageToken));
+            return trades;
         }
 
         public async Task<IDisposableAlpacaDataSubscription<IBar>> SubscribeMinuteBar(IEnumerable<string> symbols) =>

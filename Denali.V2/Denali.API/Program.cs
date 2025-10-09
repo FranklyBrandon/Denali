@@ -1,7 +1,4 @@
-using Denali.Processors.DenaliClimbStrategy;
-using Denali.Services;
-using Meta.Numerics.Statistics;
-using Microsoft.Extensions.Configuration;
+using Denali.API.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,14 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddSingleton<AlpacaService>();
-builder.Services.AddSingleton<DataLayerComponent>();
-builder.Services.AddScoped<GapUpStreamer>();
-builder.Services.AddOptions<DenaliClimbStrategySettings>()
-    .Bind(builder.Configuration.GetSection(DenaliClimbStrategySettings.Settings));
+ContainerConfiguration.RegisterServices(builder.Configuration, builder.Environment, builder.Services);
 
 builder.Services.AddCors(options =>
 {
+    // Allow requests from local files without need for web server
     options.AddPolicy("localFilePolicy", policy =>
     {
         policy.WithOrigins("null")

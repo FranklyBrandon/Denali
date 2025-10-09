@@ -29,6 +29,9 @@ namespace Denali.Services
             // Best to keep these in 'User Secrets' on local and not any plain text readable configurations
             _paperSecretKey = new SecretKey(configuration["Alpaca:Paper:API-Key"], configuration["Alpaca:Paper:API-Secret"]);
             _liveSecretKey = new SecretKey(configuration["Alpaca:Live:API-Key"], configuration["Alpaca:Live:API-Secret"]);
+
+            _alpacaDataClient = BuildDataclient();
+            _alpacaTradingClient = BuildTradingClient();
         }
 
         public async Task InitializeStreamingClient()
@@ -45,28 +48,20 @@ namespace Denali.Services
             _logger.LogInformation($"Data Streaming Client Auth Status: {authStatus}");
         }
 
-        public void InitializeDataClient() => _alpacaDataClient ??= BuildDataclient();
-
-        public void InitializeTradingclient() => _alpacaTradingClient ??= BuildTradingClient();
-
         public async Task InittializeTradingClientAuth()
         {
-            _logger.LogInformation("Initializing Alpaca Clients");
-
-            _logger.LogInformation("Initializing trading client...");
-            InitializeTradingclient();
+            _logger.LogInformation("Initializing Alpaca trading client...");
             var response = await _alpacaTradingClient.GetAccountConfigurationAsync();
             _logger.LogInformation($"Trading client HTTP connected: {response != null}");
            
-            _logger.LogInformation("Initializing data client...");
-            InitializeDataClient();
+            _logger.LogInformation("Initializing Alpaca data client...");
             var response2 = await _alpacaDataClient.ListExchangesAsync();
             _logger.LogInformation($"Data client HTTP connected: {response2 != null}");
 
-            _logger.LogInformation("Initializing data streaming client...");
+            _logger.LogInformation("Initializing Alapca data streaming client...");
             await InitializeDataStreamingClient();
 
-            _logger.LogInformation("Initializing trading streaming client...");
+            _logger.LogInformation("Initializing Alpaca trading streaming client...");
             await InitializeStreamingClient();
         }
 

@@ -2,8 +2,7 @@
 using Denali.Models;
 using Denali.Services;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
+
 namespace Denali.Processors.DenaliClimbStrategy
 {
     public class TradeManager
@@ -28,14 +27,14 @@ namespace Denali.Processors.DenaliClimbStrategy
                 if (!_traded)
                 {
                     _traded = true;
-                    var order = new NewOrderRequest(entrySignal.SignalBar.Symbol, OrderQuantity.Notional(1000), OrderSide.Buy, OrderType.Market, TimeInForce.Day)
+                    var orderRequest = new NewOrderRequest(entrySignal.SignalBar.Symbol, OrderQuantity.Notional(1000), OrderSide.Buy, OrderType.Market, TimeInForce.Day)
                     {
-                        OrderClass = OrderClass.Bracket,
-                        TakeProfitLimitPrice = entrySignal.TakeProfit,
-                        StopLossStopPrice = entrySignal.StopLoss             
+                        OrderClass = OrderClass.Simple,
+                        //TakeProfitLimitPrice = entrySignal.TakeProfit,
+                        //StopLossStopPrice = entrySignal.StopLoss             
                     };
 
-                    await _brokerageLayer.SubmitOrder(order);
+                    var order = await _brokerageLayer.SubmitOrder(orderRequest);
                 }
             }
             finally

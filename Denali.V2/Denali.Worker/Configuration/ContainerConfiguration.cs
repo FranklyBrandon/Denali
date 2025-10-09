@@ -1,5 +1,7 @@
 ﻿using Denali.Models.Mapping;
+using Denali.Processors;
 using Denali.Processors.DenaliClimbStrategy;
+using Denali.Processors.DenaliDescentStrategy;
 using Denali.Services;
 using InteractiveBrokers.Models.Configuration;
 using InteractiveBrokers.Services;
@@ -30,10 +32,19 @@ namespace Denali.Worker.Configuration
             services.AddScoped<GapUpStreamer>();
             services.AddScoped<TradeManager>();
 
+            services.AddScoped<GapUpScreenTest>();
+
             services.AddOptions<DenaliClimbStrategySettings>()
                 .Bind(configuration.GetSection(DenaliClimbStrategySettings.Settings));
             services.AddScoped<DenaliClimbProcessor>();
             services.AddScoped<DenaliClimbHistoricProcessor>();
+
+            services.AddOptions<DenaliDescentStrategySettings>()
+                .Bind(configuration.GetSection(DenaliClimbStrategySettings.Settings));
+            services.AddScoped<DenaliDescentProcessor>();
+            services.AddScoped<DenaliDescentHistoricProcessor>();
+
+
 
 
             // Register a service provider so we can create scopes and resolve instances dynamically

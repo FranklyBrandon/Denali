@@ -1,32 +1,7 @@
-[
-{"conId":4157},
-{"conId":2585309},
-{"conId":9199},
-{"conId":12814},
-{"conId":4813460},
-{"conId":73417523},
-{"conId":192379311},
-{"conId":202225016},
-{"conId":300464284},
-{"conId":315543544},
-{"conId":320224936},
-{"conId":328849154},
-{"conId":356857464},
-{"conId":670780648},
-{"conId":448085837},
-{"conId":449896083},
-{"conId":522320539},
-{"conId":604736961},
-{"conId":712146473},
-{"conId":728460109},
-{"conId":733168195},
-{"conId":767907373},
-{"conId":768185574},
-{"conId":769653643},
-{"conId":782097066},
-{"conId":785082302},
-{"conId":789863515},
-{"conId":794639097},
-{"conId":801318622},
-{"conId":805705289}
-]
+| Order Type      | Recommended Modeling Basis          | Rationale                                    |
+| --------------- | ----------------------------------- | -------------------------------------------- |
+| **Market Buy**  | Execute at **Ask**                  | That’s the best price available to a buyer.  |
+| **Market Sell** | Execute at **Bid**                  | That’s the best price available to a seller. |
+| **Limit Buy**   | Fill if **Bid ≥ Limit**             | Your limit must be at or above bid.          |
+| **Limit Sell**  | Fill if **Ask ≤ Limit**             | Your limit must be at or below ask.          |
+| **Stop Orders** | Triggered by **trade** (last price) | Stops usually activate on last-trade prices. |

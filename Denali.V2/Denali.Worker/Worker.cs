@@ -1,4 +1,6 @@
+using Denali.Processors;
 using Denali.Processors.DenaliClimbStrategy;
+using Denali.Processors.DenaliDescentStrategy;
 
 namespace Denali.Worker
 {
@@ -18,18 +20,25 @@ namespace Denali.Worker
             using (var scope = _provider.CreateScope())
             {
                 /*
+                var service = scope.ServiceProvider.GetService<DenaliClimbHistoricProcessor>();
+                await  service.ProcessRange(new(2025, 10, 6), new(2025, 10, 6), stoppingToken);
+                /*
                 var service = scope.ServiceProvider.GetService<DenaliClimbProcessor>();
                 await service.Initialize();
-                await service.Process(new(2025, 9, 5), stoppingToken);
+                await service.Process(new(2025, 10, 6), stoppingToken);
                 await service.StartTimeScheduledTask.InvokeManual();
                 */
 
-                var historicService = scope.ServiceProvider.GetService<DenaliClimbHistoricProcessor>();
-                await historicService.ProcessRange(new(2025, 9, 15), new(2025, 9, 19), stoppingToken);
-                
-            }
+                /*
+                var service = scope.ServiceProvider.GetService<GapUpScreenTest>();
+                await service.Initialize();
+                await service.Process(new(2025, 10, 6), stoppingToken);
+                stoppingToken.WaitHandle.WaitOne();
+                */
+                var service = scope.ServiceProvider.GetService<DenaliDescentHistoricProcessor>();
+                await service.ProcessRange(new(2025, 10, 8), new(2025, 10, 8), stoppingToken);
 
-            stoppingToken.WaitHandle.WaitOne();         
+            }
         }
     }
 }

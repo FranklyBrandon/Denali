@@ -1,8 +1,8 @@
 ﻿using Alpaca.Markets;
 using Denali.Services;
+using Denali.Shared.Extensions;
 using Denali.TechnicalAnalysis;
 using Microsoft.Extensions.Logging;
-using Denali.Shared.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace Denali.Processors.DenaliClimbStrategy
@@ -20,13 +20,18 @@ namespace Denali.Processors.DenaliClimbStrategy
             _logger = logger;
         }
 
-        public async Task<List<IAsset>> GetGapUpStocks(IIntervalCalendar previousMarketDay, IIntervalCalendar currentMarketDay, List<IAsset> assets)
+        public async Task<Dictionary<string, decimal>> GetGapUpStocks(
+            IIntervalCalendar previousMarketDay, 
+            IIntervalCalendar currentMarketDay, 
+            List<IAsset> assets,
+            decimal minimumstockPrice,
+            decimal minimumPercentage,
+            bool descending = true)
         {
             // End of previous day's session, buffer previous market trading end to account for any missing aggregate bars
-            var previousMarketTradingEnd = previousMarketDay.GetTradingCloseTimeUtc().AddMinutes(-_settings.PreMarketBufferMinutes);
+            var previousMarketTradingEnd = previousMarketDay.GetTradingCloseTimeUtc();
             var currentMarketTradingBegin = currentMarketDay.GetTradingOpenTimeUtc();
 
-            _logger.LogInformation($"Fetching aggregate data from Alpaca...");
             var tickers = assets.Select(x => x.Symbol);
             Dictionary<string, List<IBar>> aggregateData = new Dictionary<string, List<IBar>>();
             foreach (var batch in tickers.Chunk(5000))
@@ -35,17 +40,13 @@ namespace Denali.Processors.DenaliClimbStrategy
                     batch,
                     previousMarketTradingEnd,
                     currentMarketTradingBegin,
-                    BarTimeFrame.Minute
+                    new BarTimeFrame(15, BarTimeFrameUnit.Minute)
                 );
 
                 aggregateData = aggregateData.Concat(data).ToDictionary();
             }
-
-            _logger.LogInformation($"Data found for {aggregateData.Count} tickers out of {assets.Count} assets");
-
-            _logger.LogInformation($"Analyzing price movements...");
             // Filter out tickers by minimum price
-            var symbols = aggregateData.Where(x => x.Value.Count > 0 && x.Value.Last().Close > _settings.MinimumStockPrice).Select(x => x.Key).ToList();
+            var symbols = aggregateData.Where(x => x.Value.Count > 0 && x.Value.Last().Close > minimumstockPrice).Select(x => x.Key).ToList();
             Dictionary<string, decimal> changePercentage = new();
 
             foreach (var symbol in symbols)
@@ -55,20 +56,60 @@ namespace Denali.Processors.DenaliClimbStrategy
                 var currentBar = data.Where(x => x.TimeUtc >= currentMarketTradingBegin).LastOrDefault();
                 if (previousBar != null && currentBar != null)
                 {
-                    changePercentage[symbol] = ChangePercentage.Calculate(previousBar.Close, currentBar.Close);
+                    changePercentage[symbol] = ChangePercentage.Calculate(previousBar.Close, currentBar.Close).RoundToMoney();
                 }
             }
 
             // Filter by unrealsitic change percentage (janky way to account for reverse splits). Then order
-            var orderedChanges = changePercentage.Where(x => x.Value <= 200).OrderByDescending(x => x.Value).Take(30).ToList();
-            foreach (var change in orderedChanges)
+            var filtered = changePercentage.Where(x => x.Value >= minimumPercentage && x.Value <= 200);
+
+            return descending
+                ? filtered.OrderByDescending(x => x.Value).ToDictionary()
+                : filtered.OrderBy(x => x.Value).ToDictionary();
+        }
+
+        public async Task<Dictionary<string, decimal>> GetGapUpBetween(
+            DateTime startTime,
+            DateTime endTime,
+            List<IAsset> assets,
+            decimal minimumstockPrice,
+            decimal minimumGapUpPercentage,
+            bool descending = true)
+        {
+            var tickers = assets.Select(x => x.Symbol);
+            Dictionary<string, List<IBar>> aggregateData = new Dictionary<string, List<IBar>>();
+            foreach (var batch in tickers.Chunk(5000))
             {
-                var data = aggregateData[change.Key];
-                //_logger.LogInformation($"Asset: {change.Key.PadRight(4)}, Change: {change.Value.Round(2)}, Price: {data.Last().Close}, Bar Count: {data.Count()}, Volume: {data.Sum(x => x.Volume)}");
+                var data = await _dataLayer.GetAggregateDataMulti(
+                    batch,
+                    startTime,
+                    endTime,
+                    new BarTimeFrame(15, BarTimeFrameUnit.Minute)
+                ).ConfigureAwait(false);
+
+                aggregateData = aggregateData.Concat(data).ToDictionary();
+            }
+            // Filter out tickers by minimum price
+            var symbols = aggregateData.Where(x => x.Value.Count > 0 && x.Value.Last().Close > minimumstockPrice).Select(x => x.Key).ToList();
+            Dictionary<string, decimal> changePercentage = new();
+
+            foreach (var symbol in symbols)
+            {
+                var data = aggregateData[symbol];
+                var previousBar = data.FirstOrDefault();
+                var currentBar = data.LastOrDefault();
+                if (previousBar != null && currentBar != null)
+                {
+                    changePercentage[symbol] = ChangePercentage.Calculate(previousBar.Close, currentBar.Close).RoundToMoney();
+                }
             }
 
-            var orderedChangesTickers = orderedChanges.Select(x => x.Key).ToList();
-            return assets.Where(x => orderedChangesTickers.Contains(x.Symbol)).ToList();
+            // Filter by unrealsitic change percentage (janky way to account for reverse splits). Then order
+            var filtered = changePercentage.Where(x => x.Value >= minimumGapUpPercentage && x.Value <= 200);
+
+            return descending
+                ? filtered.OrderByDescending(x => x.Value).ToDictionary()
+                : filtered.OrderBy(x => x.Value).ToDictionary();
         }
     }
 }

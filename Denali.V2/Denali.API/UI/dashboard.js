@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
 function OnSubmit() {
     const symbol = document.getElementById('symbolInput').value;
     const date = document.getElementById('dateInput').value;
-    fetch(`https://localhost:7166/api/stockdata/${symbol}?date=${date}`)
+    const timeFrame = document.getElementById('timeframe-input').value;
+    fetch(`https://localhost:7166/api/stockdata/${symbol}?start=${date}&timeFrame=${timeFrame}`)
         .then(resp => resp.json())
         .then(data => {
             SetData(symbol, data);
@@ -84,7 +85,7 @@ function SetData(symbol, data) {
     });
     
     // Candle data
-    let bars = data.stockData[symbol];
+    let bars = data[symbol];
     let candles = []
     for (const bar of bars) {
         candles.push(
@@ -98,6 +99,8 @@ function SetData(symbol, data) {
         )
     }
     candleSeries.setData(candles);
+    chart.timeScale().fitContent();
+    return;
 
     // Slow EMA data
     let slowEmas = data.slowEmas[symbol];
@@ -127,13 +130,11 @@ function SetData(symbol, data) {
 
     // Signals
     let entrySignals = data.entrySignals;
-    const markers = [];
+    if (!entrySignals)
+        return;
+    
+    let markers = [];
     for (const signal of entrySignals) {
-        console.log(signal.signalBar.timeUtc);
-        console.log(signal.openingRangeBreakoutTime);
-        console.log(signal.firstPullbackTime);
-        console.log(signal.confirmationPullbackTime);
-
         markers.push(
             {
                 time: getGraphTime(signal.signalBar.timeUtc),
@@ -164,11 +165,33 @@ function SetData(symbol, data) {
                 text: '2nd Pullback',
             }
         )
+
+        // StopLoss
+        const stopLoss = {
+            price: signal.stopLoss,
+            color: '#eb4034',
+            lineWidth: 1,
+            lineStyle: 1, // LineStyle.Dashed
+            axisLabelVisible: true,
+            title: 'Stop Loss',
+        };
+
+        candleSeries.createPriceLine(stopLoss);
+
+        // Take Profit
+        const takeProfit = {
+            price: signal.takeProfit,
+            color: '#2cc900',
+            lineWidth: 1,
+            lineStyle: 1, // LineStyle.Dashed
+            axisLabelVisible: true,
+            title: 'Take Profit',
+        };
+
+        candleSeries.createPriceLine(takeProfit);
     }
 
-    LightweightCharts.createSeriesMarkers(candleSeries, markers)
-
-    chart.timeScale().fitContent();
+    LightweightCharts.createSeriesMarkers(candleSeries, markers);
 }
 
 function myCrosshairMoveHandler(param) {
