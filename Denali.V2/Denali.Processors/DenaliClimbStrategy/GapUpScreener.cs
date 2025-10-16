@@ -84,7 +84,7 @@ namespace Denali.Processors.DenaliClimbStrategy
                     batch,
                     startTime,
                     endTime,
-                    new BarTimeFrame(15, BarTimeFrameUnit.Minute)
+                    BarTimeFrame.Minute
                 ).ConfigureAwait(false);
 
                 aggregateData = aggregateData.Concat(data).ToDictionary();
@@ -96,8 +96,8 @@ namespace Denali.Processors.DenaliClimbStrategy
             foreach (var symbol in symbols)
             {
                 var data = aggregateData[symbol];
-                var previousBar = data.FirstOrDefault();
-                var currentBar = data.LastOrDefault();
+                var previousBar = data.FirstOrDefault(x => x.TimeUtc == startTime);
+                var currentBar = data.LastOrDefault(x => x.TimeUtc.Date == endTime.Date);
                 if (previousBar != null && currentBar != null)
                 {
                     changePercentage[symbol] = ChangePercentage.Calculate(previousBar.Close, currentBar.Close).RoundToMoney();

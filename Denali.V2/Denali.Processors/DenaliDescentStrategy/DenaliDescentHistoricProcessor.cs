@@ -1,4 +1,6 @@
 ﻿using Alpaca.Markets;
+using AutoMapper;
+using Denali.Models.Alpaca;
 using Denali.Processors.DenaliClimbStrategy;
 using Denali.Services;
 using Denali.Services.Extensions;
@@ -43,17 +45,15 @@ namespace Denali.Processors.DenaliDescentStrategy
             List<IIntervalCalendar> marketDays = new() { pastDays.Last() };
             marketDays.AddRange(forwardDays);
 
-            decimal profit = 0;
+            
+
             for (int i = 1; i < marketDays.Count; i++)
             {
-                await _processor.OnScreenStart(marketDays[i].GetTradingOpenTimeUtc(), marketDays[i - 1], marketDays[i], _processor.AllTradableAssets);
-                //await ProcessSignals(marketDays[i]);
-                //profit += await ProcessGreenBars(marketDays[i]);
-                //profit += await ProcessRedBars(marketDays[i]);
-                //profit += await ProcessSignals(marketDays[i]);
-                profit += await ProcessOpen(marketDays[i - 1], marketDays[i]);
+              
+
+
             }
-            _logger.LogInformation($"TOTAL PROFIT: {profit}");
+
         }
 
         public async Task<decimal> ProcessSignals(IIntervalCalendar marketDay)
@@ -223,36 +223,87 @@ namespace Denali.Processors.DenaliDescentStrategy
             return totalProfit;
         }
 
-        public async Task<decimal> ProcessOpen(IIntervalCalendar previousMarketDay, IIntervalCalendar currentMarketDay)
+        public async Task<Tuple<decimal, decimal>> ProcessBacklook(IIntervalCalendar previousMarketDay, IIntervalCalendar currentMarketDay)
         {
-            var signals = _signals.Take(100);
-            var data = await _dataLayer.GetAggregateDataMulti(signals.Select(x => x.Symbol), previousMarketDay.GetTradingCloseTimeUtc(), currentMarketDay.GetTradingOpenTimeUtc().AddMinutes(30), new BarTimeFrame(15, BarTimeFrameUnit.Minute));
+            var backlookData = await _dataLayer.GetAggregateDataMulti(new List<string> { "VTI" }, previousMarketDay.GetTradingOpenTimeUtc(), previousMarketDay.GetTradingCloseTimeUtc(), BarTimeFrame.Minute);
+            var titForTatProfit = TitForTat(backlookData["VTI"].ToList());
+            var crissCrossProfit = CrissCross(backlookData["VTI"].ToList());
+            _logger.LogInformation($"TitForTat {titForTatProfit}, CrissCross {crissCrossProfit}");
 
-            decimal totalProfit = 0;
-            decimal totalInvestment = 0;
-            foreach (var signal in signals)
+            var forwardData = await _dataLayer.GetAggregateDataMulti(new List<string> { "VTI" }, currentMarketDay.GetTradingOpenTimeUtc(), currentMarketDay.GetTradingCloseTimeUtc(), BarTimeFrame.Minute);
+            var baseLine = forwardData["VTI"].Last().Close - forwardData["VTI"].First().Open;
+            if (titForTatProfit > crissCrossProfit)
             {
-                if (totalInvestment >= 25000)
-                    continue;
-
-                if (!data.TryGetValue(signal.Symbol, out var bars))
-                    continue;
-
-                var bar = bars.Where(x => x.TimeUtc == currentMarketDay.GetTradingOpenTimeUtc().AddMinutes(15)).FirstOrDefault();
-                var previousBars = bars.Where(x => x.TimeUtc < currentMarketDay.GetTradingOpenTimeUtc().AddMinutes(15));
-
-                if (bar != null && previousBars.Count() > 1)
-                {
-                    var entry = bars.Where(x => x.TimeUtc > bar.TimeUtc).FirstOrDefault();
-                    if (bar.IsGreen() && bar.Close > previousBars.Max(x => x.High) && entry != null)
-                    {
-                        _logger.LogInformation($"{signal.Symbol} {signal.GapUpPercentage}%");
-                    }
-                }             
+                var profit = TitForTat(forwardData["VTI"].ToList());
+                _logger.LogInformation($"Forward profit TitForTat {profit}");
+                return Tuple.Create(profit, baseLine);
             }
+            else
+            {
+                var profit = CrissCross(forwardData["VTI"].ToList());
+                _logger.LogInformation($"Forward profit CrissCross {profit}");
+                return Tuple.Create(profit, baseLine);
+            }
+        }
 
-            _logger.LogInformation($"Total profit of {totalProfit}");
-            return totalProfit;
+
+        private decimal TitForTat(List<IBar> data)
+        {
+            decimal profit = 0;
+            bool green = data[0].IsGreen();
+            int kelly = 1;
+            for (int i = 1; i < data.Count; i++)
+            {
+                var bar = data[i];
+                if (green)
+                {
+                    profit += (bar.Close - bar.Open) * kelly;
+                }
+                else
+                {
+                    profit += (bar.Open - bar.Close) * kelly;
+                }
+
+                green = bar.IsGreen();
+                if (profit > 0)
+                {
+                    kelly++;
+                }
+                else
+                {
+                    kelly = 1;
+                }
+            }
+            return profit;
+        }
+
+        private decimal CrissCross(List<IBar> data)
+        {
+            decimal profit = 0;
+            bool green = data[0].IsGreen();
+            int kelly = 1;
+            for (int i = 1; i < data.Count; i++)
+            {
+                var bar = data[i];
+                if (green)
+                {
+                    profit += (bar.Open - bar.Close) * kelly;
+                }
+                else
+                {
+                    profit += (bar.Close - bar.Open) * kelly;
+                }
+                green = bar.IsGreen();
+                if (profit > 0)
+                {
+                    kelly++;
+                }
+                else
+                {
+                    kelly = 1;
+                }
+            }
+            return profit;
         }
 
         public async Task OnEntry(IEnumerable<DenaliDescentEntrySignal> signals)

@@ -116,6 +116,7 @@ namespace Denali.Services
                         endTime,
                         timeFrame
                 ).WithPageSize(10000);
+                request.Adjustment = Adjustment.SplitsAndDividends;
 
                 if (!string.IsNullOrWhiteSpace(pageToken))
                     request.WithPageToken(pageToken);

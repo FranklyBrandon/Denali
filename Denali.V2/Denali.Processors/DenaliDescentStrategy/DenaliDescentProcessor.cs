@@ -48,13 +48,26 @@ namespace Denali.Processors.DenaliDescentStrategy
         public async Task OnScreenStart(DateTime startTime, IIntervalCalendar previousMarketDay, IIntervalCalendar currentMarketDay, List<IAsset> assets)
         {
             _logger.LogInformation($"Processing go time {startTime.ToString("yyyy-MM-dd HH:mm")} (UTC)");
-            var screenedAssets = await _screener.GetGapUpStocks(
-                previousMarketDay, 
-                currentMarketDay, 
+
+           
+           var screenedAssets = await _screener.GetGapUpBetween(
+                previousMarketDay.GetTradingCloseTimeUtc(), 
+                currentMarketDay.GetTradingOpenTimeUtc().AddMinutes(-3), 
                 assets, 
                 _settings.MinimumStockPrice,
                 _settings.MinimumGapUpPercentage,
                 descending: true);
+            
+            
+            /*
+            var screenedAssets = await _screener.GetGapUpStocks(
+                previousMarketDay,
+                currentMarketDay,
+                assets,
+                _settings.MinimumStockPrice,
+                _settings.MinimumGapUpPercentage,
+                descending: true);
+            */
 
             await OnEntryAction(screenedAssets.Select(x => new DenaliDescentEntrySignal(x.Key, x.Value)));
         }

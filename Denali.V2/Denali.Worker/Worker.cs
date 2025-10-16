@@ -35,8 +35,8 @@ namespace Denali.Worker
                 await service.Process(new(2025, 10, 6), stoppingToken);
                 stoppingToken.WaitHandle.WaitOne();
                 */
-                var service = scope.ServiceProvider.GetService<DenaliDescentHistoricProcessor>();
-                await service.ProcessRange(new(2025, 10, 8), new(2025, 10, 8), stoppingToken);
+                var service = scope.ServiceProvider.GetService<TrueFadeStrategy>();
+                await service.ProcessRange(new(2025, 10, 14), new(2025, 10, 14), stoppingToken);
 
             }
         }

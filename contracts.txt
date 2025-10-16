@@ -1,7 +1,24 @@
-| Order Type      | Recommended Modeling Basis          | Rationale                                    |
-| --------------- | ----------------------------------- | -------------------------------------------- |
-| **Market Buy**  | Execute at **Ask**                  | That’s the best price available to a buyer.  |
-| **Market Sell** | Execute at **Bid**                  | That’s the best price available to a seller. |
-| **Limit Buy**   | Fill if **Bid ≥ Limit**             | Your limit must be at or above bid.          |
-| **Limit Sell**  | Fill if **Ask ≤ Limit**             | Your limit must be at or below ask.          |
-| **Stop Orders** | Triggered by **trade** (last price) | Stops usually activate on last-trade prices. |
+
+
+The size thing is real. One of the best algos I ever had was back in 2010-2012 when I first got into this. The algo scanned the entire market EOD and traded certain stocks the following day that fell within a particular setup. Turns out most of those stocks were very thin, illiquid and inefficient! I was just getting started and the account barely met day-trading requirements. Anyway, within the first few months I had to implement a liquidity filter so my trades were less than 5% of daily average volume and I was never risking more than 2% per trade. Averaging 5-10 trades per day MOO - MOC. The available trades eventually just dried up as my account grew and I eventually gave the system to a coding/trading buddy who did the same thing with it and had to abandon it as well. Good times.
+16
+smp208
+•
+3y ago
+
+Sounds like it was pretty profitable. Why didn’t you keep running it with a smaller percentage of your portfolio? Not worth the risk?
+2
+u/nybhh avatar
+nybhh
+•
+3y ago
+• Edited 3y ago
+
+I started a business around then and got very busy so it just didn’t seem worth the time. I ended up just parking everything in SPY and QQQ until earlier this year which worked out pretty well anyway. In retrospect, I probably should have kept it going at a small size but I just didn’t have the mental bandwidth for it.
+
+It was a super simple system too that probably still works for small accounts. I was just getting into backtesting at the time and there was a blog I followed that basically traded high volume breakouts. I still remember they called them episodic pivots. I ended up backtesting it and it did so bad I basically just did the opposite, and called the system EP fade.
+
+It was a short-only system than scanned the market each day for stocks who had a very large move up calculated off an ATR multiple and shorted them the next day (if shares were available) at the open and closed the position at the close. Other than an ATR-based stop loss, that was it. No overnight gap risk so position sizing was easy to calculate off the stop loss. I started off only risking 1/2% per trade, upped that to 1%, and then 2% once I trusted everything and returns were good. If I had the time at night, I would research the reason for the move and occasionally omit something but I don’t recall that really making a difference.
+
+My first profitable and most profitable system on a CAGR basis. Occasionally I would get some larger and more liquid signals that probably had some institutional support but the vast majority of these were too thin for anyone but retail. These were BIG pops, 3-5x ATR(n) minimum and the higher the multiple, the higher the expectancy so I always took the top N-ones until I ran out of trading capital each day. Never used margin although I probably had Reg T at the time. My theory was that these markets just weren’t very efficient back then and there certainly weren’t many small retail traders using computers for backtesting and such. Amibroker was the software I used, still have it and use it occasionally for chart related studies.
+4

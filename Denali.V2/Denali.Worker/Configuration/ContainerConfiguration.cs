@@ -44,6 +44,7 @@ namespace Denali.Worker.Configuration
             services.AddScoped<DenaliDescentProcessor>();
             services.AddScoped<DenaliDescentHistoricProcessor>();
 
+            services.AddScoped<TrueFadeStrategy>();
 
 
 
