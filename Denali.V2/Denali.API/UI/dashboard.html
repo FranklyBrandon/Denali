@@ -9,20 +9,26 @@
 </head>
 <body>
     <div>
-        <label for="symbolInput">Symbol:</label>
-        <input type="text" id="symbolInput" />
+        <div class="row">
+            <label for="symbolInput">Symbol:</label>
+            <input type="text" id="symbolInput" />
 
-        <label for="dateInput">Date:</label>
-        <input type="date" id="dateInput" />
+            <label for="startDateInput">Start:</label>
+            <input type="date" id="startDateInput" />
 
-        <select id="timeframe-input">
-            <option value="1Min">1Min</option>
-            <option value="15Min">15Min</option>
-        </select>
+            <label for="endDateInput">End:</label>
+            <input type="date" id="endDateInput" />
 
-        <button onClick="OnSubmit()">Submit</button>
+            <select id="timeframe-input">
+                <option value="1Min">1Min</option>
+                <option value="15Min">15Min</option>
+                <option value="1D">1D</option>
+            </select>
+
+            <button onClick="OnSubmit()">Submit</button>
+        </div>  
     </div>
-    <div class="values-header">
+    <div class="column">
         <span id="price-value">Price: </span>
         <span id="fast-value">Fast EMA: </span>
         <span id="slow-value">Slow EMA: </span>

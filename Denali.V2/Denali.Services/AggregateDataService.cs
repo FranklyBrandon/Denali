@@ -21,7 +21,9 @@ namespace Denali.Services
         public async Task<Dictionary<string, List<IBar>>> GetAggregates(IEnumerable<string> symbols, DateTime start, DateTime? end, string timeFrame)
         {
             start = new DateTime(start.Year, start.Month, start.Day, 13, 30, 0, DateTimeKind.Utc);
-            if (end == null)
+            if (end.HasValue)
+                end = new DateTime(end.Value.Year, end.Value.Month, end.Value.Day, 20, 0, 0, DateTimeKind.Utc);
+            else
                 end = new DateTime(start.Year, start.Month, start.Day, 20, 0, 0, DateTimeKind.Utc);
 
             return await _dataLayer.GetAggregateDataMulti(symbols, start, end.Value, GetTimeFrame(timeFrame));
@@ -42,6 +44,9 @@ namespace Denali.Services
             {
                 case "Min":
                     unit = BarTimeFrameUnit.Minute;
+                break;
+                case "D":
+                    unit = BarTimeFrameUnit.Day;
                 break;
                 default:
                     unit = BarTimeFrameUnit.Minute;

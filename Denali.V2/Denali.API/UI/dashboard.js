@@ -16,9 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function OnSubmit() {
     const symbol = document.getElementById('symbolInput').value;
-    const date = document.getElementById('dateInput').value;
+    const startDate = document.getElementById('startDateInput').value;
+    const endDate = document.getElementById('endDateInput').value;
+    let endDatePath = '';
+    if (endDate){
+        endDatePath = `&end=${endDate}`
+    }
     const timeFrame = document.getElementById('timeframe-input').value;
-    fetch(`https://localhost:7166/api/stockdata/${symbol}?start=${date}&timeFrame=${timeFrame}`)
+    fetch(`https://localhost:7166/api/stockdata/${symbol}?start=${startDate}${endDatePath}&timeFrame=${timeFrame}`)
         .then(resp => resp.json())
         .then(data => {
             SetData(symbol, data);

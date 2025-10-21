@@ -1,4 +1,10 @@
-.values-header {
+.column {
     display: flex;
     flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
 }

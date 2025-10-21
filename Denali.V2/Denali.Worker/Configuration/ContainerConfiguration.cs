@@ -2,6 +2,7 @@
 using Denali.Processors;
 using Denali.Processors.DenaliClimbStrategy;
 using Denali.Processors.DenaliDescentStrategy;
+using Denali.Processors.TrueFadeStrategy;
 using Denali.Services;
 using InteractiveBrokers.Models.Configuration;
 using InteractiveBrokers.Services;
@@ -45,6 +46,9 @@ namespace Denali.Worker.Configuration
             services.AddScoped<DenaliDescentHistoricProcessor>();
 
             services.AddScoped<TrueFadeStrategy>();
+
+            services.AddScoped<TrueFadeHistoricProcessor>();
+            services.AddScoped<TrueFadeScreener>();
 
 
 
