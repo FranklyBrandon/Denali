@@ -77,7 +77,7 @@ namespace Denali.Processors.TrueFadeStrategy
                     var multiple = trueRange / averageTrueRange;
                     if (multiple > 3)
                     {
-                        ranges.Add(new TrueFadeRecord(data.Key, lastBar.Close, multiple.RoundToMoney(), averageTrueRange.RoundToMoney()));
+                        ranges.Add(new TrueFadeRecord(data.Key, lastBar.Close, multiple.RoundToMoney(), averageTrueRange.RoundToMoney(), 0));
                     }
                 }
 
@@ -93,7 +93,7 @@ namespace Denali.Processors.TrueFadeStrategy
                 foreach (var range in ordered)
                 {
                     investment += range.Price;
-                    positions.Add(new TrueFadeRecord(range.Symbol, range.Price, range.MultipleATR, range.AverageTrueRange));
+                    positions.Add(new TrueFadeRecord(range.Symbol, range.Price, range.MultipleATR, range.AverageTrueRange, 0));
                     if (investment >= 25000)
                         break;
                 }

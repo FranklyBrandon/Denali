@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Denali.Processors.TrueFadeStrategy
+﻿namespace Denali.Processors.TrueFadeStrategy
 {
     public static class TrueFadeAllocater
     {
-        public static IEnumerable<TrueFadeRecord> Allocate(IEnumerable<TrueFadeRecord> records, decimal capitalToTrade)
+        public static IEnumerable<TrueFadeRecord> Allocate(IEnumerable<TrueFadeRecord> records, decimal capitalToTrade, decimal maximumVolumePercentage)
         {
             bool allocate = true;
             while (allocate)
             {
+                bool allocatedThisRound = false;
                 foreach (var record in records)
                 {
+                    if ((record.PositionSize + 1) / record.AverageVolume > maximumVolumePercentage / 100)
+                        continue;
+
                     if (capitalToTrade > record.Price)
                     {
                         record.PositionSize++;
+                        record.TotalCost = record.Price * record.PositionSize;
                         capitalToTrade -= record.Price;
+                        allocatedThisRound = true;
                     }
                     else
                     {
@@ -26,6 +26,10 @@ namespace Denali.Processors.TrueFadeStrategy
                         break;
                     }
                 }
+
+                // If no allocatations, everything is volume capped
+                if (!allocatedThisRound)
+                    allocate = false;
             }
 
             return records;

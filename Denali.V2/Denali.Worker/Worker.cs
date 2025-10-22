@@ -25,7 +25,7 @@ namespace Denali.Worker
                 */
 
                 var service = scope.ServiceProvider.GetService<TrueFadeHistoricProcessor>();
-                await service.ProcessRange(new(2025, 1, 2), new(2025, 10, 20));
+                await service.ProcessRange(new(2024, 1, 1), new(2025, 10, 21));
             }
         }
     }

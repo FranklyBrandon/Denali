@@ -39,12 +39,15 @@ namespace Denali.Processors.TrueFadeStrategy
             marketDays.AddRange(forwardDays);
 
             decimal capitol = 25000m;
+            List<DailyResult> results = new List<DailyResult>();
             for (int i = (LOOKBACK + 1); i < marketDays.Count; i++)
             {
                 var currentDay = marketDays[i];
                 var backlogDays = marketDays.Where(x => x.GetTradingOpenTimeUtc() < currentDay.GetSessionOpenTimeUtc()).TakeLast(LOOKBACK + 1).ToList();
                 _logger.LogInformation($"Processing day {currentDay.GetTradingOpenTimeUtc().ToShortDateString()}");
-                capitol = await ProcessDay(assets, currentDay, backlogDays, capitol);
+                var result = await ProcessDay(assets, currentDay, backlogDays, capitol);
+                capitol = result.RunningCapital;
+                results.Add(result);
                 _logger.LogInformation($"Running Capitol: {capitol}");
                 _logger.NewLine();
             }
@@ -53,15 +56,17 @@ namespace Denali.Processors.TrueFadeStrategy
             _logger.LogInformation($"TOTAL PROFIT: {capitol - 25000}");
         }
 
-        public async Task<decimal> ProcessDay(List<IAsset> assets, IIntervalCalendar currentDay, List<IIntervalCalendar> backlogDays, decimal capitolToTrade)
+        public async Task<DailyResult> ProcessDay(List<IAsset> assets, IIntervalCalendar currentDay, List<IIntervalCalendar> backlogDays, decimal capitolToTrade)
         {
             var screenedAssets = await _screener.ScreenTrueFade(assets, currentDay.GetTradingOpenTimeUtc(), backlogDays, 3);
             screenedAssets = screenedAssets.Take(100);
 
-            if (!screenedAssets.Any())
-                return capitolToTrade;
+            var result = new DailyResult(currentDay.GetTradingOpenTimeUtc());
 
-            var allocatedRecords = TrueFadeAllocater.Allocate(screenedAssets, capitolToTrade);
+            if (!screenedAssets.Any())
+                return result;
+
+            var allocatedRecords = TrueFadeAllocater.Allocate(screenedAssets, capitolToTrade, 3m);
 
             var tradeData = await _dataLayer.GetAggregateDataMulti(
                 allocatedRecords.Select(x => x.Symbol),
@@ -69,10 +74,8 @@ namespace Denali.Processors.TrueFadeStrategy
                 currentDay.GetTradingCloseTimeUtc(),
                 BarTimeFrame.Day);
 
-            decimal dailyProfit = 0;
             foreach (var record in allocatedRecords)
             {
-                decimal profit = 0;
                 if (tradeData.TryGetValue(record.Symbol, out var data))
                 {
                     if (data.Count == 0)
@@ -80,22 +83,27 @@ namespace Denali.Processors.TrueFadeStrategy
 
                     var bar = data.Last();
 
+                    // Pessimistic stoploss
                     if (bar.High >= bar.Open + record.AverageTrueRange)
                     {
-                        profit -= record.AverageTrueRange;
+                        record.PerStockProfit -= record.AverageTrueRange;
                     }
                     else
                     {
-                        profit += bar.Open - bar.Close;
+                        record.PerStockProfit += bar.Open - bar.Close;
                     }
 
-                    _logger.LogInformation($"{record.Symbol} {record.Price} ({record.Price * record.PositionSize}) ATR Multiple: {record.MultipleATR} Position: {record.PositionSize} Profit: {profit} ({profit * record.PositionSize})");
-                    dailyProfit += profit * record.PositionSize;
+                    record.TotalProfit = record.PerStockProfit * record.PositionSize;
+                    _logger.LogInformation($"{record.Symbol} {record.Price}, Position size: {record.PositionSize}, Total cost: {record.TotalCost}, Average volume {bar.Volume}, ATR: {record.AverageTrueRange}, ATR Multiple: {record.MultipleATR}, Per stock profit: {record.PerStockProfit}, Total profit: {record.TotalProfit}");
+                    result.TotalProfit += record.TotalProfit;
                 }     
             }
 
-            _logger.LogInformation($"Daily Profit: {dailyProfit}");
-            return capitolToTrade + dailyProfit;
+            result.TotalCost = allocatedRecords.Sum(x => x.TotalCost);
+            _logger.LogInformation($"Daily Cost: {result.TotalCost}");
+            _logger.LogInformation($"Daily Profit: {result.TotalProfit}");
+            result.RunningCapital = capitolToTrade + result.TotalProfit;
+            return result;
         }
     }
 }

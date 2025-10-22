@@ -3,18 +3,23 @@ using Denali.Services;
 using Denali.Services.Extensions;
 using Denali.Shared.Extensions;
 using Denali.TechnicalAnalysis;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denali.Processors.TrueFadeStrategy
 {
-    public record TrueFadeRecord(string Symbol, decimal Price, decimal MultipleATR, decimal AverageTrueRange)
+    public record TrueFadeRecord(string Symbol, decimal Price, decimal MultipleATR, decimal AverageTrueRange, decimal AverageVolume)
     {
         public int PositionSize { get; set; }
+        public decimal TotalCost { get; set; }
+        public decimal PerStockProfit { get; set; }
+        public decimal TotalProfit { get; set; }
+    }
+
+    public record DailyResult(DateTime Date)
+    {
+        public decimal TotalCost { get; set; }
+        public decimal TotalProfit { get; set; }
+        public decimal RunningCapital { get; set; }
+        public List<TrueFadeRecord> Trades { get; set; } = new List<TrueFadeRecord>();
     }
 
     public class TrueFadeScreener
@@ -50,21 +55,22 @@ namespace Denali.Processors.TrueFadeStrategy
 
                 var averageTrueRange = AverageTrueRange.CalculateAverageTrueRange(10, bars.Take(10));
                 var trueRange = AverageTrueRange.CalculateTrueRange(penUltimateBar, lastBar);
+                var averageVolume = bars.Average(x => x.Volume).RoundToMoney();
 
-                if (averageTrueRange == 0 || trueRange == 0)
+                if (averageTrueRange == 0 || trueRange == 0 || lastBar.Volume == 0)
                     continue;
 
                 var multiple = trueRange / averageTrueRange;
                 if (multiple > minimumATRMultiple)
                 {
-                    fadeRecords.Add(new TrueFadeRecord(data.Key, lastBar.Close, multiple.RoundToMoney(), averageTrueRange.RoundToMoney()));
+                    fadeRecords.Add(new TrueFadeRecord(data.Key, lastBar.Close, multiple.RoundToMoney(), averageTrueRange.RoundToMoney(), averageVolume));
                 }
             }
 
-            var rangeAssets = fadeRecords.Join(assets, x => x.Symbol, y => y.Symbol, (x, y) => new { x.Symbol, x.Price, x.MultipleATR, y.Shortable, x.AverageTrueRange });
+            var rangeAssets = fadeRecords.Join(assets, x => x.Symbol, y => y.Symbol, (x, y) => new { x.Symbol, x.Price, x.MultipleATR, y.Shortable, x.AverageTrueRange, x.AverageVolume });
             var ordered = rangeAssets.Where(x => x.Shortable).OrderByDescending(x => x.MultipleATR);
 
-            return ordered.Select(x => new TrueFadeRecord(x.Symbol, x.Price, x.MultipleATR, x.AverageTrueRange)).ToList();
+            return ordered.Select(x => new TrueFadeRecord(x.Symbol, x.Price, x.MultipleATR, x.AverageTrueRange, x.AverageVolume)).ToList();
         }
     }
 }
