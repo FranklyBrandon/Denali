@@ -58,15 +58,15 @@ namespace Denali.Services
             var response2 = await _alpacaDataClient.ListExchangesAsync();
             _logger.LogInformation($"Data client HTTP connected: {response2 != null}");
 
-            _logger.LogInformation("Initializing Alapca data streaming client...");
-            await InitializeDataStreamingClient();
+            //_logger.LogInformation("Initializing Alapca data streaming client...");
+            //await InitializeDataStreamingClient();
 
             _logger.LogInformation("Initializing Alpaca trading streaming client...");
             await InitializeStreamingClient();
         }
 
         private IAlpacaStreamingClient BuildStreamingclient() => _hostEnvironment.IsProduction()
-            ? Alpaca.Markets.Environments.Live.GetAlpacaStreamingClient(_paperSecretKey) 
+            ? Alpaca.Markets.Environments.Live.GetAlpacaStreamingClient(_liveSecretKey) 
             : Alpaca.Markets.Environments.Paper.GetAlpacaStreamingClient(_paperSecretKey);
 
         private IAlpacaDataStreamingClient BuildDataStreamingClient() => 

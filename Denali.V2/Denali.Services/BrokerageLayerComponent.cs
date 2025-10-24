@@ -16,9 +16,13 @@ namespace Denali.Services
             _logger = logger;
         }
 
-        public async Task<IOrder> SubmitOrder(NewOrderRequest order)
-        {
-            return await _alpacaService.AlpacaTradingClient.PostOrderAsync(order);
-        }
+        public async Task<IOrder> SubmitOrder(NewOrderRequest order) =>
+            await _alpacaService.AlpacaTradingClient.PostOrderAsync(order);
+
+        public void StreamTradeUpdates(Action<ITradeUpdate> action) =>
+            _alpacaService.AlpacaStreamingclient.OnTradeUpdate += action;
+
+        public async Task<IReadOnlyList<IPositionActionStatus>> CloseAllPositions() => 
+            await _alpacaService.AlpacaTradingClient.DeleteAllPositionsAsync();
     }
 }

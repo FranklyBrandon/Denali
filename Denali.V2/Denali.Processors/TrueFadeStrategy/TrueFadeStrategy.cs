@@ -1,183 +1,146 @@
 ﻿using Alpaca.Markets;
 using Denali.Services;
-using Denali.Services.Extensions;
-using Denali.Shared.Extensions;
-using Denali.TechnicalAnalysis;
+using Denali.Shared.Time;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace Denali.Processors.TrueFadeStrategy
 {
-   
-
     public class TrueFadeStrategy
     {
         private readonly DataLayerComponent _dataLayer;
+        private readonly BrokerageLayerComponent _brokerageLayer;
+        private readonly TrueFadeStrategySettings _settings;
         private readonly ILogger _logger;
 
-        private const int LOOKBACK = 14;
+        private readonly TrueFadeScreener _screener;
+        private readonly Dictionary<string, TrueFadePosition> _positions;
+        private ScheduledTask _scheduledTask;
+        private readonly FileService _fileService;
 
-        public TrueFadeStrategy(DataLayerComponent dataLayer, ILogger<TrueFadeStrategy> logger)
+        public TrueFadeStrategy(DataLayerComponent dataLayer, BrokerageLayerComponent brokerageLayer, FileService fileService, TrueFadeScreener screener, IOptions<TrueFadeStrategySettings> settings, ILogger<TrueFadeStrategy> logger)
         {
             _dataLayer = dataLayer;
+            _brokerageLayer = brokerageLayer;
+            _fileService = fileService;
+            _settings = settings.Value;
+            _screener = screener;
             _logger = logger;
+            _positions = new Dictionary<string, TrueFadePosition>();
+            
         }
-
-        public async Task ProcessRange(DateTime startDate, DateTime endDate, CancellationToken stoppingToken)
+        public async Task Process(DateTime dateTime)
         {
-            _logger.LogInformation($"True Fade HISTORIC RUN from {startDate.ToShortDateString()} to {endDate.ToShortDateString()}");
-            _logger.NewLine();
             await _dataLayer.Initialize();
-
             var assets = await _dataLayer.GetAllTradableAssets();
-            //assets = assets.Where(x => x.Symbol == "LPLA").ToList();
 
-            var pastDays = await _dataLayer.GetPastMarketDays(startDate.AddDays(-1), 4);
-            var forwardDays = await _dataLayer.GetMarketDays(startDate, endDate);
-            List<IIntervalCalendar> marketDays = new() { pastDays.Last() };
-            marketDays.AddRange(forwardDays);
+            var workingDays = await _dataLayer.GetMarketDays(dateTime.AddDays(-(_settings.LookBackMarketDays * 2)), dateTime);
+            var lookbackDays = workingDays.Where(x => x.GetTradingOpenTimeUtc().Date < dateTime.Date);
+            var today = workingDays.Where(x => x.GetTradingOpenTimeUtc().Date >= dateTime.Date).FirstOrDefault();
 
-            decimal totalProfit = 0;
-            for (int i = 1; i < marketDays.Count; i++)
+            if (today == null)
             {
-
-                var currentDay = marketDays[i];
-                var previousDay = marketDays[i - 1];
-                var backlogStart = previousDay.GetTradingOpenTimeUtc().AddDays(-15);
-
-                _logger.NewLine();
-                _logger.LogInformation($"Analyzing day {currentDay.GetTradingOpenTimeUtc().ToShortDateString()}");
-
-                var aggregateData = await _dataLayer.GetAggregateDataMulti(assets.Select(x => x.Symbol), backlogStart, currentDay.GetTradingOpenTimeUtc(), BarTimeFrame.Day);
-
-                List<TrueFadeRecord> ranges = new List<TrueFadeRecord>();
-                foreach (var data in aggregateData)
-                {
-                    var bars = data.Value;
-
-                    if (bars.Count < 10) 
-                        continue;
-
-                    var lastBar = bars.GetHistoricValue(1);
-                    var penUltimateBar = bars.GetHistoricValue(2);
-
-                    if (!lastBar.IsGreen() || lastBar.Open <= penUltimateBar.High || lastBar.Close >= 500m)
-                        continue;
-
-                    var averageTrueRange = AverageTrueRange.CalculateAverageTrueRange(10, bars.Take(10));
-                    var trueRange = AverageTrueRange.CalculateTrueRange(penUltimateBar, lastBar);
-
-                    if (averageTrueRange == 0 || trueRange == 0)
-                        continue;
-
-                    var multiple = trueRange / averageTrueRange;
-                    if (multiple > 3)
-                    {
-                        ranges.Add(new TrueFadeRecord(data.Key, lastBar.Close, multiple.RoundToMoney(), averageTrueRange.RoundToMoney(), 0));
-                    }
-                }
-
-                var rangeAssets = ranges.Join(assets, x => x.Symbol, y => y.Symbol, (x, y) => new { x.Symbol, x.Price, x.MultipleATR, y.Shortable, x.AverageTrueRange });
-                var ordered = rangeAssets.Where(x => x.Shortable).OrderByDescending(x => x.MultipleATR);
-
-                if (ordered.Count() <= 0)
-                    continue;
-
-                // Enter positions
-                decimal investment = 0;
-                List<TrueFadeRecord> positions = new List<TrueFadeRecord>();
-                foreach (var range in ordered)
-                {
-                    investment += range.Price;
-                    positions.Add(new TrueFadeRecord(range.Symbol, range.Price, range.MultipleATR, range.AverageTrueRange, 0));
-                    if (investment >= 25000)
-                        break;
-                }
-
-                if (positions.Count <= 0)
-                    continue;
-
-                var minuteData = await _dataLayer.GetAggregateDataMulti(positions.Select(x => x.Symbol), currentDay.GetTradingOpenTimeUtc(), currentDay.GetTradingCloseTimeUtc(), BarTimeFrame.Minute);
-                decimal dailyProfit = 0;
-                foreach (var position in positions)
-                {
-                    decimal profit = 0;
-                    var entryBar = aggregateData[position.Symbol].Last();
-                    if (!minuteData.TryGetValue(position.Symbol, out var minutes))
-                    {
-                        profit += entryBar.Open - entryBar.Close;
-                        dailyProfit += profit;
-                        _logger.LogInformation($"{position.Symbol} Price: {position.Price} ATR Multiplier: {position.MultipleATR} ATR: {position.AverageTrueRange} Profit: {profit}");
-                        break;
-                    }
-
-                    bool exited = false;
-                    decimal stopLoss = entryBar.Open + position.AverageTrueRange;
-                    decimal takeProfit = 0;
-
-                    if (position.AverageTrueRange >= 3)
-                    {
-                        takeProfit = entryBar.Open - 1;
-                    }
-
-                    foreach (var minute in minutes)
-                    {
-                        if (minute.High >= stopLoss)
-                        {
-                            profit += entryBar.Open - stopLoss;
-                            exited = true;
-                            break;
-                        }
-
-                        if (minute.Low <= takeProfit)
-                        {
-                            profit += 1;
-                            exited = true;
-                            break;
-                        }
-
-                        if (minute.Low <= entryBar.Open - position.AverageTrueRange / 2)
-                        {
-                            stopLoss = entryBar.Open;
-                        }
-                        if (minute.Low <= entryBar.Open - position.AverageTrueRange)
-                        {
-                            stopLoss = entryBar.Open - position.AverageTrueRange / 2;
-                        }
-                        if (minute.Low <= entryBar.Open - position.AverageTrueRange - position.AverageTrueRange / 2)
-                        {
-                            stopLoss = entryBar.Open - position.AverageTrueRange;
-                        }
-                    }
-
-                    if(!exited)
-                    {
-                        profit += entryBar.Open - entryBar.Close;
-                    }
-                    //if (entryBar.High - entryBar.Open >= position.averageTrueRange)
-                    //{
-                    //    profit -= position.averageTrueRange;
-                    //}
-                    //else
-                    //{
-                    //    profit += entryBar.Open - entryBar.Close;
-                    //}
-
-                   
-                    dailyProfit += profit;
-                    _logger.LogInformation($"{position.Symbol} Price: {position.Price} ATR Multiplier: {position.MultipleATR} ATR: {position.AverageTrueRange} Profit: {profit}");
-                }
-
-                _logger.LogInformation($"Total Profit: {dailyProfit} Total investment: {investment}");
-                totalProfit += dailyProfit;
+                _logger.LogError($"No trading session today {dateTime.ToShortDateString()}");
+                return;
             }
 
-            _logger.NewLine();
-            _logger.LogInformation($"All time profit {totalProfit}.");
+            _logger.LogInformation("Screening assets...");
+            var positionsToEnter = await ScreenAssets(assets, today, lookbackDays.TakeLast(_settings.LookBackMarketDays).ToList(), _settings.CapitalToTrade);
+            await EnterPositions(positionsToEnter);
+
+            var closeTime = today.GetTradingCloseTimeUtc().AddMinutes(-10);
+            _logger.LogInformation($"Scheduling close for {closeTime.ToShortTimeString()}");
+            _scheduledTask = new ScheduledTask(
+                closeTime,
+                () => ClosePositions(closeTime)
+            );
+        }
+
+        public async Task<IEnumerable<TrueFadePosition>> ScreenAssets(List<IAsset> assets, IIntervalCalendar currentDay, List<IIntervalCalendar> backlogDays, decimal capitolToTrade)
+        {
+            var screenedAssets = await _screener.ScreenTrueFade(assets, currentDay.GetTradingOpenTimeUtc(), backlogDays, _settings.MinimumAverageTrueRangeMultiple, _settings.MaxAssetCount);
+
+            if (!screenedAssets.Any())
+                return new List<TrueFadePosition>();
+
+            return TrueFadeAllocater.Allocate(screenedAssets, capitolToTrade, _settings.MaximumVolumePercentage);
+        }
+
+        public async Task EnterPositions(IEnumerable<TrueFadePosition> positions)
+        {
+            _brokerageLayer.StreamTradeUpdates(HandleTradeUpdate);
+
+            List<Task> entryOrders = new List<Task>();
+            foreach (var position in positions)
+            {
+                var entryRequest = new NewOrderRequest(
+                    symbol: position.Signal.Symbol,
+                    quantity: position.Signal.PositionSize,
+                    side: OrderSide.Sell,
+                    type: OrderType.Market,
+                    duration: TimeInForce.Opg
+                );
+
+                _positions.Add(position.Signal.Symbol, position);
+                _logger.LogInformation($"Entering {position.Signal.Symbol} {position.Signal.EstimatedPrice}, Position size: {position.Signal.PositionSize}, Average volume {position.Signal.AverageVolume}, ATR: {position.Signal.AverageTrueRange}, ATR Multiple: {position.Signal.MultipleATR}");
+                entryOrders.Add(_brokerageLayer.SubmitOrder(entryRequest));
+            }
+
+            await Task.WhenAll(entryOrders);
+        }
+
+        public async Task ClosePositions(DateTime today)
+        {
+            await _brokerageLayer.CloseAllPositions();
+            await _fileService.WriteJSONResourceToFile($"TrueFade-{today.Year}-{today.Month}-{today.Day}", _positions);
+        }
+
+        private async void HandleTradeUpdate(ITradeUpdate update)
+        {
+            if (update.Event == TradeEvent.Fill)
+            {
+                var filledOrder = update.Order;
+                _positions[filledOrder.Symbol].FilledOrders.Add(filledOrder);
+
+                // Entry Sell order
+                if (filledOrder.OrderSide == OrderSide.Sell)
+                {
+                    if (!filledOrder.AverageFillPrice.HasValue)
+                    {
+                        _logger.LogError($"No fill price for asset {filledOrder.Symbol}");
+                        return;
+                    }
+
+                    if (!filledOrder.Quantity.HasValue)
+                    {
+                        _logger.LogError($"No quantity for asset {filledOrder.Symbol}");
+                        return;
+                    }
+
+                    var entryPrice = filledOrder.AverageFillPrice.Value;
+                    var entryQunatity = filledOrder.Quantity.Value;
+                    var stopPrice = _positions[filledOrder.Symbol].Signal.AverageTrueRange + entryPrice;
+
+                    _logger.LogInformation($"SELL filled {filledOrder.Symbol}, Average Price: {filledOrder.AverageFillPrice.Value}, Quantity: {filledOrder.Quantity.Value}, StopLoss: {stopPrice}");
+
+                    var stopLossOrder = new NewOrderRequest(
+                        symbol: filledOrder.Symbol,
+                        quantity: OrderQuantity.Fractional(entryQunatity),
+                        side: OrderSide.Buy,
+                        type: OrderType.Stop,
+                        duration: TimeInForce.Gtc
+                    )
+                    {
+                        StopPrice = stopPrice
+                    };
+
+                    await _brokerageLayer.SubmitOrder(stopLossOrder);
+                }
+                else
+                {
+                    _logger.LogInformation($"BUY filled {filledOrder.Symbol}, Average Price: {filledOrder.AverageFillPrice.Value}, Quantity: {filledOrder.Quantity.Value}");
+                }
+            }
         }
     }
 }

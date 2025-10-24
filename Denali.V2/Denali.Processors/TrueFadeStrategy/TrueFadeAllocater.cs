@@ -2,7 +2,7 @@
 {
     public static class TrueFadeAllocater
     {
-        public static IEnumerable<TrueFadeRecord> Allocate(IEnumerable<TrueFadeRecord> records, decimal capitalToTrade, decimal maximumVolumePercentage)
+        public static IEnumerable<TrueFadePosition> Allocate(IEnumerable<TrueFadeSignal> records, decimal capitalToTrade, decimal maximumVolumePercentage)
         {
             bool allocate = true;
             while (allocate)
@@ -13,11 +13,10 @@
                     if ((record.PositionSize + 1) / record.AverageVolume > maximumVolumePercentage / 100)
                         continue;
 
-                    if (capitalToTrade > record.Price)
+                    if (capitalToTrade > record.EstimatedPrice)
                     {
                         record.PositionSize++;
-                        record.TotalCost = record.Price * record.PositionSize;
-                        capitalToTrade -= record.Price;
+                        capitalToTrade -= record.EstimatedPrice;
                         allocatedThisRound = true;
                     }
                     else
@@ -32,7 +31,7 @@
                     allocate = false;
             }
 
-            return records;
+            return records.Select(x => new TrueFadePosition(x));
         }
     }
 }

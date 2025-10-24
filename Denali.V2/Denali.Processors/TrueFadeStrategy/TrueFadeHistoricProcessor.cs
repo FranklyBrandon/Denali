@@ -58,8 +58,7 @@ namespace Denali.Processors.TrueFadeStrategy
 
         public async Task<DailyResult> ProcessDay(List<IAsset> assets, IIntervalCalendar currentDay, List<IIntervalCalendar> backlogDays, decimal capitolToTrade)
         {
-            var screenedAssets = await _screener.ScreenTrueFade(assets, currentDay.GetTradingOpenTimeUtc(), backlogDays, 3);
-            screenedAssets = screenedAssets.Take(100);
+            var screenedAssets = await _screener.ScreenTrueFade(assets, currentDay.GetTradingOpenTimeUtc(), backlogDays, 3, 100);
 
             var result = new DailyResult(currentDay.GetTradingOpenTimeUtc());
 
@@ -69,14 +68,14 @@ namespace Denali.Processors.TrueFadeStrategy
             var allocatedRecords = TrueFadeAllocater.Allocate(screenedAssets, capitolToTrade, 3m);
 
             var tradeData = await _dataLayer.GetAggregateDataMulti(
-                allocatedRecords.Select(x => x.Symbol),
+                allocatedRecords.Select(x => x.Signal.Symbol),
                 backlogDays.Last().GetTradingOpenTimeUtc(),
                 currentDay.GetTradingCloseTimeUtc(),
                 BarTimeFrame.Day);
 
             foreach (var record in allocatedRecords)
             {
-                if (tradeData.TryGetValue(record.Symbol, out var data))
+                if (tradeData.TryGetValue(record.Signal.Symbol, out var data))
                 {
                     if (data.Count == 0)
                         continue;
@@ -84,22 +83,21 @@ namespace Denali.Processors.TrueFadeStrategy
                     var bar = data.Last();
 
                     // Pessimistic stoploss
-                    if (bar.High >= bar.Open + record.AverageTrueRange)
+                    if (bar.High >= bar.Open + record.Signal.AverageTrueRange)
                     {
-                        record.PerStockProfit -= record.AverageTrueRange;
+                        record.PerStockProfit -= record.Signal.AverageTrueRange;
                     }
                     else
                     {
                         record.PerStockProfit += bar.Open - bar.Close;
                     }
 
-                    record.TotalProfit = record.PerStockProfit * record.PositionSize;
-                    _logger.LogInformation($"{record.Symbol} {record.Price}, Position size: {record.PositionSize}, Total cost: {record.TotalCost}, Average volume {bar.Volume}, ATR: {record.AverageTrueRange}, ATR Multiple: {record.MultipleATR}, Per stock profit: {record.PerStockProfit}, Total profit: {record.TotalProfit}");
+                    record.TotalProfit = record.PerStockProfit * record.Signal.PositionSize;
+                    _logger.LogInformation($"{record.Signal.Symbol} {record.Signal.EstimatedPrice}, Position size: {record.Signal.PositionSize}, Average volume {bar.Volume}, ATR: {record.Signal.AverageTrueRange}, ATR Multiple: {record.Signal.MultipleATR}, Per stock profit: {record.PerStockProfit}, Total profit: {record.TotalProfit}");
                     result.TotalProfit += record.TotalProfit;
                 }     
             }
 
-            result.TotalCost = allocatedRecords.Sum(x => x.TotalCost);
             _logger.LogInformation($"Daily Cost: {result.TotalCost}");
             _logger.LogInformation($"Daily Profit: {result.TotalProfit}");
             result.RunningCapital = capitolToTrade + result.TotalProfit;
