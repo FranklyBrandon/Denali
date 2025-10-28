@@ -92,8 +92,8 @@ namespace Denali.Processors.TrueFadeStrategy
                         record.PerStockProfit += bar.Open - bar.Close;
                     }
 
-                    record.TotalProfit = record.PerStockProfit * record.Signal.PositionSize;
-                    _logger.LogInformation($"{record.Signal.Symbol} {record.Signal.EstimatedPrice}, Position size: {record.Signal.PositionSize}, Average volume {bar.Volume}, ATR: {record.Signal.AverageTrueRange}, ATR Multiple: {record.Signal.MultipleATR}, Per stock profit: {record.PerStockProfit}, Total profit: {record.TotalProfit}");
+                    //record.TotalProfit = record.PerStockProfit * record.Signal.PositionSize;
+                    //_logger.LogInformation($"{record.Signal.Symbol} {record.Signal.EstimatedPrice}, Position size: {record.Signal.PositionSize}, Average volume {bar.Volume}, ATR: {record.Signal.AverageTrueRange}, ATR Multiple: {record.Signal.MultipleATR}, Per stock profit: {record.PerStockProfit}, Total profit: {record.TotalProfit}");
                     result.TotalProfit += record.TotalProfit;
                 }     
             }

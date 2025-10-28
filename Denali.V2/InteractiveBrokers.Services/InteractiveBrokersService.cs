@@ -10,6 +10,8 @@ namespace InteractiveBrokers.Services
         Task<HistoricAggregateResponse> GetHistoricAggregates(Contract contract, DateTime startDateTime);
         Task<HistoricAggregateResponse> GetHistoricAggregatesBeta(Contract contract, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false);
         Task<List<Contract>> GetContractsByExchanges(params string[] exchanges);
+        Task<List<MarketSnapshot>> GetMarketSnapshots(IEnumerable<int> conIds);
+        Task<Accounts> GetAccounts();
     }
 
     public class InteractiveBrokersService : IInteractiveBrokersService
@@ -25,8 +27,8 @@ namespace InteractiveBrokers.Services
 
         public async Task InitializeHttpAuth()
         {
-            _logger.LogInformation("Initializing IB gateway HTTP authentication");
-            _logger.LogInformation("Initializng brokerage auth...");
+            _logger.LogInformation("=== Initializing IB gateway ===");
+            _logger.LogInformation("Initializng brokerage session...");
             await _httpClient.BrokerageInit();
             _logger.LogInformation("Initializng HMDS bridge...");
             await _httpClient.HMDSInit();
@@ -35,13 +37,12 @@ namespace InteractiveBrokers.Services
             _logger.LogInformation($"Session Id: {ping.session}");
             _logger.LogInformation($"IsServer Status: [authenticated: {ping.iserver.authStatus.authenticated}, connected: {ping.iserver.authStatus.connected}]");
             _logger.LogInformation($"HMDS Bridge Status: [authenticated: {ping.hmds.authStatus.authenticated}, connected: {ping.hmds.authStatus.connected}]");
-            _logger.LogInformation("Completed IB gateway HTTP authentication");
+            _logger.LogInformation("=== Completed IB gateway authentication ===");
         }
 
-        public async Task<HistoricAggregateResponse> GetHistoricAggregates(Contract contract, DateTime startDateTime)
-        {
-            return await _httpClient.GetHistoricAggregates(contract, startDateTime);
-        }
+        public async Task<HistoricAggregateResponse> GetHistoricAggregates(Contract contract, DateTime startDateTime) =>
+            await _httpClient.GetHistoricAggregates(contract, startDateTime);
+
 
         public async Task<HistoricAggregateResponse> GetHistoricAggregatesBeta(Contract contract, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false)
         {
@@ -61,9 +62,10 @@ namespace InteractiveBrokers.Services
 
            return contracts.DistinctBy( x => new {x.conid, x.ticker}).ToList();
         }
-        public async Task PingServer()
-        {
-            await _httpClient.Ping();
-        }
+        public async Task PingServer() => await _httpClient.Ping();
+
+        public async Task<List<MarketSnapshot>> GetMarketSnapshots(IEnumerable<int> conIds) => await _httpClient.GetMarketSnapshots(conIds);
+
+        public async Task<Accounts> GetAccounts() => await _httpClient.GetAccounts();
     }
 }

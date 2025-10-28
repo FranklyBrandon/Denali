@@ -2,21 +2,22 @@
 {
     public static class TrueFadeAllocater
     {
-        public static IEnumerable<TrueFadePosition> Allocate(IEnumerable<TrueFadeSignal> records, decimal capitalToTrade, decimal maximumVolumePercentage)
+        public static IEnumerable<TrueFadePosition> Allocate(IEnumerable<TrueFadeSignal> signals, decimal capitalToTrade, decimal maximumVolumePercentage)
         {
+            IEnumerable<TrueFadePosition> positions = signals.Select(x => new TrueFadePosition(x)).ToList();
             bool allocate = true;
             while (allocate)
             {
                 bool allocatedThisRound = false;
-                foreach (var record in records)
+                foreach (var position in positions)
                 {
-                    if ((record.PositionSize + 1) / record.AverageVolume > maximumVolumePercentage / 100)
+                    if ((position.PositionSize + 1) / position.Signal.AverageVolume > maximumVolumePercentage / 100)
                         continue;
 
-                    if (capitalToTrade > record.EstimatedPrice)
+                    if (capitalToTrade > position.Signal.EstimatedPrice)
                     {
-                        record.PositionSize++;
-                        capitalToTrade -= record.EstimatedPrice;
+                        position.PositionSize++;
+                        capitalToTrade -= position.Signal.EstimatedPrice;
                         allocatedThisRound = true;
                     }
                     else
@@ -31,7 +32,7 @@
                     allocate = false;
             }
 
-            return records.Select(x => new TrueFadePosition(x));
+            return positions;
         }
     }
 }

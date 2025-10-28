@@ -14,5 +14,6 @@ namespace Denali.Processors.TrueFadeStrategy
         public int MinimumAverageTrueRangeMultiple { get; set; }
         public int MaxAssetCount { get; set; }
         public int MaximumVolumePercentage { get; set; }
+        public int MinimumAverageVolume { get; set; }
     }
 }

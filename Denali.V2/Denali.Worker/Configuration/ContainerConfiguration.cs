@@ -52,6 +52,8 @@ namespace Denali.Worker.Configuration
             services.AddScoped<TrueFadeHistoricProcessor>();
             services.AddScoped<TrueFadeScreener>();
 
+            services.AddScoped<TrueFadeIBProcessor>();
+
 
 
             // Register a service provider so we can create scopes and resolve instances dynamically

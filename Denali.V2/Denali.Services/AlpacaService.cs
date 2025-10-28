@@ -61,8 +61,8 @@ namespace Denali.Services
             //_logger.LogInformation("Initializing Alapca data streaming client...");
             //await InitializeDataStreamingClient();
 
-            _logger.LogInformation("Initializing Alpaca trading streaming client...");
-            await InitializeStreamingClient();
+            //_logger.LogInformation("Initializing Alpaca trading streaming client...");
+            //await InitializeStreamingClient();
         }
 
         private IAlpacaStreamingClient BuildStreamingclient() => _hostEnvironment.IsProduction()

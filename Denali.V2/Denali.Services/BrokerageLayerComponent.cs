@@ -23,6 +23,6 @@ namespace Denali.Services
             _alpacaService.AlpacaStreamingclient.OnTradeUpdate += action;
 
         public async Task<IReadOnlyList<IPositionActionStatus>> CloseAllPositions() => 
-            await _alpacaService.AlpacaTradingClient.DeleteAllPositionsAsync();
+            await _alpacaService.AlpacaTradingClient.DeleteAllPositionsAsync(new DeleteAllPositionsRequest { CancelOrders = true });
     }
 }

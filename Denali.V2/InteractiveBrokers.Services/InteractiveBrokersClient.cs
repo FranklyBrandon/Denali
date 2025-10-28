@@ -15,6 +15,8 @@ namespace InteractiveBrokers.Services
         Task<HistoricAggregateResponse> GetHistoricAggregates(Contract contract, DateTime startDateTime);
         Task<HistoricAggregateResponse> GetHistoricAggregatesBeta(int conId, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false);
         Task<List<Contract>> GetAllContractsByExchange(string exchange);
+        Task<List<MarketSnapshot>> GetMarketSnapshots(IEnumerable<int> conIds);
+        Task<Accounts> GetAccounts();
     }
 
     public class InteractiveBrokersClient : IInteractiveBrokersClient
@@ -90,6 +92,31 @@ namespace InteractiveBrokers.Services
         {
             var url = $"{_settings.ContractIdsByExchange}?exchange={exchange}";
             return await Get<List<Contract>>(url);
+        }
+
+        public async Task<List<MarketSnapshot>>  GetMarketSnapshots(IEnumerable<int> conIds)
+        {
+            var url = $"{_settings.MarketSnapshot}?conids={string.Join(",", conIds)}&fields=7636,7644"; // Shortable status fields
+
+            List<MarketSnapshot> marketSnapshots = new List<MarketSnapshot>();
+            bool waitOnFields = true;
+            do
+            {
+                marketSnapshots = await Get<List<MarketSnapshot>>(url);
+                var populatedStatus = marketSnapshots.All(x => !string.IsNullOrWhiteSpace(x.ShortableStatus));
+                var allKnownStatus = marketSnapshots.All(x => !string.Equals(x.ShortableStatus, "unknown shortable", StringComparison.CurrentCultureIgnoreCase));
+                if (populatedStatus && allKnownStatus)
+                    waitOnFields = false;
+            }
+            while (waitOnFields);
+
+            return marketSnapshots;
+        }
+
+        public async Task<Accounts> GetAccounts()
+        {
+            var url = _settings.Accounts;
+            return await Get<Accounts>(url);
         }
 
         private async Task<T> Get<T>(string url)

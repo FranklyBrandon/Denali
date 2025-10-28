@@ -75,14 +75,14 @@ namespace Denali.Processors.TrueFadeStrategy
             {
                 var entryRequest = new NewOrderRequest(
                     symbol: position.Signal.Symbol,
-                    quantity: position.Signal.PositionSize,
+                    quantity: 0,
                     side: OrderSide.Sell,
                     type: OrderType.Market,
-                    duration: TimeInForce.Opg
+                    duration: TimeInForce.Gtc
                 );
 
                 _positions.Add(position.Signal.Symbol, position);
-                _logger.LogInformation($"Entering {position.Signal.Symbol} {position.Signal.EstimatedPrice}, Position size: {position.Signal.PositionSize}, Average volume {position.Signal.AverageVolume}, ATR: {position.Signal.AverageTrueRange}, ATR Multiple: {position.Signal.MultipleATR}");
+                //_logger.LogInformation($"Entering {position.Signal.Symbol} {position.Signal.EstimatedPrice}, Position size: {position.Signal.PositionSize}, Average volume {position.Signal.AverageVolume}, ATR: {position.Signal.AverageTrueRange}, ATR Multiple: {position.Signal.MultipleATR}");
                 entryOrders.Add(_brokerageLayer.SubmitOrder(entryRequest));
             }
 
@@ -91,6 +91,7 @@ namespace Denali.Processors.TrueFadeStrategy
 
         public async Task ClosePositions(DateTime today)
         {
+            _logger.LogInformation("Liquidating all open orders");
             await _brokerageLayer.CloseAllPositions();
             await _fileService.WriteJSONResourceToFile($"TrueFade-{today.Year}-{today.Month}-{today.Day}", _positions);
         }
@@ -100,7 +101,7 @@ namespace Denali.Processors.TrueFadeStrategy
             if (update.Event == TradeEvent.Fill)
             {
                 var filledOrder = update.Order;
-                _positions[filledOrder.Symbol].FilledOrders.Add(filledOrder);
+                //_positions[filledOrder.Symbol].FilledOrders.Add(filledOrder);
 
                 // Entry Sell order
                 if (filledOrder.OrderSide == OrderSide.Sell)

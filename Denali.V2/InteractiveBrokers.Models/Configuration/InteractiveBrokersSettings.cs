@@ -17,5 +17,7 @@ namespace InteractiveBrokers.Models.Configuration
         public string HistoricAggregate { get; set; }
         public string HistoricAggregateBeta { get; set; }
         public string ContractIdsByExchange { get; set; }
+        public string MarketSnapshot { get; set; }
+        public string Accounts { get; set; }
     }
 }
