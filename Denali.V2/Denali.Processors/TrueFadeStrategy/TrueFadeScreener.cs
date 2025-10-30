@@ -16,17 +16,12 @@ namespace Denali.Processors.TrueFadeStrategy
     public record TrueFadePosition(TrueFadeSignal Signal)
     {
         public int PositionSize { get; set; }
-        public decimal TotalCost { get; set; }
+        public decimal Price { get; set; }
+        public decimal TotalPrice { get; set; }
+        public decimal Commision {  get; set; }
         public decimal PerStockProfit { get; set; }
-        public decimal TotalProfit { get; set; }
-    }
-
-    public record DailyResult(DateTime Date)
-    {
-        public decimal TotalCost { get; set; }
-        public decimal TotalProfit { get; set; }
-        public decimal RunningCapital { get; set; }
-        public List<TrueFadeSignal> Trades { get; set; } = new List<TrueFadeSignal>();
+        public decimal TotalProfit { get; set; } // does not include commision
+        public decimal GrossProfit { get; set; } // does include commision
     }
 
     public class TrueFadeScreener

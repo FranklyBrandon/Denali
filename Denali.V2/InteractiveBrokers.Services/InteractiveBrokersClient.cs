@@ -15,7 +15,7 @@ namespace InteractiveBrokers.Services
         Task<HistoricAggregateResponse> GetHistoricAggregates(Contract contract, DateTime startDateTime);
         Task<HistoricAggregateResponse> GetHistoricAggregatesBeta(int conId, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false);
         Task<List<Contract>> GetAllContractsByExchange(string exchange);
-        Task<List<MarketSnapshot>> GetMarketSnapshots(IEnumerable<int> conIds);
+        Task<List<MarketSnapshot>> GetShortableStatusSnapshot(IEnumerable<int> conIds);
         Task<Accounts> GetAccounts();
     }
 
@@ -94,7 +94,7 @@ namespace InteractiveBrokers.Services
             return await Get<List<Contract>>(url);
         }
 
-        public async Task<List<MarketSnapshot>>  GetMarketSnapshots(IEnumerable<int> conIds)
+        public async Task<List<MarketSnapshot>>  GetShortableStatusSnapshot(IEnumerable<int> conIds)
         {
             var url = $"{_settings.MarketSnapshot}?conids={string.Join(",", conIds)}&fields=7636,7644"; // Shortable status fields
 

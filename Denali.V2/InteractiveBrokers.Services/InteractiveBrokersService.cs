@@ -10,7 +10,7 @@ namespace InteractiveBrokers.Services
         Task<HistoricAggregateResponse> GetHistoricAggregates(Contract contract, DateTime startDateTime);
         Task<HistoricAggregateResponse> GetHistoricAggregatesBeta(Contract contract, DateTime startDateTime, string period = "1d", string bar = "mins", string barType = "Last", bool outsideRth = false);
         Task<List<Contract>> GetContractsByExchanges(params string[] exchanges);
-        Task<List<MarketSnapshot>> GetMarketSnapshots(IEnumerable<int> conIds);
+        Task<List<MarketSnapshot>> GetShortableStatusSnapshot(IEnumerable<int> conIds);
         Task<Accounts> GetAccounts();
     }
 
@@ -64,7 +64,7 @@ namespace InteractiveBrokers.Services
         }
         public async Task PingServer() => await _httpClient.Ping();
 
-        public async Task<List<MarketSnapshot>> GetMarketSnapshots(IEnumerable<int> conIds) => await _httpClient.GetMarketSnapshots(conIds);
+        public async Task<List<MarketSnapshot>> GetShortableStatusSnapshot(IEnumerable<int> conIds) => await _httpClient.GetShortableStatusSnapshot(conIds);
 
         public async Task<Accounts> GetAccounts() => await _httpClient.GetAccounts();
     }

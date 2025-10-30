@@ -20,17 +20,14 @@ namespace Denali.Worker
             using (var scope = _provider.CreateScope())
             {
                 /*
-                var service = scope.ServiceProvider.GetService<TrueFadeStrategy>();
+                var service = scope.ServiceProvider.GetService<TrueFadeIBProcessor>();
                 await service.Process(DateTime.UtcNow);
                 */
 
-                var service = scope.ServiceProvider.GetService<TrueFadeIBProcessor>();
-                await service.Process(new(2025, 10, 23));
 
 
-
-                //var service = scope.ServiceProvider.GetService<TrueFadeHistoricProcessor>();
-                //await service.ProcessRange(new(2024, 1, 1), new(2025, 10, 21));
+                var service = scope.ServiceProvider.GetService<TrueFadeIBHistoricProcessor>();
+                await service.ProcessRange(new(2024, 10, 29), new(2025, 10, 29));
             }
         }
     }

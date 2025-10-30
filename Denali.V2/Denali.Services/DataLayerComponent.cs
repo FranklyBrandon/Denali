@@ -37,11 +37,19 @@ namespace Denali.Services
                 AssetClass = AssetClass.UsEquity,
                 AssetStatus = AssetStatus.Active
             };
+            var AmexAssetRequest = new AssetsRequest
+            {
+                Exchange = Exchange.Amex,
+                AssetClass = AssetClass.UsEquity,
+                AssetStatus = AssetStatus.Active
+            };
 
             var nyseAssets = await _alpacaService.AlpacaTradingClient.ListAssetsAsync(NyseAssetRequest);
             var nasdaqAssets = await _alpacaService.AlpacaTradingClient.ListAssetsAsync(NasdaqAssetRequest);
+            var amexAssets = await _alpacaService.AlpacaTradingClient.ListAssetsAsync(AmexAssetRequest);
             return nyseAssets.Select(x => x)
                 .Concat(nasdaqAssets.Select(x => x))
+                .Concat(amexAssets.Select(x => x))
                 .Where(x => x.IsTradable)
                 .Distinct()
                 .ToList();
