@@ -1,4 +1,5 @@
-﻿using Denali.Processors.DenaliClimbStrategy;
+﻿using Alpaca.Markets;
+using Denali.Processors.DenaliClimbStrategy;
 using Denali.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,7 @@ namespace Denali.API.Controllers
             var currentMarketDay = marketBacklogDays.Last();
             var assets = await _dataLayer.GetAllTradableAssets();
 
-            return await _gapUpScreener.GetGapUpStocks(previousMarketDay, currentMarketDay, assets, 10m, 3);
+            return await _gapUpScreener.GetGapUpBetween(previousMarketDay.GetTradingCloseTimeUtc(), currentMarketDay.GetTradingOpenTimeUtc().AddMinutes(-3), assets, 10m, 3);
         }
     }
 }

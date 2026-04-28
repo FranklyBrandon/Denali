@@ -2,6 +2,7 @@
 using Denali.Processors;
 using Denali.Processors.DenaliClimbStrategy;
 using Denali.Processors.DenaliDescentStrategy;
+using Denali.Processors.GapUpFadeStrategy;
 using Denali.Processors.TrueFadeStrategy;
 using Denali.Services;
 using InteractiveBrokers.Models.Configuration;
@@ -52,6 +53,13 @@ namespace Denali.Worker.Configuration
             services.AddScoped<TrueFadeScreener>();
 
             services.AddScoped<TrueFadeIBProcessor>();
+
+            services.AddScoped<GapUpFadeHistoricProcessor>();
+            services.AddScoped<GapUpFadeAllocator>();
+
+            services.AddScoped<MomentumScreen>();
+
+            services.AddScoped<TimeofDayProcessor>();
 
 
 

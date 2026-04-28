@@ -100,13 +100,17 @@ namespace InteractiveBrokers.Services
 
             List<MarketSnapshot> marketSnapshots = new List<MarketSnapshot>();
             bool waitOnFields = true;
+            int count = 0;
             do
             {
                 marketSnapshots = await Get<List<MarketSnapshot>>(url);
                 var populatedStatus = marketSnapshots.All(x => !string.IsNullOrWhiteSpace(x.ShortableStatus));
                 var allKnownStatus = marketSnapshots.All(x => !string.Equals(x.ShortableStatus, "unknown shortable", StringComparison.CurrentCultureIgnoreCase));
-                if (populatedStatus && allKnownStatus)
+                count++;
+                if ((populatedStatus && allKnownStatus) || count == 10)
                     waitOnFields = false;
+                else
+                    await Task.Delay(1000);
             }
             while (waitOnFields);
 

@@ -45,10 +45,12 @@ namespace Denali.Processors.TrueFadeStrategy
             await _dataLayer.Initialize();
             _logger.NewLine();
 
+
             _logger.LogInformation("Fetching account info...");
             var account = await _ibService.GetAccounts();
             _logger.LogInformation($"Account Id: {account.selectedAccount}, IsPaper: {account.isPaper}");
             _logger.NewLine();
+
         }
 
         public async Task<MarketDayContext> GetMarketDays(DateTime dateTime)
@@ -102,7 +104,7 @@ namespace Denali.Processors.TrueFadeStrategy
             if (!screenedAssets.Any())
             {
                 _logger.LogError("No assets to trade");
-                throw new ApplicationException("No assets to trade");
+                return new List<TrueFadePosition>();
             }
 
             var mergedAssets = screenedAssets.Join(assetContext.IBAssets, x => x.Symbol, y => y.ticker, (x, y) =>
@@ -120,14 +122,14 @@ namespace Denali.Processors.TrueFadeStrategy
             _logger.LogInformation($"Assets ready to allocate: {assetsToAllocate.Count()}");
             _logger.NewLine();
 
-            if (!assetsToAllocate.Any())
+            if (!mergedAssets.Any())
             {
                 _logger.LogError("No assets to allocate");
-                throw new ApplicationException("No assets to allocate");
+                return new List<TrueFadePosition>();
             }        
 
             _logger.LogInformation($"Allocating capitol {capitalToTrade}");
-            var allocatedAssets = TrueFadeAllocater.Allocate(assetsToAllocate, capitalToTrade, _settings.MaximumVolumePercentage);
+            var allocatedAssets = TrueFadeAllocater.Allocate(mergedAssets, capitalToTrade, _settings.MaximumVolumePercentage);
             _logger.NewLine();
 
             if (logPositions)

@@ -108,6 +108,9 @@ namespace Denali.Processors.TrueFadeStrategy
                 if (!lastBar.IsGreen() || lastBar.Open <= penUltimateBar.High || lastBar.Close >= 500m)
                     continue;
 
+                if (lastBar.High - lastBar.Close < lastBar.Close - lastBar.Open)
+                    continue;
+
                 var averageTrueRange = AverageTrueRange.CalculateAverageTrueRange(marketDaysLookback.Count, bars.Take(marketDaysLookback.Count));
                 var trueRange = AverageTrueRange.CalculateTrueRange(penUltimateBar, lastBar);
                 var averageVolume = bars.Average(x => x.Volume).RoundToMoney();

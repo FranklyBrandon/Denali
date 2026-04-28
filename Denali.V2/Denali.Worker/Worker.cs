@@ -1,5 +1,7 @@
+using Denali.Processors;
 using Denali.Processors.DenaliClimbStrategy;
 using Denali.Processors.DenaliDescentStrategy;
+using Denali.Processors.GapUpFadeStrategy;
 using Denali.Processors.TrueFadeStrategy;
 
 namespace Denali.Worker
@@ -24,10 +26,19 @@ namespace Denali.Worker
                 await service.Process(DateTime.UtcNow);
                 */
 
-
-
+                /*
                 var service = scope.ServiceProvider.GetService<TrueFadeIBHistoricProcessor>();
-                await service.ProcessRange(new(2024, 10, 29), new(2025, 10, 29));
+                await service.ProcessRange(new(2024, 1, 1), new(2025, 11, 14));
+                */
+
+                var service = scope.ServiceProvider.GetService<TimeofDayProcessor>();
+                await service.ProcessRange(new(2021, 1, 1), new(2022, 1, 1));
+
+
+                /*
+                var service = scope.ServiceProvider.GetService<GapUpFadeHistoricProcessor>();
+                await service.ProcessRange(new(2025, 1, 1), new(2025, 10, 31));
+                */
             }
         }
     }
