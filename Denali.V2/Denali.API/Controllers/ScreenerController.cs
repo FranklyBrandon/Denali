@@ -27,7 +27,7 @@ namespace Denali.API.Controllers
             var currentMarketDay = marketBacklogDays.Last();
             var assets = await _dataLayer.GetAllTradableAssets();
 
-            return await _gapUpScreener.GetGapUpBetween(previousMarketDay.GetTradingCloseTimeUtc(), currentMarketDay.GetTradingOpenTimeUtc().AddMinutes(-3), assets, 10m, 3);
+            return (await _gapUpScreener.GetGapUpBetween(previousMarketDay.GetTradingCloseTimeUtc(), currentMarketDay.GetTradingOpenTimeUtc().AddMinutes(-3), assets, 10m, 3, BarTimeFrame.Minute)).ChangePercentage;
         }
     }
 }

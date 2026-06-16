@@ -50,13 +50,14 @@ namespace Denali.Processors.DenaliDescentStrategy
             _logger.LogInformation($"Processing go time {startTime.ToString("yyyy-MM-dd HH:mm")} (UTC)");
 
            
-           var screenedAssets = await _screener.GetGapUpBetween(
+           var screenedAssets = (await _screener.GetGapUpBetween(
                 previousMarketDay.GetTradingCloseTimeUtc(), 
                 currentMarketDay.GetTradingOpenTimeUtc().AddMinutes(-3), 
                 assets, 
                 _settings.MinimumStockPrice,
                 _settings.MinimumGapUpPercentage,
-                descending: true);
+                BarTimeFrame.Minute,
+                descending: true)).ChangePercentage;
             
             
             /*

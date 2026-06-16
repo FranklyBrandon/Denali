@@ -31,8 +31,8 @@ namespace Denali.Worker
                 await service.ProcessRange(new(2024, 1, 1), new(2025, 11, 14));
                 */
 
-                var service = scope.ServiceProvider.GetService<TimeofDayProcessor>();
-                await service.ProcessRange(new(2021, 1, 1), new(2022, 1, 1));
+                var service = scope.ServiceProvider.GetService<PreMarketHours>();
+                await service.Process(new(2026, 5, 1), new(2026, 6, 15), stoppingToken);
 
 
                 /*

@@ -69,12 +69,13 @@ namespace Denali.Processors.DenaliClimbStrategy
                 : filtered.OrderBy(x => x.Value).ToDictionary();
         }
 
-        public async Task<Dictionary<string, decimal>> GetGapUpBetween(
+        public async Task<GapUpResults> GetGapUpBetween(
             DateTime startTime,
             DateTime endTime,
             List<IAsset> assets,
             decimal minimumstockPrice,
             decimal minimumGapUpPercentage,
+            BarTimeFrame barTimeFrame,
             bool descending = true)
         {
             var tickers = assets.Select(x => x.Symbol);
@@ -85,7 +86,7 @@ namespace Denali.Processors.DenaliClimbStrategy
                     batch,
                     startTime,
                     endTime,
-                    BarTimeFrame.Minute
+                    barTimeFrame
                 ).ConfigureAwait(false);
 
                 aggregateData = aggregateData.Concat(data).ToDictionary();
@@ -97,8 +98,8 @@ namespace Denali.Processors.DenaliClimbStrategy
             foreach (var symbol in symbols)
             {
                 var data = aggregateData[symbol];
-                var previousBar = data.FirstOrDefault(x => x.TimeUtc == startTime);
-                var currentBar = data.LastOrDefault(x => x.TimeUtc.Date == endTime.Date);
+                var previousBar = data.FirstOrDefault(x => x.TimeUtc >= startTime);
+                var currentBar = data.LastOrDefault(x => x.TimeUtc <= endTime && x.TimeUtc != previousBar?.TimeUtc);
                 if (previousBar != null && currentBar != null)
                 {
                     changePercentage[symbol] = ChangePercentage.Calculate(previousBar.Close, currentBar.Close).RoundToMoney();
@@ -108,9 +109,11 @@ namespace Denali.Processors.DenaliClimbStrategy
             // Filter by unrealsitic change percentage (janky way to account for reverse splits). Then order
             var filtered = changePercentage.Where(x => x.Value >= minimumGapUpPercentage && x.Value <= 200);
 
-            return descending
+            var orderedGapUps = descending
                 ? filtered.OrderByDescending(x => x.Value).ToDictionary()
                 : filtered.OrderBy(x => x.Value).ToDictionary();
+
+            return new GapUpResults(aggregateData, orderedGapUps);
         }
 
 
@@ -160,3 +163,5 @@ namespace Denali.Processors.DenaliClimbStrategy
         }
     }
 }
+
+public record GapUpResults(Dictionary<string, List<IBar>> AggregateData, Dictionary<string, decimal> ChangePercentage);

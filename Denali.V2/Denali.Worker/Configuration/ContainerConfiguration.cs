@@ -61,6 +61,8 @@ namespace Denali.Worker.Configuration
 
             services.AddScoped<TimeofDayProcessor>();
 
+            services.AddScoped<PreMarketHours>();
+
 
 
             // Register a service provider so we can create scopes and resolve instances dynamically
