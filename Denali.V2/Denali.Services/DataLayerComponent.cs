@@ -55,13 +55,17 @@ namespace Denali.Services
                 .ToList();
         }
 
-        public async Task<IEnumerable<IIntervalCalendar>> GetMarketDays(DateTime from, DateTime into)
+        public async Task<IEnumerable<IIntervalCalendar>> GetMarketDays(DateTime from, DateTime into = default)
         {
+            if (into == DateTime.MinValue)
+                into = from;
+            
             var calenders = await _alpacaService.AlpacaTradingClient.ListIntervalCalendarAsync(
                 new CalendarRequest().WithInterval(
                     new Interval<DateTime>(from, into)
                 )
             );
+
             return calenders.OrderBy(x => x.GetTradingDate());
         }
 

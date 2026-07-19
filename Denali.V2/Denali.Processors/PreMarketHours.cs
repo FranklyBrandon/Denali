@@ -30,6 +30,7 @@ namespace Denali.Processors
             var allTradableAssets = await _dataLayer.GetAllTradableAssets();
 
             decimal totalProfit = 0m;
+            decimal totalCommisionProfit = 0m;
             var marketDays = await _dataLayer.GetMarketDays(startDate, endDate);
             for (int i = 0; i < marketDays.Count() - 1; i++)
             {
@@ -43,25 +44,30 @@ namespace Denali.Processors
                 var gapUps = await _gapUpScreener.GetGapUpBetween(startTime, endTime, allTradableAssets, 10m, 0m, new BarTimeFrame(30, BarTimeFrameUnit.Minute));
                 var aggregateData = await _dataLayer.GetAggregateDataMulti(gapUps.ChangePercentage.Keys, startTime, currentMarketDay.GetSessionCloseTimeUtc(), new BarTimeFrame(30, BarTimeFrameUnit.Minute));
 
-                decimal profit = 0m;
+                decimal dailyProfit = 0m;
+                decimal dailyInvestment = 0m;
                 var targets = gapUps.ChangePercentage.Join(allTradableAssets, x => x.Key, y => y.Symbol, (x, y) => new { x, y });
                 targets = targets.Where(x => x.y.Shortable).Take(20);
 
+                _logger.LogInformation($"{currentMarketDay.GetTradingDate().ToShortDateString()}");
                 foreach (var gapup in targets)
                 {
                     if (aggregateData.TryGetValue(gapup.x.Key, out var data))
                     {
                         var entry = data.First(x => x.TimeUtc >= currentMarketDay.GetSessionOpenTimeUtc());
-                        var exit = data.First(x => x.TimeUtc >= currentMarketDay.GetTradingOpenTimeUtc());
-                        profit += exit.Close - entry.Close;
+                        var exit = data.First(x => x.TimeUtc >= currentMarketDay.GetTradingOpenTimeUtc().AddMinutes(30));
+                        dailyProfit += entry.Open - exit.Close;
+                        dailyInvestment += entry.Open;
+                        _logger.LogInformation($"{gapup.x.Key}, Price:{entry.Open}, Profit: {entry.Open - exit.Close}");
                     }
                 }
 
-                totalProfit += profit;
-                _logger.LogInformation($"Profit: {profit}");
+                totalProfit += dailyProfit;
+                totalCommisionProfit += dailyProfit - (0.35m * 20);
+                _logger.LogInformation($"Daily Investment: {dailyInvestment}, Daily Profit: {dailyProfit}, Commission Profit: {dailyProfit - (0.35m * 20)}");
             }
 
-            _logger.LogInformation($"Total Profit: {totalProfit}");
+            _logger.LogInformation($"Total Profit: {totalProfit}, Total Comission Profit: {totalCommisionProfit}");
 
         }
     }

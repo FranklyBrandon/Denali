@@ -3,6 +3,7 @@ using Denali.Processors;
 using Denali.Processors.DenaliClimbStrategy;
 using Denali.Processors.DenaliDescentStrategy;
 using Denali.Processors.GapUpFadeStrategy;
+using Denali.Processors.PreMarketFadeStrategy;
 using Denali.Processors.TrueFadeStrategy;
 using Denali.Services;
 using InteractiveBrokers.Models.Configuration;
@@ -62,6 +63,13 @@ namespace Denali.Worker.Configuration
             services.AddScoped<TimeofDayProcessor>();
 
             services.AddScoped<PreMarketHours>();
+            services.AddScoped<PreMarketProcessor>();
+
+            services.AddScoped<ElephantBackLook>();
+
+            services.AddScoped<PreMarketGainers>();
+
+            services.AddScoped<PreMarketFadeLiveProcessor>();
 
 
 

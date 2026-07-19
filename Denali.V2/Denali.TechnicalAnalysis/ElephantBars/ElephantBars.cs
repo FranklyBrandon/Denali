@@ -29,18 +29,20 @@ namespace Denali.TechnicalAnalysis.ElephantBars
             AverageRange.Analyze(bars);
         }
 
-        public void Analyze(IEnumerable<IAggregateBar> bars)
+        public HashSet<DateTime> Analyze(IEnumerable<IAggregateBar> bars)
         {
             AverageRange.Analyze(bars);
             var lastBar = bars.Last();
 
-            if (IsElephantBar(lastBar, AverageRange.AverageRanges.Last()))
+            if (AverageRange.AverageRanges.Any() && IsElephantBar(lastBar, AverageRange.AverageRanges.Last()))
             {
                 _isElephant = true;
                 Elephants.Add(lastBar.TimeUtc);
             }
             else
                 _isElephant = false;
+
+            return Elephants;
         }
 
         public bool IsLatestElephant() => _isElephant;
